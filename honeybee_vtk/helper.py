@@ -1,6 +1,6 @@
-"""Helper geometry translator functions."""
+"""Functions helping in geometry translation using Ladybug Geometry Library."""
 
-from ladybug_geometry.geometry3d import Face3D, Point3D, Mesh3D, Polyface3D, Polyline3D
+from ladybug_geometry.geometry3d import Face3D, Point3D, Polyface3D, Polyline3D
 
 
 def get_mesh_points(boundary_points, holes_points=None):
@@ -54,40 +54,6 @@ def check_convex(boundary_points):
         return True
 
 
-def joined_face_vertices_from_mesh(mesh_points, mesh_faces):
-    
-    vertices_lst = []
-    for face in mesh_faces:
-        points = []
-        for i in range(len(face)):
-            point = mesh_points[face[i]]
-            point3d = Point3D(point[0], point[1], point[2])
-            points.append(point3d)
-        vertices_lst.append(points)
-    
-    face3ds = []
-    for vert_lst in vertices_lst:
-        face = Face3D(boundary=vert_lst)
-        face3ds.append(face)
-    
-    face_normal_dict = {face: face.normal for face in face3ds}
-
-    faces_grouped_by_vector = {}
-    for i, v in face_normal_dict.items():
-        faces_grouped_by_vector[v] = [i] if v not in faces_grouped_by_vector.keys() else faces_grouped_by_vector[v] + [i]
-
-    faces_vertices_lst = []
-    for vector in faces_grouped_by_vector:
-        polyface = Polyface3D.from_faces(faces_grouped_by_vector[vector], 0.01)
-        lines = list(polyface.naked_edges)
-        polylines = Polyline3D.join_segments(lines, 0.01)
-        face3d = Face3D(boundary=polylines[0].vertices)
-        verts = [[vert.x, vert.y, vert.z] for vert in face3d.vertices]
-        faces_vertices_lst.append(verts)
-
-    return faces_vertices_lst
-
-
 def get_point3d(point_lst):
     return [Point3D(point[0], point[1], point[2]) for point in point_lst]
 
@@ -95,4 +61,37 @@ def get_point3d(point_lst):
 def face_center(points):
     face = Face3D(boundary=points)
     return face.center, face.normal
+
+
+# def joined_face_vertices_from_mesh(mesh_points, mesh_faces):
     
+#     vertices_lst = []
+#     for face in mesh_faces:
+#         points = []
+#         for i in range(len(face)):
+#             point = mesh_points[face[i]]
+#             point3d = Point3D(point[0], point[1], point[2])
+#             points.append(point3d)
+#         vertices_lst.append(points)
+    
+#     face3ds = []
+#     for vert_lst in vertices_lst:
+#         face = Face3D(boundary=vert_lst)
+#         face3ds.append(face)
+    
+#     face_normal_dict = {face: face.normal for face in face3ds}
+
+#     faces_grouped_by_vector = {}
+#     for i, v in face_normal_dict.items():
+#         faces_grouped_by_vector[v] = [i] if v not in faces_grouped_by_vector.keys() else faces_grouped_by_vector[v] + [i]
+
+#     faces_vertices_lst = []
+#     for vector in faces_grouped_by_vector:
+#         polyface = Polyface3D.from_faces(faces_grouped_by_vector[vector], 0.01)
+#         lines = list(polyface.naked_edges)
+#         polylines = Polyline3D.join_segments(lines, 0.01)
+#         face3d = Face3D(boundary=polylines[0].vertices)
+#         verts = [[vert.x, vert.y, vert.z] for vert in face3d.vertices]
+#         faces_vertices_lst.append(verts)
+
+#     return faces_vertices_lst

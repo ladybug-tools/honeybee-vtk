@@ -1,5 +1,5 @@
 """Extracts geometry and metadata from a valid Honeybee Json (HBJSON)"""
-from .helper import get_mesh_points, check_convex, joined_face_vertices_from_mesh
+from .helper import get_mesh_points, check_convex
 from .helper import face_center, get_point3d
 
 
@@ -23,22 +23,18 @@ def get_data(hbjson_obj, hb_type):
     """
     points_lst = []
     hb_types = []
-    display_name = []
 
     for obj in hbjson_obj:
         
-
         if 'holes' not in obj['geometry']:
             if check_convex(obj['geometry']['boundary']):
                 points_lst.append(get_point3d(obj['geometry']['boundary']))
                 hb_types.append(obj[hb_type])
-                display_name.append(obj['display_name'])
             else:
                 triangles_points = get_mesh_points(obj['geometry']['boundary'])
                 for point_lst in triangles_points:
                     points_lst.append(point_lst)
                     hb_types.append(obj[hb_type])
-                    display_name.append(obj['display_name'])
 
         else:
             try:
@@ -54,49 +50,8 @@ def get_data(hbjson_obj, hb_type):
                 for point_lst in triangles_points:
                     points_lst.append(point_lst)
                     hb_types.append(obj[hb_type])
-                    display_name.append(obj['display_name'])
 
-    return points_lst, hb_types, display_name
-
-
-def get_grid(hbjson):
-    """Get grid points and grid normals from HBJSON.
-
-    Args:
-        hbjson: A valid HBJSON (Honeybee JSON).
-
-    Returns:
-        A tuple of two elements.
-
-        - start_points: A list of lists of vertices(X, Y, Z) for each grid point.
-
-        - end_normals: A list of lists of normals(X, Y, Z) for each grid point moved in
-            the direction of the vector.
-
-        - vectors: A list of grid vectors.
-    """
-
-    start_points = []
-    vectors = []
-    end_points = []
-
-    if 'sensor_grids' in hbjson['properties']['radiance']:
-        for grid in hbjson['properties']['radiance']['sensor_grids']:
-            for sensors in grid['sensors']:
-                start_points.append(sensors['pos'])
-                vectors.append(sensors['dir'])
-        
-        for i in range(len(start_points)):
-            end_point = get_end_point(start_points[i], vectors[i])
-            end_points.append(end_point)
-
-        return start_points, end_points, vectors
-
-
-def get_end_point(point, vector):
-    """Move a point in the direction of a vector and return the moved point as a list."""
-
-    return [point[0]+vector[0], point[1]+vector[1], point[2]+vector[2]]
+    return points_lst, hb_types
 
 
 def read_hbjson(hbjson):
@@ -115,89 +70,124 @@ def read_hbjson(hbjson):
     """
     points = []
     hb_types = []
-    display_names = []
 
-    points_lst, hb_type_lst, display_names_lst = get_data(hbjson['orphaned_faces'],
+    points_lst, hb_type_lst = get_data(hbjson['orphaned_faces'],
         'face_type')
     points.extend(points_lst)
     hb_types.extend(hb_type_lst)
-    display_names.extend(display_names_lst)
-    
+
     if 'orphaned_shades' in hbjson:
-        points_lst, hb_type_lst, display_names_lst = get_data(hbjson['orphaned_shades'],
+        points_lst, hb_type_lst = get_data(hbjson['orphaned_shades'],
             'type')
         points.extend(points_lst)
         hb_types.extend(hb_type_lst)
-        display_names.extend(display_names_lst)
-    
+
     if 'orphaned_apertures' in hbjson:
-        points_lst, hb_type_lst, display_names_lst = get_data(hbjson['orphaned_apertures'],
+        points_lst, hb_type_lst = get_data(hbjson['orphaned_apertures'],
             'type')
         points.extend(points_lst)
         hb_types.extend(hb_type_lst)
-        display_names.extend(display_names_lst)
-    
+
     if 'orphaned_doors' in hbjson:
-        points_lst, hb_type_lst, display_names_lst = get_data(hbjson['orphaned_doors'],
+        points_lst, hb_type_lst = get_data(hbjson['orphaned_doors'],
             'type')
         points.extend(points_lst)
         hb_types.extend(hb_type_lst)
-        display_names.extend(display_names_lst)
 
-    return points, hb_types, display_names
+    return points, hb_types
+
+
+def check_grid(hbjson):
+    if 'sensor_grids' in hbjson['properties']['radiance']:
+        grid_with_base = []
+        grid_with_mesh = []
+        grid_with_points = []
+        for grid in hbjson['properties']['radiance']['sensor_grids']:
+            if 'base_geometry' in grid:
+                grid_with_base.append(grid)
+            elif 'mesh' in grid and 'base_geometry' not in grid:
+                grid_with_mesh.append(grid)
+            else:
+                grid_with_points.append(grid)
+        return grid_with_base, grid_with_mesh, grid_with_points
+
+
+def get_grid_base(grids):
+
+    base_geo_points = []
+    vectors = []
+
+    for grid in grids:
+        for face in grid['base_geometry']:
+            points = [point for point in face['boundary']]
+            base_geo_points.append(get_point3d(points))
+
+        for sensors in grid['sensors']:
+            vectors.append(sensors['dir'])
+
+    return base_geo_points, vectors
+
+
+def get_grid_mesh(grids):
     
-
-def get_grid_mesh(hbjson):
-
     # Here, mesh_points is a list of lists.
     #[[[Mesh point 1], [Mesh point 2], [Mesh point 3], [Mesh point 4]]]
     mesh_points = []
     vectors = []
-    mesh_faces = []
 
-    if 'sensor_grids' in hbjson['properties']['radiance']:
-        for grid in hbjson['properties']['radiance']['sensor_grids']:
-            vertices = grid['mesh']['vertices']
-            faces = grid['mesh']['faces']
+    for grid in grids:
+        vertices = grid['mesh']['vertices']
+        faces = grid['mesh']['faces']
+        
+        for face in faces:
+            points = [vertices[face[i]] for i in range(len(face))]
+            mesh_points.append(get_point3d(points))
             
-            for face in faces:
-                mesh_faces.append(face)
-                points = [vertices[face[i]] for i in range(len(face))]
-                mesh_points.append(points)
+        for sensors in grid['sensors']:
+            vectors.append(sensors['dir'])
 
-            for sensors in grid['sensors']:
-                vectors.append(sensors['dir'])
-    else:
-        return None
+    return mesh_points, vectors
+
+
+def get_grid_points(grids):
+    """Get grid points and grid normals from a Sensorgrid object in HBJSON.
+
+    Args:
+        grids: A list of Sensorgrid objects in HBJSON.
+
+    Returns:
+        A tuple of two elements.
+
+        - start_points: A list of lists of vertices(X, Y, Z) for each grid point.
+
+        - end_normals: A list of lists of normals(X, Y, Z) for each grid point moved in
+            the direction of the vector.
+
+        - vectors: A list of grid vectors where each vector is a list of X, Y, and Z
+            component of a vector.
+    """
+
+    start_points = []
+    vectors = []
+    end_points = []
+
+    for grid in grids:
+        for sensors in grid['sensors']:
+            start_points.append(sensors['pos'])
+            vectors.append(sensors['dir'])
     
-    return mesh_points, mesh_faces, vectors
+    for i in range(len(start_points)):
+        end_point = get_end_point(start_points[i], vectors[i])
+        end_points.append(end_point)
+
+    return start_points, end_points, vectors
 
 
-def get_joined_face_vertices(hbjson):
-    vertices_lst = []
-    if 'sensor_grids' in hbjson['properties']['radiance']:
-        for grid in hbjson['properties']['radiance']['sensor_grids']:
-            vertices = grid['mesh']['vertices']
-            faces = grid['mesh']['faces']
+def get_end_point(point, vector):
+    """Move a point in the direction of a vector and return the moved point as a list."""
 
-            vertices_lst.extend(joined_face_vertices_from_mesh(vertices, faces))
-    
-    return vertices_lst
+    return [point[0]+vector[0], point[1]+vector[1], point[2]+vector[2]]
 
-
-def get_mesh(hbjson):
-    mesh_points = []
-    mesh_faces = []
-
-    if 'sensor_grids' in hbjson['properties']['radiance']:
-        for grid in hbjson['properties']['radiance']['sensor_grids']:
-            vertices = grid['mesh']['vertices']
-            faces = grid['mesh']['faces']
-            mesh_points.append(vertices)
-            mesh_faces.append(faces)
-    
-        return mesh_points, mesh_faces
-    
 
 def get_face_center(points_lst):
     start_points = [face_center(points)[0] for points in points_lst]
@@ -208,3 +198,28 @@ def get_face_center(points_lst):
 
 
 
+
+# def get_joined_face_vertices(hbjson):
+#     vertices_lst = []
+#     if 'sensor_grids' in hbjson['properties']['radiance']:
+#         for grid in hbjson['properties']['radiance']['sensor_grids']:
+#             vertices = grid['mesh']['vertices']
+#             faces = grid['mesh']['faces']
+
+#             vertices_lst.extend(joined_face_vertices_from_mesh(vertices, faces))
+    
+#     return vertices_lst
+
+
+# def get_mesh(hbjson):
+#     mesh_points = []
+#     mesh_faces = []
+
+#     if 'sensor_grids' in hbjson['properties']['radiance']:
+#         for grid in hbjson['properties']['radiance']['sensor_grids']:
+#             vertices = grid['mesh']['vertices']
+#             faces = grid['mesh']['faces']
+#             mesh_points.append(vertices)
+#             mesh_faces.append(faces)
+    
+#         return mesh_points, mesh_faces
