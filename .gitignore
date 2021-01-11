@@ -14,7 +14,9 @@ tox.ini
 *.code-workspace
 *.vtk
 *.zip
+*.glance
 
 # Rhino Backup files
 *.3dm.rhl
 *3dmbak
+

@@ -1,1 +1,1 @@
-"""Honeybee JSON to vtk package."""
+"""Library for Converting HBJSON to VTK."""
