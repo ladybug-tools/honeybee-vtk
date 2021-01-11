@@ -6,9 +6,11 @@ import vtk
 import warnings
 
 from zipfile import ZipFile
-from .hbjson import read_hbjson, get_grid, get_grid_mesh, get_mesh, get_joined_face_vertices, get_face_center
+from .hbjson import read_hbjson, get_face_center
+from .hbjson import check_grid, get_grid_base, get_grid_mesh, get_grid_points
 from .tovtk import create_polygons, group_by_face_type, create_arrows
-from .tovtk import point_vectors, create_cones, create_mesh
+from .tovtk import point_vectors
+from .helper import get_point3d
 
 
 def write_vtk(file_path):
@@ -36,16 +38,14 @@ def write_vtk(file_path):
             )
     else:
         # Get points and face_types from HBJSON
-        points_lst, hb_types, display_names = read_hbjson(hbjson)
+        points_lst, hb_types = read_hbjson(hbjson)
 
         # Get points grouped for each Honeybee face_type
-        grouped_points, grouped_display_names = group_by_face_type(points_lst, display_names, hb_types)
+        grouped_points = group_by_face_type(points_lst, hb_types)
 
         for hb_type in grouped_points:
             # Get vtk polygons
-            vtk_polydata_extended = create_polygons(grouped_points[hb_type],
-                grouped_display_names[hb_type])
-            
+            vtk_polydata_extended = create_polygons(grouped_points[hb_type])
             # Write faces to vtk
             writer = vtk.vtkPolyDataWriter()
             writer.SetFileName(hb_type + '.vtk')
@@ -54,31 +54,83 @@ def write_vtk(file_path):
 
         file_names = list(grouped_points.keys())
 
-        # Create face normals
-        start_points, end_points, normals = get_face_center(points_lst)
-        face_vector_polydata = create_arrows(start_points, end_points, normals)
-        writer = vtk.vtkPolyDataWriter()
-        writer.SetFileName('face vectors.vtk')
-        writer.SetInputConnection(face_vector_polydata.GetOutputPort())
-        writer.Write()
-        file_names.append('face vectors')
+
 
         # write grid points to a vtk file
-        if get_grid(hbjson):
-            # mesh_points, mesh_faces = get_mesh(hbjson)
-            # create_polyhedron(mesh_points, mesh_faces)
+        grids = check_grid(hbjson)
 
-            start_points, end_points, vectors  = get_grid(hbjson)
-            point_polydata = point_vectors(start_points, vectors)
-            writer = vtk.vtkPolyDataWriter()
-            writer.SetFileName('grid points.vtk')
-            # writer.SetInputConnection(grid_polydata_extended.GetOutputPort())
-            writer.SetInputData(point_polydata)
-            writer.Write()
-            file_names.append('grid points')
+        # If grids are there in HBJSON
+        if grids:
+
+            # If base_geometry is found
+            if grids[0]:
+                base_geo_points = get_grid_base(grids[0])[0]
+                vtk_polydata_extended = create_polygons(base_geo_points)
+                # Write faces to vtk
+                writer = vtk.vtkPolyDataWriter()
+                writer.SetFileName('grid base.vtk')
+                writer.SetInputConnection(vtk_polydata_extended.GetOutputPort())
+                writer.Write()
+                file_names.append('grid base')
+
+            # If base_geometry is not found but mesh faces are found
+            if grids[1]:
+                mesh_points = get_grid_mesh(grids[1])[0]
+                vtk_polydata_extended = create_polygons(mesh_points)
+                # Write faces to vtk
+                writer = vtk.vtkPolyDataWriter()
+                writer.SetFileName('grid mesh.vtk')
+                writer.SetInputConnection(vtk_polydata_extended.GetOutputPort())
+                writer.Write()
+                file_names.append('grid mesh')
+
+            # If only grid points are found
+            if grids[2]:
+                start_points, end_points, vectors = get_grid_points(grids[2])
+                point_polydata = point_vectors(start_points, vectors)
+                writer = vtk.vtkPolyDataWriter()
+                writer.SetFileName('grid points.vtk')
+                writer.SetInputData(point_polydata)
+                writer.Write()
+                file_names.append('grid points')
         else:
             pass
+        
+        if 'Aperture' in hb_types:
+            # Create face normals
+            start_points, end_points, normals = get_face_center(grouped_points['Aperture'])
+            face_vector_polydata = create_arrows(start_points, end_points, normals)
+            writer = vtk.vtkPolyDataWriter()
+            writer.SetFileName('Aperture vectors.vtk')
+            writer.SetInputConnection(face_vector_polydata.GetOutputPort())
+            writer.Write()
+            file_names.append('Aperture vectors')
 
+        if grids:
+            if grids[0]:
+                base_geo_points = get_grid_base(grids[0])[0]
+                # Create face normals
+                start_points, end_points, normals = get_face_center(base_geo_points)
+                face_vector_polydata = create_arrows(start_points, end_points, normals)
+                writer = vtk.vtkPolyDataWriter()
+                writer.SetFileName('grid base vectors.vtk')
+                writer.SetInputConnection(face_vector_polydata.GetOutputPort())
+                writer.Write()
+                file_names.append('grid base vectors')
+
+
+            if grids[1]:
+                mesh_points = get_grid_mesh(grids[1])[0]
+                # Create face normals
+                start_points, end_points, normals = get_face_center(mesh_points)
+                face_vector_polydata = create_arrows(start_points, end_points, normals)
+                writer = vtk.vtkPolyDataWriter()
+                writer.SetFileName('grid mesh vectors.vtk')
+                writer.SetInputConnection(face_vector_polydata.GetOutputPort())
+                writer.Write()
+                file_names.append('grid mesh vectors')
+
+        print(file_names)
         # Capture vtk files in a zip file.
         zipobj = ZipFile('unnamed.zip', 'w')
         for file_name in file_names:

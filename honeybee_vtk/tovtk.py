@@ -3,7 +3,7 @@
 import vtk
 
 
-def group_by_face_type(points_lst, display_names, hb_types):
+def group_by_face_type(points_lst, hb_types):
     """Group points based on Honeybee type.
 
     Args:
@@ -18,13 +18,11 @@ def group_by_face_type(points_lst, display_names, hb_types):
         that belongs to that Honeybee type.
     """
     grouped_points = {face_type: [] for face_type in hb_types}
-    grouped_display_names = {face_type: [] for face_type in hb_types}
 
     for i in range(len(hb_types)):
         grouped_points[hb_types[i]].append(points_lst[i])
-        grouped_display_names[hb_types[i]].append(display_names[i])
 
-    return grouped_points, grouped_display_names
+    return grouped_points
 
 
 def create_polygon(points):
@@ -56,7 +54,7 @@ def create_polygon(points):
     return vtk_points, vtk_polygon
 
 
-def create_polygons(points_lst, display_names):
+def create_polygons(points_lst):
     """Create a vtk object with multiple vtk polygons.
 
     Args:
@@ -75,17 +73,9 @@ def create_polygons(points_lst, display_names):
         vtk_polygons = vtk.vtkCellArray()
         vtk_polygons.InsertNextCell(vtk_polygon)
 
-        # Assgning a text based field data
-        vtk_names = vtk.vtkFieldData()
-        vtk_display_names = vtk.vtkStringArray()
-        vtk_display_names.SetName("Display_names")
-        vtk_display_names.InsertNextValue(display_names[i])
-        vtk_names.AddArray(vtk_display_names)
-
         vtk_polydata = vtk.vtkPolyData()
         vtk_polydata.SetPoints(vtk_points)
         vtk_polydata.SetPolys(vtk_polygons)
-        vtk_polydata.SetFieldData(vtk_names)
         vtk_polydata.Modified()
 
         vtk_polydata_lst.append(vtk_polydata)
