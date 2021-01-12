@@ -1,2 +1,2 @@
 # honeybee-vtk
-🐝 VTK - Honeybee extension for translating HBJSON files to VTK format 
+🐝 VTK - Honeybee extension for translating HBJSON to VTK files.
