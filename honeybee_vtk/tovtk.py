@@ -7,14 +7,13 @@ def group_by_face_type(points_lst, hb_types):
     """Group points based on Honeybee type.
 
     Args:
-        points_lst: A list of lists of points for the geometry in the HBJSON
-        display_names: A list of display names for all the faces in the model
+        points_lst: A list of lists of points for the geometry in the HBJSON. Here,
+            each point is a list of X, Y, and Z cordinates of the point.
         hb_types: A list of honeybee face_types and/or types for the geometry objects
             in the HBJSON.
-        
 
     Returns:
-        A dictionary with Honeybee type as keys and list of list points for geometry
+        A dictionary with Honeybee type as keys and list of list of points for geometry
         that belongs to that Honeybee type.
     """
     grouped_points = {face_type: [] for face_type in hb_types}
@@ -62,14 +61,13 @@ def create_polygons(points_lst):
             and Z cordinate.
 
     Returns:
-        A vtk object that has multiple vtk polygons.
+        A vtk object that with multiple polygons.
     """
     vtk_polydata_lst = []
 
     for i in range(len(points_lst)):
-        # Create a list of vtk polydata objects with polygons
-        vtk_points, vtk_polygon = create_polygon(points_lst[i])
 
+        vtk_points, vtk_polygon = create_polygon(points_lst[i])
         vtk_polygons = vtk.vtkCellArray()
         vtk_polygons.InsertNextCell(vtk_polygon)
 
@@ -80,17 +78,18 @@ def create_polygons(points_lst):
 
         vtk_polydata_lst.append(vtk_polydata)
 
-    # Create a vtk object with multiple polygons
     vtk_polydata_extended = vtk.vtkAppendPolyData()
+    
     for i in range(len(vtk_polydata_lst)):
         vtk_polydata_extended.AddInputData(vtk_polydata_lst[i])
+
     vtk_polydata_extended.Update()
 
     return vtk_polydata_extended
 
 
 def create_arrows(start_points, end_points, vectors):
-    """Create lines from start point and end point.
+    """Create an Arrow in VTK using a start point, end point and a vector.
 
     Args:
         start_points: A list of list of points. Here, each point is a list of X, Y, 
@@ -98,10 +97,10 @@ def create_arrows(start_points, end_points, vectors):
         end_points: A list of list of points. Here, each point is a list of X, Y, 
             and Z cordinate.
         vectors: A list of vectors for the grid points. Here, each vector is a list 
-            of X, Y, and Z values of a vector.
+            of X, Y, and Z components of a vector.
 
     Returns:
-        A vtk object that has multiple vtk lines & cones.
+        A vtk object with multiple VTK objects that would look like arrows.
     """
    
     lines_polydata = []
@@ -139,6 +138,7 @@ def create_arrows(start_points, end_points, vectors):
         # Add cone to the end of line
         conePoly = vtk.vtkPolyData()
 
+        # Parameters for the cone
         coneSource = vtk.vtkConeSource()
         coneSource.SetResolution(2)
         coneSource.SetRadius(0.1)
@@ -148,11 +148,10 @@ def create_arrows(start_points, end_points, vectors):
         coneSource.Update()
 
         conePoly.ShallowCopy(coneSource.GetOutput())
-
         cones_polydata.append(conePoly)
         
-        
     vtk_polydata_extended = vtk.vtkAppendPolyData()
+
     for i in range(len(lines_polydata)):
         vtk_polydata_extended.AddInputData(lines_polydata[i])
 
@@ -165,32 +164,43 @@ def create_arrows(start_points, end_points, vectors):
 
 
 def point_vectors(start_points, vectors):
+    """Export points to VTK and color-group them based on vectors.
+
+    Args:
+        start_points: A list of list of points. Here, each point is a list of X, Y, 
+            and Z cordinate.
+        vectors: A list of vectors for the grid points. Here, each vector is a list 
+            of X, Y, and Z components of a vector.
+
+    Returns:
+        A vtk object with multiple VTK objects that would look like color-grouped points.
+    """
     points_polydata = []
 
-
     points = vtk.vtkPoints()
-    # points.SetNumberOfPoints(len(start_points))
-    # for i in range(len(start_points)):
-    #     points.InsertNextPoint(tuple(start_points[i]))
-    
     vertices = vtk.vtkCellArray()
+
     for i in range(len(start_points)):
         pid = [0]
         pid[0] = points.InsertNextPoint(start_points[i])
         vertices.InsertNextCell(1, pid)
-
 
     normals = vtk.vtkFloatArray()
     normals.SetNumberOfComponents(3)
     normals.SetNumberOfTuples(len(vectors))
     for i in range(len(vectors)):
         normals.InsertNextTuple3(vectors[i][0], vectors[i][1], vectors[i][2])
+    
+    # Using the text string of the sum of vector components to perform grouping
+    vec_sum = [
+        str(round(vector[0])) + str(round(vector[1])) + str(round(vector[2]))
+        for vector in vectors]
 
-
-    # vec_sum = [str(round(vector[0],2)) + str(round(vector[1],2)) + str(round(vector[2],2)) for vector in vectors]
-    vec_sum = [str(round(vector[0])) + str(round(vector[1])) + str(round(vector[2])) for vector in vectors]
     unique_vectors = list(set(vec_sum))
 
+    # A dictionary with unique vector : unique integer structure.
+    # These unique integers wil be used in scalars to color the points grouped based
+    # on the unique vectors
     vector_dict = {}
     for count, item in enumerate(unique_vectors):
         vector_dict[item] = count
@@ -198,14 +208,13 @@ def point_vectors(start_points, vectors):
     values = vtk.vtkIntArray()
     values.SetNumberOfComponents(1)
     for vector in vectors:
-        # value = vector_dict[str(round(vector[0], 2)) + str(round(vector[1], 2)) + str(round(vector[2], 2))]
-        value = vector_dict[str(round(vector[0])) + str(round(vector[1])) + str(round(vector[2]))]
+        value = vector_dict[
+            str(round(vector[0])) + str(round(vector[1])) + str(round(vector[2]))]
         values.InsertNextValue(value)
-    
+
     polydata = vtk.vtkPolyData()
     polydata.SetPoints(points)
     polydata.SetVerts(vertices)
-    # polydata.GetPointData().SetNormals(normals)
     polydata.GetCellData().SetScalars(values)
     polydata.Modified()
 
@@ -213,13 +222,24 @@ def point_vectors(start_points, vectors):
 
 
 def create_cones(start_points, vectors):
+    """Create VTK cones at point locations.
+
+    Args:
+        start_points: A list of list of points. Here, each point is a list of X, Y, 
+            and Z cordinate.
+        vectors: A list of vectors for the grid points. Here, each vector is a list 
+            of X, Y, and Z components of a vector.
+
+    Returns:
+        A vtk object with multiple VTK objects that would look like arrow heads (cones).
+    """
 
     cones_polydata = []
 
     for i in range(len(start_points)):
-        # Add cone to the end of line
         conePoly = vtk.vtkPolyData()
 
+        # Parameters for the cone
         coneSource = vtk.vtkConeSource()
         coneSource.SetResolution(1)
         coneSource.SetRadius(0.1)
@@ -229,11 +249,10 @@ def create_cones(start_points, vectors):
         coneSource.Update()
 
         conePoly.ShallowCopy(coneSource.GetOutput())
-
         cones_polydata.append(conePoly)
-        
-        
+
     vtk_polydata_extended = vtk.vtkAppendPolyData()
+
     for i in range(len(cones_polydata)):
         vtk_polydata_extended.AddInputData(cones_polydata[i])
 
@@ -241,30 +260,3 @@ def create_cones(start_points, vectors):
 
     return vtk_polydata_extended
 
-
-def create_mesh(mesh_points):
-    
-    points_lst = mesh_points
-    vtk_polydata_lst = []
-
-    for i in range(len(points_lst)):
-            # Create a list of vtk polydata objects with polygons
-        vtk_points, vtk_polygon = create_polygon(points_lst[i])
-
-        vtk_polygons = vtk.vtkCellArray()
-        vtk_polygons.InsertNextCell(vtk_polygon)
-
-        vtk_polydata = vtk.vtkPolyData()
-        vtk_polydata.SetPoints(vtk_points)
-        vtk_polydata.SetPolys(vtk_polygons)
-
-        vtk_polydata_lst.append(vtk_polydata)
-
-    # Create a vtk object with multiple polygons
-    vtk_polydata_extended = vtk.vtkAppendPolyData()
-    
-    for i in range(len(vtk_polydata_lst)):
-        vtk_polydata_extended.AddInputData(vtk_polydata_lst[i])
-    vtk_polydata_extended.Update()
-
-    return vtk_polydata_extended
