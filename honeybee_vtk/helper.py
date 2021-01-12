@@ -1,6 +1,6 @@
-"""Functions helping in geometry translation using Ladybug Geometry Library."""
+"""Functions to help in geometry translation."""
 
-from ladybug_geometry.geometry3d import Face3D, Point3D, Polyface3D, Polyline3D
+from ladybug_geometry.geometry3d import Face3D, Point3D
 
 
 def get_mesh_points(boundary_points, holes_points=None):
@@ -11,87 +11,138 @@ def get_mesh_points(boundary_points, holes_points=None):
     the vertices of these generated meshes.
 
     Args:
-        boundary_points: A list of points that represent the boundary of a face. Here, 
-            each point is a list of X, Y, and Z cordinate.
+        boundary_points: A list of points that represent the boundary of a face. Here,
+            each point is a list of X, Y, and Z cordinates of the point.
         holes_points: A list of lists of points that represent the boundary of the holes
-            in the face. Here, each point is a list of X, Y, and Z cordinate.
+            in the face. Here, each point is a list of X, Y, and Z cordinates of the
+            point. Defaults to None. Which will mean the face has no holes.
 
     Returns:
         A list of list of points. Each list has vertices for a triangular polygon.
+        Example of structure will be [[X, Y, Z], [X, Y, Z], [X, Y, Z]].
     """
     # Create Ladybug Point3D objects from boundary points
-    lb_boundary_pts = [Point3D(point[0], point[1], point[2])
+    lb_boundary_pts = [
+        Point3D(point[0], point[1], point[2])
         for point in boundary_points]
 
     # Create a Ladybug Face3D object from boundary points and hole points
     if holes_points:
         # Create Ladybug Point3D objects from hole points
-        lb_holes_pts = [[Point3D(point[0], point[1], point[2]) for point in point_lst]
+        lb_holes_pts = [
+            [Point3D(point[0], point[1], point[2]) for point in point_lst]
             for point_lst in holes_points]
 
         face = Face3D(boundary=lb_boundary_pts, holes=lb_holes_pts)
+
     else:
         face = Face3D(boundary=lb_boundary_pts)
-    
+
     # Generate triangles from the Face3D object
     triangles = face.triangulated_mesh3d
 
     # A list of lists with each list having vertices of triangles
-    points_lst = [[triangles.vertices[face[0]], triangles.vertices[face[1]],
+    points_lst = [[
+        triangles.vertices[face[0]], triangles.vertices[face[1]],
         triangles.vertices[face[2]]] for face in triangles.faces]
-    
+
     return points_lst
 
 
 def check_convex(boundary_points):
+    """Check whether a Face3D is convex or not.
 
-    lb_boundary_pts = [Point3D(point[0], point[1], point[2])
-        for point in boundary_points]
-    
+    This function creates a Ladybug Face3D object from boundary points and reports
+    whether the Face3D is convex or not.
+
+    Args:
+        boundary_points: A list of list of points. Here, each point is a list of 
+            X, Y, and Z cordinates of the point.
+
+    Returns:
+        A boolean value.
+    """
+
+    lb_boundary_pts = [
+        Point3D(point[0], point[1], point[2]) for point in boundary_points]
+
     face = Face3D(boundary=lb_boundary_pts)
 
-    if face.is_convex:
-        return True
+    return face.is_convex
 
 
-def get_point3d(point_lst):
-    return [Point3D(point[0], point[1], point[2]) for point in point_lst]
+def get_point3d(points):
+    """Convert a list of points in to a list of Ladybug Point3D objects.
+
+    Args:
+        points: A list of points. Here, each point is a list of 
+            X, Y, and Z cordinates of the point.
+
+    Returns:
+        A list of Ladybug Point3D objects.
+    """
+    return [Point3D(point[0], point[1], point[2]) for point in points]
+
+
+def get_end_point(point, vector):
+    """Move a point in the direction of a vector and return the moved point.
+
+    Here, each point is a list of 
+            X, Y, and Z cordinates of the point.
+
+    Args:
+        point: A point as a list where the list has X, Y, and Z cordinates of the point.
+        vector: A vector as a list where the list has X, Y, and Z component of the
+            vectors.
+
+    Returns:
+        A point as a list where the list has X, Y, and Z cordinates of the point.
+    """
+    return [point[0] + vector[0], point[1] + vector[1], point[2] + vector[2]]
 
 
 def face_center(points):
-    face = Face3D(boundary=points)
+    """Get center point and normal for a Ladybug Face3D.
+
+    This function creates a Ladybug Face3D from the points and returns its center and
+    normal properties.
+
+    Args:
+        points: A list of Ladybug Point3D objects that can be a boundary for a face.
+
+    Returns:
+        A tuple with two elements
+
+        - face.center: The center point of the face as a Ladybug Point3D object.
+
+        - face.normal: The face normal for the Ladybug Face3D.
+    """
+    face = Face3D(boundary = points)
+    print(face.normal)
     return face.center, face.normal
 
 
-# def joined_face_vertices_from_mesh(mesh_points, mesh_faces):
-    
-#     vertices_lst = []
-#     for face in mesh_faces:
-#         points = []
-#         for i in range(len(face)):
-#             point = mesh_points[face[i]]
-#             point3d = Point3D(point[0], point[1], point[2])
-#             points.append(point3d)
-#         vertices_lst.append(points)
-    
-#     face3ds = []
-#     for vert_lst in vertices_lst:
-#         face = Face3D(boundary=vert_lst)
-#         face3ds.append(face)
-    
-#     face_normal_dict = {face: face.normal for face in face3ds}
+def get_face_center(points_lst):
+    """Get geometry to create an arrow at the center of the face.
 
-#     faces_grouped_by_vector = {}
-#     for i, v in face_normal_dict.items():
-#         faces_grouped_by_vector[v] = [i] if v not in faces_grouped_by_vector.keys() else faces_grouped_by_vector[v] + [i]
+    Args:
+        points_lst: A list of lists. Where each list has X,Y, and Z cordinates of a
+            point.
 
-#     faces_vertices_lst = []
-#     for vector in faces_grouped_by_vector:
-#         polyface = Polyface3D.from_faces(faces_grouped_by_vector[vector], 0.01)
-#         lines = list(polyface.naked_edges)
-#         polylines = Polyline3D.join_segments(lines, 0.01)
-#         face3d = Face3D(boundary=polylines[0].vertices)
-#         verts = [[vert.x, vert.y, vert.z] for vert in face3d.vertices]
-#         faces_vertices_lst.append(verts)
+    Returns:
+        A tuple with three elements
 
-#     return faces_vertices_lst
+        - start_points: A list Ladybug Point3D objects. These are start points for
+            each Face3D created from points provided to the function.
+        
+        - end_points: A list of Ladybug Point3D objects. These points are derived by
+            moving the center point of a Face3D using the vector of the Face3D.
+        
+        - normals: A list of Ladybug Vector3D objects.
+    """
+    start_points = [face_center(points)[0] for points in points_lst]
+    normals = [face_center(points)[1] for points in points_lst]
+    end_points = [
+        get_end_point(start_points[i], normals[i]) for i in range(len(start_points))]
+
+    return start_points, end_points, normals
