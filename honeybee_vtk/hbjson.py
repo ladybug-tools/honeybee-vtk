@@ -1,6 +1,6 @@
 """Extracts geometry and metadata from a valid Honeybee Json (HBJSON)"""
 from .helper import get_mesh_points, check_convex
-from .helper import face_center, get_point3d
+from .helper import face_center, get_point3d, get_end_point
 
 
 def get_data(hbjson_obj, hb_type):
@@ -183,43 +183,8 @@ def get_grid_points(grids):
     return start_points, end_points, vectors
 
 
-def get_end_point(point, vector):
-    """Move a point in the direction of a vector and return the moved point as a list."""
-
-    return [point[0]+vector[0], point[1]+vector[1], point[2]+vector[2]]
-
-
-def get_face_center(points_lst):
-    start_points = [face_center(points)[0] for points in points_lst]
-    normals = [face_center(points)[1] for points in points_lst]
-    end_points = [get_end_point(start_points[i], normals[i]) for i in range(len(start_points))]
-
-    return start_points, end_points, normals
 
 
 
 
-# def get_joined_face_vertices(hbjson):
-#     vertices_lst = []
-#     if 'sensor_grids' in hbjson['properties']['radiance']:
-#         for grid in hbjson['properties']['radiance']['sensor_grids']:
-#             vertices = grid['mesh']['vertices']
-#             faces = grid['mesh']['faces']
 
-#             vertices_lst.extend(joined_face_vertices_from_mesh(vertices, faces))
-    
-#     return vertices_lst
-
-
-# def get_mesh(hbjson):
-#     mesh_points = []
-#     mesh_faces = []
-
-#     if 'sensor_grids' in hbjson['properties']['radiance']:
-#         for grid in hbjson['properties']['radiance']['sensor_grids']:
-#             vertices = grid['mesh']['vertices']
-#             faces = grid['mesh']['faces']
-#             mesh_points.append(vertices)
-#             mesh_faces.append(faces)
-    
-#         return mesh_points, mesh_faces

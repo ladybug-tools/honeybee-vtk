@@ -6,11 +6,11 @@ import vtk
 import warnings
 
 from zipfile import ZipFile
-from .hbjson import read_hbjson, get_face_center
+from .hbjson import read_hbjson
 from .hbjson import check_grid, get_grid_base, get_grid_mesh, get_grid_points
 from .tovtk import create_polygons, group_by_face_type, create_arrows
 from .tovtk import point_vectors
-from .helper import get_point3d
+from .helper import get_face_center
 
 
 def write_vtk(file_path):
@@ -130,7 +130,6 @@ def write_vtk(file_path):
                 writer.Write()
                 file_names.append('grid mesh vectors')
 
-        print(file_names)
         # Capture vtk files in a zip file.
         zipobj = ZipFile('unnamed.zip', 'w')
         for file_name in file_names:
