@@ -15,7 +15,7 @@ from .helper import get_face_center
 def write_vtk(
         file_path, *, file_name='drop on paraview glance', get_grids=True,
         get_vectors=True):
-    """Read a valid HBJSON and writes a .zip of vtk files to the disk.
+    """Reads a valid HBJSON and writes a .zip of vtk files to the disk.
 
     Args:
         file_path: A text string for a valid path to the HBJSON file.
