@@ -117,8 +117,7 @@ def face_center(points):
 
         - face.normal: The face normal for the Ladybug Face3D.
     """
-    face = Face3D(boundary = points)
-    print(face.normal)
+    face = Face3D(boundary=points)
     return face.center, face.normal
 
 
