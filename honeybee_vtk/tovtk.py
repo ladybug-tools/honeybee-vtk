@@ -88,6 +88,55 @@ def create_polygons(points_lst):
     return vtk_polydata_extended
 
 
+def write_polydata(polydata, file_name):
+    """Write a VTK file to the disk.
+
+    Args:
+        polydata: An appended VTK polydata object.
+        file_name: A text string for the the file name to be written.
+    """
+    vtk_polydata_extended = create_polygons(polydata)
+    writer = vtk.vtkPolyDataWriter()
+    writer.SetFileName(file_name + '.vtk')
+    writer.SetInputConnection(vtk_polydata_extended.GetOutputPort())
+    writer.Write()
+
+
+def write_color_grouped_points(points, vectors, file_name='grid points'):
+    """Write color-grouped VTK points to disk.
+
+    Args:
+        points : A list of points. Here, each points is a list of X, Y, and Z
+            cordinates of the point.
+        vectors: A list of grid vectors where each vector is a list of X, Y, and Z
+            component of a vector.
+        file_name: A text string to be used as a file name. Defaults to "grid points."
+    """
+    point_polydata = point_vectors(points, vectors)
+    writer = vtk.vtkPolyDataWriter()
+    writer.SetFileName(file_name + '.vtk')
+    writer.SetInputData(point_polydata)
+    writer.Write()
+
+
+def write_arrows(start_points, end_points, normals, file_name):
+    """Write VTK arrows to the disk.
+
+    Args:
+        start_points: A list Ladybug Point3D objects. These are start points for
+            each Face3D created from points provided to the function.
+        end_points: A list of Ladybug Point3D objects. These points are derived by
+            moving the center point of a Face3D using the vector of the Face3D.
+        normals: A list of Ladybug Vector3D objects.
+        file_name: A text string to be used as the file name.
+    """
+    face_vector_polydata = create_arrows(start_points, end_points, normals)
+    writer = vtk.vtkPolyDataWriter()
+    writer.SetFileName(file_name + ' vectors.vtk')
+    writer.SetInputConnection(face_vector_polydata.GetOutputPort())
+    writer.Write()
+
+
 def create_arrows(start_points, end_points, vectors):
     """Create an Arrow in VTK using a start point, end point and a vector.
 
