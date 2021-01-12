@@ -1,6 +1,7 @@
-"""Extracts geometry and metadata from a valid Honeybee Json (HBJSON)"""
+"""Functions to extract geometry and metadata from a valid HBJSON."""
+
 from .helper import get_mesh_points, check_convex
-from .helper import face_center, get_point3d, get_end_point
+from .helper import get_point3d, get_end_point
 
 
 def get_data(hbjson_obj, hb_type):
@@ -9,17 +10,18 @@ def get_data(hbjson_obj, hb_type):
     Here, hb_type only accepts the values of 'face_type' and 'type'
 
     Args:
-        obj: An HBJSON object
-        hb_type: A string for Honeybee face_type or a Honeybee type
+        hbjson_obj: An HBJSON object.
+        hb_type: A string for Honeybee face_type or a Honeybee object.
 
     Returns:
         A tuple of two elements.
 
-        - points_lst: A list of lists of points for the geometry in the HBJSON
+        - points_lst: A list of lists of Point3Ds. Each list has three or more 
+            Point3Ds that can be used to create a Ladybug Face3D object.
 
-        - hb_types: A list of honeybee face_types and/or types for the geometry objects
-            in the HBJSON.
-
+        - hb_types: A list of text strings. Each text string represents either the 
+            Honeybee face type or the Honeybee face object for each list of Point3Ds
+            in points.
     """
     points_lst = []
     hb_types = []
@@ -61,12 +63,14 @@ def read_hbjson(hbjson):
         hbjson: A valid HBJSON (Honeybee JSON).
 
     Returns:
-        A tuple with two elements. 
+        A tuple with two elements.
         
-        - points: Points for the geometry in the HBJSON
+        - points: A list of lists of Point3Ds. Each list has three or more 
+            Point3Ds that can be used to create a Ladybug Face3D object.
 
-        - hb_types: Honeybee face_types and/or types for the geometry objects
-            in the HBJSON.
+        - hb_types: A list of text strings. Each text string represents either the 
+            Honeybee face type or the Honeybee face object for each list of Point3Ds
+            in points.
     """
     points = []
     hb_types = []
@@ -98,6 +102,23 @@ def read_hbjson(hbjson):
 
 
 def check_grid(hbjson):
+    """Check whether the HBJSON has grid objects.
+
+    Args:
+        hbjson: A valid HBJSON (Honeybee JSON).
+
+    Returns:
+        A tuple of three elements.
+
+        - grid_with_base: A list of Sensorgrid objects for Sensorgrids that have
+            "base_geometry" as a key
+        
+        - grid_with_mesh: A list of Sensorgrid objects for Sensorgrids that have
+            "mesh" as a key and don't have "base_geometry" as a key.
+        
+        - grid_with_points: A list of Sensorgrid objects for Sensorgrids that don't have
+            "mesh" and "base_geometry" keys.
+    """
     if 'sensor_grids' in hbjson['properties']['radiance']:
         grid_with_base = []
         grid_with_mesh = []
@@ -113,6 +134,20 @@ def check_grid(hbjson):
 
 
 def get_grid_base(grids):
+    """Get vertices and normals for base geometry from Sensorgrid objects in HBJSON.
+
+    Args:
+        grids: A list of Sensorgrid objects in HBJSON.
+
+    Returns:
+        A tuple of two elements.
+
+        - base_geo_points: A list of lists of Point3Ds. Each list has three or more 
+            Point3Ds that can be used to create a Ladybug Face3D object.
+
+        - vectors: A list of grid vectors where each vector is a list of X, Y, and Z
+            component of a vector.
+    """
 
     base_geo_points = []
     vectors = []
@@ -129,28 +164,7 @@ def get_grid_base(grids):
 
 
 def get_grid_mesh(grids):
-    
-    # Here, mesh_points is a list of lists.
-    #[[[Mesh point 1], [Mesh point 2], [Mesh point 3], [Mesh point 4]]]
-    mesh_points = []
-    vectors = []
-
-    for grid in grids:
-        vertices = grid['mesh']['vertices']
-        faces = grid['mesh']['faces']
-        
-        for face in faces:
-            points = [vertices[face[i]] for i in range(len(face))]
-            mesh_points.append(get_point3d(points))
-            
-        for sensors in grid['sensors']:
-            vectors.append(sensors['dir'])
-
-    return mesh_points, vectors
-
-
-def get_grid_points(grids):
-    """Get grid points and grid normals from a Sensorgrid object in HBJSON.
+    """Get mesh vertices and grid normals from Sensorgrid objects in HBJSON.
 
     Args:
         grids: A list of Sensorgrid objects in HBJSON.
@@ -158,10 +172,45 @@ def get_grid_points(grids):
     Returns:
         A tuple of two elements.
 
-        - start_points: A list of lists of vertices(X, Y, Z) for each grid point.
+        - mesh_points: A list of lists of Point3Ds. Each list has three or more Point3Ds
+            that can be used to create a Ladybug Face3D object.
+        
+        - vectors: A list of grid vectors where each vector is a list of X, Y, and Z
+            component of a vector.
+    """
+    
+    mesh_points = []
+    vectors = []
 
-        - end_normals: A list of lists of normals(X, Y, Z) for each grid point moved in
-            the direction of the vector.
+    for grid in grids:
+        vertices = grid['mesh']['vertices']
+        faces = grid['mesh']['faces']
+
+        for face in faces:
+            points = [vertices[face[i]] for i in range(len(face))]
+            mesh_points.append(get_point3d(points))
+     
+        for sensors in grid['sensors']:
+            vectors.append(sensors['dir'])
+
+    return mesh_points, vectors
+
+
+def get_grid_points(grids):
+    """Get grid points and grid normals from Sensorgrid objects in HBJSON.
+
+    Args:
+        grids: A list of Sensorgrid objects in HBJSON.
+
+    Returns:
+        A tuple of three elements.
+
+        - start_points: A list of points. Here, each points is a list of X, Y, and Z
+            cordinates of the point.
+
+        - end_points: A list of lists. End point is derived by moving the start
+            point using a vector. Here, each point is a list of X, Y, and Z 
+            cordinates of the point.
 
         - vectors: A list of grid vectors where each vector is a list of X, Y, and Z
             component of a vector.
@@ -177,14 +226,6 @@ def get_grid_points(grids):
             vectors.append(sensors['dir'])
     
     for i in range(len(start_points)):
-        end_point = get_end_point(start_points[i], vectors[i])
-        end_points.append(end_point)
+        end_points.append(get_end_point(start_points[i], vectors[i]))
 
     return start_points, end_points, vectors
-
-
-
-
-
-
-
