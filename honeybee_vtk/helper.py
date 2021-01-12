@@ -30,8 +30,8 @@ def get_mesh_points(boundary_points, holes_points=None):
     if holes_points:
         # Create Ladybug Point3D objects from hole points
         lb_holes_pts = [
-            [Point3D(point[0], point[1], point[2]) for point in point_lst]
-            for point_lst in holes_points]
+            [Point3D(point[0], point[1], point[2]) for point in points]
+            for points in holes_points]
 
         face = Face3D(boundary=lb_boundary_pts, holes=lb_holes_pts)
 
