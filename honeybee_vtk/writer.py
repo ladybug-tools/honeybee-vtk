@@ -15,6 +15,7 @@ from .helper import get_face_center
 def write_vtk(
         file_path, *, file_name='drop on paraview glance', get_grids=True,
         get_vectors=True):
+
     """Reads a valid HBJSON and writes a .zip of vtk files to the disk.
 
     Args:
@@ -86,26 +87,28 @@ def write_vtk(
         
         # Write vectors if they are requested
         if get_vectors:
-
+            
+            # If Aperture objects are there in HBJSON
             if 'Aperture' in hb_types:
                 # Create face normals
                 start_points, end_points, normals = get_face_center(
                     grouped_points['Aperture'])
                 write_arrows(start_points, end_points, normals, 'Aperture')
                 file_names.append('Aperture vectors')
-
+            
+            # If grids are found in HBJSON
             if grids:
-
+                
+                # If base_geometry is found in any of the grids
                 if grids[0]:
                     base_geo_points = get_grid_base(grids[0])[0]
-                    # Create face normals
                     start_points, end_points, normals = get_face_center(base_geo_points)
                     write_arrows(start_points, end_points, normals, 'grid base')
                     file_names.append('grid base vectors')
 
+                # If mesh is found in any of the grids
                 if grids[1]:
                     mesh_points = get_grid_mesh(grids[1])[0]
-                    # Create face normals
                     start_points, end_points, normals = get_face_center(mesh_points)
                     write_arrows(start_points, end_points, normals, 'grid mesh')
                     file_names.append('grid mesh vectors')
