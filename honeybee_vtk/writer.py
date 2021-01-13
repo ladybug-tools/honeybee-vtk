@@ -121,7 +121,7 @@ def write_vtk(
             zipobj.write(file_name + '.vtk')
         zipobj.close()
 
-        # Delete vtk files if there is per
+        # Delete vtk files if there is permission
         for file_name in file_names:
             try:
                 os.remove(file_name + '.vtk')
