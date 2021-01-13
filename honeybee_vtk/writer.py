@@ -5,6 +5,7 @@ import json
 import warnings
 
 from zipfile import ZipFile
+from honeybee.typing import clean_string
 from .hbjson import read_hbjson
 from .hbjson import check_grid, get_grid_base, get_grid_mesh, get_grid_points
 from .tovtk import group_by_face_type
@@ -13,7 +14,7 @@ from .helper import get_face_center
 
 
 def write_vtk(
-        file_path, *, file_name='drop on paraview glance', get_grids=True,
+        file_path, *, file_name=None, get_grids=True,
         get_vectors=True):
 
     """Reads a valid HBJSON and writes a .zip of vtk files to the disk.
@@ -21,8 +22,8 @@ def write_vtk(
     Args:
         file_path: A text string for a valid path to the HBJSON file.
         file_name: A text string for the name of the .zip file to be written. If no
-            text string is provided, "drop on paraview glance" will be used as
-            a file name.
+            text string is provided, the name of the HBJSON file will be used as a
+            file name for the .zip file.
         get_grids: A boolean. Defaults to True. Grids will not be extracted from HBJSON
             if set to False.
         get_vectors: A boolean. Defaults to True. Vector arrows will not be created if
@@ -31,6 +32,7 @@ def write_vtk(
     # HBJSON file
     if file_path:
         # Check if path is fine
+        
         if not os.path.isfile(file_path):
             raise FileNotFoundError(
                 'The path is not a valid path.'
@@ -115,6 +117,11 @@ def write_vtk(
         else:
             pass
         
+        # Use the name of HBJSON if file name is not provided
+        if not file_name:
+            name = '.'.join(os.path.basename(file_path).split('.')[:-1])
+            file_name = clean_string(name)
+
         # Create a .zip file to capture all the generated .vtk files
         zipobj = ZipFile(file_name + '.zip', 'w')
         
