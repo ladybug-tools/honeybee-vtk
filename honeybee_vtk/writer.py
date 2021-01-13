@@ -112,7 +112,9 @@ def write_vtk(
                     start_points, end_points, normals = get_face_center(mesh_points)
                     write_arrows(start_points, end_points, normals, 'grid mesh')
                     file_names.append('grid mesh vectors')
-
+        else:
+            pass
+        
         # Create a .zip file to capture all the generated .vtk files
         zipobj = ZipFile(file_name + '.zip', 'w')
         
