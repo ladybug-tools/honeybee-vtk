@@ -5,7 +5,7 @@ from .helper import get_point3d
 from typing import List, Tuple
 
 
-def get_data(hbjson_obj: 'HBJSON Object', hb_type: str) -> Tuple[List[List], List[str]]:
+def get_data(hbjson: 'HBJSON Object', hb_type: str) -> Tuple[List[List], List[str]]:
     """Get a list of vertices and Honeybee objects from an HBJSON object.
 
     Here, hb_type only accepts the values of 'face_type' and 'type'
@@ -27,23 +27,23 @@ def get_data(hbjson_obj: 'HBJSON Object', hb_type: str) -> Tuple[List[List], Lis
     points = []
     hb_types = []
 
-    for obj in hbjson_obj:
+    for key in hbjson:
         
-        if 'holes' not in obj['geometry']:
-            if check_convex(obj['geometry']['boundary']):
-                points.append(get_point3d(obj['geometry']['boundary']))
-                hb_types.append(obj[hb_type])
+        if 'holes' not in key['geometry']:
+            if check_convex(key['geometry']['boundary']):
+                points.append(get_point3d(key['geometry']['boundary']))
+                hb_types.append(key[hb_type])
             else:
-                triangles_points = get_mesh_points(obj['geometry']['boundary'])
+                triangles_points = get_mesh_points(key['geometry']['boundary'])
                 for point3ds in triangles_points:
                     points.append(point3ds)
-                    hb_types.append(obj[hb_type])
+                    hb_types.append(key[hb_type])
         else:
             try:
-                triangles_points = get_mesh_points(obj['geometry']['boundary'],
-                    obj['geometry']['holes'])
+                triangles_points = get_mesh_points(key['geometry']['boundary'],
+                    key['geometry']['holes'])
             except ValueError:
-                face_id = obj['identifier']
+                face_id = key['identifier']
                 raise ValueError(
                     f'Face with id {face_id} could not be converted into triangulated'
                     ' mesh.'
@@ -51,7 +51,7 @@ def get_data(hbjson_obj: 'HBJSON Object', hb_type: str) -> Tuple[List[List], Lis
             else:
                 for point3ds in triangles_points:
                     points.append(point3ds)
-                    hb_types.append(obj[hb_type])
+                    hb_types.append(key[hb_type])
 
     return points, hb_types
 
@@ -68,31 +68,26 @@ def read_hbjson(hbjson: 'HBJSON') -> Tuple[List[List], List[str]]:
         - points: A list of lists of Point3Ds. Each list has three or more
             Point3Ds that can be used to create a Ladybug Face3D object.
 
-        - hb_types: A list of text strings. Each text string represents either the 
+        - hb_types: A list of text strings. Each text string represents either the
             Honeybee face type or the Honeybee face object for each list of Point3Ds
             in points.
     """
     points = []
     hb_types = []
 
-    pts, types = get_data(hbjson['orphaned_faces'], 'face_type')
-    points.extend(pts)
-    hb_types.extend(types)
+    obj_type = {
+        'faces': 'face_type',
+        'orphaned_faces': 'face_type',
+        'orphaned_shades': 'type',
+        'orphaned_apertures': 'type',
+        'orphaned_doors': 'type',
+    }
 
-    if 'orphaned_shades' in hbjson:
-        pts, types = get_data(hbjson['orphaned_shades'], 'type')
-        points.extend(pts)
-        hb_types.extend(types)
-
-    if 'orphaned_apertures' in hbjson:
-        pts, types = get_data(hbjson['orphaned_apertures'], 'type')
-        points.extend(pts)
-        hb_types.extend(types)
-
-    if 'orphaned_doors' in hbjson:
-        pts, types = get_data(hbjson['orphaned_doors'], 'type')
-        points.extend(pts)
-        hb_types.extend(types)
+    for key, value in obj_type.items():
+        if key in hbjson:
+            pts, types = get_data(hbjson[key], value)
+            points.extend(pts)
+            hb_types.extend(types)
 
     return points, hb_types
 
@@ -148,7 +143,7 @@ def check_grid(hbjson: 'HBJSON') -> Tuple[List, List, List]:
         for grid in hbjson['properties']['radiance']['sensor_grids']:
             if 'base_geometry' in grid:
                 grid_with_base.append(grid)
-            elif 'mesh' in grid and 'base_geometry' not in grid:
+            elif 'mesh' in grid:
                 grid_with_mesh.append(grid)
             else:
                 grid_with_points.append(grid)
