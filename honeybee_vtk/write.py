@@ -3,6 +3,7 @@
 import os
 import json
 import warnings
+import vtk
 
 from zipfile import ZipFile
 from honeybee.typing import clean_string
@@ -12,10 +13,8 @@ from .writers import _write_grids, _write_vectors
 from .writers import write_polydata
 
 
-def write_vtk(
-        file_path, *, file_name=None, include_grids=True,
-        include_vectors=True):
-
+def write_vtk(file_path, *, file_name=None, include_grids=True,
+                include_vectors=True, writer='vtk'):
     """Read a valid HBJSON and write a .zip of vtk files.
 
     Args:
@@ -23,10 +22,16 @@ def write_vtk(
         file_name: A text string for the name of the .zip file to be written. If no
             text string is provided, the name of the HBJSON file will be used as a
             file name for the .zip file.
-        include_grids: A boolean. Defaults to True. Grids will not be extracted from HBJSON
-            if set to False.
+        include_grids: A boolean. Defaults to True. Grids will not be extracted from 
+            HBJSON if set to False.
         include_vectors: A boolean. Defaults to True. Vector arrows will not be created if
             set to False.
+        writer: A text string to indicate the VTK writer. Acceptable values are
+            'vtk' and 'xml'. Defaults to 'vtk'.
+    
+    Returns:
+        A text string containing the path to the .zip that file, which captures all the
+            files generated.
     """
 
     # Check if path to HBJSON is fine
@@ -46,6 +51,20 @@ def write_vtk(
             'Not a valid JSON file.'
             )
 
+    # Validate and set writer and extension
+    writer_error = 'The value for writer can be either "vtk" or "xml" only.'
+    if isinstance(writer, str):
+        if writer.lower() == 'vtk':
+            vtk_writer = vtk.vtkPolyDataWriter()
+            vtk_extension = '.vtk'
+        elif writer.lower() == 'xml':
+            vtk_writer = vtk.vtkXMLPolyDataWriter()
+            vtk_extension = '.vtp'
+        else:
+            raise ValueError(writer_error)
+    else:
+        raise ValueError(writer_error)
+    
     # Get points and face_types from HBJSON
     points, hb_types = read_hbjson(hbjson)
 
@@ -54,7 +73,7 @@ def write_vtk(
 
     # Write VTK files based on Honeybee face_type and Honeybee object type
     for hb_type in grouped_points:
-        write_polydata(grouped_points[hb_type], hb_type)
+        write_polydata(grouped_points[hb_type], hb_type, vtk_writer, vtk_extension)
 
     # Names of VTK files to be written
     file_names = list(grouped_points.keys())
@@ -64,12 +83,13 @@ def write_vtk(
 
     # If grids are there in HBJSON and they are requested
     if grids and include_grids:
-        grid_file_names = _write_grids(grids)
+        grid_file_names = _write_grids(grids, vtk_writer, vtk_extension)
         file_names.extend(grid_file_names)
 
     # Write vectors if they are requested
     if include_vectors:
-        to_write_vectors = [hb_types, grouped_points, grids, include_grids]
+        to_write_vectors = [hb_types, grouped_points, grids, include_grids, vtk_writer,
+                            vtk_extension]
         vector_file_names = _write_vectors(*to_write_vectors)
         file_names.extend(vector_file_names)
 
@@ -84,13 +104,13 @@ def write_vtk(
     
     # Capture vtk files in a zip file.
     for file_name in file_names:
-        zipobj.write(file_name + '.vtk')
+        zipobj.write(file_name + vtk_extension)
     zipobj.close()
 
     # Delete vtk files if there is permission
     for file_name in file_names:
         try:
-            os.remove(file_name + '.vtk')
+            os.remove(file_name + vtk_extension)
         except OSError:
             warnings.warn(
                 f'Honeybee does not have permission to delete {file_names}.'
@@ -98,5 +118,4 @@ def write_vtk(
             )
     # Return the path where the .zip file is written
     return os.path.join(os.getcwd(), zip_name + '.zip')
-    
     
