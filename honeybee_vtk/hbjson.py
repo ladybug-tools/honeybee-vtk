@@ -1,10 +1,11 @@
 """Functions to extract geometry and metadata from a valid HBJSON."""
 
 from .helper import get_mesh_points, check_convex
-from .helper import get_point3d, get_end_point
+from .helper import get_point3d
+from typing import List, Tuple
 
 
-def get_data(hbjson_obj, hb_type):
+def get_data(hbjson_obj: 'HBJSON Object', hb_type: str) -> Tuple[List[List], List[str]]:
     """Get a list of vertices and Honeybee objects from an HBJSON object.
 
     Here, hb_type only accepts the values of 'face_type' and 'type'
@@ -16,28 +17,27 @@ def get_data(hbjson_obj, hb_type):
     Returns:
         A tuple of two elements.
 
-        - points_lst: A list of lists of Point3Ds. Each list has three or more 
+        - points: A list of lists of Point3Ds. Each list has three or more 
             Point3Ds that can be used to create a Ladybug Face3D object.
 
         - hb_types: A list of text strings. Each text string represents either the 
             Honeybee face type or the Honeybee face object for each list of Point3Ds
             in points.
     """
-    points_lst = []
+    points = []
     hb_types = []
 
     for obj in hbjson_obj:
         
         if 'holes' not in obj['geometry']:
             if check_convex(obj['geometry']['boundary']):
-                points_lst.append(get_point3d(obj['geometry']['boundary']))
+                points.append(get_point3d(obj['geometry']['boundary']))
                 hb_types.append(obj[hb_type])
             else:
                 triangles_points = get_mesh_points(obj['geometry']['boundary'])
-                for point_lst in triangles_points:
-                    points_lst.append(point_lst)
+                for point3ds in triangles_points:
+                    points.append(point3ds)
                     hb_types.append(obj[hb_type])
-
         else:
             try:
                 triangles_points = get_mesh_points(obj['geometry']['boundary'],
@@ -49,14 +49,14 @@ def get_data(hbjson_obj, hb_type):
                     ' mesh.'
                 )
             else:
-                for point_lst in triangles_points:
-                    points_lst.append(point_lst)
+                for point3ds in triangles_points:
+                    points.append(point3ds)
                     hb_types.append(obj[hb_type])
 
-    return points_lst, hb_types
+    return points, hb_types
 
 
-def read_hbjson(hbjson):
+def read_hbjson(hbjson: 'HBJSON') -> Tuple[List[List], List[str]]:
     """Read and extract information from a valid HBJSON.
 
     Args:
@@ -65,7 +65,7 @@ def read_hbjson(hbjson):
     Returns:
         A tuple with two elements.
         
-        - points: A list of lists of Point3Ds. Each list has three or more 
+        - points: A list of lists of Point3Ds. Each list has three or more
             Point3Ds that can be used to create a Ladybug Face3D object.
 
         - hb_types: A list of text strings. Each text string represents either the 
@@ -75,33 +75,55 @@ def read_hbjson(hbjson):
     points = []
     hb_types = []
 
-    points_lst, hb_type_lst = get_data(hbjson['orphaned_faces'],
-        'face_type')
-    points.extend(points_lst)
-    hb_types.extend(hb_type_lst)
+    pts, types = get_data(hbjson['orphaned_faces'], 'face_type')
+    points.extend(pts)
+    hb_types.extend(types)
 
     if 'orphaned_shades' in hbjson:
-        points_lst, hb_type_lst = get_data(hbjson['orphaned_shades'],
-            'type')
-        points.extend(points_lst)
-        hb_types.extend(hb_type_lst)
+        pts, types = get_data(hbjson['orphaned_shades'], 'type')
+        points.extend(pts)
+        hb_types.extend(types)
 
     if 'orphaned_apertures' in hbjson:
-        points_lst, hb_type_lst = get_data(hbjson['orphaned_apertures'],
-            'type')
-        points.extend(points_lst)
-        hb_types.extend(hb_type_lst)
+        pts, types = get_data(hbjson['orphaned_apertures'], 'type')
+        points.extend(pts)
+        hb_types.extend(types)
 
     if 'orphaned_doors' in hbjson:
-        points_lst, hb_type_lst = get_data(hbjson['orphaned_doors'],
-            'type')
-        points.extend(points_lst)
-        hb_types.extend(hb_type_lst)
+        pts, types = get_data(hbjson['orphaned_doors'], 'type')
+        points.extend(pts)
+        hb_types.extend(types)
 
     return points, hb_types
 
 
-def check_grid(hbjson):
+def group_by_face_type(points: List[List], hb_types: List[str]) -> dict:
+    """Group points based on Honeybee type.
+
+    Here, the text in hb_types will be one of the following;
+    "Wall", "Floor", "RoofCeiling", "Airwall", "Aperture", "Shade", "Door"
+
+    Args:
+        points: A list of lists of Ladybug Point3D objects.
+        hb_types: A list containing text strings for honeybee face_type and/or type
+
+    Returns:
+        A dictionary with Honeybee type as keys and list of lists of Point3Ds for
+        geometry that belongs to that Honeybee type. An example would be;
+        {
+        'Wall': [[Point1, Point2, Point3], [Point4, Point5, Point6, Point7]],
+        'Aperture': [[Point1, Point2, Point3], [Point4, Point5, Point6, Point7]]
+        }
+    """
+    grouped_points = {face_type: [] for face_type in hb_types}
+
+    for point, face_type in zip(points, hb_types):
+        grouped_points[face_type].append(point)
+
+    return grouped_points
+
+
+def check_grid(hbjson: 'HBJSON') -> Tuple[List, List, List]:
     """Check whether the HBJSON has grid objects.
 
     Args:
@@ -130,10 +152,11 @@ def check_grid(hbjson):
                 grid_with_mesh.append(grid)
             else:
                 grid_with_points.append(grid)
+
         return grid_with_base, grid_with_mesh, grid_with_points
 
 
-def get_grid_base(grids):
+def get_grid_base(grids: List) -> Tuple[List[List], List[List]]:
     """Get vertices and normals for base geometry from Sensorgrid objects in HBJSON.
 
     Args:
@@ -142,28 +165,28 @@ def get_grid_base(grids):
     Returns:
         A tuple of two elements.
 
-        - base_geo_points: A list of lists of Point3Ds. Each list has three or more 
+        - base_geometry_points: A list of lists of Point3Ds. Each list has three or more 
             Point3Ds that can be used to create a Ladybug Face3D object.
 
         - vectors: A list of grid vectors where each vector is a list of X, Y, and Z
             component of a vector.
     """
 
-    base_geo_points = []
+    base_geometry_points = []
     vectors = []
 
     for grid in grids:
         for face in grid['base_geometry']:
             points = [point for point in face['boundary']]
-            base_geo_points.append(get_point3d(points))
+            base_geometry_points.append(get_point3d(points))
 
         for sensors in grid['sensors']:
             vectors.append(sensors['dir'])
 
-    return base_geo_points, vectors
+    return base_geometry_points, vectors
 
 
-def get_grid_mesh(grids):
+def get_grid_mesh(grids: List) -> Tuple[List[List], List[List]]:
     """Get mesh vertices and grid normals from Sensorgrid objects in HBJSON.
 
     Args:
@@ -196,7 +219,7 @@ def get_grid_mesh(grids):
     return mesh_points, vectors
 
 
-def get_grid_points(grids):
+def get_grid_points(grids: List) -> Tuple[List[List], List[List]]:
     """Get grid points and grid normals from Sensorgrid objects in HBJSON.
 
     Args:
@@ -206,11 +229,7 @@ def get_grid_points(grids):
         A tuple of three elements.
 
         - start_points: A list of points. Here, each points is a list of X, Y, and Z
-            cordinates of the point.
-
-        - end_points: A list of lists. End point is derived by moving the start
-            point using a vector. Here, each point is a list of X, Y, and Z 
-            cordinates of the point.
+            coordinates of the point.
 
         - vectors: A list of grid vectors where each vector is a list of X, Y, and Z
             component of a vector.
@@ -218,14 +237,10 @@ def get_grid_points(grids):
 
     start_points = []
     vectors = []
-    end_points = []
 
     for grid in grids:
         for sensors in grid['sensors']:
             start_points.append(sensors['pos'])
             vectors.append(sensors['dir'])
     
-    for i in range(len(start_points)):
-        end_points.append(get_end_point(start_points[i], vectors[i]))
-
-    return start_points, end_points, vectors
+    return start_points, vectors
