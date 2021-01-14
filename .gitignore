@@ -13,8 +13,8 @@ tox.ini
 .eggs
 *.code-workspace
 *.vtk
-*.zip
 *.glance
+*.zip
 
 # Rhino Backup files
 *.3dm.rhl
