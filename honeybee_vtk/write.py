@@ -72,7 +72,11 @@ def write_vtk(file_path, *, file_name=None, target_folder=None, include_grids=Tr
     if os.path.exists(target_folder):
         pass
     else:
-        raise OSError('Path to target_folder is not valid.')
+        warnings.warn(
+        'The path provided at target_folder does not lead to a folder.'
+        ' Hence, a new folder is created at the path provided.'
+        )
+        os.makedirs(target_folder, exist_ok=True)
 
     # Get points and face_types from HBJSON
     points, hb_types = read_hbjson(hbjson)
