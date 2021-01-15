@@ -1,6 +1,6 @@
 import setuptools
 
-with open("README.md", "r") as fh:
+with open("README.md", "r", encoding='utf-8') as fh:
     long_description = fh.read()
 
 with open('requirements.txt') as f:
@@ -18,6 +18,9 @@ setuptools.setup(
     url="https://github.com/ladybug-tools/honeybee-vtk",
     packages=setuptools.find_packages(exclude=["tests*"]),
     install_requires=requirements,
+    entry_points={
+        "console_scripts": ["honeybee-vtk = honeybee_vtk.cli:main"]
+    },
     classifiers=[
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: Implementation :: CPython",
