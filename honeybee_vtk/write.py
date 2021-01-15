@@ -13,7 +13,7 @@ from .writers import _write_grids, _write_vectors
 from .writers import write_polydata
 
 
-def write_vtk(file_path, *, file_name=None, include_grids=True,
+def write_vtk(file_path, *, file_name=None, target_folder=None, include_grids=True,
               include_vectors=True, writer='vtk'):
     """Read a valid HBJSON and write a .zip of vtk files.
 
@@ -22,6 +22,8 @@ def write_vtk(file_path, *, file_name=None, include_grids=True,
         file_name: A text string for the name of the .zip file to be written. If no
             text string is provided, the name of the HBJSON file will be used as a
             file name for the .zip file.
+        target_folder: A text string to a folder to write the output file. The file
+            will be written to the current folder if not provided.
         include_grids: A boolean. Defaults to True. Grids will not be extracted from
             HBJSON if set to False.
         include_vectors: A boolean. Defaults to True. Vector arrows will not be created
@@ -97,10 +99,14 @@ def write_vtk(file_path, *, file_name=None, include_grids=True,
     if not file_name:
         name = '.'.join(os.path.basename(file_path).split('.')[:-1])
         file_name = clean_string(name)
-    zip_name = file_name
 
+    # remove extension if provided by user
+    file_name = file_name if not file_name.lower().endswith('.zip') else file_name[:-4]
+
+    target_folder = target_folder or os.getcwd()
+    zip_file = os.path.join(target_folder, file_name + '.zip')
     # Create a .zip file to capture all the generated .vtk files
-    zipobj = ZipFile(file_name + '.zip', 'w')
+    zipobj = ZipFile(zip_file, 'w')
 
     # Capture vtk files in a zip file.
     for file_name in file_names:
@@ -117,4 +123,4 @@ def write_vtk(file_path, *, file_name=None, include_grids=True,
                 ' You may please delete the .vtk files manually.'
             )
     # Return the path where the .zip file is written
-    return os.path.join(os.getcwd(), zip_name + '.zip')
+    return zip_file
