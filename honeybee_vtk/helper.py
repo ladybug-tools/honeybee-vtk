@@ -54,7 +54,7 @@ def check_convex(points: List[List]) -> bool:
     whether the Face3D is convex or not.
 
     Args:
-        points: A list of list of points that form the boundary of a face. 
+        points: A list of list of points that form the boundary of a face.
             Here, each point is a list of X, Y, and Z coordinates of the point.
 
     Returns:
@@ -83,7 +83,7 @@ def get_point3d(points: List[List]) -> List:
 def get_end_point(point, vector):
     """Move a point in the direction of a vector and return the moved point.
 
-    Here, each point is a list of 
+    Here, each point is a list of
             X, Y, and Z coordinates of the point.
 
     Args:
@@ -108,7 +108,7 @@ def get_vector_at_center(points: List[List[List]]) -> Tuple[List, List]:
 
         - start_points: A list Ladybug Point3D objects. These are start points for
             each Face3D created from points provided to the function.
-        
+
         - vectors: A list of Ladybug Vector3D objects.
     """
     faces = [Face3D(boundary=pts) for pts in points]

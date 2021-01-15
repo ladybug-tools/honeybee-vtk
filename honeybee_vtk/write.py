@@ -14,7 +14,7 @@ from .writers import write_polydata
 
 
 def write_vtk(file_path, *, file_name=None, include_grids=True,
-                include_vectors=True, writer='vtk'):
+              include_vectors=True, writer='vtk'):
     """Read a valid HBJSON and write a .zip of vtk files.
 
     Args:
@@ -22,13 +22,13 @@ def write_vtk(file_path, *, file_name=None, include_grids=True,
         file_name: A text string for the name of the .zip file to be written. If no
             text string is provided, the name of the HBJSON file will be used as a
             file name for the .zip file.
-        include_grids: A boolean. Defaults to True. Grids will not be extracted from 
+        include_grids: A boolean. Defaults to True. Grids will not be extracted from
             HBJSON if set to False.
-        include_vectors: A boolean. Defaults to True. Vector arrows will not be created if
-            set to False.
+        include_vectors: A boolean. Defaults to True. Vector arrows will not be created
+            if set to False.
         writer: A text string to indicate the VTK writer. Acceptable values are
             'vtk' and 'xml'. Defaults to 'vtk'.
-    
+
     Returns:
         A text string containing the path to the .zip that file, which captures all the
             files generated.
@@ -64,7 +64,7 @@ def write_vtk(file_path, *, file_name=None, include_grids=True,
             raise ValueError(writer_error)
     else:
         raise ValueError(writer_error)
-    
+
     # Get points and face_types from HBJSON
     points, hb_types = read_hbjson(hbjson)
 
@@ -101,7 +101,7 @@ def write_vtk(file_path, *, file_name=None, include_grids=True,
 
     # Create a .zip file to capture all the generated .vtk files
     zipobj = ZipFile(file_name + '.zip', 'w')
-    
+
     # Capture vtk files in a zip file.
     for file_name in file_names:
         zipobj.write(file_name + vtk_extension)
@@ -118,4 +118,3 @@ def write_vtk(file_path, *, file_name=None, include_grids=True,
             )
     # Return the path where the .zip file is written
     return os.path.join(os.getcwd(), zip_name + '.zip')
-    

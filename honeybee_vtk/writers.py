@@ -20,7 +20,7 @@ def write_polydata(
             'vtk' and 'xml'.
         vtk_extension: A text string that indicates file extension for the files to be
             written. This will be '.vtk' for vtk writer and '.vtp' for xml writer.
-    
+
     Returns:
         A text string containing the path to the file.
     """
@@ -46,7 +46,7 @@ def write_color_grouped_points(
         vtk_extension: A text string that indicates file extension for the files to be
             written. This will be '.vtk' for vtk writer and '.vtp' for xml writer.
         file_name: A text string to be used as a file name. Defaults to "grid points."
-    
+
     Returns:
         A text string containing the path to the file.
     """
@@ -61,7 +61,7 @@ def write_color_grouped_points(
 
 def write_arrows(
     start_points, vectors, file_name, vtk_writer=vtk.vtkPolyDataWriter(),
-    vtk_extension='.vtk'):
+        vtk_extension='.vtk'):
     """Write VTK arrows to a file.
 
     Args:
@@ -72,7 +72,7 @@ def write_arrows(
             'vtk' and 'xml'.
         vtk_extension: A text string that indicates file extension for the files to be
             written. This will be '.vtk' for vtk writer and '.vtp' for xml writer.
-    
+
     Returns:
         A text string containing the path to the file.
     """
@@ -94,7 +94,7 @@ def _write_grids(grids, vtk_writer, vtk_extension):
     Write HBJSON Sensorgrid objects to file.
 
     Args:
-        grids: A of following three lists. 
+        grids: A of following three lists.
             A list of HBJSON sensorgrids that have 'base_geometry' as a key.
             A list of HBJSON sensorgrids that have 'mesh' as a key and does not have
             'base_geometry' as a key.
@@ -127,12 +127,12 @@ def _write_grids(grids, vtk_writer, vtk_extension):
         start_points, vectors = get_grid_points(grids[2])
         write_color_grouped_points(start_points, vectors, vtk_writer, vtk_extension)
         grid_file_names.append('grid points')
-    
+
     return grid_file_names
 
 
 def _write_vectors(hb_types, grouped_points, grids, include_grids, vtk_writer,
-                    vtk_extension):
+                   vtk_extension):
     """
     Write vectors to file.
 
@@ -140,14 +140,14 @@ def _write_vectors(hb_types, grouped_points, grids, include_grids, vtk_writer,
         hb_types: A list of text strings. Each text string represents either the
             Honeybee face type or the Honeybee face object for each list of Point3Ds
             in points.
-        grouped_points: A dictionary with Honeybee type as keys and list of lists of 
+        grouped_points: A dictionary with Honeybee type as keys and list of lists of
             Point3Ds for geometry that belongs to that Honeybee type. An example would
             be;
             {
             'Wall': [[Point1, Point2, Point3], [Point4, Point5, Point6, Point7]],
             'Aperture': [[Point1, Point2, Point3], [Point4, Point5, Point6, Point7]]
             }
-        grids: A of following three lists. 
+        grids: A of following three lists.
             A list of HBJSON sensorgrids that have 'base_geometry' as a key.
             A list of HBJSON sensorgrids that have 'mesh' as a key and does not have
             'base_geometry' as a key.
@@ -171,10 +171,10 @@ def _write_vectors(hb_types, grouped_points, grids, include_grids, vtk_writer,
             grouped_points['Aperture'])
         write_arrows(start_points, vectors, 'Aperture', vtk_writer, vtk_extension)
         vector_file_names.append('Aperture vectors')
-    
+
     # If grids are found in HBJSON
     if grids and include_grids:
-        
+
         # If base_geometry is found in any of the grids
         if grids[0]:
             base_geo_points = get_grid_base(grids[0])[0]
@@ -188,5 +188,5 @@ def _write_vectors(hb_types, grouped_points, grids, include_grids, vtk_writer,
             start_points, vectors = get_vector_at_center(mesh_points)
             write_arrows(start_points, vectors, 'grid mesh', vtk_writer, vtk_extension)
             vector_file_names.append('grid mesh vectors')
-    
+
     return vector_file_names
