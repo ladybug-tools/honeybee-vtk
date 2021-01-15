@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath('../'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'honeybee radiance'
+project = 'honeybee vtk'
 copyright = '{}, Ladybug Tools'.format(datetime.today().year)
 author = 'Ladybug Tools'
 
@@ -143,7 +143,7 @@ html_sidebars = {
 autodoc_member_order = 'groupwise'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'hbradiancedoc'
+htmlhelp_basename = 'hbvtkdoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -170,7 +170,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'honeybee radiance.tex', 'honeybee radiance Documentation',
+    (master_doc, 'honeybee vtk.tex', 'honeybee vtk Documentation',
      'Ladybug Tools', 'manual'),
 ]
 
@@ -180,7 +180,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'honeybee radiance', 'honeybee radiance Documentation',
+    (master_doc, 'honeybee vtk', 'honeybee vtk Documentation',
      [author], 1)
 ]
 
@@ -191,8 +191,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'honeybee radiance', 'honeybee radiance Documentation',
-     author, 'honeybee radiance', 'One line description of project.',
+    (master_doc, 'honeybee vtk', 'honeybee vtk Documentation',
+     author, 'honeybee vtk', 'One line description of project.',
      'Miscellaneous'),
 ]
 
