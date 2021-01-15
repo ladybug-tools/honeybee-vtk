@@ -33,7 +33,7 @@ def create_polygon(points):
     return vtk_points, vtk_polygon
 
 
-def create_polygons(points: List[List]) -> 'VTK':
+def create_polygons(points: List[List]) -> vtk.vtkAppendPolyData:
     """Create a vtk object with multiple vtk polygons.
 
     Args:
@@ -58,7 +58,7 @@ def create_polygons(points: List[List]) -> 'VTK':
         vtk_polydata_to_append.append(vtk_polydata)
 
     vtk_polydata_extended = vtk.vtkAppendPolyData()
-    
+
     for vtk_polydata in vtk_polydata_to_append:
         vtk_polydata_extended.AddInputData(vtk_polydata)
 
@@ -99,8 +99,8 @@ def create_arrows(start_points, end_points, vectors):
         line0 = vtk.vtkLine()
         # the second 0 is the index of p0 in linesPolyData's points
         line0.GetPointIds().SetId(0, 0)
-        # the second 1 is the index of P1 in linesPolyData's points  
-        line0.GetPointIds().SetId(1, 1)  
+        # the second 1 is the index of P1 in linesPolyData's points
+        line0.GetPointIds().SetId(1, 1)
 
         # Create a vtkCellArray container and store the lines in it
         lines = vtk.vtkCellArray()
@@ -124,7 +124,7 @@ def create_arrows(start_points, end_points, vectors):
 
         conePoly.ShallowCopy(coneSource.GetOutput())
         cones_polydata.append(conePoly)
-        
+
     vtk_polydata_extended = vtk.vtkAppendPolyData()
 
     for line in lines_polydata:
@@ -162,7 +162,7 @@ def point_vectors(points, vectors):
 
     for vector in vectors:
         normals.InsertNextTuple3(vector[0], vector[1], vector[2])
-    
+
     # Using the text string of the sum of vector components to perform grouping
     vec_sum = [
         str(round(vector[0])) + str(round(vector[1])) + str(round(vector[2]))
