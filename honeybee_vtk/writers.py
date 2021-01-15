@@ -10,7 +10,7 @@ from .hbjson import get_grid_base, get_grid_mesh, get_grid_points
 
 
 def write_polydata(
-        polydata, file_name, vtk_writer, vtk_extension):
+        polydata, file_name, vtk_writer, vtk_extension, target_folder):
     """Write VTK Polydata to a file.
 
     Args:
@@ -20,6 +20,7 @@ def write_polydata(
             'vtk' and 'xml'.
         vtk_extension: A text string that indicates file extension for the files to be
             written. This will be '.vtk' for vtk writer and '.vtp' for xml writer.
+        target_folder: A text string to a folder to write the output vtk file. 
 
     Returns:
         A text string containing the path to the file.
@@ -27,15 +28,17 @@ def write_polydata(
     file_name = file_name + vtk_extension
     vtk_polydata_extended = create_polygons(polydata)
     writer = vtk_writer
+    file_name = os.path.join(target_folder, file_name)
     writer.SetFileName(file_name)
     writer.SetInputConnection(vtk_polydata_extended.GetOutputPort())
     writer.Write()
-    return os.path.join(os.getcwd(), file_name)
+
+    return file_name
 
 
 def write_color_grouped_points(
         points: List[List], vectors: List[List], vtk_writer, vtk_extension,
-        file_name='grid points'):
+        target_folder, file_name='grid points'):
     """Write color-grouped VTK points to a file.
 
     Args:
@@ -45,6 +48,7 @@ def write_color_grouped_points(
             'vtk' and 'xml'.
         vtk_extension: A text string that indicates file extension for the files to be
             written. This will be '.vtk' for vtk writer and '.vtp' for xml writer.
+        target_folder: A text string to a folder to write the output vtk file. 
         file_name: A text string to be used as a file name. Defaults to "grid points."
 
     Returns:
@@ -53,14 +57,16 @@ def write_color_grouped_points(
     file_name = file_name + vtk_extension
     point_polydata = point_vectors(points, vectors)
     writer = vtk_writer
+    file_name = os.path.join(target_folder, file_name)
     writer.SetFileName(file_name)
     writer.SetInputData(point_polydata)
     writer.Write()
-    return os.path.join(os.getcwd(), file_name)
+
+    return file_name
 
 
 def write_arrows(
-    start_points, vectors, file_name, vtk_writer=vtk.vtkPolyDataWriter(),
+    start_points, vectors, file_name, target_folder, vtk_writer=vtk.vtkPolyDataWriter(),
         vtk_extension='.vtk'):
     """Write VTK arrows to a file.
 
@@ -68,10 +74,11 @@ def write_arrows(
         start_points: A list Ladybug Point3D objects.
         vectors: A list of Ladybug Vector3D objects.
         file_name: A text string to be used as the file name.
+        target_folder: A text string to a folder to write the output file. The file
+            will be written to the current folder if not provided.
         vtk_writer: A text string to indicate the VTK writer. Acceptable values are
             'vtk' and 'xml'.
-        vtk_extension: A text string that indicates file extension for the files to be
-            written. This will be '.vtk' for vtk writer and '.vtp' for xml writer.
+        vtk_extension: A text string to a folder to write the output vtk file. 
 
     Returns:
         A text string containing the path to the file.
@@ -83,13 +90,15 @@ def write_arrows(
     file_name = file_name + ' vectors' + vtk_extension
     face_vector_polydata = create_arrows(start_points, end_points, vectors)
     writer = vtk_writer
+    file_name = os.path.join(target_folder, file_name)
     writer.SetFileName(file_name)
     writer.SetInputConnection(face_vector_polydata.GetOutputPort())
     writer.Write()
-    return os.path.join(os.getcwd(), file_name)
+    
+    return file_name
 
 
-def _write_grids(grids, vtk_writer, vtk_extension):
+def _write_grids(grids, vtk_writer, vtk_extension, target_folder):
     """
     Write HBJSON Sensorgrid objects to file.
 
@@ -104,6 +113,7 @@ def _write_grids(grids, vtk_writer, vtk_extension):
             'vtk' and 'xml'.
         vtk_extension: A text string that indicates file extension for the files to be
             written. This will be '.vtk' for vtk writer and '.vtp' for xml writer.
+        target_folder: A text string to a folder to write the output vtk file. 
 
     Returns:
         A list of strings for file names.
@@ -113,26 +123,29 @@ def _write_grids(grids, vtk_writer, vtk_extension):
     # If base_geometry is found
     if grids[0]:
         base_geo_points = get_grid_base(grids[0])[0]
-        write_polydata(base_geo_points, 'grid base', vtk_writer, vtk_extension)
+        args = [base_geo_points, 'grid base', vtk_writer, vtk_extension, target_folder]
+        write_polydata(*args)
         grid_file_names.append('grid base')
 
     # If base_geometry is not found but mesh faces are found
     if grids[1]:
         mesh_points = get_grid_mesh(grids[1])[0]
-        write_polydata(mesh_points, 'grid mesh', vtk_writer, vtk_extension)
+        args = [mesh_points, 'grid mesh', vtk_writer, vtk_extension, target_folder]
+        write_polydata(*args)
         grid_file_names.append('grid mesh')
 
     # If only grid points are found
     if grids[2]:
         start_points, vectors = get_grid_points(grids[2])
-        write_color_grouped_points(start_points, vectors, vtk_writer, vtk_extension)
+        args = [start_points, vectors, vtk_writer, vtk_extension, target_folder]
+        write_color_grouped_points(*args)
         grid_file_names.append('grid points')
 
     return grid_file_names
 
 
 def _write_vectors(hb_types, grouped_points, grids, include_grids, vtk_writer,
-                   vtk_extension):
+                   vtk_extension, target_folder):
     """
     Write vectors to file.
 
@@ -158,6 +171,7 @@ def _write_vectors(hb_types, grouped_points, grids, include_grids, vtk_writer,
             'vtk' and 'xml'.
         vtk_extension: A text string that indicates file extension for the files to be
             written. This will be '.vtk' for vtk writer and '.vtp' for xml writer.
+        target_folder: A text string to a folder to write the output vtk file. 
 
     Returns:
         A list of strings for file names.
@@ -169,7 +183,9 @@ def _write_vectors(hb_types, grouped_points, grids, include_grids, vtk_writer,
         # Create face normals
         start_points, vectors = get_vector_at_center(
             grouped_points['Aperture'])
-        write_arrows(start_points, vectors, 'Aperture', vtk_writer, vtk_extension)
+        args = [start_points, vectors, 'Aperture', target_folder,
+                vtk_writer, vtk_extension]
+        write_arrows(*args)
         vector_file_names.append('Aperture vectors')
 
     # If grids are found in HBJSON
@@ -179,14 +195,18 @@ def _write_vectors(hb_types, grouped_points, grids, include_grids, vtk_writer,
         if grids[0]:
             base_geo_points = get_grid_base(grids[0])[0]
             start_points, vectors = get_vector_at_center(base_geo_points)
-            write_arrows(start_points, vectors, 'grid base', vtk_writer, vtk_extension)
+            args = [start_points, vectors, 'grid base', target_folder,
+                    vtk_writer, vtk_extension]
+            write_arrows(*args)
             vector_file_names.append('grid base vectors')
 
         # If mesh is found in any of the grids
         if grids[1]:
             mesh_points = get_grid_mesh(grids[1])[0]
             start_points, vectors = get_vector_at_center(mesh_points)
-            write_arrows(start_points, vectors, 'grid mesh', vtk_writer, vtk_extension)
+            args = [start_points, vectors, 'grid mesh', target_folder,
+                    vtk_writer, vtk_extension]
+            write_arrows(*args)
             vector_file_names.append('grid mesh vectors')
 
     return vector_file_names
