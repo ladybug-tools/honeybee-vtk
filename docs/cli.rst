@@ -1,6 +1,6 @@
-Honeybee Radiance Command Line Interface
+Honeybee VTK Command Line Interface
 ========================================
 
-.. click:: honeybee_vtk.cli:radiance
+.. click:: honeybee_vtk.cli:main
    :prog: honeybee_vtk
    :show-nested:
