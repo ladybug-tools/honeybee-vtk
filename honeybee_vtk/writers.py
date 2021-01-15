@@ -123,22 +123,22 @@ def _write_grids(grids, vtk_writer, vtk_extension, target_folder):
     # If base_geometry is found
     if grids[0]:
         base_geo_points = get_grid_base(grids[0])[0]
-        args = [base_geo_points, 'grid base', vtk_writer, vtk_extension, target_folder]
-        write_polydata(*args)
+        write_polydata(base_geo_points, 'grid base', vtk_writer, vtk_extension,
+                       target_folder)
         grid_file_names.append('grid base')
 
     # If base_geometry is not found but mesh faces are found
     if grids[1]:
         mesh_points = get_grid_mesh(grids[1])[0]
-        args = [mesh_points, 'grid mesh', vtk_writer, vtk_extension, target_folder]
-        write_polydata(*args)
+        write_polydata(mesh_points, 'grid mesh', vtk_writer, vtk_extension,
+                       target_folder)
         grid_file_names.append('grid mesh')
 
     # If only grid points are found
     if grids[2]:
         start_points, vectors = get_grid_points(grids[2])
-        args = [start_points, vectors, vtk_writer, vtk_extension, target_folder]
-        write_color_grouped_points(*args)
+        write_color_grouped_points(start_points, vectors, vtk_writer, vtk_extension,
+                                   target_folder)
         grid_file_names.append('grid points')
 
     return grid_file_names
@@ -183,9 +183,8 @@ def _write_vectors(hb_types, grouped_points, grids, include_grids, vtk_writer,
         # Create face normals
         start_points, vectors = get_vector_at_center(
             grouped_points['Aperture'])
-        args = [start_points, vectors, 'Aperture', target_folder,
-                vtk_writer, vtk_extension]
-        write_arrows(*args)
+        write_arrows(start_points, vectors, 'Aperture', target_folder, vtk_writer,
+                     vtk_extension)
         vector_file_names.append('Aperture vectors')
 
     # If grids are found in HBJSON
@@ -195,18 +194,16 @@ def _write_vectors(hb_types, grouped_points, grids, include_grids, vtk_writer,
         if grids[0]:
             base_geo_points = get_grid_base(grids[0])[0]
             start_points, vectors = get_vector_at_center(base_geo_points)
-            args = [start_points, vectors, 'grid base', target_folder,
-                    vtk_writer, vtk_extension]
-            write_arrows(*args)
+            write_arrows(start_points, vectors, 'grid base', target_folder, vtk_writer,
+                         vtk_extension)
             vector_file_names.append('grid base vectors')
 
         # If mesh is found in any of the grids
         if grids[1]:
             mesh_points = get_grid_mesh(grids[1])[0]
             start_points, vectors = get_vector_at_center(mesh_points)
-            args = [start_points, vectors, 'grid mesh', target_folder,
-                    vtk_writer, vtk_extension]
-            write_arrows(*args)
+            write_arrows(start_points, vectors, 'grid mesh', target_folder, vtk_writer,
+                         vtk_extension)
             vector_file_names.append('grid mesh vectors')
 
     return vector_file_names
