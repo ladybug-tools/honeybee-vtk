@@ -66,6 +66,13 @@ def write_vtk(file_path, *, file_name=None, target_folder=None, include_grids=Tr
             raise ValueError(writer_error)
     else:
         raise ValueError(writer_error)
+    
+    # Set the target folder to write the files
+    target_folder = target_folder or os.getcwd()
+    if os.path.exists(target_folder):
+        pass
+    else:
+        raise OSError('Path to target_folder is not valid.')
 
     # Get points and face_types from HBJSON
     points, hb_types = read_hbjson(hbjson)
@@ -75,7 +82,8 @@ def write_vtk(file_path, *, file_name=None, target_folder=None, include_grids=Tr
 
     # Write VTK files based on Honeybee face_type and Honeybee object type
     for hb_type in grouped_points:
-        write_polydata(grouped_points[hb_type], hb_type, vtk_writer, vtk_extension)
+        write_polydata(grouped_points[hb_type], hb_type, vtk_writer, vtk_extension,
+                       target_folder)
 
     # Names of VTK files to be written
     file_names = list(grouped_points.keys())
@@ -85,13 +93,13 @@ def write_vtk(file_path, *, file_name=None, target_folder=None, include_grids=Tr
 
     # If grids are there in HBJSON and they are requested
     if grids and include_grids:
-        grid_file_names = _write_grids(grids, vtk_writer, vtk_extension)
+        grid_file_names = _write_grids(grids, vtk_writer, vtk_extension, target_folder)
         file_names.extend(grid_file_names)
 
     # Write vectors if they are requested
     if include_vectors:
         to_write_vectors = [hb_types, grouped_points, grids, include_grids, vtk_writer,
-                            vtk_extension]
+                            vtk_extension, target_folder]
         vector_file_names = _write_vectors(*to_write_vectors)
         file_names.extend(vector_file_names)
 
@@ -102,21 +110,22 @@ def write_vtk(file_path, *, file_name=None, target_folder=None, include_grids=Tr
 
     # remove extension if provided by user
     file_name = file_name if not file_name.lower().endswith('.zip') else file_name[:-4]
-
-    target_folder = target_folder or os.getcwd()
-    zip_file = os.path.join(target_folder, file_name + '.zip')
+    
     # Create a .zip file to capture all the generated .vtk files
+    zip_file = os.path.join(target_folder, file_name + '.zip')
     zipobj = ZipFile(zip_file, 'w')
 
     # Capture vtk files in a zip file.
     for file_name in file_names:
-        zipobj.write(file_name + vtk_extension)
+        file_name = os.path.join(target_folder, file_name + vtk_extension)
+        zipobj.write(file_name)
     zipobj.close()
 
     # Delete vtk files if there is permission
     for file_name in file_names:
         try:
-            os.remove(file_name + vtk_extension)
+            file_name = os.path.join(target_folder, file_name + vtk_extension)
+            os.remove(file_name)
         except OSError:
             warnings.warn(
                 f'Honeybee does not have permission to delete {file_names}.'
