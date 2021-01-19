@@ -5,7 +5,6 @@ import json
 import warnings
 import vtk
 
-
 from .files_writers import write_files
 from .html_writers import write_html
 
@@ -59,7 +58,7 @@ def write(file_path, *, file_name=None, target_folder=None, include_grids=True,
         os.makedirs(target_folder, exist_ok=True)
 
     # Validate and set writer and extension
-    writer_error = 'The value for writer can be either "vtk" or "xml" only.'
+    writer_error = 'The value for writer can be "html", vtk" or "xml" only.'
 
     # Write files
     if isinstance(writer, str):
