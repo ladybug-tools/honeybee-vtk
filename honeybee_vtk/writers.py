@@ -4,8 +4,8 @@ import vtk
 import os
 
 from typing import List
-from .to_vtk import create_polygons, point_vectors, create_arrows
-from .helper import get_end_point, get_vector_at_center
+from .to_vtk import create_polygons, create_points, create_arrows
+from .helper import get_end_point, get_vector_at_center, get_point3d, get_vector3d
 from .hbjson import get_grid_base, get_grid_mesh, get_grid_points
 
 
@@ -43,14 +43,13 @@ def write_polydata(
     return file_name
 
 
-def write_color_grouped_points(
-        points: List[List], vectors: List[List], vtk_writer, vtk_extension,
+def write_points(
+        points: List[List], vtk_writer, vtk_extension,
         target_folder, file_name='grid points'):
     """Write color-grouped VTK points to a file.
 
     Args:
         points : A list of lists. Here, each list has X, Y, and Z coordinates of a point.
-        vectors: A list of lists. Here, each list has X, Y, and Z components of a vector.
         vtk_writer: A text string to indicate the VTK writer. Acceptable values are
             'vtk' and 'xml'.
         vtk_extension: A text string that indicates file extension for the files to be
@@ -62,7 +61,7 @@ def write_color_grouped_points(
         A text string containing the path to the file.
     """
     file_name = file_name + vtk_extension
-    point_polydata = point_vectors(points, vectors)
+    point_polydata = create_points(points)
     writer = vtk_writer
     file_name = os.path.join(target_folder, file_name)
     writer.SetFileName(file_name)
@@ -143,9 +142,8 @@ def _write_grids(grids, vtk_writer, vtk_extension, target_folder):
 
     # If only grid points are found
     if grids[2]:
-        start_points, vectors = get_grid_points(grids[2])
-        write_color_grouped_points(start_points, vectors, vtk_writer, vtk_extension,
-                                   target_folder)
+        start_points = get_grid_points(grids[2])[0]
+        write_points(start_points, vtk_writer, vtk_extension, target_folder)
         grid_file_names.append('grid points')
 
     return grid_file_names
@@ -199,8 +197,9 @@ def _write_vectors(hb_types, grouped_points, grids, include_grids, vtk_writer,
 
         # If base_geometry is found in any of the grids
         if grids[0]:
-            base_geo_points = get_grid_base(grids[0])[0]
-            start_points, vectors = get_vector_at_center(base_geo_points)
+            grid_points, grid_vectors = get_grid_points(grids[0])
+            start_points = get_point3d(grid_points)
+            vectors = get_vector3d(grid_vectors)
             write_arrows(start_points, vectors, 'grid base', target_folder, vtk_writer,
                          vtk_extension)
             vector_file_names.append('grid base vectors')
@@ -212,5 +211,14 @@ def _write_vectors(hb_types, grouped_points, grids, include_grids, vtk_writer,
             write_arrows(start_points, vectors, 'grid mesh', target_folder, vtk_writer,
                          vtk_extension)
             vector_file_names.append('grid mesh vectors')
+        
+        # If only grid points and vectors are there in the grids
+        if grids[2]:
+            grid_points, grid_vectors = get_grid_points(grids[2])
+            start_points = get_point3d(grid_points)
+            vectors = get_vector3d(grid_vectors)
+            write_arrows(start_points, vectors, 'grid points', target_folder, vtk_writer,
+                         vtk_extension)
+            vector_file_names.append('grid points vectors')
 
     return vector_file_names
