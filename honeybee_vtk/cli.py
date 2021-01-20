@@ -5,7 +5,7 @@ import pathlib
 import click
 from click.exceptions import ClickException
 
-from .write import write_vtk
+from .write import write
 
 
 @click.group()
@@ -55,7 +55,7 @@ def translate_recipe(hbjson_file, name, folder, vtk, exclude_grids, exclude_vect
     include_vectors = not exclude_vectors
 
     try:
-        output_file = write_vtk(
+        output_file = write(
             hbjson_file, target_folder=folder, file_name=name,
             include_grids=include_grids, include_vectors=include_vectors,
             writer=file_type
