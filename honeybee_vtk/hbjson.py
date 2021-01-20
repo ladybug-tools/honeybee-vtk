@@ -173,7 +173,12 @@ def get_grid_base(grids: List) -> Tuple[List[List], List[List]]:
     for grid in grids:
         for face in grid['base_geometry']:
             points = [point for point in face['boundary']]
-            base_geometry_points.append(get_point3d(points))
+            if check_convex(points):
+                base_geometry_points.append(get_point3d(points))
+            else:
+                triangles_points = get_mesh_points(points)
+                for point3ds in triangles_points:
+                    base_geometry_points.append(point3ds)
 
         for sensors in grid['sensors']:
             vectors.append(sensors['dir'])
