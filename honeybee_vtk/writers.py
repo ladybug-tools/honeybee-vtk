@@ -1,4 +1,4 @@
-"""A collection of helper functions to write VTK to file."""
+"""A collection of helper functions to write VTK objects to file."""
 
 import vtk
 import os
