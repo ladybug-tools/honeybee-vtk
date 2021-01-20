@@ -13,11 +13,13 @@ layer_colors = {
     'RoofCeiling': [0.407, 0.325, 0.411],
     'Aperture vectors': [1, 1, 1],
     'grid base': [0.925, 0.250, 0.403],
-    'grid mesh' : [0.925, 0.250, 0.403],
     'grid base vectors': [1, 1, 1],
+    'grid mesh' : [0.925, 0.250, 0.403],
+    'grid mesh vectors': [1, 1, 1],
     'AirBoundary': [0.109, 0.227, 0.074],
     'Context': [0.925, 0.305, 0.125],
-    'grid points': [1, 1, 1],
+    'grid points': [0.925, 0.250, 0.403],
+    'grid points vectors': [1, 1, 1]
 }
 
 
@@ -59,7 +61,7 @@ def write_index_json(target_folder, layer_names):
                 "representation": 2,
                 "edgeVisibility": 0,
                 "diffuseColor": [0.858824, 0.713725, 0.560784],
-                "pointSize": 2,
+                "pointSize": 5,
                 "opacity": 1
             }
             }
