@@ -138,61 +138,6 @@ def create_arrows(start_points, end_points, vectors):
     return vtk_polydata_extended
 
 
-def point_vectors(points, vectors):
-    """Export points to VTK and color-group them based on vectors.
-
-    Args:
-        points : A list of lists. Here, each list has X, Y, and Z coordinates of a point.
-        vectors: A list of lists. Here, each list has X, Y, and Z components of a vector.
-
-    Returns:
-        A vtk object with multiple VTK objects that would look like color-grouped points.
-    """
-    vtk_points = vtk.vtkPoints()
-    vtk_vertices = vtk.vtkCellArray()
-
-    for point in points:
-        pid = [0]
-        pid[0] = vtk_points.InsertNextPoint(point)
-        vtk_vertices.InsertNextCell(1, pid)
-
-    normals = vtk.vtkFloatArray()
-    normals.SetNumberOfComponents(3)
-    normals.SetNumberOfTuples(len(vectors))
-
-    for vector in vectors:
-        normals.InsertNextTuple3(vector[0], vector[1], vector[2])
-
-    # Using the text string of the sum of vector components to perform grouping
-    vec_sum = [
-        str(round(vector[0])) + str(round(vector[1])) + str(round(vector[2]))
-        for vector in vectors]
-
-    unique_vectors = list(set(vec_sum))
-
-    # A dictionary with unique vector : unique integer structure.
-    # These unique integers wil be used in scalars to color the points grouped based
-    # on the unique vectors
-    vector_dict = {}
-    for count, item in enumerate(unique_vectors):
-        vector_dict[item] = count
-
-    values = vtk.vtkIntArray()
-    values.SetNumberOfComponents(1)
-    for vector in vectors:
-        value = vector_dict[
-            str(round(vector[0])) + str(round(vector[1])) + str(round(vector[2]))]
-        values.InsertNextValue(value)
-
-    polydata = vtk.vtkPolyData()
-    polydata.SetPoints(vtk_points)
-    polydata.SetVerts(vtk_vertices)
-    polydata.GetCellData().SetScalars(values)
-    polydata.Modified()
-
-    return polydata
-
-
 def create_points(points):
     """Export points to VTK.
 
