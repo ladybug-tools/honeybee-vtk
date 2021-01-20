@@ -193,6 +193,31 @@ def point_vectors(points, vectors):
     return polydata
 
 
+def create_points(points):
+    """Export points to VTK.
+
+    Args:
+        points : A list of lists. Here, each list has X, Y, and Z coordinates of a point.
+
+    Returns:
+        A vtk object with multiple VTK point objects.
+    """
+    vtk_points = vtk.vtkPoints()
+    vtk_vertices = vtk.vtkCellArray()
+
+    for point in points:
+        pid = [0]
+        pid[0] = vtk_points.InsertNextPoint(point)
+        vtk_vertices.InsertNextCell(1, pid)
+
+    polydata = vtk.vtkPolyData()
+    polydata.SetPoints(vtk_points)
+    polydata.SetVerts(vtk_vertices)
+    polydata.Modified()
+
+    return polydata
+
+
 def create_cones(points, vectors):
     """Create VTK cones at point locations.
 
