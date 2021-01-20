@@ -63,8 +63,8 @@ def write(file_path, *, file_name=None, target_folder=None, include_grids=True,
     if isinstance(writer, str):
 
         if writer.lower() == 'html':
-            write_html(file_path, file_name, target_folder, include_grids,
-                       include_vectors, hbjson)
+            return write_html(file_path, file_name, target_folder, include_grids,
+                              include_vectors, hbjson)
         
         elif writer.lower() == 'xml':
             vtk_writer = vtk.vtkXMLPolyDataWriter()
