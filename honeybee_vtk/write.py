@@ -5,8 +5,7 @@ import json
 import warnings
 import vtk
 
-from .files_writers import write_files
-from .html_writers import write_html
+from .file_writers import write_files, write_html
 
 
 def write(file_path, *, file_name=None, target_folder=None, include_grids=True,
