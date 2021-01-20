@@ -1,6 +1,6 @@
 """Functions to help in geometry translation."""
 
-from ladybug_geometry.geometry3d import Face3D, Point3D
+from ladybug_geometry.geometry3d import Face3D, Point3D, Vector3D
 from typing import List, Tuple
 
 
@@ -78,6 +78,19 @@ def get_point3d(points: List[List]) -> List:
         A list of Ladybug Point3D objects.
     """
     return [Point3D(*point) for point in points]
+
+
+def get_vector3d(points: List[List]) -> List:
+    """Convert a list of vector component in to a list of Ladybug Vector3D objects.
+
+    Args:
+        points: A list of points. Here, each point is a list of
+            X, Y, and Z components of a vector.
+
+    Returns:
+        A list of Ladybug Vector3D objects.
+    """
+    return [Vector3D(*point) for point in points]
 
 
 def get_end_point(point, vector):
