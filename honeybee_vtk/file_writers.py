@@ -1,3 +1,5 @@
+"""Functions to write vtk/vtp or HTML files using vtk."""
+
 import os
 import vtk
 import warnings

@@ -3,7 +3,7 @@
 import os
 import json
 
-# Scarlet color in decimal
+# Scarlet colors in decimal
 layer_colors = {
     'Wall': [0.858, 0.713, 0.560],
     'Aperture': [0.858, 0.988, 1],
@@ -25,6 +25,16 @@ layer_colors = {
 
 
 def write_index_json(target_folder, layer_names):
+    """write_index_json [summary]
+
+    Args:
+        target_folder: A text string to a folder to write the output file. The file
+            will be written to the current folder if not provided.
+        layer_names: A list of text strings representing the layer names in vtk output.
+    
+    Returns:
+        A text string containing the path to the index.json file.
+    """
     # index.json template
     index = {
     "version": 1,
@@ -76,3 +86,5 @@ def write_index_json(target_folder, layer_names):
 
     with open(file_path, 'w') as fp:
         json.dump(index, fp)
+
+    return file_path
