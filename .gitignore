@@ -15,6 +15,7 @@ tox.ini
 *.vtk
 *.glance
 *.zip
+*.log
 
 # Rhino Backup files
 *.3dm.rhl
