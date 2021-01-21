@@ -1,4 +1,4 @@
-"""Write either an HTML or VTK files from a valid HBJSON."""
+"""Write either an HTML or a .zip of VTk or XML files from a valid HBJSON."""
 
 import os
 import json
@@ -8,8 +8,8 @@ import vtk
 from .file_writers import write_files, write_html
 
 
-def write(file_path, *, file_name=None, target_folder=None, include_grids=True,
-          include_vectors=True, writer='html'):
+def writer(file_path, *, file_name=None, target_folder=None, include_grids=True,
+          include_vectors=True, writer='html', open_html=True):
     """Read a valid HBJSON and either write an HTML or a .zip of VTK files.
 
     Args:
@@ -25,6 +25,9 @@ def write(file_path, *, file_name=None, target_folder=None, include_grids=True,
             if set to False.
         writer: A text string to indicate the VTK writer. Acceptable values are
             'vtk', 'xml', and 'html'. Defaults to 'html'.
+        open_html: A boolean. If set to False, it will not open the generated HTML
+            in a web browser when 'html' is provided as value in the writer argument.
+            Defaults to True.
 
     Returns:
         A text string containing the path to the output file.
@@ -63,20 +66,22 @@ def write(file_path, *, file_name=None, target_folder=None, include_grids=True,
     if isinstance(writer, str):
 
         if writer.lower() == 'html':
-            return write_html(file_path, file_name, target_folder, include_grids,
-                              include_vectors, hbjson)
+            return write_html(hbjson, file_path, file_name, target_folder, include_grids,
+                              include_vectors, open_html)
         
         elif writer.lower() == 'xml':
             vtk_writer = vtk.vtkXMLPolyDataWriter()
             vtk_extension = '.vtp'
-            return write_files(file_path, file_name, target_folder, include_grids,
-                               include_vectors, vtk_writer, vtk_extension, hbjson)
+            return write_files(hbjson, file_path, file_name, target_folder,
+                               include_grids, include_vectors, vtk_writer,
+                               vtk_extension)
 
         elif writer.lower() == 'vtk':
             vtk_writer = vtk.vtkPolyDataWriter()
             vtk_extension = '.vtk'
-            return write_files(file_path, file_name, target_folder, include_grids,
-                               include_vectors, vtk_writer, vtk_extension, hbjson)
+            return write_files(hbjson, file_path, file_name, target_folder,
+                               include_grids, include_vectors, vtk_writer,
+                               vtk_extension)
 
         else:
             raise ValueError(writer_error)

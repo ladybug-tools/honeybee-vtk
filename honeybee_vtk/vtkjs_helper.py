@@ -1,3 +1,6 @@
+"""This module helps in embedding vtkjs data in Paraview Glance HTML. This module is
+originally developed by Kitware and can be found at the following link."""
+
 import base64
 import json
 import re
@@ -12,7 +15,6 @@ try:
 except:
   compression = zipfile.ZIP_STORED
 
-# -----------------------------------------------------------------------------
 
 def convertDirectoryToZipFile(directoryPath):
     if os.path.isfile(directoryPath):
@@ -33,7 +35,6 @@ def convertDirectoryToZipFile(directoryPath):
     shutil.rmtree(directoryPath)
     shutil.move(zipFilePath, directoryPath)
 
-# -----------------------------------------------------------------------------
 
 def addDataToViewer(dataPath, srcHtmlPath):
     if os.path.isfile(dataPath) and os.path.exists(srcHtmlPath):
@@ -59,7 +60,6 @@ def addDataToViewer(dataPath, srcHtmlPath):
 
                     dstHtml.write(line)
 
-# -----------------------------------------------------------------------------
 
 def zipAllTimeSteps(directoryPath):
   if os.path.isfile(directoryPath):
@@ -73,6 +73,7 @@ def zipAllTimeSteps(directoryPath):
         self.Counter = self.Counter + 1
       return self[name]
 
+
   def InitIndex(sourcePath, destObj):
     with open(sourcePath, 'r') as sourceFile:
       sourceData = sourceFile.read()
@@ -84,11 +85,13 @@ def zipAllTimeSteps(directoryPath):
         obj.pop(obj["type"])
         obj.pop("type")
 
+
   def getUrlToNameDictionary(indexObj):
     urls = { }
     for obj in indexObj["scene"]:
       urls[obj[obj["type"]]["url"]] = obj["name"]
     return urls
+
 
   def addDirectoryToZip(dirname, zipobj, storedData, rootIdx, timeStep, objNameToUrls):
     # Update root index.json file from index.json of this timestep
@@ -138,7 +141,6 @@ def zipAllTimeSteps(directoryPath):
       objIndexRelPath = os.path.join(objNameToUrls.GetUrlName(currentObjName), str(timeStep), "index.json")
       zipobj.writestr(objIndexRelPath, json.dumps(objIndexObjData, indent=2), compress_type=compression)
 
-  # ---
 
   zipFilePath = '%s.zip' % directoryPath
   currentDirectory = os.path.abspath(os.path.join(directoryPath, os.pardir))
@@ -198,9 +200,6 @@ def zipAllTimeSteps(directoryPath):
 
   shutil.move(zipFilePath, directoryPath)
 
-# -----------------------------------------------------------------------------
-# Main
-# -----------------------------------------------------------------------------
 
 if __name__ == "__main__":
   if len(sys.argv) < 2:
