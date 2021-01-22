@@ -56,7 +56,7 @@ dataset_template = {
                 "edgeVisibility": 0,
                 "diffuseColor": None,
                 "pointSize": 5,
-                "opacity": 1
+                "opacity": None
             }
     }
 
@@ -76,11 +76,20 @@ def write_index_json(target_folder, layer_names):
         A text string containing the path to the index.json file.
     """
     datasets = []
+
     for layer_name in layer_names:
+
+        # Set opacity for Apertures
+        if layer_name == 'Aperture':
+            opacity_value = 0.5
+        else:
+            opacity_value = 1
+
         template = copy.deepcopy(dataset_template)
         template['name'] = layer_name
         template['httpDataSetReader']['url'] = layer_name
         template['property']['diffuseColor'] = layer_colors[layer_name]
+        template['property']['opacity'] = opacity_value
         datasets.append(template)
 
     index = copy.deepcopy(index_template)
