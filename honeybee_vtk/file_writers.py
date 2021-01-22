@@ -83,12 +83,15 @@ def write_files(hbjson, file_path, file_name, target_folder, include_grids,
     # remove extension if provided by user
     file_name = file_name if not file_name.lower().endswith('.zip') else file_name[:-4]
 
+    # get the absolute path to target folder so it doesn't break for relative paths
+    target_folder = os.path.abspath(target_folder)
     # Set a file path for the .zip file in the temp folder
     temp_zip_file = os.path.join(temp_folder, file_name + '.zip')
     # Set a file path to move the .zip file to the target folder
     target_zip_file = os.path.join(target_folder, file_name + '.zip')
 
     # # Capture vtk files in a zip file.
+    cur_dir = os.path.abspath(os.path.curdir)
     zipobj = ZipFile(temp_zip_file, 'w')
     os.chdir(temp_folder)
     for name in file_names:
@@ -102,6 +105,9 @@ def write_files(hbjson, file_path, file_name, target_folder, include_grids,
 
     # Remove temp folder
     shutil.rmtree(temp_folder)
+
+    # change back to original folder
+    os.chdir(cur_dir)
 
     # Return the path where the .zip file is written
     return target_zip_file
