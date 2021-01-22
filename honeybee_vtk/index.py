@@ -2,6 +2,7 @@
 
 import os
 import json
+import copy
 
 # Scarlet colors in decimal
 layer_colors = {
@@ -22,6 +23,43 @@ layer_colors = {
     'Grid points vectors': [1, 1, 1]
 }
 
+index_template = {
+"version": 1,
+"background": [1, 1, 1],
+"camera": {
+    "focalPoint": [2.5, 5, 1.5],
+    "position": [19.3843, -6.75305, 10.2683],
+    "viewUp": [-0.303079, 0.250543, 0.919441]
+},
+"centerOfRotation": [2.5, 5, 1.5],
+"scene": [],
+"lookupTables": {}
+}
+
+dataset_template = {
+            "name": None,
+            "type": "httpDataSetReader",
+            "httpDataSetReader": {"url": None},
+            "actor": {
+                "origin": [0, 0, 0],
+                "scale": [1, 1, 1],
+                "position": [0, 0, 0]
+            },
+            "actorRotation": [0, 0, 0, 1],
+            "mapper": {
+                "colorByArrayName": "",
+                "colorMode": 1,
+                "scalarMode": 0
+            },
+            "property": {
+                "representation": 2,
+                "edgeVisibility": 0,
+                "diffuseColor": None,
+                "pointSize": 5,
+                "opacity": 1
+            }
+    }
+
 
 def write_index_json(target_folder, layer_names):
     """write index.json for all the vtk layers.
@@ -37,52 +75,15 @@ def write_index_json(target_folder, layer_names):
     Returns:
         A text string containing the path to the index.json file.
     """
-    # index.json template
-    index = {
-    "version": 1,
-    "background": [1, 1, 1],
-    "camera": {
-        "focalPoint": [2.5, 5, 1.5],
-        "position": [19.3843, -6.75305, 10.2683],
-        "viewUp": [-0.303079, 0.250543, 0.919441]
-    },
-    "centerOfRotation": [2.5, 5, 1.5],
-    "scene": [],
-    "lookupTables": {}
-    }
-
     datasets = []
     for layer_name in layer_names:
-        # Dataset template to be modified
-        dataset_template = {
-                "name": None,
-                "type": "httpDataSetReader",
-                "httpDataSetReader": {"url": None},
-                "actor": {
-                    "origin": [0, 0, 0],
-                    "scale": [1, 1, 1],
-                    "position": [0, 0, 0]
-                },
-                "actorRotation": [0, 0, 0, 1],
-                "mapper": {
-                    "colorByArrayName": "",
-                    "colorMode": 1,
-                    "scalarMode": 0
-                },
-                "property": {
-                    "representation": 2,
-                    "edgeVisibility": 0,
-                    "diffuseColor": None,
-                    "pointSize": 5,
-                    "opacity": 1
-                }
-        }
+        template = copy.deepcopy(dataset_template)
+        template['name'] = layer_name
+        template['httpDataSetReader']['url'] = layer_name
+        template['property']['diffuseColor'] = layer_colors[layer_name]
+        datasets.append(template)
 
-        dataset_template['name'] = layer_name
-        dataset_template['httpDataSetReader']['url'] = layer_name
-        dataset_template['property']['diffuseColor'] = layer_colors[layer_name]
-        datasets.append(dataset_template)
-
+    index = copy.deepcopy(index_template)
     index['scene'] = datasets
     
     file_path = os.path.join(target_folder, 'index.json')
