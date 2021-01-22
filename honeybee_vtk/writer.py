@@ -9,7 +9,7 @@ from .file_writers import write_files, write_html
 
 
 def writer(file_path, *, file_name=None, target_folder=None, include_grids=False,
-           include_vectors=False, include_points=False, writer='html', open_html=True):
+           include_vectors=False, include_points=False, writer='html', open_html=False):
     """Read a valid HBJSON and either write an HTML or a .zip of VTK files.
 
     Args:
@@ -28,9 +28,9 @@ def writer(file_path, *, file_name=None, target_folder=None, include_grids=False
             arrows for the vectors.
         writer: A text string to indicate the VTK writer. Acceptable values are
             'vtk', 'xml', and 'html'. Defaults to 'html'.
-        open_html: A boolean. If set to False, it will not open the generated HTML
+        open_html: A boolean. If set to True, it will open the generated HTML
             in a web browser when 'html' is provided as value in the writer argument.
-            Defaults to True.
+            Defaults to False.
 
     Returns:
         A text string containing the path to the output file.
