@@ -12,28 +12,31 @@ layer_colors = {
     'Shade': [0.937, 0.643, 0.545],
     'Floor': [0.031, 0.572, 0.647],
     'RoofCeiling': [0.407, 0.325, 0.411],
-    'Aperture vectors': [1, 1, 1],
     'Grid base': [0.925, 0.250, 0.403],
-    'Grid base vectors': [1, 1, 1],
     'Grid mesh': [0.925, 0.250, 0.403],
+    'Grid points': [1, 1, 1],
+    'Aperture vectors': [1, 1, 1],
+    'Grid base vectors': [1, 1, 1],
     'Grid mesh vectors': [1, 1, 1],
+    'Grid points vectors': [1, 1, 1],
+    'Aperture points': [1, 1, 1],
+    'Grid base points': [1, 1, 1],
+    'Grid mesh points': [1, 1, 1],
     'AirBoundary': [0.109, 0.227, 0.074],
-    'Context': [0.925, 0.305, 0.125],
-    'Grid points': [0.925, 0.250, 0.403],
-    'Grid points vectors': [1, 1, 1]
+    'Context': [0.925, 0.305, 0.125]
 }
 
 index_template = {
-"version": 1,
-"background": [1, 1, 1],
-"camera": {
-    "focalPoint": [2.5, 5, 1.5],
-    "position": [19.3843, -6.75305, 10.2683],
-    "viewUp": [-0.303079, 0.250543, 0.919441]
-},
-"centerOfRotation": [2.5, 5, 1.5],
-"scene": [],
-"lookupTables": {}
+    "version": 1,
+    "background": [1, 1, 1],
+    "camera": {
+        "focalPoint": [2.5, 5, 1.5],
+        "position": [19.3843, -6.75305, 10.2683],
+        "viewUp": [-0.303079, 0.250543, 0.919441]
+    },
+    "centerOfRotation": [2.5, 5, 1.5],
+    "scene": [],
+    "lookupTables": {}
 }
 
 dataset_template = {
@@ -48,7 +51,7 @@ dataset_template = {
             "actorRotation": [0, 0, 0, 1],
             "mapper": {
                 "colorByArrayName": "",
-                "colorMode": 1,
+                "colorMode": 0,
                 "scalarMode": 0
             },
             "property": {
@@ -84,12 +87,13 @@ def write_index_json(target_folder, layer_names):
             opacity = 0.5
         else:
             opacity = 1
-
+        
         template = copy.deepcopy(dataset_template)
         template['name'] = layer_name
         template['httpDataSetReader']['url'] = layer_name
         template['property']['diffuseColor'] = layer_colors[layer_name]
         template['property']['opacity'] = opacity
+
         datasets.append(template)
 
     index = copy.deepcopy(index_template)
