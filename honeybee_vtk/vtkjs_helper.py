@@ -16,7 +16,7 @@ except:
   compression = zipfile.ZIP_STORED
 
 
-def convertDirectoryToZipFile(directoryPath):
+def convert_directory_to_zip_file(directoryPath):
     if os.path.isfile(directoryPath):
         return
 
@@ -36,7 +36,7 @@ def convertDirectoryToZipFile(directoryPath):
     shutil.move(zipFilePath, directoryPath)
 
 
-def addDataToViewer(dataPath, srcHtmlPath):
+def add_data_to_viewer(dataPath, srcHtmlPath):
     if os.path.isfile(dataPath) and os.path.exists(srcHtmlPath):
         dstDir = os.path.dirname(dataPath)
         dstHtmlPath = os.path.join(dstDir, '%s.html' % os.path.basename(dataPath)[:-6])
@@ -206,7 +206,7 @@ if __name__ == "__main__":
       print("Usage: directoryToFile /path/to/directory.vtkjs [/path/to/ParaViewGlance.html]")
   else:
       fileName = sys.argv[1]
-      convertDirectoryToZipFile(fileName)
+      convert_directory_to_zip_file(fileName)
 
       if len(sys.argv) == 3:
-        addDataToViewer(fileName, sys.argv[2])
+        add_data_to_viewer(fileName, sys.argv[2])
