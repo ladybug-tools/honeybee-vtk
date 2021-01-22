@@ -5,7 +5,7 @@ import pathlib
 import click
 from click.exceptions import ClickException
 
-from .write import write
+from .writer import writer
 
 
 @click.group()
@@ -16,8 +16,9 @@ def main():
 
 @main.command('translate')
 @click.argument('hbjson-file')
+
 @click.option(
-    '--name', '-n', help='Name of the output .zip file. If not provided, the name of '
+    '--name', '-n', help='Name of the output file. If not provided, the name of '
     'input HBJSON file will be used.'
 )
 @click.option(
@@ -26,19 +27,25 @@ def main():
     default='.', show_default=True
 )
 @click.option(
-    '--vtk/--xml', is_flag=True, default=True, help='Switch between a vtk file format '
-    'and a xml file format. Default is vtk.', show_default=True
+    '--file-type', type=click.Choice(['vtk', 'xml', 'html']), is_flag=True, default=True,
+    help='Switch between VTK, XML, and HTML formats. Default is HTML.',
+    show_default=True
 )
 @click.option(
     '--exclude-grids', '-eg', is_flag=True, default=False,
-    help='Flag to exclude exporting grids.', show_default=True
+    help='Exclude exporting grids.', show_default=True
 )
 @click.option(
     '--exclude-vectors', '-ev', is_flag=True, default=False,
-    help='Flag to exclude exporting vector lines.', show_default=True
+    help='Exclude exporting vector lines.', show_default=True
 )
-def translate_recipe(hbjson_file, name, folder, vtk, exclude_grids, exclude_vectors):
-    """Translate a HBJSON file to several VTK files.
+@click.option(
+    '--open-html', '-oh', is_flag=True, default=True,
+    help='Stop from the generated HTML open up in a browser', show_default=True
+)
+def translate_recipe(
+    hbjson_file, name, folder, file_type, exclude_grids, exclude_vectors, open_html):
+    """Translate a HBJSON file to several VTK, XML, or HTML file.
 
     The output file is a zipped file that contains all the generated VTK files.
 
@@ -50,15 +57,14 @@ def translate_recipe(hbjson_file, name, folder, vtk, exclude_grids, exclude_vect
 
     folder = pathlib.Path(folder)
     folder.mkdir(exist_ok=True)
-    file_type = 'vtk' if vtk else 'xml'
     include_grids = not exclude_grids
     include_vectors = not exclude_vectors
 
     try:
-        output_file = write(
+        output_file = writer(
             hbjson_file, target_folder=folder, file_name=name,
             include_grids=include_grids, include_vectors=include_vectors,
-            writer=file_type
+            writer=file_type, open_html=open_html
         )
     except Exception as e:
         raise ClickException(f'Translation to VTK failed:\n{e}')
