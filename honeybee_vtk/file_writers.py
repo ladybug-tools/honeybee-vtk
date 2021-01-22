@@ -5,13 +5,14 @@ import vtk
 import shutil
 import tempfile
 import webbrowser
+import pathlib
 
 from zipfile import ZipFile
 from honeybee.typing import clean_string
 from .hbjson import check_grid, read_hbjson, group_by_face_type
 from .writers import write_polydata, _write_grids, _write_vectors
 from .index import write_index_json
-from .vtkjs_helper import convertDirectoryToZipFile, addDataToViewer
+from .vtkjs_helper import convert_directory_to_zip_file, add_data_to_viewer
 
 
 def write_files(hbjson, file_path, file_name, target_folder, include_grids,
@@ -32,12 +33,12 @@ def write_files(hbjson, file_path, file_name, target_folder, include_grids,
         include_vectors: A boolean. Defaults to True. Vector arrows will not be created
             if set to False.
         vtk_writer: A vtk object. Acceptable values are following;
-            vtk.vtkXMLPolyDataWriter() and vtk.vtkPolyDataWriter() to write XML and 
+            vtk.vtkXMLPolyDataWriter() and vtk.vtkPolyDataWriter() to write XML and
             VTK files respectively.
-        vtk_extension: A text string for the file extension to be used. Following are 
+        vtk_extension: A text string for the file extension to be used. Following are
             acceptable values for the corresponding vtk_writer values;
             vtk.vtkXMLPolyDataWriter() -> '.vtp',
-            vtk.vtkPolyDataWriter() -> '.vtk',  
+            vtk.vtkPolyDataWriter() -> '.vtk',
 
     Returns:
         A text string containing the path to the .zip file with VTK/VTP files.
@@ -81,7 +82,7 @@ def write_files(hbjson, file_path, file_name, target_folder, include_grids,
 
     # remove extension if provided by user
     file_name = file_name if not file_name.lower().endswith('.zip') else file_name[:-4]
-    
+
     # Set a file path for the .zip file in the temp folder
     temp_zip_file = os.path.join(temp_folder, file_name + '.zip')
     # Set a file path to move the .zip file to the target folder
@@ -124,12 +125,12 @@ def write_html(hbjson, file_path, file_name, target_folder, include_grids,
             if set to False.
         open_html: A boolean. If set to False, it will not open the generated HTML
             in a web browser.
-        
+
     Returns:
         A text string containing the path to the HTML file with VTK objects embedded.
     """
     # Path to the Paraview Glance template
-    html_path = '../honeybee-vtk/Paraview Glance/ParaViewGlance.html'
+    html_path = pathlib.Path(pathlib.Path(__file__).parent, 'assets/ParaViewGlance.html')
 
     # Make sure the template if found
     if not os.path.exists(html_path):
@@ -186,7 +187,7 @@ def write_html(hbjson, file_path, file_name, target_folder, include_grids,
     # Create a .zip file to capture all the generated json dataset folders
     file_path = os.path.join(temp_folder, file_name)
     shutil.make_archive(file_path, 'zip', temp_folder)
- 
+
     # Setting file paths
     zip_file = os.path.join(temp_folder, file_name + '.zip')
     vtkjs_file = os.path.join(temp_folder, file_name + '.vtkjs')
@@ -197,8 +198,8 @@ def write_html(hbjson, file_path, file_name, target_folder, include_grids,
     os.rename(zip_file, vtkjs_file)
 
     # Embed json datasets in HTML
-    convertDirectoryToZipFile(vtkjs_file)
-    addDataToViewer(vtkjs_file, html_path)
+    convert_directory_to_zip_file(vtkjs_file)
+    add_data_to_viewer(vtkjs_file, html_path)
 
     # Move the generated HTML to target folder
     shutil.move(temp_html_file, target_html_file)
@@ -211,4 +212,3 @@ def write_html(hbjson, file_path, file_name, target_folder, include_grids,
         webbrowser.open(target_html_file)
 
     return target_html_file
-    

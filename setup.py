@@ -18,6 +18,7 @@ setuptools.setup(
     url="https://github.com/ladybug-tools/honeybee-vtk",
     packages=setuptools.find_packages(exclude=["tests*"]),
     install_requires=requirements,
+    include_package_data=True,
     entry_points={
         "console_scripts": ["honeybee-vtk = honeybee_vtk.cli:main"]
     },
