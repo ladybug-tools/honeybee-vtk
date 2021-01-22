@@ -16,7 +16,6 @@ def main():
 
 @main.command('translate')
 @click.argument('hbjson-file')
-
 @click.option(
     '--name', '-n', help='Name of the output file. If not provided, the name of '
     'input HBJSON file will be used.'
@@ -27,8 +26,8 @@ def main():
     default='.', show_default=True
 )
 @click.option(
-    '--file-type', type=click.Choice(['vtk', 'xml', 'html']), is_flag=True,
-    default='html', help='Switch between VTK, XML, and HTML formats. Default is HTML.',
+    '--file-type', '-t', type=click.Choice(['vtk', 'xml', 'html']), default='html',
+    help='Switch between VTK, XML, and HTML formats. Default is HTML.',
     show_default=True
 )
 @click.option(
@@ -40,11 +39,12 @@ def main():
     help='Exclude exporting vector lines.', show_default=True
 )
 @click.option(
-    '--open-html', '-oh', is_flag=True, default=True,
-    help='Stop from the generated HTML open up in a browser', show_default=True
+    '--show-html', '--show', '-sh', is_flag=True, default=False,
+    help='Open the generated HTML file in a browser', show_default=True
 )
 def translate_recipe(
-    hbjson_file, name, folder, file_type, exclude_grids, exclude_vectors, open_html):
+        hbjson_file, name, folder, file_type, exclude_grids, exclude_vectors, show_html
+    ):
     """Translate a HBJSON file to several VTK, XML, or HTML file.
 
     The output file is a zipped file that contains all the generated VTK files.
@@ -64,7 +64,7 @@ def translate_recipe(
         output_file = writer(
             hbjson_file, target_folder=folder, file_name=name,
             include_grids=include_grids, include_vectors=include_vectors,
-            writer=file_type, open_html=open_html
+            writer=file_type, open_html=show_html
         )
     except Exception as e:
         raise ClickException(f'Translation to VTK failed:\n{e}')
