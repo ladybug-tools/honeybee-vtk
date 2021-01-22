@@ -2,6 +2,7 @@
 
 import os
 import json
+from os.path import abspath
 import warnings
 import vtk
 
@@ -9,7 +10,7 @@ from .file_writers import write_files, write_html
 
 
 def writer(file_path, *, file_name=None, target_folder=None, include_grids=True,
-          include_vectors=True, writer='html', open_html=True):
+           include_vectors=True, writer='html', open_html=True):
     """Read a valid HBJSON and either write an HTML or a .zip of VTK files.
 
     Args:
@@ -35,20 +36,14 @@ def writer(file_path, *, file_name=None, target_folder=None, include_grids=True,
 
     # Check if path to HBJSON is fine
     if not os.path.isfile(file_path):
-        raise FileNotFoundError(
-            'The path is not a valid path.'
-            ' If file exists, try using double backslashes in file path'
-            ' and try again.'
-        )
+        raise FileNotFoundError(f'The path is not a valid path:{file_path}')
 
     # Check if the file is a valid JSON
     try:
         with open(file_path) as fp:
             hbjson = json.load(fp)
     except json.decoder.JSONDecodeError:
-        raise ValueError(
-            'Not a valid JSON file.'
-            )
+        raise ValueError(f'Not a valid JSON file: {file_path}')
 
     # Set the target folder to write the files
     target_folder = target_folder or os.getcwd()
@@ -68,7 +63,7 @@ def writer(file_path, *, file_name=None, target_folder=None, include_grids=True,
         if writer.lower() == 'html':
             return write_html(hbjson, file_path, file_name, target_folder, include_grids,
                               include_vectors, open_html)
-        
+
         elif writer.lower() == 'xml':
             vtk_writer = vtk.vtkXMLPolyDataWriter()
             vtk_extension = '.vtp'
