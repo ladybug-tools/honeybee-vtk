@@ -27,8 +27,8 @@ def main():
     default='.', show_default=True
 )
 @click.option(
-    '--file-type', type=click.Choice(['vtk', 'xml', 'html']), is_flag=True, default=True,
-    help='Switch between VTK, XML, and HTML formats. Default is HTML.',
+    '--file-type', type=click.Choice(['vtk', 'xml', 'html']), is_flag=True,
+    default='html', help='Switch between VTK, XML, and HTML formats. Default is HTML.',
     show_default=True
 )
 @click.option(
