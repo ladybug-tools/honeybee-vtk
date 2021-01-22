@@ -2,15 +2,14 @@
 
 import os
 import json
-from os.path import abspath
 import warnings
 import vtk
 
 from .file_writers import write_files, write_html
 
 
-def writer(file_path, *, file_name=None, target_folder=None, include_grids=True,
-           include_vectors=True, writer='html', open_html=True):
+def writer(file_path, *, file_name=None, target_folder=None, include_grids=False,
+           include_vectors=False, include_points=False, writer='html', open_html=True):
     """Read a valid HBJSON and either write an HTML or a .zip of VTK files.
 
     Args:
@@ -20,10 +19,13 @@ def writer(file_path, *, file_name=None, target_folder=None, include_grids=True,
             file name for the .zip file.
         target_folder: A text string to a folder to write the output file. The file
             will be written to the current folder if not provided.
-        include_grids: A boolean. Defaults to True. Grids will not be extracted from
+        include_grids: A boolean. Defaults to False. Grids will not be extracted from
             HBJSON if set to False.
-        include_vectors: A boolean. Defaults to True. Vector arrows will not be created
+        include_vectors: A boolean. Defaults to False. Vector arrows will not be created
             if set to False.
+        include_points: A boolean. Defaults to False. If set to True, sensor points
+            color-grouped based on their vector direction will be exported instead of
+            arrows for the vectors.
         writer: A text string to indicate the VTK writer. Acceptable values are
             'vtk', 'xml', and 'html'. Defaults to 'html'.
         open_html: A boolean. If set to False, it will not open the generated HTML
@@ -60,23 +62,27 @@ def writer(file_path, *, file_name=None, target_folder=None, include_grids=True,
     # Write files
     if isinstance(writer, str):
 
+        if include_vectors:
+            include_points = False
+
         if writer.lower() == 'html':
-            return write_html(hbjson, file_path, file_name, target_folder, include_grids,
-                              include_vectors, open_html)
+            return write_html(
+                hbjson, file_path, file_name, target_folder, include_grids,
+                include_vectors, include_points, open_html)
 
         elif writer.lower() == 'xml':
             vtk_writer = vtk.vtkXMLPolyDataWriter()
             vtk_extension = '.vtp'
-            return write_files(hbjson, file_path, file_name, target_folder,
-                               include_grids, include_vectors, vtk_writer,
-                               vtk_extension)
+            return write_files(
+                hbjson, file_path, file_name, target_folder, include_grids,
+                include_vectors, include_points, vtk_writer, vtk_extension)
 
         elif writer.lower() == 'vtk':
             vtk_writer = vtk.vtkPolyDataWriter()
             vtk_extension = '.vtk'
-            return write_files(hbjson, file_path, file_name, target_folder,
-                               include_grids, include_vectors, vtk_writer,
-                               vtk_extension)
+            return write_files(
+                hbjson, file_path, file_name, target_folder, include_grids,
+                include_vectors, include_points, vtk_writer, vtk_extension)
 
         else:
             raise ValueError(writer_error)
