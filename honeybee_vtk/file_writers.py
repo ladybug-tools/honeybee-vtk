@@ -2,7 +2,6 @@
 
 import os
 import vtk
-import warnings
 import shutil
 import tempfile
 import webbrowser
