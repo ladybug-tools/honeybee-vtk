@@ -10,13 +10,13 @@ import pathlib
 from zipfile import ZipFile
 from honeybee.typing import clean_string
 from .hbjson import check_grid, read_hbjson, group_by_face_type
-from .writers import write_polydata, _write_grids, _write_vectors
+from .writers import write_polydata, _write_grids, _write_vectors, _write_points
 from .index import write_index_json
 from .vtkjs_helper import convert_directory_to_zip_file, add_data_to_viewer
 
 
 def write_files(hbjson, file_path, file_name, target_folder, include_grids,
-                include_vectors, vtk_writer, vtk_extension):
+                include_vectors, include_points, vtk_writer, vtk_extension):
     """
     Write a .zip of VTK/VTP files.
 
@@ -32,6 +32,9 @@ def write_files(hbjson, file_path, file_name, target_folder, include_grids,
             HBJSON if set to False.
         include_vectors: A boolean. Defaults to True. Vector arrows will not be created
             if set to False.
+        include_points: A boolean. Defaults to False. If set to True, sensor points
+            color-grouped based on their vector direction will be exported instead of
+            arrows for the vectors.
         vtk_writer: A vtk object. Acceptable values are following;
             vtk.vtkXMLPolyDataWriter() and vtk.vtkPolyDataWriter() to write XML and
             VTK files respectively.
@@ -65,7 +68,8 @@ def write_files(hbjson, file_path, file_name, target_folder, include_grids,
 
     # If grids are there in HBJSON and they are requested
     if grids and include_grids:
-        grid_file_names = _write_grids(grids, vtk_writer, vtk_extension, temp_folder)
+        grid_file_names = _write_grids(
+            grids, vtk_writer, vtk_extension, temp_folder, include_points)
         file_names.extend(grid_file_names)
 
     # Write vectors if they are requested
@@ -74,6 +78,13 @@ def write_files(hbjson, file_path, file_name, target_folder, include_grids,
             hb_types, grouped_points, grids, include_grids, vtk_writer, vtk_extension,
             temp_folder)
         file_names.extend(vector_file_names)
+    
+    # Write color-grouped points if they are requested
+    if include_points:
+        point_file_names = _write_points(
+            hb_types, grouped_points, grids, include_grids, vtk_writer, vtk_extension,
+            temp_folder)
+        file_names.extend(point_file_names)
 
     # Use the name of HBJSON if file name is not provided
     if not file_name:
@@ -114,7 +125,7 @@ def write_files(hbjson, file_path, file_name, target_folder, include_grids,
 
 
 def write_html(hbjson, file_path, file_name, target_folder, include_grids,
-               include_vectors, open_html):
+               include_vectors, include_points, open_html):
     """Write an HTML file with VTK objects embedded into it.
 
     Args:
@@ -129,6 +140,9 @@ def write_html(hbjson, file_path, file_name, target_folder, include_grids,
             HBJSON if set to False.
         include_vectors: A boolean. Defaults to True. Vector arrows will not be created
             if set to False.
+        include_points: A boolean. Defaults to False. If set to True, sensor points
+            color-grouped based on their vector direction will be exported instead of
+            arrows for the vectors.
         open_html: A boolean. If set to False, it will not open the generated HTML
             in a web browser.
 
@@ -168,16 +182,23 @@ def write_html(hbjson, file_path, file_name, target_folder, include_grids,
 
     # If grids are there in HBJSON and they are requested
     if grids and include_grids:
-        grid_file_names = _write_grids(grids, vtk_writer, vtk_extension, temp_folder)
+        grid_file_names = _write_grids(
+            grids, vtk_writer, vtk_extension, temp_folder, include_points)
         file_names.extend(grid_file_names)
 
     # Write vectors if they are requested
     if include_vectors:
         vector_file_names = _write_vectors(
             hb_types, grouped_points, grids, include_grids, vtk_writer, vtk_extension,
-            temp_folder
-        )
+            temp_folder)
         file_names.extend(vector_file_names)
+    
+    # Write color-grouped points if they are requested
+    if include_points:
+        point_file_names = _write_points(
+            hb_types, grouped_points, grids, include_grids, vtk_writer, vtk_extension,
+            temp_folder)
+        file_names.extend(point_file_names)
 
     # Write index.json
     write_index_json(temp_folder, file_names)
