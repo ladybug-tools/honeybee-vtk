@@ -36,14 +36,19 @@ def main():
 )
 @click.option(
     '--exclude-vectors', '-ev', is_flag=True, default=False,
-    help='Exclude exporting vector lines.', show_default=True
+    help='Exclude exporting vector arrows.', show_default=True
+)
+@click.option(
+    '--exclude-points', '-ep', is_flag=True, default=False,
+    help='Exclude exporting grid points.', show_default=True
 )
 @click.option(
     '--show-html', '--show', '-sh', is_flag=True, default=False,
     help='Open the generated HTML file in a browser', show_default=True
 )
 def translate_recipe(
-        hbjson_file, name, folder, file_type, exclude_grids, exclude_vectors, show_html
+        hbjson_file, name, folder, file_type, exclude_grids, exclude_vectors,
+        exclude_points, show_html
     ):
     """Translate a HBJSON file to several VTK, XML, or HTML file.
 
@@ -59,12 +64,13 @@ def translate_recipe(
     folder.mkdir(exist_ok=True)
     include_grids = not exclude_grids
     include_vectors = not exclude_vectors
+    include_points = not exclude_points
 
     try:
         output_file = writer(
             hbjson_file, target_folder=folder, file_name=name,
             include_grids=include_grids, include_vectors=include_vectors,
-            writer=file_type, open_html=show_html
+            include_points=include_points, writer=file_type, open_html=show_html
         )
     except Exception as e:
         raise ClickException(f'Translation to VTK failed:\n{e}')
