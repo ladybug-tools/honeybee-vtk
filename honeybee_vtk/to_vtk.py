@@ -204,6 +204,7 @@ def create_color_grouped_points(
         vector_dict[item] = count
 
     values = vtk.vtkIntArray()
+    values.SetName('Vectors')
     values.SetNumberOfComponents(1)
     for vector in vectors:
         value = vector_dict[
@@ -214,6 +215,7 @@ def create_color_grouped_points(
     polydata.SetPoints(vtk_points)
     polydata.SetVerts(vtk_vertices)
     polydata.GetCellData().SetScalars(values)
+    polydata.GetCellData().SetActiveScalars('Vectors')
     polydata.Modified()
 
     return polydata
