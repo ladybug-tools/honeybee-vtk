@@ -178,8 +178,7 @@ def create_color_grouped_points(
     vtk_vertices = vtk.vtkCellArray()
 
     for point in points:
-        pid = [0]
-        pid[0] = vtk_points.InsertNextPoint(point)
+        pid= [vtk_points.InsertNextPoint(point)]
         vtk_vertices.InsertNextCell(1, pid)
 
     normals = vtk.vtkFloatArray()
@@ -187,7 +186,7 @@ def create_color_grouped_points(
     normals.SetNumberOfTuples(len(vectors))
 
     for vector in vectors:
-        normals.InsertNextTuple3(vector[0], vector[1], vector[2])
+        normals.InsertNextTuple3(*vector)
 
     # Using the text string of the sum of vector components to perform grouping
     vec_sum = [
