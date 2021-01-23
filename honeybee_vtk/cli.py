@@ -52,7 +52,8 @@ def translate_recipe(
     ):
     """Translate a HBJSON file to several VTK, XML, or HTML file.
 
-    The output file is a zipped file that contains all the generated VTK files.
+    The output file is either a zipped file that contains all the generated VTK/XML files 
+    or an HTML file.
 
     \b
     Args:
