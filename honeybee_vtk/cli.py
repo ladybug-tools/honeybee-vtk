@@ -31,15 +31,15 @@ def main():
     show_default=True
 )
 @click.option(
-    '--exclude-grids', '-eg', is_flag=True, default=False,
+    '--exclude-grids', '-eg', is_flag=True, default=True,
     help='Exclude exporting grids.', show_default=True
 )
 @click.option(
-    '--exclude-vectors', '-ev', is_flag=True, default=False,
+    '--exclude-vectors', '-ev', is_flag=True, default=True,
     help='Exclude exporting vector arrows.', show_default=True
 )
 @click.option(
-    '--exclude-points', '-ep', is_flag=True, default=False,
+    '--exclude-points', '-ep', is_flag=True, default=True,
     help='Exclude exporting grid points.', show_default=True
 )
 @click.option(
