@@ -52,7 +52,7 @@ dataset_template = {
             "mapper": {
                 "colorByArrayName": "",
                 "colorMode": 0,
-                "scalarMode": 0
+                "scalarMode": 4
             },
             "property": {
                 "representation": 2,
