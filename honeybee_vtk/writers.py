@@ -161,7 +161,7 @@ def _write_grids(grids, vtk_writer, vtk_extension, target_folder, include_points
         grid_file_names.append('Grid mesh')
 
     # If only grid points are found
-    if grids[2] and include_points:
+    if grids[2] and not include_points:
         start_points = get_grid_points(grids[2])[0]
         vectors = None
         write_points(start_points, vectors, vtk_writer, vtk_extension, target_folder)
@@ -182,11 +182,13 @@ def _write_vectors(hb_types, grouped_points, grids, include_grids, vtk_writer,
         grouped_points: A dictionary with Honeybee type as keys and list of lists of
             Point3Ds for geometry that belongs to that Honeybee type. An example would
             be;
+
             .. code-block:: python
                 {
                 'Wall': [[Point1, Point2, Point3], [Point4, Point5, Point6, Point7]],
                 'Aperture': [[Point1, Point2, Point3], [Point4, Point5, Point6, Point7]]
                 }
+                
         grids: A of following three lists.
             A list of HBJSON sensorgrids that have 'base_geometry' as a key.
             A list of HBJSON sensorgrids that have 'mesh' as a key and does not have
