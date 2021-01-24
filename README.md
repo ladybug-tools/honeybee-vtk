@@ -46,7 +46,7 @@ Options:
   --help                          Show this message and exit.
 ```
 
-Viewing an HBJSON generated from a model that ships with Ladybug Tools. You can send this HTML to someone and they will be able to open the see the same model.
+Viewing an [HBJSON](tests/assets/gridbased.hbjson) generated from a model that ships with Ladybug Tools. You can send this HTML to someone and they will be able to open the see the same model.
 
 ```console
 honeybee-vtk translate "path to hbjson file" --include-grids --include-vectors --show
