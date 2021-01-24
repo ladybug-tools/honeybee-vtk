@@ -48,13 +48,25 @@ Options:
 
 Viewing an HBJSON generated from a model that ships with Ladybug Tools. You can send this HTML to someone and they will be able to open the see the same model.
 
+```console
+honeybee-vtk translate "path to hbjson file" --include-grids --include-vectors --show
+```
+
 ![](/images/honeybee-vtk-vectors.gif)
 
 Exporting points colored based on the direction of the normals for apertures and grid sensors. This is useful for models with very high number of sensors or apertures.
 
+```console
+honeybee-vtk translate "path to hbjson file" --include-grids --include-points --show
+```
+
 ![](/images/honeybee-vtk-points.gif)
 
-Saving the files in VTK format and then viewing in [Paraview Glance](https://kitware.github.io/paraview-glance/app/). This is useful is if you prefer smaller file sizes. Use "xml" in file-type to export XML files. If you wish to share a model that you have formatted in Paraview Glance, click on "Save State" button in the navbar of Paraview Glance. This will download a .glance file that you can share with other and they will be able to load this file back in Paraview Glance and see the model the way you formatted it.
+Saving the files in VTK format and then viewing in [Paraview Glance](https://kitware.github.io/paraview-glance/app/). This is useful if you prefer smaller file sizes. Use "xml" in file-type to export XML files. If you wish to share a model that you have formatted in Paraview Glance, click on "Save State" button in the navbar of Paraview Glance. This will download a .glance file that you can share with others and they will be able to load this file back in Paraview Glance and see the model the way you formatted it.
+
+```console
+honeybee-vtk translate "path to hbjson file" --folder="path to the target folder" --file-type="vtk"
+```
 
 ![](/images/honeybee-vtk-vtk.gif)
 
