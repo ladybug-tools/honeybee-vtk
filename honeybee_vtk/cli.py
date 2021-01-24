@@ -32,15 +32,16 @@ def main():
 )
 @click.option(
     '--include-grids', '-eg', is_flag=True, default=False,
-    help='Exclude exporting grids.', show_default=True
+    help='Export grids.', show_default=True
 )
 @click.option(
     '--include-vectors', '-ev', is_flag=True, default=False,
-    help='Exclude exporting vector arrows.', show_default=True
+    help='Export normals for apertures and grid sensors.', show_default=True
 )
 @click.option(
     '--include-points', '-ep', is_flag=True, default=False,
-    help='Exclude exporting grid points.', show_default=True
+    help='Export points colored based on the direction of normal for apertures' 
+    ' and grid sensors.', show_default=True
 )
 @click.option(
     '--show-html', '--show', '-sh', is_flag=True, default=False,
