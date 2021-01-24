@@ -5,6 +5,42 @@ from .helper import get_point3d
 from typing import List, Tuple, Dict
 
 
+def read_rooms(rooms: List) -> Tuple[List[List], List[str]]:
+    """Read rooms in HBJSON.
+
+    Args:
+        rooms: A list of Room objects from HBJSON.
+
+    Returns:
+        A tuple of two elements.
+
+        - points: A list of lists of Point3Ds. Each list has three or more
+            Point3Ds that can be used to create a Ladybug Face3D object.
+
+        - hb_types: A list of text strings. Each text string represents either the
+            Honeybee face type or the Honeybee face object for each list of Point3Ds
+            in points.
+    """
+    points = []
+    hb_types = []
+
+    for room in rooms:
+        for face in room['faces']:
+            hb_types.append(face['face_type'])
+            points.append(get_point3d(face['geometry']['boundary']))
+            if 'apertures' in face:
+                for aperture in face['apertures']:
+                    hb_types.append(aperture['type'])
+                    points.append(get_point3d(aperture['geometry']['boundary']))
+                    if 'outdoor_shades' in aperture:
+                        for outdoor_shade in aperture['outdoor_shades']:
+                            hb_types.append(outdoor_shade['type'])
+                            points.append(get_point3d(
+                                outdoor_shade['geometry']['boundary']))
+
+    return points, hb_types
+
+
 def get_data(hbjson: Dict, hb_type: str) -> Tuple[List[List], List[str]]:
     """Get a list of vertices and Honeybee objects from an HBJSON object.
 
@@ -88,6 +124,11 @@ def read_hbjson(hbjson: Dict) -> Tuple[List[List], List[str]]:
             pts, types = get_data(hbjson[key], value)
             points.extend(pts)
             hb_types.extend(types)
+    
+    if 'rooms' in hbjson:
+        pts, types = read_rooms(hbjson['rooms'])
+        points.extend(pts)
+        hb_types.extend(types)
 
     return points, hb_types
 
