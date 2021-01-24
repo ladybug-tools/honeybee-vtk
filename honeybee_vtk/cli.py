@@ -31,15 +31,15 @@ def main():
     show_default=True
 )
 @click.option(
-    '--exclude-grids', '-eg', is_flag=True, default=True,
+    '--include-grids', '-eg', is_flag=True, default=False,
     help='Exclude exporting grids.', show_default=True
 )
 @click.option(
-    '--exclude-vectors', '-ev', is_flag=True, default=True,
+    '--include-vectors', '-ev', is_flag=True, default=False,
     help='Exclude exporting vector arrows.', show_default=True
 )
 @click.option(
-    '--exclude-points', '-ep', is_flag=True, default=True,
+    '--include-points', '-ep', is_flag=True, default=False,
     help='Exclude exporting grid points.', show_default=True
 )
 @click.option(
@@ -47,8 +47,8 @@ def main():
     help='Open the generated HTML file in a browser', show_default=True
 )
 def translate_recipe(
-        hbjson_file, name, folder, file_type, exclude_grids, exclude_vectors,
-        exclude_points, show_html
+        hbjson_file, name, folder, file_type, include_grids, include_vectors,
+        include_points, show_html
     ):
     """Translate a HBJSON file to several VTK, XML, or HTML file.
 
@@ -63,9 +63,6 @@ def translate_recipe(
 
     folder = pathlib.Path(folder)
     folder.mkdir(exist_ok=True)
-    include_grids = not exclude_grids
-    include_vectors = not exclude_vectors
-    include_points = not exclude_points
 
     try:
         output_file = writer(
