@@ -10,13 +10,14 @@ import pathlib
 from zipfile import ZipFile
 from honeybee.typing import clean_string
 from .hbjson import check_grid, read_hbjson, group_by_face_type
-from .writers import write_polydata, _write_grids, _write_vectors, _write_points
+from .writers import _write_grids, _write_vectors, _write_points, _write_normals
+from .writers import write_polydata
 from .index import write_index_json
 from .vtkjs_helper import convert_directory_to_zip_file, add_data_to_viewer
 
 
 def write_files(hbjson, file_path, file_name, target_folder, include_grids,
-                include_vectors, include_points, vtk_writer, vtk_extension):
+                include_sensors, include_normals, vtk_writer, vtk_extension):
     """
     Write a .zip of VTK/VTP files.
 
@@ -30,11 +31,14 @@ def write_files(hbjson, file_path, file_name, target_folder, include_grids,
             will be written to the current folder if not provided.
         include_grids: A boolean. Defaults to True. Grids will not be extracted from
             HBJSON if set to False.
-        include_vectors: A boolean. Defaults to True. Vector arrows will not be created
-            if set to False.
-        include_points: A boolean. Defaults to False. If set to True, sensor points
-            color-grouped based on their vector direction will be exported instead of
-            arrows for the vectors.
+        include_sensors: A text string to indicate whether to show sensor directions as
+            vectors or points colored based on directions. Acceptable values are;
+            'vectors' and 'points.' Defaults to False.
+        include_normals: A text string to indicate whether to show face normals as
+            vectors or points colored based on directions. Acceptable values are;
+            'vectors' and 'points.' Defaults to False. Currently, this function
+            only exports normals for the apertures. Other face types will be supported
+            in future.
         vtk_writer: A vtk object. Acceptable values are following;
             vtk.vtkXMLPolyDataWriter() and vtk.vtkPolyDataWriter() to write XML and
             VTK files respectively.
@@ -66,25 +70,33 @@ def write_files(hbjson, file_path, file_name, target_folder, include_grids,
     # write grid points to a vtk file if grids are found in HBJSON
     grids = check_grid(hbjson)
 
+    if not grids:
+        if include_grids or include_sensors:
+            raise ValueError("Grids are not found in HBJSON.")
+
     # If grids are there in HBJSON and they are requested
-    if grids and include_grids:
+    if include_grids:
         grid_file_names = _write_grids(
-            grids, vtk_writer, vtk_extension, temp_folder, include_points)
+            grids, vtk_writer, vtk_extension, temp_folder, include_sensors)
         file_names.extend(grid_file_names)
 
     # Write vectors if they are requested
-    if include_vectors:
-        vector_file_names = _write_vectors(
-            hb_types, grouped_points, grids, include_grids, vtk_writer, vtk_extension,
-            temp_folder)
-        file_names.extend(vector_file_names)
+    if include_sensors:
+        if include_sensors == 'vectors':
+            vector_file_names = _write_vectors(
+                grids, vtk_writer, vtk_extension, temp_folder)
+            file_names.extend(vector_file_names)
+        else:
+            point_file_names = _write_points(
+                grids, vtk_writer, vtk_extension, temp_folder)
+            file_names.extend(point_file_names)
     
-    # Write color-grouped points if they are requested
-    if include_points:
-        point_file_names = _write_points(
-            hb_types, grouped_points, grids, include_grids, vtk_writer, vtk_extension,
+    # Write normals if they are requested
+    if include_normals:
+        normal_file_names = _write_normals(
+            include_normals, hb_types, grouped_points, vtk_writer, vtk_extension,
             temp_folder)
-        file_names.extend(point_file_names)
+        file_names.extend(normal_file_names)
 
     # Use the name of HBJSON if file name is not provided
     if not file_name:
@@ -124,8 +136,8 @@ def write_files(hbjson, file_path, file_name, target_folder, include_grids,
     return target_zip_file
 
 
-def write_html(hbjson, file_path, file_name, target_folder, include_grids,
-               include_vectors, include_points, open_html):
+def write_html(hbjson, file_path, file_name, target_folder, open_html, include_grids,
+               include_sensors, include_normals):
     """Write an HTML file with VTK objects embedded into it.
 
     Args:
@@ -136,15 +148,24 @@ def write_html(hbjson, file_path, file_name, target_folder, include_grids,
             file name for the .zip file.
         target_folder: A text string to a folder to write the output file. The file
             will be written to the current folder if not provided.
-        include_grids: A boolean. Defaults to True. Grids will not be extracted from
-            HBJSON if set to False.
-        include_vectors: A boolean. Defaults to True. Vector arrows will not be created
-            if set to False.
-        include_points: A boolean. Defaults to False. If set to True, sensor points
-            color-grouped based on their vector direction will be exported instead of
-            arrows for the vectors.
-        open_html: A boolean. If set to False, it will not open the generated HTML
-            in a web browser.
+        writer: A text string to indicate the VTK writer. Acceptable values are
+            'vtk', 'xml', and 'html'. Defaults to 'html'.
+        open_html: A boolean. If set to True, it will open the generated HTML
+            in a web browser when 'html' is provided as value in the writer argument.
+            Defaults to False.
+        include_grids: A boolean. Grids will be exported if the value is True. Here, a
+            grid is exported as base-geometry, grid mesh, or sensorpoints in that order
+            of preference. So if a Sensorgrid object in HBJSON has base-geometry, then
+            that object will be exported as base geometry, eventhough it also might have
+            mesh and sensors.
+        include_sensors: A text string to indicate whether to show sensor directions as
+            vectors or points colored based on directions. Acceptable values are;
+            'vectors' and 'points.' Defaults to False.
+        include_normals: A text string to indicate whether to show face normals as
+            vectors or points colored based on directions. Acceptable values are;
+            'vectors' and 'points.' Defaults to False. Currently, this function
+            only exports normals for the apertures. Other face types will be supported
+            in future.
 
     Returns:
         A text string containing the path to the HTML file with VTK objects embedded.
@@ -180,25 +201,33 @@ def write_html(hbjson, file_path, file_name, target_folder, include_grids,
     # write grid points to a vtk file if grids are found in HBJSON
     grids = check_grid(hbjson)
 
+    if not grids:
+        if include_grids or include_sensors:
+            raise ValueError("Grids are not found in HBJSON.")
+
     # If grids are there in HBJSON and they are requested
-    if grids and include_grids:
+    if include_grids:
         grid_file_names = _write_grids(
-            grids, vtk_writer, vtk_extension, temp_folder, include_points)
+            grids, vtk_writer, vtk_extension, temp_folder, include_sensors)
         file_names.extend(grid_file_names)
 
     # Write vectors if they are requested
-    if include_vectors:
-        vector_file_names = _write_vectors(
-            hb_types, grouped_points, grids, include_grids, vtk_writer, vtk_extension,
-            temp_folder)
-        file_names.extend(vector_file_names)
+    if include_sensors:
+        if include_sensors == 'vectors':
+            vector_file_names = _write_vectors(
+                grids, vtk_writer, vtk_extension, temp_folder)
+            file_names.extend(vector_file_names)
+        else:
+            point_file_names = _write_points(
+                grids, vtk_writer, vtk_extension, temp_folder)
+            file_names.extend(point_file_names)
     
-    # Write color-grouped points if they are requested
-    if include_points:
-        point_file_names = _write_points(
-            hb_types, grouped_points, grids, include_grids, vtk_writer, vtk_extension,
+    # Write normals if they are requested
+    if include_normals:
+        normal_file_names = _write_normals(
+            include_normals, hb_types, grouped_points, vtk_writer, vtk_extension,
             temp_folder)
-        file_names.extend(point_file_names)
+        file_names.extend(normal_file_names)
 
     # Write index.json
     write_index_json(temp_folder, file_names)
