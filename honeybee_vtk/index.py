@@ -1,4 +1,4 @@
-"""Write index.json to color vtk datasets."""
+"""Write index.json to color vtk datasets for Paraview Glance."""
 
 import os
 import json
@@ -22,6 +22,7 @@ layer_colors = {
     'Aperture points': [1, 1, 1],
     'Grid base points': [1, 1, 1],
     'Grid mesh points': [1, 1, 1],
+    'Grid sensor points': [1, 1, 1],
     'Aperture normals': [1, 1, 1],
     'AirBoundary': [0.109, 0.227, 0.074],
     'Context': [0.925, 0.305, 0.125]
