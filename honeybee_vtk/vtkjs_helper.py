@@ -1,5 +1,6 @@
 """This module helps in embedding vtkjs data in Paraview Glance HTML. This module is
-originally developed by Kitware and can be found at the following link."""
+originally developed by Kitware and can be found at the following link.
+https://github.com/Kitware/VTK/blob/master/Web/Python/vtkmodules/web/vtkjs_helper.py"""
 
 import base64
 import json

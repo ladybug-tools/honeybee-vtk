@@ -1,4 +1,4 @@
-"""Write either an HTML or a .zip of VTk or XML files from a valid HBJSON."""
+"""Write either an HTML or a .zip of VTK or XML files from a valid HBJSON."""
 
 import os
 import json
