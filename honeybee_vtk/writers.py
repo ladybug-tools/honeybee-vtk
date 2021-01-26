@@ -1,4 +1,4 @@
-"""A collection of helper functions to write VTK objects to file."""
+"""A collection of functions to write VTK objects to file."""
 
 
 import os
@@ -53,13 +53,15 @@ def write_polydata(
 
 
 def write_points(
-        points: List[List], vectors: List[List], vtk_writer, vtk_extension,
-        target_folder, file_name='Grid points'):
+        points: List[List], vectors: List[List], file_name, target_folder,
+        vtk_writer, vtk_extension):
     """Write VTK points to a file.
 
     Args:
         points : A list of lists. Here, each list has X, Y, and Z coordinates of a point.
         vectors: A list of lists. Here, each list has X, Y, and Z components of a vector.
+        file_name: A text string to be used as a file name.
+        target_folder: A text string to a folder to write the output vtk file.
         vtk_writer: A vtk object. Acceptable values are following;
             vtk.vtkXMLPolyDataWriter(), vtk.vtkPolyDataWriter(), and
             vtk.vtkJSONDataSetWriter() to write XML, VTK, and HTML files respectively.
@@ -68,9 +70,7 @@ def write_points(
             '.vtk', '.vtp', ''.
             Please note that the vtk_extension value is a an empty string with no spaces
             in the case of vtk_writer having the value of 'html'.
-        target_folder: A text string to a folder to write the output vtk file.
-        file_name: A text string to be used as a file name. Defaults to "grid points."
-
+        
     Returns:
         A text string containing the path to the file.
     """
@@ -172,72 +172,19 @@ def _write_grids(grids, vtk_writer, vtk_extension, target_folder, include_sensor
     if grids[2] and include_sensors != 'points':
         start_points = get_grid_points(grids[2])[0]
         vectors = None
-        write_points(start_points, vectors, vtk_writer, vtk_extension, target_folder)
+        write_points(start_points, vectors, 'Grid points', target_folder, vtk_writer,
+                     vtk_extension)
         grid_file_names.append('Grid points')
 
     return grid_file_names
 
 
-def _write_vectors(grids, vtk_writer, vtk_extension, target_folder):
-    """
-    Write vectors to file.
-
-    Args:
-        grids: A of following three lists.
-            A list of HBJSON sensorgrids that have 'base_geometry' as a key.
-            A list of HBJSON sensorgrids that have 'mesh' as a key and does not have
-            'base_geometry' as a key.
-            A list of HBJSON sensorgrids that have neither 'mesh' nor 'base_geometry'
-            as keys.
-        vtk_writer: A vtk object. Acceptable values are following;
-            vtk.vtkXMLPolyDataWriter(), vtk.vtkPolyDataWriter(), and
-            vtk.vtkJSONDataSetWriter() to write XML, VTK, and HTML files respectively.
-        vtk_extension: A text string for the file extension to be used. Following are 
-            acceptable values for the corresponding vtk_writer values;
-            '.vtk', '.vtp', ''.
-            Please note that the vtk_extension value is a an empty string with no spaces
-            in the case of vtk_writer having the value of 'html'.
-        target_folder: A text string to a folder to write the output vtk file. 
-
-    Returns:
-        A list of strings for file names.
-    """
-    vector_file_names = []
-
-    # If base_geometry is found in any of the grids
-    if grids[0]:
-        grid_points, grid_vectors = get_grid_points(grids[0])
-        start_points = get_point3d(grid_points)
-        vectors = get_vector3d(grid_vectors)
-        write_arrows(start_points, vectors, 'Grid base vectors', target_folder,
-                     vtk_writer, vtk_extension)
-        vector_file_names.append('Grid base vectors')
-
-    # If mesh is found in any of the grids
-    if grids[1]:
-        mesh_points = get_grid_mesh(grids[1])[0]
-        start_points, vectors = get_vector_at_center(mesh_points)
-        write_arrows(start_points, vectors, 'Grid mesh vectors', target_folder,
-                     vtk_writer, vtk_extension)
-        vector_file_names.append('Grid mesh vectors')
-    
-    # If only grid points and vectors are there in the grids
-    if grids[2]:
-        grid_points, grid_vectors = get_grid_points(grids[2])
-        start_points = get_point3d(grid_points)
-        vectors = get_vector3d(grid_vectors)
-        write_arrows(start_points, vectors, 'Grid points vectors', target_folder,
-                     vtk_writer, vtk_extension)
-        vector_file_names.append('Grid points vectors')
-
-    return vector_file_names
-
-
-def _write_points(grids, vtk_writer, vtk_extension, target_folder):
+def _write_sensors(include_sensors, grids, vtk_writer, vtk_extension, target_folder):
     """
     Write points that are color-grouped based on the direction of vectors.
 
     Args:
+        include_sensors: Bool value of False or a value from 'vectors' or 'points.'
         grids: A of following three lists.
             A list of HBJSON sensorgrids that have 'base_geometry' as a key.
             A list of HBJSON sensorgrids that have 'mesh' as a key and does not have
@@ -257,35 +204,48 @@ def _write_points(grids, vtk_writer, vtk_extension, target_folder):
     Returns:
         A list of strings for file names.
     """
-    point_file_names = []
+    if include_sensors == 'vectors':
+        sensor_writer = write_arrows
+        layer_name_extension = 'vectors'
+    else:
+        sensor_writer = write_points
+        layer_name_extension = 'points'
+
+    sensor_file_names = []
 
     # If base_geometry is found in any of the grids
     if grids[0]:
         grid_points, grid_vectors = get_grid_points(grids[0])
         start_points = get_point3d(grid_points)
         vectors = get_vector3d(grid_vectors)
-        write_points(start_points, vectors, vtk_writer, vtk_extension, target_folder,
-                     'Grid base points')
-        point_file_names.append('Grid base points')
+        layer_name = 'Grid base ' + layer_name_extension
+        sensor_writer(start_points, vectors, layer_name, target_folder, vtk_writer,
+                      vtk_extension)
+        sensor_file_names.append(layer_name)
 
     # If mesh is found in any of the grids
     if grids[1]:
         mesh_points = get_grid_mesh(grids[1])[0]
         start_points, vectors = get_vector_at_center(mesh_points)
-        write_points(start_points, vectors, vtk_writer, vtk_extension, target_folder,
-                     'Grid mesh points')
-        point_file_names.append('Grid mesh points')
+        layer_name = 'Grid mesh ' + layer_name_extension
+        sensor_writer(start_points, vectors, layer_name, target_folder, vtk_writer,
+                      vtk_extension)
+        sensor_file_names.append(layer_name)
 
     # If only grid points and vectors are there in the grids
     if grids[2]:
         grid_points, grid_vectors = get_grid_points(grids[2])
         start_points = get_point3d(grid_points)
         vectors = get_vector3d(grid_vectors)
-        write_points(start_points, vectors, vtk_writer, vtk_extension, target_folder,
-                     'Grid points')
-        point_file_names.append('Grid points')
+        if layer_name_extension == 'points':
+            layer_name = 'Grid points'
+        else:
+            layer_name = 'Grid points ' + layer_name_extension
+        sensor_writer(start_points, vectors, layer_name, target_folder, vtk_writer,
+                      vtk_extension)
+        sensor_file_names.append(layer_name)
 
-    return point_file_names
+    return sensor_file_names
 
 
 def _write_normals(include_normals, hb_types, grouped_points, vtk_writer, vtk_extension,
@@ -330,22 +290,17 @@ def _write_normals(include_normals, hb_types, grouped_points, vtk_writer, vtk_ex
     """
     normal_file_names = []
 
-    # If Aperture objects are there in HBJSON
-    if 'Aperture' in hb_types:
-        # Create face normals
-        start_points, vectors = get_vector_at_center(grouped_points['Aperture'])
+    # Create face normals
+    start_points, vectors = get_vector_at_center(grouped_points['Aperture'])
 
-        if include_normals == 'vectors':
-            write_arrows(start_points, vectors, 'Aperture vectors', target_folder,
-                         vtk_writer, vtk_extension)
-            normal_file_names.append('Aperture vectors')
+    if include_normals == 'vectors':
+        write_arrows(start_points, vectors, 'Aperture vectors', target_folder,
+                     vtk_writer, vtk_extension)
+        normal_file_names.append('Aperture vectors')
 
-        elif include_normals == 'points':
-            write_points(start_points, vectors, vtk_writer, vtk_extension,
-                         target_folder, 'Aperture points')
-            normal_file_names.append('Aperture points')
-
-    else:
-        raise ValueError("Apertures are not found in HBJSON.")
+    elif include_normals == 'points':
+        write_points(start_points, vectors, vtk_writer, vtk_extension,
+                     target_folder, 'Aperture points')
+        normal_file_names.append('Aperture points')
 
     return normal_file_names
