@@ -78,7 +78,7 @@ def _write(hbjson, temp_folder, vtk_writer, vtk_extension, include_grids,
 
     # Write normals if they are requested
     if include_normals:
-        if 'Apertures' in hb_types:
+        if 'Aperture' in hb_types:
             normal_file_names = _write_normals(
                 include_normals, hb_types, grouped_points, vtk_writer, vtk_extension,
                 temp_folder)
