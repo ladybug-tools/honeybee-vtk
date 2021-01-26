@@ -16,42 +16,28 @@ from .index import write_index_json
 from .vtkjs_helper import convert_directory_to_zip_file, add_data_to_viewer
 
 
-def write_files(hbjson, file_path, file_name, target_folder, include_grids,
-                include_sensors, include_normals, vtk_writer, vtk_extension):
-    """
-    Write a .zip of VTK/VTP files.
+def _write(hbjson, temp_folder, vtk_writer, vtk_extension, include_grids,
+           include_sensors, include_normals):
+    """Write files to temp folder get the names of files/folders being written.
 
     Args:
         hbjson: A dictionary.
-        file_path: A text string for a valid path to the HBJSON file.
-        file_name: A text string for the name of the .zip file to be written. If no
-            text string is provided, the name of the HBJSON file will be used as a
-            file name for the .zip file.
-        target_folder: A text string to a folder to write the output file. The file
-            will be written to the current folder if not provided.
-        include_grids: A boolean. Defaults to True. Grids will not be extracted from
-            HBJSON if set to False.
-        include_sensors: A text string to indicate whether to show sensor directions as
-            vectors or points colored based on directions. Acceptable values are;
-            'vectors' and 'points.' Defaults to False.
-        include_normals: A text string to indicate whether to show face normals as
-            vectors or points colored based on directions. Acceptable values are;
-            'vectors' and 'points.' Defaults to False. Currently, this function
-            only exports normals for the apertures. Other face types will be supported
-            in future.
+        temp_folder: Path to the temp folder as a text string.
         vtk_writer: A vtk object. Acceptable values are following;
-            vtk.vtkXMLPolyDataWriter() and vtk.vtkPolyDataWriter() to write XML and
-            VTK files respectively.
+            vtk.vtkXMLPolyDataWriter(), vtk.vtkPolyDataWriter(), and
+            vtk.vtkJSONDataSetWriter() to write XML, VTK, and HTML files respectively.
         vtk_extension: A text string for the file extension to be used. Following are
             acceptable values for the corresponding vtk_writer values;
-            vtk.vtkXMLPolyDataWriter() -> '.vtp',
-            vtk.vtkPolyDataWriter() -> '.vtk',
+            '.vtk', '.vtp', ''.
+            Please note that the vtk_extension value is a an empty string with no spaces
+            in the case of vtk_writer having the value of 'html'.
+        include_grids: A bool.
+        include_sensors: Bool value of False or a value from 'vectors' or 'points.'
+        include_normals: Bool value of False or a value from 'vectors' or 'points.'
 
     Returns:
-        A text string containing the path to the .zip file with VTK/VTP files.
+        A list of text strings for file names.
     """
-    # Create a temp folder
-    temp_folder = tempfile.mkdtemp()
 
     # Get points and face_types from HBJSON
     points, hb_types = read_hbjson(hbjson)
@@ -90,13 +76,57 @@ def write_files(hbjson, file_path, file_name, target_folder, include_grids,
             point_file_names = _write_points(
                 grids, vtk_writer, vtk_extension, temp_folder)
             file_names.extend(point_file_names)
-    
+
     # Write normals if they are requested
     if include_normals:
         normal_file_names = _write_normals(
             include_normals, hb_types, grouped_points, vtk_writer, vtk_extension,
             temp_folder)
         file_names.extend(normal_file_names)
+
+    return file_names
+
+
+def write_files(hbjson, file_path, file_name, target_folder, include_grids,
+                include_sensors, include_normals, vtk_writer, vtk_extension):
+    """
+    Write a .zip of VTK/VTP files.
+
+    Args:
+        hbjson: A dictionary.
+        file_path: A text string for a valid path to the HBJSON file.
+        file_name: A text string for the name of the .zip file to be written. If no
+            text string is provided, the name of the HBJSON file will be used as a
+            file name for the .zip file.
+        target_folder: A text string to a folder to write the output file. The file
+            will be written to the current folder if not provided.
+        include_grids: A boolean. Defaults to True. Grids will not be extracted from
+            HBJSON if set to False.
+        include_sensors: A text string to indicate whether to show sensor directions as
+            vectors or points colored based on directions. Acceptable values are;
+            'vectors' and 'points.' Defaults to False.
+        include_normals: A text string to indicate whether to show face normals as
+            vectors or points colored based on directions. Acceptable values are;
+            'vectors' and 'points.' Defaults to False. Currently, this function
+            only exports normals for the apertures. Other face types will be supported
+            in future.
+        vtk_writer: A vtk object. Acceptable values are following;
+            vtk.vtkXMLPolyDataWriter() and vtk.vtkPolyDataWriter() to write XML and
+            VTK files respectively.
+        vtk_extension: A text string for the file extension to be used. Following are
+            acceptable values for the corresponding vtk_writer values;
+            vtk.vtkXMLPolyDataWriter() -> '.vtp',
+            vtk.vtkPolyDataWriter() -> '.vtk',
+
+    Returns:
+        A text string containing the path to the .zip file with VTK/VTP files.
+    """
+    # Create a temp folder
+    temp_folder = tempfile.mkdtemp()
+
+    file_names = _write(
+        hbjson, temp_folder, vtk_writer, vtk_extension, include_grids, include_sensors,
+        include_normals)
 
     # Use the name of HBJSON if file name is not provided
     if not file_name:
@@ -184,50 +214,9 @@ def write_html(hbjson, file_path, file_name, target_folder, open_html, include_g
     vtk_writer = vtk.vtkJSONDataSetWriter()
     vtk_extension = ""
 
-    # Get points and face_types from HBJSON
-    points, hb_types = read_hbjson(hbjson)
-
-    # Get points grouped for each Honeybee face_type
-    grouped_points = group_by_face_type(points, hb_types)
-
-    # Write VTK files based on Honeybee face_type and Honeybee object type
-    for hb_type in grouped_points:
-        write_polydata(grouped_points[hb_type], hb_type, vtk_writer, vtk_extension,
-                       temp_folder)
-
-    # Names of VTK files to be written
-    file_names = list(grouped_points.keys())
-
-    # write grid points to a vtk file if grids are found in HBJSON
-    grids = check_grid(hbjson)
-
-    if not grids:
-        if include_grids or include_sensors:
-            raise ValueError("Grids are not found in HBJSON.")
-
-    # If grids are there in HBJSON and they are requested
-    if include_grids:
-        grid_file_names = _write_grids(
-            grids, vtk_writer, vtk_extension, temp_folder, include_sensors)
-        file_names.extend(grid_file_names)
-
-    # Write vectors if they are requested
-    if include_sensors:
-        if include_sensors == 'vectors':
-            vector_file_names = _write_vectors(
-                grids, vtk_writer, vtk_extension, temp_folder)
-            file_names.extend(vector_file_names)
-        else:
-            point_file_names = _write_points(
-                grids, vtk_writer, vtk_extension, temp_folder)
-            file_names.extend(point_file_names)
-    
-    # Write normals if they are requested
-    if include_normals:
-        normal_file_names = _write_normals(
-            include_normals, hb_types, grouped_points, vtk_writer, vtk_extension,
-            temp_folder)
-        file_names.extend(normal_file_names)
+    file_names = _write(
+        hbjson, temp_folder, vtk_writer, vtk_extension, include_grids, include_sensors,
+        include_normals)
 
     # Write index.json
     write_index_json(temp_folder, file_names)
