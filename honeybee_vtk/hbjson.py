@@ -5,7 +5,7 @@ from .helper import get_point3d
 from typing import List, Tuple, Dict
 
 
-def read_rooms(rooms: List) -> Tuple[List[List], List[str]]:
+def get_rooms(rooms: List) -> Tuple[List[List], List[str]]:
     """Read rooms in HBJSON.
 
     Args:
@@ -126,7 +126,7 @@ def read_hbjson(hbjson: Dict) -> Tuple[List[List], List[str]]:
             hb_types.extend(types)
     
     if 'rooms' in hbjson:
-        pts, types = read_rooms(hbjson['rooms'])
+        pts, types = get_rooms(hbjson['rooms'])
         points.extend(pts)
         hb_types.extend(types)
 
