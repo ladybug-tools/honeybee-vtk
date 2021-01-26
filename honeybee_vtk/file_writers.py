@@ -6,12 +6,12 @@ import shutil
 import tempfile
 import webbrowser
 import pathlib
+import warnings
 
 from zipfile import ZipFile
 from honeybee.typing import clean_string
 from .hbjson import check_grid, read_hbjson, group_by_face_type
-from .writers import _write_grids, _write_vectors, _write_points, _write_normals
-from .writers import write_polydata
+from .writers import _write_grids, _write_sensors, _write_normals, write_polydata
 from .index import write_index_json
 from .vtkjs_helper import convert_directory_to_zip_file, add_data_to_viewer
 
@@ -54,35 +54,38 @@ def _write(hbjson, temp_folder, vtk_writer, vtk_extension, include_grids,
     file_names = list(grouped_points.keys())
 
     # write grid points to a vtk file if grids are found in HBJSON
-    grids = check_grid(hbjson)
+    if include_grids or include_sensors:
+ 
+        # If grids are there in HBJSON
+        grids = check_grid(hbjson)
+        if grids:
 
-    if not grids:
-        if include_grids or include_sensors:
-            raise ValueError("Grids are not found in HBJSON.")
+            # If grids are requested
+            if include_grids:
+                grid_file_names = _write_grids(
+                    grids, vtk_writer, vtk_extension, temp_folder, include_sensors)
+                file_names.extend(grid_file_names)
 
-    # If grids are there in HBJSON and they are requested
-    if include_grids:
-        grid_file_names = _write_grids(
-            grids, vtk_writer, vtk_extension, temp_folder, include_sensors)
-        file_names.extend(grid_file_names)
-
-    # Write vectors if they are requested
-    if include_sensors:
-        if include_sensors == 'vectors':
-            vector_file_names = _write_vectors(
-                grids, vtk_writer, vtk_extension, temp_folder)
-            file_names.extend(vector_file_names)
+            # If sensors are requested
+            if include_sensors:
+                sensor_file_names = _write_sensors(
+                    include_sensors, grids, vtk_writer, vtk_extension, temp_folder)
+                file_names.extend(sensor_file_names)
         else:
-            point_file_names = _write_points(
-                grids, vtk_writer, vtk_extension, temp_folder)
-            file_names.extend(point_file_names)
+            warnings.warn(
+                'Grids are not found in HBJSON. include_grids and include_sensors will'
+                ' be ignored.')
 
     # Write normals if they are requested
     if include_normals:
-        normal_file_names = _write_normals(
-            include_normals, hb_types, grouped_points, vtk_writer, vtk_extension,
-            temp_folder)
-        file_names.extend(normal_file_names)
+        if 'Apertures' in hb_types:
+            normal_file_names = _write_normals(
+                include_normals, hb_types, grouped_points, vtk_writer, vtk_extension,
+                temp_folder)
+            file_names.extend(normal_file_names)
+        else:
+            warnings.warn(
+                'Apertures are not found in HBJSON. include_normals will be ignored.')
 
     return file_names
 
