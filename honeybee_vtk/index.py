@@ -6,12 +6,12 @@ import copy
 
 # Scarlet colors in decimal
 layer_colors = {
-    'Wall': [0.858, 0.713, 0.560],
-    'Aperture': [0.858, 0.988, 1],
-    'Door': [0.776, 0.847, 0.686],
-    'Shade': [0.937, 0.643, 0.545],
-    'Floor': [0.031, 0.572, 0.647],
-    'RoofCeiling': [0.407, 0.325, 0.411],
+    'Wall': [0.901, 0.705, 0.235],
+    'Aperture': [0.250, 0.705, 1],
+    'Door': [0.627, 0.588, 0.392],
+    'Shade': [0.470, 0.294, 0.745],
+    'Floor': [1, 0.501, 0.501],
+    'RoofCeiling': [0.501, 0.078, 0.078],
     'Grid base': [0.925, 0.250, 0.403],
     'Grid mesh': [0.925, 0.250, 0.403],
     'Grid points': [1, 1, 1],
@@ -24,8 +24,7 @@ layer_colors = {
     'Grid mesh points': [1, 1, 1],
     'Grid sensor points': [1, 1, 1],
     'Aperture normals': [1, 1, 1],
-    'AirBoundary': [0.109, 0.227, 0.074],
-    'Context': [0.925, 0.305, 0.125]
+    'AirBoundary': [1, 1, 0.784],
 }
 
 index_template = {
