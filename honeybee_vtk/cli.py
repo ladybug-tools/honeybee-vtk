@@ -1,4 +1,5 @@
-"""Honeybee VTK command line interface."""
+"""honeybee-vtk command line interface."""
+
 import sys
 import pathlib
 
