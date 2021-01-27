@@ -36,13 +36,11 @@ def main():
     help='Export grids.', show_default=True
 )
 @click.option(
-    '--include-sensors', '-is', type=click.Choice(['vectors', 'points', 'none']),
-    default='none',
+    '--include-sensors', '-is', type=click.Choice(['vectors', 'points']),
     help='Export sensors as either arrows or color-grouped points.', show_default=True
 )
 @click.option(
-    '--include-normals', '-in', type=click.Choice(['vectors', 'points', 'none']),
-    default='none',
+    '--include-normals', '-in', type=click.Choice(['vectors', 'points']),
     help='Export aperture normals as either arrows or color-grouped points.',
     show_default=True
 )
@@ -67,10 +65,10 @@ def translate_recipe(
 
     folder = pathlib.Path(folder)
     folder.mkdir(exist_ok=True)
-    if include_sensors == 'none':
-        include_sensors = False
-    if include_normals == 'none':
+    if not include_normals:
         include_normals = False
+    if not include_sensors:
+        include_sensors = False
 
     try:
         output_file = writer(
