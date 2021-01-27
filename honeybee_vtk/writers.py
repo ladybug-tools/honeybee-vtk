@@ -299,8 +299,8 @@ def _write_normals(include_normals, hb_types, grouped_points, vtk_writer, vtk_ex
         normal_file_names.append('Aperture vectors')
 
     elif include_normals == 'points':
-        write_points(start_points, vectors, vtk_writer, vtk_extension,
-                     target_folder, 'Aperture points')
+        write_points(start_points, vectors, 'Aperture points', target_folder,
+                     vtk_writer, vtk_extension)
         normal_file_names.append('Aperture points')
 
     return normal_file_names
