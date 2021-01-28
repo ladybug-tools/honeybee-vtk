@@ -8,9 +8,10 @@ import vtk
 from .file_writers import write_files, write_html
 
 
-def _check_inputs(file_path, file_name, target_folder, writer, open_html,
-                  include_grids, include_sensors, include_normals):
-    """Validate user inputs.
+def writer(file_path, *, file_name=None, target_folder=None, writer='html',
+           open_html=False, include_grids=False, include_sensors=None,
+           include_normals=None):
+    """Read a valid HBJSON and either write an HTML or a .zip of VTK files.
 
     Args:
         file_path: A text string for a valid path to the HBJSON file.
@@ -26,51 +27,31 @@ def _check_inputs(file_path, file_name, target_folder, writer, open_html,
             Defaults to False.
         include_grids: A boolean. Grids will be exported if the value is True. Here, a
             grid is exported as base-geometry, grid mesh, or sensorpoints in that order
-            of preference. So if a Sensorgrid object in HBJSON has base-geometry, then 
+            of preference. So if a Sensorgrid object in HBJSON has base-geometry, then
             that object will be exported as base geometry, eventhough it also might have
             mesh and sensors.
         include_sensors: A text string to indicate whether to show sensor directions as
             vectors or points colored based on directions. Acceptable values are;
-            'vectors' and 'points.' Defaults to False.
+            'vectors' and 'points.' Defaults to None.
         include_normals: A text string to indicate whether to show face normals as
             vectors or points colored based on directions. Acceptable values are;
-            'vectors' and 'points.' Defaults to False. Currently, this function
+            'vectors' and 'points.' Defaults to None. Currently, this function
             only exports normals for the apertures. Other face types will be supported
             in future.
-            
+
     Returns:
-        A tuple of two elements.
-
-        - hbjson: A dictionary.
-
-        - writer_val: A text string.
+        A text string containing the path to the output file.
     """
 
-    # Validate file_name
-    if file_name:
-        if not isinstance(file_name, str):
-            raise ValueError('file_name needs to be a text string.')
-
-    # Validate open_html
-    if not isinstance(open_html, bool):
-        raise ValueError('Open_html only accepts a boolean value.')
-
-    if not isinstance(include_grids, bool):
-        raise ValueError('include_grids only accepts a boolean value.')
-
     # Validate include_sensors
-    if include_sensors:
-        if not isinstance(include_sensors, str) or include_sensors.lower()\
-            not in ['vectors', 'points']:
-            raise ValueError('The value for include_sensors can be either "vectors"'
-                             ' or "points".')
+    if include_sensors and include_sensors.lower() not in ['vectors', 'points']:
+        raise ValueError('The value for include_sensors can be either "vectors"'
+                         ' or "points".')
 
     # Validate include_normals
-    if include_normals:
-        if not isinstance(include_normals, str) or include_normals.lower()\
-            not in ['vectors', 'points']:
-            raise ValueError('The value for include_normals can be either "vectors"'
-                            ' or "points".')
+    if include_normals and include_normals.lower() not in ['vectors', 'points']:
+        raise ValueError('The value for include_normals can be either "vectors"'
+                         ' or "points".')
 
     # Check if path to HBJSON is fine
     if not os.path.isfile(file_path):
@@ -93,52 +74,10 @@ def _check_inputs(file_path, file_name, target_folder, writer, open_html,
         os.makedirs(target_folder, exist_ok=True)
 
     # Validate and set writer and extension
-    if not isinstance(writer, str) or writer.lower() not in ['vtk', 'xml', 'html']:
-        raise ValueError('The value for writer can be "html", vtk" or "xml" only.')
+    if writer.lower() not in ['vtk', 'xml', 'html']:
+        raise ValueError('The value for writer can be "html", "vtk" or "xml" only.')
     else:
         writer_val = writer
-
-    return hbjson, writer_val
-
-
-def writer(file_path, *, file_name=None, target_folder=None, writer='html',
-           open_html=False, include_grids=False, include_sensors=False,
-           include_normals=False):
-    """Read a valid HBJSON and either write an HTML or a .zip of VTK files.
-
-    Args:
-        file_path: A text string for a valid path to the HBJSON file.
-        file_name: A text string for the name of the .zip file to be written. If no
-            text string is provided, the name of the HBJSON file will be used as a
-            file name for the .zip file.
-        target_folder: A text string to a folder to write the output file. The file
-            will be written to the current folder if not provided.
-        writer: A text string to indicate the VTK writer. Acceptable values are
-            'vtk', 'xml', and 'html'. Defaults to 'html'.
-        open_html: A boolean. If set to True, it will open the generated HTML
-            in a web browser when 'html' is provided as value in the writer argument.
-            Defaults to False.
-        include_grids: A boolean. Grids will be exported if the value is True. Here, a
-            grid is exported as base-geometry, grid mesh, or sensorpoints in that order
-            of preference. So if a Sensorgrid object in HBJSON has base-geometry, then
-            that object will be exported as base geometry, eventhough it also might have
-            mesh and sensors.
-        include_sensors: A text string to indicate whether to show sensor directions as
-            vectors or points colored based on directions. Acceptable values are;
-            'vectors' and 'points.' Defaults to False.
-        include_normals: A text string to indicate whether to show face normals as
-            vectors or points colored based on directions. Acceptable values are;
-            'vectors' and 'points.' Defaults to False. Currently, this function
-            only exports normals for the apertures. Other face types will be supported
-            in future.
-
-    Returns:
-        A text string containing the path to the output file.
-    """
-
-    hbjson, writer_val = _check_inputs(
-        file_path, file_name, target_folder, writer, open_html, include_grids,
-        include_sensors, include_normals)
 
     if writer_val.lower() == 'html':
         return write_html(
