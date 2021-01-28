@@ -4,8 +4,8 @@
 import os
 
 from typing import List
-from .to_vtk import create_polygons, create_points, create_arrows
-from .to_vtk import create_color_grouped_points
+from .to_vtk import create_polygons, create_points, create_arrows,\
+    create_color_grouped_points
 from .helper import get_end_point, get_vector_at_center, get_point3d, get_vector3d
 from .hbjson import get_grid_base, get_grid_mesh, get_grid_points
 
@@ -53,7 +53,7 @@ def write_polydata(
 
 
 def write_points(
-        points: List[List], vectors: List[List], file_name, target_folder,
+        points: List[List], vectors: List[List], *, file_name, target_folder,
         vtk_writer, vtk_extension):
     """Write VTK points to a file.
 
@@ -88,7 +88,7 @@ def write_points(
     return file_name
 
 
-def write_arrows(start_points, vectors, file_name, target_folder, vtk_writer,
+def write_arrows(start_points, vectors, *, file_name, target_folder, vtk_writer,
                  vtk_extension):
     """Write VTK arrows to a file.
 
@@ -219,8 +219,9 @@ def _write_sensors(include_sensors, grids, vtk_writer, vtk_extension, target_fol
         start_points = get_point3d(grid_points)
         vectors = get_vector3d(grid_vectors)
         layer_name = 'Grid base ' + layer_name_extension
-        sensor_writer(start_points, vectors, layer_name, target_folder, vtk_writer,
-                      vtk_extension)
+        sensor_writer(
+            start_points, vectors, file_name=layer_name, target_folder=target_folder,
+            vtk_writer=vtk_writer, vtk_extension=vtk_extension)
         sensor_file_names.append(layer_name)
 
     # If mesh is found in any of the grids
@@ -228,8 +229,9 @@ def _write_sensors(include_sensors, grids, vtk_writer, vtk_extension, target_fol
         mesh_points = get_grid_mesh(grids[1])[0]
         start_points, vectors = get_vector_at_center(mesh_points)
         layer_name = 'Grid mesh ' + layer_name_extension
-        sensor_writer(start_points, vectors, layer_name, target_folder, vtk_writer,
-                      vtk_extension)
+        sensor_writer(
+            start_points, vectors, file_name=layer_name, target_folder=target_folder,
+            vtk_writer=vtk_writer, vtk_extension=vtk_extension)
         sensor_file_names.append(layer_name)
 
     # If only grid points and vectors are there in the grids
@@ -241,9 +243,9 @@ def _write_sensors(include_sensors, grids, vtk_writer, vtk_extension, target_fol
             layer_name = 'Grid points'
         else:
             layer_name = 'Grid points ' + layer_name_extension
-        sensor_writer(start_points, vectors, layer_name, target_folder, vtk_writer,
-                      vtk_extension)
-        sensor_file_names.append(layer_name)
+        sensor_writer(
+            start_points, vectors, file_name=layer_name, target_folder=target_folder,
+            vtk_writer=vtk_writer, vtk_extension=vtk_extension)
 
     return sensor_file_names
 
@@ -294,13 +296,17 @@ def _write_normals(include_normals, hb_types, grouped_points, vtk_writer, vtk_ex
     start_points, vectors = get_vector_at_center(grouped_points['Aperture'])
 
     if include_normals == 'vectors':
-        write_arrows(start_points, vectors, 'Aperture vectors', target_folder,
-                     vtk_writer, vtk_extension)
+        write_arrows(
+            start_points, vectors, file_name='Aperture vectors',
+            target_folder=target_folder, vtk_writer=vtk_writer,
+            vtk_extension=vtk_extension)
         normal_file_names.append('Aperture vectors')
 
     elif include_normals == 'points':
-        write_points(start_points, vectors, 'Aperture points', target_folder,
-                     vtk_writer, vtk_extension)
+        write_points(
+            start_points, vectors, file_name='Aperture points',
+            target_folder=target_folder, vtk_writer=vtk_writer,
+            vtk_extension=vtk_extension)
         normal_file_names.append('Aperture points')
 
     return normal_file_names
