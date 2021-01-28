@@ -4,7 +4,7 @@
 import os
 
 from typing import List
-from .to_vtk import create_polygons, create_points, create_arrows,\
+from .to_vtk import create_polygons, create_points, create_arrows, \
     create_color_grouped_points
 from .helper import get_end_point, get_vector_at_center, get_point3d, get_vector3d
 from .hbjson import get_grid_base, get_grid_mesh, get_grid_points
