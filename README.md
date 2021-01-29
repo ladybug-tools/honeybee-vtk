@@ -3,7 +3,7 @@
 
 ![HBJSON exported to web](/images/room.gif)
 
-[![Coverage Status](https://coveralls.io/repos/github/devngc/honeybee-vtk/badge.svg)](https://coveralls.io/github/devngc/honeybee-vtk)
+[![Coverage Status](https://coveralls.io/repos/github/ladybug-tools/honeybee-vtk/badge.svg)](https://coveralls.io/github/ladybug-tools/honeybee-vtk)
 
 ## Installation
 
