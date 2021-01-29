@@ -26,12 +26,12 @@ jobs:
           pip install -r dev-requirements.txt
       - name: run tests
         run: python -m pytest --cov=. tests/
-      # - name: run test coverage
-      #   run: |
-      #     coverage report
-      #     coveralls
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: run test coverage
+        run: |
+          coverage report
+          coveralls
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
     name: Deploy to GitHub and PyPI
