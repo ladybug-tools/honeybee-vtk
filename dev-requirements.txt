@@ -1,5 +1,5 @@
 coverage==5.4
-coveralls==2.2.0
+coveralls==3.0.0
 pytest==6.2.2
 pytest-cov==2.11.1
 twine==3.3.0
