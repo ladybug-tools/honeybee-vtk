@@ -1,5 +1,5 @@
 coverage==5.4
-coveralls==2.2.0;python_version>='3.6'
+coveralls==2.2.0
 pytest==6.2.1
 pytest-cov==2.10.1
 twine==3.3.0
