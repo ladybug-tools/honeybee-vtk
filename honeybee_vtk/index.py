@@ -68,8 +68,8 @@ dataset_template = {
 def write_index_json(target_folder, layer_names):
     """write index.json for all the vtk layers.
 
-    This function creates an index.json file that hosts visualization settings to be 
-    used in Paraview Glance for each layer.
+    This function creates an index.json file that hosts visualization settings to be
+    used in Paraview Glance for each of the layers.
 
     Args:
         target_folder: A text string to a folder to write the output file. The file
