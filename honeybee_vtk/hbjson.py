@@ -14,10 +14,10 @@ def get_rooms(rooms: List) -> Tuple[List[List], List[str]]:
     Returns:
         A tuple of two elements.
 
-        - points: A list of lists of Point3Ds. Each list has three or more
+        -   points: A list of lists of Point3Ds. Each list has three or more
             Point3Ds that can be used to create a Ladybug Face3D object.
 
-        - hb_types: A list of text strings. Each text string represents either the
+        -   hb_types: A list of text strings. Each text string represents either the
             Honeybee face type or the Honeybee face object for each list of Point3Ds
             in points.
     """
@@ -51,12 +51,12 @@ def get_data(hbjson: Dict, hb_type: str) -> Tuple[List[List], List[str]]:
         hb_type: A string for Honeybee face_type or a Honeybee object.
 
     Returns:
-        A tuple of two elements.
+        A tuple of two elements
 
-        - points: A list of lists of Point3Ds. Each list has three or more
+        -   points: A list of lists of Point3Ds. Each list has three or more
             Point3Ds that can be used to create a Ladybug Face3D object.
 
-        - hb_types: A list of text strings. Each text string represents either the
+        -   hb_types: A list of text strings. Each text string represents either the
             Honeybee face type or the Honeybee face object for each list of Point3Ds
             in points.
     """
@@ -99,12 +99,12 @@ def read_hbjson(hbjson: Dict) -> Tuple[List[List], List[str]]:
         hbjson: A valid HBJSON (Honeybee JSON).
 
     Returns:
-        A tuple with two elements.
+        A tuple with two elements
 
-        - points: A list of lists of Point3Ds. Each list has three or more
+        -   points: A list of lists of Point3Ds. Each list has three or more
             Point3Ds that can be used to create a Ladybug Face3D object.
 
-        - hb_types: A list of text strings. Each text string represents either the
+        -   hb_types: A list of text strings. Each text string represents either the
             Honeybee face type or the Honeybee face object for each list of Point3Ds
             in points.
     """
@@ -146,6 +146,9 @@ def group_by_face_type(points: List[List], hb_types: List[str]) -> dict:
     Returns:
         A dictionary with Honeybee type as keys and list of lists of Point3Ds for
         geometry that belongs to that Honeybee type. An example would be;
+
+        .. code-block:: python
+
         {
         'Wall': [[Point1, Point2, Point3], [Point4, Point5, Point6, Point7]],
         'Aperture': [[Point1, Point2, Point3], [Point4, Point5, Point6, Point7]]
@@ -166,16 +169,16 @@ def check_grid(hbjson: Dict) -> Tuple[List, List, List]:
         hbjson: A valid HBJSON (Honeybee JSON).
 
     Returns:
-        A tuple of three elements.
+        A tuple of three elements
 
-        - grid_with_base: A list of Sensorgrid objects for Sensorgrids that have
+        -   grid_with_base: A list of Sensorgrid objects for Sensorgrids that have
             "base_geometry" as a key
 
-        - grid_with_mesh: A list of Sensorgrid objects for Sensorgrids that have
+        -   grid_with_mesh: A list of Sensorgrid objects for Sensorgrids that have
             "mesh" as a key and don't have "base_geometry" as a key.
 
-        - grid_with_points: A list of Sensorgrid objects for Sensorgrids that don't have
-            "mesh" and "base_geometry" keys.
+        -   grid_with_points: A list of Sensorgrid objects for Sensorgrids that don't
+            have "mesh" and "base_geometry" keys.
     """
     if 'sensor_grids' in hbjson['properties']['radiance']:
         grid_with_base = []
@@ -201,10 +204,10 @@ def get_grid_base(grids: List) -> Tuple[List[List], List[List]]:
     Returns:
         A tuple of two elements.
 
-        - base_geometry_points: A list of lists of Point3Ds. Each list has three or more
-            Point3Ds that can be used to create a Ladybug Face3D object.
+        -   base_geometry_points: A list of lists of Point3Ds. Each list has three or
+            more Point3Ds that can be used to create a Ladybug Face3D object.
 
-        - vectors: A list of grid vectors where each vector is a list of X, Y, and Z
+        -   vectors: A list of grid vectors where each vector is a list of X, Y, and Z
             component of a vector.
     """
 
@@ -236,10 +239,10 @@ def get_grid_mesh(grids: List) -> Tuple[List[List], List[List]]:
     Returns:
         A tuple of two elements.
 
-        - mesh_points: A list of lists of Point3Ds. Each list has three or more Point3Ds
-            that can be used to create a Ladybug Face3D object.
+        -   mesh_points: A list of lists of Point3Ds. Each list has three or more
+            Point3Ds that can be used to create a Ladybug Face3D object.
 
-        - vectors: A list of grid vectors where each vector is a list of X, Y, and Z
+        -   vectors: A list of grid vectors where each vector is a list of X, Y, and Z
             component of a vector.
     """
 
@@ -269,10 +272,10 @@ def get_grid_points(grids: List) -> Tuple[List[List], List[List]]:
     Returns:
         A tuple of three elements.
 
-        - start_points: A list of points. Here, each points is a list of X, Y, and Z
+        -   start_points: A list of points. Here, each points is a list of X, Y, and Z
             coordinates of the point.
 
-        - vectors: A list of grid vectors where each vector is a list of X, Y, and Z
+        -   vectors: A list of grid vectors where each vector is a list of X, Y, and Z
             component of a vector.
     """
 
