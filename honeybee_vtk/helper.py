@@ -22,7 +22,8 @@ def get_mesh_points(
             point. Defaults to None. Which will mean the face has no holes.
 
     Returns:
-        A list of lists. Each list has three Point3D objects.
+        A list of lists. Each list has three Point3D objects that represent the vertices
+        of triangles.
     """
     # Create Ladybug Point3D objects from boundary points
     lb_boundary_pts = [Point3D(*point) for point in boundary_points]
@@ -96,8 +97,7 @@ def get_vector3d(points: List[List]) -> List:
 def get_end_point(point, vector):
     """Move a point in the direction of a vector and return the moved point.
 
-    Here, each point is a list of
-            X, Y, and Z coordinates of the point.
+    Here, each point is a list of X, Y, and Z coordinates of the point.
 
     Args:
         point: A Ladybug Point3D object.
@@ -117,7 +117,7 @@ def get_vector_at_center(points: List[List[List]]) -> Tuple[List, List]:
             point.
 
     Returns:
-        A tuple with three elements
+        A tuple with three elements.
 
         - start_points: A list Ladybug Point3D objects. These are start points for
             each Face3D created from points provided to the function.
