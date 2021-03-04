@@ -7,16 +7,16 @@ from typing import List
 def create_polygon(points):
     """Create a vtk Polygon from a list of points.
 
-    The point will have to be in an order. This function cannot be used to create a
+    The points will have to be in an order. This function cannot be used to create a
     polygon with holes.
 
     Args:
-        points: A list of points. Here, each point is a list of X, Y, and Z cordinate.
+        points: A list of points. Here, each point is a list of X, Y, and Z coordinates.
 
     Returns:
         A tuple with two elements.
 
-        - vtk_points: A list of vtk point objects
+        - vtk_points: A list of vtk point objects.
 
         - vtk_polygon: A vtk polygon object created from the points provided.
     """
@@ -68,7 +68,7 @@ def create_polygons(points: List[List]) -> vtk.vtkAppendPolyData:
 
 
 def create_arrows(start_points, end_points, vectors):
-    """Create an Arrow in VTK using a start point, end point and a vector.
+    """Create Arrows in VTK using a start point, end point and a vector.
 
     Args:
         start_points: A list of Ladybug Point3D objects.
