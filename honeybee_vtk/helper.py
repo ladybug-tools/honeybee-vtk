@@ -119,10 +119,10 @@ def get_vector_at_center(points: List[List[List]]) -> Tuple[List, List]:
     Returns:
         A tuple with three elements.
 
-        - start_points: A list Ladybug Point3D objects. These are start points for
-            each Face3D created from points provided to the function.
+        -   start_points: A list Ladybug Point3D objects. These are start points for each
+        Face3D created from points provided to the function.
 
-        - vectors: A list of Ladybug Vector3D objects.
+        -   vectors: A list of Ladybug Vector3D objects.
     """
     faces = [Face3D(boundary=pts) for pts in points]
     start_points = [face.center for face in faces]
