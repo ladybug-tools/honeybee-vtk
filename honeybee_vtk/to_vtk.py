@@ -14,11 +14,11 @@ def create_polygon(points):
         points: A list of points. Here, each point is a list of X, Y, and Z coordinates.
 
     Returns:
-        A tuple with two elements.
+        A tuple with two elements
 
-        - vtk_points: A list of vtk point objects.
+        -   vtk_points: A list of vtk point objects.
 
-        - vtk_polygon: A vtk polygon object created from the points provided.
+        -   vtk_polygon: A vtk polygon object created from the points provided.
     """
     vtk_points = vtk.vtkPoints()
     vtk_polygon = vtk.vtkPolygon()
