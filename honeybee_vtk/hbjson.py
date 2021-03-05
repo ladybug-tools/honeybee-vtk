@@ -149,10 +149,10 @@ def group_by_face_type(points: List[List], hb_types: List[str]) -> dict:
 
         .. code-block:: python
 
-        {
-        'Wall': [[Point1, Point2, Point3], [Point4, Point5, Point6, Point7]],
-        'Aperture': [[Point1, Point2, Point3], [Point4, Point5, Point6, Point7]]
-        }
+            {
+            'Wall': [[Point1, Point2, Point3], [Point4, Point5, Point6, Point7]],
+            'Aperture': [[Point1, Point2, Point3], [Point4, Point5, Point6, Point7]]
+            }
     """
     grouped_points = {face_type: [] for face_type in hb_types}
 
