@@ -117,9 +117,7 @@ def write_files(hbjson, file_path, file_name, target_folder, include_grids,
             vtk.vtkXMLPolyDataWriter() and vtk.vtkPolyDataWriter() to write XML and
             VTK files respectively.
         vtk_extension: A text string for the file extension to be used. Following are
-            acceptable values for the corresponding vtk_writer values;
-            vtk.vtkXMLPolyDataWriter() -> '.vtp',
-            vtk.vtkPolyDataWriter() -> '.vtk',
+            acceptable values for the corresponding vtk_writer values; '.vtp', '.vtk'.
 
     Returns:
         A text string containing the path to the .zip file with VTK/VTP files.
