@@ -12,8 +12,8 @@ from zipfile import ZipFile
 from honeybee.typing import clean_string
 from .hbjson import check_grid, read_hbjson, group_by_face_type
 from .writers import _write_grids, _write_sensors, _write_normals, write_polydata
-from .index import write_index_json
-from .vtkjs_helper import convert_directory_to_zip_file, add_data_to_viewer
+from .vtkjs.index import write_index_json
+from .vtkjs.helper import convert_directory_to_zip_file, add_data_to_viewer
 
 
 def _write(hbjson, temp_folder, vtk_writer, vtk_extension, include_grids,
