@@ -75,7 +75,7 @@ def write_index_json(target_folder, layer_names):
         target_folder: A text string to a folder to write the output file. The file
             will be written to the current folder if not provided.
         layer_names: A list of text strings representing the layer names in vtk output.
-    
+
     Returns:
         A text string containing the path to the index.json file.
     """
@@ -88,7 +88,7 @@ def write_index_json(target_folder, layer_names):
             opacity = 0.5
         else:
             opacity = 1
-        
+
         template = copy.deepcopy(dataset_template)
         template['name'] = layer_name
         template['httpDataSetReader']['url'] = layer_name
@@ -99,7 +99,7 @@ def write_index_json(target_folder, layer_names):
 
     index = copy.deepcopy(index_template)
     index['scene'] = datasets
-    
+
     file_path = os.path.join(target_folder, 'index.json')
 
     with open(file_path, 'w') as fp:

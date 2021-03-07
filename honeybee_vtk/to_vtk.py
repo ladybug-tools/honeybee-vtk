@@ -108,6 +108,8 @@ def create_arrows(start_points, end_points, vectors):
 
         # Add the lines to the polydata container
         linesPolyData.SetLines(lines)
+
+        # this is a python list
         lines_polydata.append(linesPolyData)
 
         # Add cone to the end of line
