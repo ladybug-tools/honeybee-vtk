@@ -86,3 +86,90 @@ honeybee-vtk translate "path to hbjson file" --folder="path to the target folder
 ![](/images/honeybee-vtk-vtk.gif)
 
 ## [API Documentation](https://www.ladybug.tools/honeybee-vtk/docs/)
+
+
+## Create arrows and write to a vtp file
+
+```python
+from ladybug_geometry.geometry3d import Point3D, Vector3D
+from honeybee_vtk.to_vtk import create_arrow
+
+points = [Point3D(0, 0, 0), Point3D(1, 1, 0), Point3D(1, 0, 0)]
+vectors = [Vector3D(0, 0, 1), Vector3D(1, 1, 1), Vector3D(2, 0, 0)]
+arrows = create_arrow(points, vectors)
+arrows.to_vtk('.', 'arrows')
+
+```
+
+![arrows](/images/arrows.png)
+
+## Create a group of points and color them based on distance from origin
+
+```python
+
+from ladybug_geometry.geometry3d import Point3D
+from honeybee_vtk.to_vtk import convert_points
+
+points = []
+for x in range(-50, 50, 5):
+    for y in range(-50, 50, 5):
+        for z in range(-50, 50, 5):
+            points.append(Point3D(x, y, z))
+
+origin = Point3D(0, 0, 0)
+distance = [pt.distance_to_point(origin) for pt in points]
+
+# convert points to polydata
+pts = convert_points(points)
+pts.add_data(distance, name='distance', cell=False)
+pts.color_by('distance', cell=False)
+pts.to_vtk('.', 'colored_points')
+
+```
+
+![arrows](/images/colored_points.png)
+
+
+## Draw a sunpath
+
+```python
+from ladybug.location import Location
+from ladybug.sunpath import Sunpath, Point3D, Vector3D
+from honeybee_vtk.to_vtk import convert_polyline, create_polyline
+from honeybee_vtk.types import PolyDataJoined
+import math
+
+# Create location. You can also extract location data from an epw file.
+sydney = Location('Sydney', 'AUS', latitude=-33.87, longitude=151.22, time_zone=10)
+
+# Initiate sunpath
+sp = Sunpath.from_location(sydney)
+
+radius = 100
+origin = Point3D(0, 0, 0)
+polylines = sp.hourly_analemma_polyline3d(origin=origin, daytime_only=True, radius=radius)
+sp_pls = [convert_polyline(pl) for pl in polylines]
+
+# add a circle
+north = origin.move(Vector3D(0, radius, 0))
+plot_points = [
+    north.rotate_xy(math.radians(angle), origin)
+    for angle in range(0, 365, 5)
+]
+
+plot = create_polyline(plot_points)
+
+# join polylines into a single polydata
+sunpath = PolyDataJoined.from_polydata(sp_pls)
+# add plot
+sunpath.append(plot)
+
+sunpath.to_vtk('.', 'sunpath')
+```
+
+![arrows](/images/sunpath.png)
+
+
+## Draw a sunpath with hourly data
+
+To be added!
