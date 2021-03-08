@@ -167,9 +167,71 @@ sunpath.append(plot)
 sunpath.to_vtk('.', 'sunpath')
 ```
 
-![arrows](/images/sunpath.png)
+![sunpath](/images/sunpath.png)
 
 
 ## Draw a sunpath with hourly data
+
+```python
+
+from ladybug.epw import EPW
+from ladybug.sunpath import Sunpath, Point3D, Vector3D
+from honeybee_vtk.to_vtk import convert_points, convert_polyline, create_polyline
+from honeybee_vtk.types import PolyDataJoined
+import math
+
+# Get location from epw file
+epw = EPW('./tests/assets/in.epw')
+location = epw.location
+
+# Initiate sunpath
+sp = Sunpath.from_location(location)
+
+radius = 100
+origin = Point3D(0, 0, 0)
+polylines = sp.hourly_analemma_polyline3d(origin=origin, daytime_only=True, radius=radius)
+sp_pls = [convert_polyline(pl) for pl in polylines]
+
+# add a circle
+north = origin.move(Vector3D(0, radius, 0))
+plot_points = [
+    north.rotate_xy(math.radians(angle), origin)
+    for angle in range(0, 365, 5)
+]
+
+plot = create_polyline(plot_points)
+
+# join polylines into a single polydata
+sunpath = PolyDataJoined.from_polydata(sp_pls)
+# add plot
+sunpath.append(plot)
+sunpath.to_vtk('.', 'sunpath')
+
+# add sun positions and color them based on radiation
+day = sp.hourly_analemma_suns(daytime_only=True)
+# calculate sun positions from sun vector
+pts = []
+hours = []
+for suns in day:
+    for sun in suns:
+        pts.append(origin.move(sun.sun_vector.reverse() * radius))
+        hours.append(sun.hoy)
+
+radiation_data = epw.global_horizontal_radiation
+filtered_radiation_data = radiation_data.filter_by_hoys(hours)
+
+sun_positions = convert_points(pts)
+sun_positions.add_data(
+    filtered_radiation_data.values, name='Globale Horizontal Radiation', cell=False
+)
+sun_positions.color_by('Global Horizontal Radiation', cell=False)
+sun_positions.to_vtk('.', 'sun_positions')
+
+```
+
+![sunpath with data](/images/sunpath_with_data.png)
+
+
+## Load HB model with data
 
 To be added!
