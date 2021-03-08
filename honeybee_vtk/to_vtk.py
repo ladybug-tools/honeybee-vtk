@@ -1,150 +1,112 @@
-"""Functions to create vtk objects based on the data extracted from hbjson."""
+"""Functions to create vtk objects from HB Model objects."""
 
-import vtk
 from typing import List
 
+import vtk
 
-def create_polygon(points):
-    """Create a vtk Polygon from a list of points.
+from ladybug_geometry.geometry3d import Face3D, Mesh3D, Point3D, Vector3D, Polyline3D
+from honeybee.room import Room
+from honeybee.face import Face
+from honeybee.aperture import Aperture
+from honeybee.shade import Shade
 
-    The points will have to be in an order. This function cannot be used to create a
-    polygon with holes.
-
-    Args:
-        points: A list of points. Here, each point is a list of X, Y, and Z coordinates.
-
-    Returns:
-        A tuple with two elements
-
-        -   vtk_points: A list of vtk point objects.
-
-        -   vtk_polygon: A vtk polygon object created from the points provided.
-    """
-    vtk_points = vtk.vtkPoints()
-    vtk_polygon = vtk.vtkPolygon()
-    vtk_polygon.GetPointIds().SetNumberOfIds(len(points))
-
-    for point in points:
-        vtk_points.InsertNextPoint(tuple(point))
-
-    for i in range(len(points)):
-        vtk_polygon.GetPointIds().SetId(i, i)
-
-    return vtk_points, vtk_polygon
+from .types import PolyData, PolyDataJoined
 
 
-def create_polygons(points: List[List]) -> vtk.vtkAppendPolyData:
-    """Create a vtk object with multiple vtk polygons.
+def convert_face_3d(face: Face3D) -> PolyData:
+    """Convert a ladybug_geometry.Face3D to vtkPolyData."""
+    # check if geometry has holes or is convex
+    # mesh them and use convert_mesh
+    if face.has_holes or not face.is_convex:
+        return convert_mesh(face.triangulated_mesh3d)
 
-    Args:
-        points: A list of lists of Ladybug Point3D objects.
+    # create a PolyData from face points
+    points = vtk.vtkPoints()
+    polygon = vtk.vtkPolygon()
+    cells = vtk.vtkCellArray()
 
-    Returns:
-        A vtk object with multiple polygons.
-    """
-    vtk_polydata_to_append = []
+    vertices_count = len(face.vertices)
+    polygon.GetPointIds().SetNumberOfIds(vertices_count)
+    for ver in face.vertices:
+        points.InsertNextPoint(*ver)
+    for count in range(vertices_count):
+        polygon.GetPointIds().SetId(count, count)
+    cells.InsertNextCell(polygon)
 
-    for point in points:
+    grid_vtk = PolyData()
+    grid_vtk.SetPoints(points)
+    grid_vtk.SetPolys(cells)
 
-        vtk_points, vtk_polygon = create_polygon(point)
-        vtk_polygons = vtk.vtkCellArray()
-        vtk_polygons.InsertNextCell(vtk_polygon)
-
-        vtk_polydata = vtk.vtkPolyData()
-        vtk_polydata.SetPoints(vtk_points)
-        vtk_polydata.SetPolys(vtk_polygons)
-        vtk_polydata.Modified()
-
-        vtk_polydata_to_append.append(vtk_polydata)
-
-    vtk_polydata_extended = vtk.vtkAppendPolyData()
-
-    for vtk_polydata in vtk_polydata_to_append:
-        vtk_polydata_extended.AddInputData(vtk_polydata)
-
-    vtk_polydata_extended.Update()
-
-    return vtk_polydata_extended
+    return grid_vtk
 
 
-def create_arrows(start_points, end_points, vectors):
-    """Create Arrows in VTK using a start point, end point and a vector.
+def convert_mesh(mesh: Mesh3D) -> PolyData:
+    """Convert a ladybug_geometry.Mesh to vtkPolyData."""
+    points = vtk.vtkPoints()
+    polygon = vtk.vtkPolygon()
+    cells = vtk.vtkCellArray()
 
-    Args:
-        start_points: A list of Ladybug Point3D objects.
-        end_points: A list of Ladybug Point3D objects.
-        vectors: A list of Ladybug Vector3D objects.
+    for ver in mesh.vertices:
+        points.InsertNextPoint(*ver)
 
-    Returns:
-        A vtk object with multiple VTK objects that would look like arrows.
-    """
-    lines_polydata = []
-    cones_polydata = []
+    for face in mesh.faces:
+        polygon.GetPointIds().SetNumberOfIds(len(face))
+        for count, i in enumerate(face):
+            polygon.GetPointIds().SetId(count, i)
+        cells.InsertNextCell(polygon)
 
-    for start_point, end_point, vector in zip(start_points, end_points, vectors):
-        linesPolyData = vtk.vtkPolyData()
-        # Create three points
-        p0 = start_point
-        p1 = end_point
+    grid_vtk = PolyData()
+    grid_vtk.SetPoints(points)
+    grid_vtk.SetPolys(cells)
 
-        # Create a vtkPoints container and store the points in it
-        pts = vtk.vtkPoints()
-        pts.InsertNextPoint(p0)
-        pts.InsertNextPoint(p1)
-
-        # Add the points to the polydata container
-        linesPolyData.SetPoints(pts)
-
-        # Create the first line (between Origin and P0)
-        line0 = vtk.vtkLine()
-        # the second 0 is the index of p0 in linesPolyData's points
-        line0.GetPointIds().SetId(0, 0)
-        # the second 1 is the index of P1 in linesPolyData's points
-        line0.GetPointIds().SetId(1, 1)
-
-        # Create a vtkCellArray container and store the lines in it
-        lines = vtk.vtkCellArray()
-        lines.InsertNextCell(line0)
-
-        # Add the lines to the polydata container
-        linesPolyData.SetLines(lines)
-
-        # this is a python list
-        lines_polydata.append(linesPolyData)
-
-        # Add cone to the end of line
-        conePoly = vtk.vtkPolyData()
-
-        # Parameters for the cone
-        coneSource = vtk.vtkConeSource()
-        coneSource.SetResolution(2)
-        coneSource.SetRadius(0.1)
-        coneSource.SetHeight(0.3)
-        coneSource.SetDirection(tuple(vector))
-        coneSource.SetCenter(tuple(p1))
-        coneSource.Update()
-
-        conePoly.ShallowCopy(coneSource.GetOutput())
-        cones_polydata.append(conePoly)
-
-    vtk_polydata_extended = vtk.vtkAppendPolyData()
-
-    for line in lines_polydata:
-        vtk_polydata_extended.AddInputData(line)
-
-    for cone in cones_polydata:
-        vtk_polydata_extended.AddInputData(cone)
-
-    vtk_polydata_extended.Update()
-
-    return vtk_polydata_extended
+    return grid_vtk
 
 
-def create_points(points):
-    """Export points to VTK.
+def convert_sensor_grid(sensor_grid) -> PolyData:
+    """Convert a honeybee-radiance sensor grid to a vtkPolyData."""
+    return convert_mesh(sensor_grid.mesh)
+
+
+def convert_shade(shade: Shade) -> PolyData:
+    shade_data = convert_face_3d(shade.geometry)
+    shade_data.meta_data['type'] = 'Shade'
+    return shade_data
+
+
+def convert_aperture(aperture: Aperture) -> List[PolyData]:
+    aperture_data = convert_face_3d(aperture.geometry)
+    aperture_data.meta_data['type'] = 'Aperture'
+    data = [aperture_data]
+    for shade in aperture.outdoor_shades:
+        shade_data = convert_shade(shade)
+        data.append(shade_data)
+    return data
+
+
+def convert_face(face: Face) -> List[PolyData]:
+    """Convert a HBFace to a PolyData."""
+    polydata = convert_face_3d(face.geometry)
+    polydata.meta_data['type'] = face.type
+    data = [polydata]
+    for aperture in face.apertures:
+        data.extend(convert_aperture(aperture))
+    return data
+
+
+def convert_room(room: Room) -> List[PolyData]:
+    """Convert HB Room to PolyData."""
+    data = []
+    for face in room.faces:
+        data.extend(convert_face(face))
+
+    return data
+
+
+def convert_points(points: List[Point3D]) -> PolyData:
+    """Export a list of points to VTK.
 
     Args:
-        points : A list of lists. Here, each list has X, Y, and Z coordinates of a point.
+        points : A list of Point3D.
 
     Returns:
         A vtk object with multiple VTK point objects.
@@ -153,11 +115,11 @@ def create_points(points):
     vtk_vertices = vtk.vtkCellArray()
 
     for point in points:
-        pid = [0]
-        pid[0] = vtk_points.InsertNextPoint(point)
-        vtk_vertices.InsertNextCell(1, pid)
+        vtk_points.InsertNextPoint(tuple(point))
 
-    polydata = vtk.vtkPolyData()
+    vtk_vertices.InsertNextCell(len(points), list(range(len(points))))
+
+    polydata = PolyData()
     polydata.SetPoints(vtk_points)
     polydata.SetVerts(vtk_vertices)
     polydata.Modified()
@@ -165,96 +127,96 @@ def create_points(points):
     return polydata
 
 
-def create_color_grouped_points(
-        points: List[List], vectors: List[List]) -> vtk.vtkPolyData():
-    """Export points to VTK and color-group them based on vectors.
+def _create_lines(
+        start_points: List[Point3D], vectors: List[Vector3D]) -> vtk.vtkPolyData:
+    """Create a line from start and end point."""
+    # Create a vtkPoints container and store the points for all the lines
+    lines_data = vtk.vtkPolyData()
+    pts = vtk.vtkPoints()
+    for st_pt, vector in zip(start_points, vectors):
+        end_pt = st_pt.move(vector)
+        pts.InsertNextPoint(st_pt)
+        pts.InsertNextPoint(end_pt)
 
-    Args:
-        points : A list of lists. Here, each list has X, Y, and Z coordinates of a point.
-        vectors: A list of lists. Here, each list has X, Y, and Z components of a vector.
+    # add all the points to lines dataset
+    lines_data.SetPoints(pts)
 
-    Returns:
-        A vtk object with multiple VTK objects that would look like color-grouped points.
-    """
-    vtk_points = vtk.vtkPoints()
-    vtk_vertices = vtk.vtkCellArray()
+    lines = vtk.vtkCellArray()
+    # create lines based on points
+    for count in range(len(start_points)):
+        line = vtk.vtkLine()
+        # the second 0 is the index of p0 in linesPolyData's points
+        line.GetPointIds().SetId(0, 2 * count)
+        # the second 1 is the index of P1 in linesPolyData's points
+        line.GetPointIds().SetId(1, (2 * count) + 1)
+        lines.InsertNextCell(line)
 
-    for point in points:
-        pid= [vtk_points.InsertNextPoint(point)]
-        vtk_vertices.InsertNextCell(1, pid)
+    lines_data.SetLines(lines)
 
-    normals = vtk.vtkFloatArray()
-    normals.SetNumberOfComponents(3)
-    normals.SetNumberOfTuples(len(vectors))
+    return lines_data
 
-    for vector in vectors:
-        normals.InsertNextTuple3(*vector)
 
-    # Using the text string of the sum of vector components to perform grouping
-    vec_sum = [
-        str(round(vector[0])) + str(round(vector[1])) + str(round(vector[2]))
-        for vector in vectors]
+def _create_cone(
+    center: Point3D, vector: Vector3D, radius: float = 0.1, height: float = 0.3,
+    resolution: int = 2
+        ) -> PolyData:
+    cone_poly = vtk.vtkPolyData()
 
-    unique_vectors = list(set(vec_sum))
+    # Parameters for the cone
+    cone_source = vtk.vtkConeSource()
+    cone_source.SetResolution(resolution)
+    cone_source.SetRadius(radius)
+    cone_source.SetHeight(height)
+    cone_source.SetDirection(tuple(vector))
+    cone_source.SetCenter(tuple(center))
+    cone_source.Update()
 
-    # A dictionary with unique vector : unique integer structure.
-    # These unique integers wil be used in scalars to color the points grouped based
-    # on the unique vectors
-    vector_dict = {}
-    for count, item in enumerate(unique_vectors):
-        vector_dict[item] = count
+    cone_poly.ShallowCopy(cone_source.GetOutput())
 
-    values = vtk.vtkIntArray()
-    values.SetName('Vectors')
-    values.SetNumberOfComponents(1)
-    for vector in vectors:
-        value = vector_dict[
-            str(round(vector[0])) + str(round(vector[1])) + str(round(vector[2]))]
-        values.InsertNextValue(value)
+    return cone_poly
 
-    polydata = vtk.vtkPolyData()
-    polydata.SetPoints(vtk_points)
-    polydata.SetVerts(vtk_vertices)
-    polydata.GetCellData().SetScalars(values)
-    polydata.GetCellData().SetActiveScalars('Vectors')
-    polydata.Modified()
+
+# TODO: Add an optional input for data
+def create_arrow(start_points: List[Point3D], vectors: List[Vector3D]) -> PolyDataJoined:
+    """Create arrows from point and vector."""
+    assert len(start_points) == len(vectors), \
+        'Number of start points must match the number of vectors.'
+    cones = []
+    lines = _create_lines(start_points, vectors)
+    for st_pt, vector in zip(start_points, vectors):
+        end_pt = st_pt.move(vector)
+        cones.append(_create_cone(end_pt, vector))
+    return PolyDataJoined.from_polydata([lines] + cones)
+
+
+def create_polyline(points: List[Point3D]) -> PolyData:
+    """Create a polyline from a list of points."""
+    # Create a vtkPoints container and store the points for all the lines
+    pts = vtk.vtkPoints()
+    for pt in points:
+        pts.InsertNextPoint(tuple(pt))
+
+    # add all the points to lines dataset
+    polyline = vtk.vtkPolyLine()
+    polyline.GetPointIds().SetNumberOfIds(len(points))
+    for i in range(len(points)):
+        polyline.GetPointIds().SetId(i, i)
+
+    # Create a cell array to store the lines in and add the lines to it
+    cells = vtk.vtkCellArray()
+    cells.InsertNextCell(polyline)
+
+    # Create a polydata to store everything in
+    polydata = PolyData()
+
+    # Add the points to the dataset
+    polydata.SetPoints(pts)
+
+    # Add the lines to the dataset
+    polydata.SetLines(cells)
 
     return polydata
 
 
-def create_cones(points, vectors):
-    """Create VTK cones at point locations.
-
-    Args:
-        points : A list of lists. Here, each list has X, Y, and Z coordinates of a point.
-        vectors: A list of lists. Here, each list has X, Y, and Z components of a vector.
-
-    Returns:
-        A vtk object with multiple VTK objects that would look like arrow heads (cones).
-    """
-
-    cones_polydata = []
-
-    for point, vector in zip(points, vectors):
-        conePoly = vtk.vtkPolyData()
-
-        # Parameters for the cone
-        coneSource = vtk.vtkConeSource()
-        coneSource.SetResolution(1)
-        coneSource.SetRadius(0.1)
-        coneSource.SetHeight(0.3)
-        coneSource.SetDirection(tuple(vector))
-        coneSource.SetCenter(tuple(point))
-        coneSource.Update()
-
-        conePoly.ShallowCopy(coneSource.GetOutput())
-        cones_polydata.append(conePoly)
-
-    vtk_polydata_extended = vtk.vtkAppendPolyData()
-
-    for cone in cones_polydata:
-        vtk_polydata_extended.AddInputData(cone)
-
-    vtk_polydata_extended.Update()
-
-    return vtk_polydata_extended
+def convert_polyline(polyline: Polyline3D) -> PolyData:
+    return create_polyline(polyline.vertices)
