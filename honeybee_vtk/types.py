@@ -8,9 +8,10 @@ For that purpose we should start to look into FieldData:
 https://lorensen.github.io/VTKExamples/site/Cxx/PolyData/FieldData/
 """
 import enum
-import vtk
 from typing import Union, List
 import pathlib
+
+import vtk
 
 
 class VTKWriters(enum.Enum):
