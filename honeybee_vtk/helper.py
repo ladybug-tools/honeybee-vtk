@@ -68,6 +68,39 @@ def check_convex(points: List[List]) -> bool:
     return face.is_convex
 
 
+def triangulate_concave(hb_obj, hb_type):
+    """If a Face3D is concave, this function will triangulate it.
+
+    Args:
+        hb_obj (HBJSON): An HBJSON object.
+        hb_type (str): A text string representing Honeybee type. Either 'face_type' 
+            or 'type'
+
+    Returns:
+        A tuple of two elements.
+
+        -   points: A list of lists of Point3Ds. Each list has three or more
+            Point3Ds that can be used to create a Ladybug Face3D object.
+
+        -   hb_types: A list of text strings. Each text string represents either the
+            Honeybee face type or the Honeybee face object for each list of Point3Ds
+            in points.
+    """
+    points = []
+    hb_types = []
+
+    if check_convex(hb_obj['geometry']['boundary']):
+                points.append(get_point3d(hb_obj['geometry']['boundary']))
+                hb_types.append(hb_obj[hb_type])
+    else:
+        triangles_points = get_mesh_points(hb_obj['geometry']['boundary'])
+        for point3ds in triangles_points:
+            points.append(point3ds)
+            hb_types.append(hb_obj[hb_type])
+    
+    return points, hb_types
+
+
 def get_point3d(points: List[List]) -> List:
     """Convert a list of points in to a list of Ladybug Point3D objects.
 
