@@ -1,6 +1,6 @@
 """Functions to extract geometry and metadata from a valid HBJSON."""
 
-from .helper import get_mesh_points, check_convex
+from .helper import get_mesh_points, check_convex, triangulate_concave
 from .helper import get_point3d
 from typing import List, Tuple, Dict
 
@@ -25,18 +25,23 @@ def get_rooms(rooms: List) -> Tuple[List[List], List[str]]:
     hb_types = []
 
     for room in rooms:
+        
         for face in room['faces']:
-            hb_types.append(face['face_type'])
-            points.append(get_point3d(face['geometry']['boundary']))
+            pts, types = triangulate_concave(face, 'face_type')
+            points.extend(pts)
+            hb_types.extend(types)
+
             if 'apertures' in face:
                 for aperture in face['apertures']:
-                    hb_types.append(aperture['type'])
-                    points.append(get_point3d(aperture['geometry']['boundary']))
+                    pts, types = triangulate_concave(aperture, 'type')
+                    points.extend(pts)
+                    hb_types.extend(types)
+
                     if 'outdoor_shades' in aperture:
                         for outdoor_shade in aperture['outdoor_shades']:
-                            hb_types.append(outdoor_shade['type'])
-                            points.append(get_point3d(
-                                outdoor_shade['geometry']['boundary']))
+                            pts, types = triangulate_concave(outdoor_shade, 'type')
+                            points.extend(pts)
+                            hb_types.extend(types)
 
     return points, hb_types
 
@@ -66,14 +71,9 @@ def get_data(hbjson: Dict, hb_type: str) -> Tuple[List[List], List[str]]:
     for key in hbjson:
 
         if 'holes' not in key['geometry']:
-            if check_convex(key['geometry']['boundary']):
-                points.append(get_point3d(key['geometry']['boundary']))
-                hb_types.append(key[hb_type])
-            else:
-                triangles_points = get_mesh_points(key['geometry']['boundary'])
-                for point3ds in triangles_points:
-                    points.append(point3ds)
-                    hb_types.append(key[hb_type])
+            pts, types = triangulate_concave(key, hb_type)
+            points.extend(pts)
+            hb_types.extend(types)
         else:
             try:
                 triangles_points = get_mesh_points(key['geometry']['boundary'],
