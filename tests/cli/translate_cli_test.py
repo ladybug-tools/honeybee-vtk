@@ -147,3 +147,4 @@ def test_aperture_points():
         files = zip_obj.namelist()
         assert 'Aperture points.vtk' in files
     os.remove('unnamed.zip')
+    
