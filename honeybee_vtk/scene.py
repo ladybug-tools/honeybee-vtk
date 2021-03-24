@@ -188,4 +188,4 @@ class Scene(object):
 
         This file can be opened in ParaView Glance viewer.
         """
-        pass
+        raise NotImplementedError()

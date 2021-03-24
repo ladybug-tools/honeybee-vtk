@@ -17,7 +17,7 @@ import vtk
 class VTKWriters(enum.Enum):
     """Vtk writers."""
     legacy = 'vtk'
-    ascii = 'vtk'
+    ascii = 'vtp'
     binary = 'vtp'
 
 
