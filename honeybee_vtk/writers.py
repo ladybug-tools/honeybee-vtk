@@ -40,7 +40,7 @@ def write_polydata(
     Returns:
         A text string containing the path to the file.
     """
-    
+
     file_name = file_name + vtk_extension
     vtk_polydata_extended = create_polygons(grouped_points)
     writer = vtk_writer
@@ -70,7 +70,7 @@ def write_points(
             '.vtk', '.vtp', ''.
             Please note that the vtk_extension value is a an empty string with no spaces
             in the case of vtk_writer having the value of 'html'.
-        
+
     Returns:
         A text string containing the path to the file.
     """
@@ -105,7 +105,7 @@ def write_arrows(start_points, vectors, *, file_name, target_folder, vtk_writer,
             acceptable values for the corresponding vtk_writer values;
             '.vtk', '.vtp', ''.
             Please note that the vtk_extension value is a an empty string with no spaces
-            in the case of vtk_writer having the value of 'html'. 
+            in the case of vtk_writer having the value of 'html'.
 
     Returns:
         A text string containing the path to the file.
@@ -172,8 +172,10 @@ def _write_grids(grids, vtk_writer, vtk_extension, target_folder, include_sensor
     if grids[2] and include_sensors != 'points':
         start_points = get_grid_points(grids[2])[0]
         vectors = None
-        write_points(start_points, vectors, 'Grid points', target_folder, vtk_writer,
-                     vtk_extension)
+        write_points(
+            start_points, vectors, file_name='Grid points', target_folder=target_folder,
+            vtk_writer=vtk_writer, vtk_extension=vtk_extension
+        )
         grid_file_names.append('Grid points')
 
     return grid_file_names
@@ -199,7 +201,7 @@ def _write_sensors(include_sensors, grids, vtk_writer, vtk_extension, target_fol
             '.vtk', '.vtp', ''.
             Please note that the vtk_extension value is a an empty string with no spaces
             in the case of vtk_writer having the value of 'html'.
-        target_folder: A text string to a folder to write the output vtk file. 
+        target_folder: A text string to a folder to write the output vtk file.
 
     Returns:
         A list of strings for file names.
@@ -276,7 +278,7 @@ def _write_normals(include_normals, hb_types, grouped_points, vtk_writer, vtk_ex
                 'Wall': [[Point1, Point2, Point3], [Point4, Point5, Point6, Point7]],
                 'Aperture': [[Point1, Point2, Point3], [Point4, Point5, Point6, Point7]]
                 }
-                
+
         vtk_writer: A vtk object. Acceptable values are following;
             vtk.vtkXMLPolyDataWriter(), vtk.vtkPolyDataWriter(), and
             vtk.vtkJSONDataSetWriter() to write XML, VTK, and HTML files respectively.
