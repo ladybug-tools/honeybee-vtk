@@ -7,6 +7,14 @@
 [![Coverage Status](https://coveralls.io/repos/github/ladybug-tools/honeybee-vtk/badge.svg)](https://coveralls.io/github/ladybug-tools/honeybee-vtk)
 [![Python 3.7](https://img.shields.io/badge/python-3.7-green.svg)](https://www.python.org/downloads/release/python-370/)
 
+[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/ladybug-tools/honeybee-vtk)](https://github.com/ladybug-tools/honeybee-vtk/releases)
+[![GitHub](https://img.shields.io/github/license/ladybug-tools/honeybee-vtk)](https://github.com/ladybug-tools/honeybee-vtk/blob/master/LICENSE)
+
+
+[![GitHub last commit](https://img.shields.io/github/last-commit/ladybug-tools/honeybee-vtk)](https://github.com/ladybug-tools/honeybee-vtk/commits/master)
+[![GitHub issues](https://img.shields.io/github/issues/ladybug-tools/honeybee-vtk)](https://github.com/ladybug-tools/honeybee-vtk/issues)
+[![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/ladybug-tools/honeybee-vtk)](https://github.com/ladybug-tools/honeybee-vtk/issues?q=is%3Aissue+is%3Aclosed)
+
 ## Installation
 
 ```console
