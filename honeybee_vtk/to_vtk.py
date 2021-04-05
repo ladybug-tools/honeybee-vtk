@@ -1,4 +1,17 @@
-"""Functions to create vtk objects from HB Model objects."""
+"""Functions to translate HB Model objects to PolyData or JoinedPolyData.
+
+honeybee-vtk provides a wrapper for vtkPolyData or vtkAppendPolyData which are used
+instead of the original objects to add additional fields that are needed to provide
+additional functionalities in honeybee-vtk. See ``types`` module for more information.
+
+There are two sets of functions in this module:
+
+    - create_x : These methods create an object from other objects. For instance
+        create_polyline creates a polyline for a list of points.
+    - convert_x: These methods convert a LBT object directly to a PolyData. For instance
+        convert_polyline converts a Polyline3D to a VTK-based Polyline.
+
+"""
 
 from typing import List
 
@@ -10,7 +23,7 @@ from honeybee.face import Face
 from honeybee.aperture import Aperture
 from honeybee.shade import Shade
 
-from .types import PolyData, PolyDataJoined
+from .types import PolyData, JoinedPolyData
 
 
 def convert_face_3d(face: Face3D) -> PolyData:
@@ -33,11 +46,11 @@ def convert_face_3d(face: Face3D) -> PolyData:
         polygon.GetPointIds().SetId(count, count)
     cells.InsertNextCell(polygon)
 
-    grid_vtk = PolyData()
-    grid_vtk.SetPoints(points)
-    grid_vtk.SetPolys(cells)
+    face_vtk = PolyData()
+    face_vtk.SetPoints(points)
+    face_vtk.SetPolys(cells)
 
-    return grid_vtk
+    return face_vtk
 
 
 def convert_mesh(mesh: Mesh3D) -> PolyData:
@@ -69,13 +82,13 @@ def convert_sensor_grid(sensor_grid) -> PolyData:
 
 def convert_shade(shade: Shade) -> PolyData:
     shade_data = convert_face_3d(shade.geometry)
-    shade_data.meta_data['type'] = 'Shade'
+    shade_data.type = 'Shade'
     return shade_data
 
 
 def convert_aperture(aperture: Aperture) -> List[PolyData]:
     aperture_data = convert_face_3d(aperture.geometry)
-    aperture_data.meta_data['type'] = 'Aperture'
+    aperture_data.type = 'Aperture'
     data = [aperture_data]
     for shade in aperture.outdoor_shades:
         shade_data = convert_shade(shade)
@@ -86,7 +99,7 @@ def convert_aperture(aperture: Aperture) -> List[PolyData]:
 def convert_face(face: Face) -> List[PolyData]:
     """Convert a HBFace to a PolyData."""
     polydata = convert_face_3d(face.geometry)
-    polydata.meta_data['type'] = face.type
+    polydata.type = face.type.name
     data = [polydata]
     for aperture in face.apertures:
         data.extend(convert_aperture(aperture))
@@ -177,7 +190,7 @@ def _create_cone(
 
 
 # TODO: Add an optional input for data
-def create_arrow(start_points: List[Point3D], vectors: List[Vector3D]) -> PolyDataJoined:
+def create_arrow(start_points: List[Point3D], vectors: List[Vector3D]) -> JoinedPolyData:
     """Create arrows from point and vector."""
     assert len(start_points) == len(vectors), \
         'Number of start points must match the number of vectors.'
@@ -186,7 +199,7 @@ def create_arrow(start_points: List[Point3D], vectors: List[Vector3D]) -> PolyDa
     for st_pt, vector in zip(start_points, vectors):
         end_pt = st_pt.move(vector)
         cones.append(_create_cone(end_pt, vector))
-    return PolyDataJoined.from_polydata([lines] + cones)
+    return JoinedPolyData.from_polydata([lines] + cones)
 
 
 def create_polyline(points: List[Point3D]) -> PolyData:

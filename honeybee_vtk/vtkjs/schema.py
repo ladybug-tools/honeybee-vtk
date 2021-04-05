@@ -1,29 +1,19 @@
+"""Schema for VTKJS objects."""
 import json
 import pathlib
 from typing import Dict, List
+import enum
 
 from pydantic import BaseModel, Field, validator
 
 
-_COLORSET = {
-    'Wall': [0.901, 0.705, 0.235, 1],
-    'Aperture': [0.250, 0.705, 1, 0.5],
-    'Door': [0.627, 0.588, 0.392, 1],
-    'Shade': [0.470, 0.294, 0.745, 1],
-    'Floor': [1, 0.501, 0.501, 1],
-    'RoofCeiling': [0.501, 0.078, 0.078, 1],
-    'AirBoundary': [1, 1, 0.784, 1],
-    'Grid': [0.925, 0.250, 0.403, 1]
-}
-
-
-def color_by_type(face_type) -> List:
-    """Get the default color based of face type.
-
-    Use these colors to generate visualizations that are familiar for Ladybug Tools
-    users.
-    """
-    return _COLORSET.get(face_type, [1, 1, 1, 1])
+class DisplayMode(enum.Enum):
+    """Display mode."""
+    Shaded = 2
+    Surface = 2
+    SurfaceWithEdges = 3
+    Wireframe = 1
+    Points = 0
 
 
 class Camera(BaseModel):
@@ -87,8 +77,8 @@ class DataSet(BaseModel):
     property: DataSetProperty = Field(DataSetProperty())
 
 
-class Settings(BaseModel):
-    """VTKJS settings.
+class IndexJSON(BaseModel):
+    """VTKJS index class.
 
     These information will be translated to an index.json file.
     """

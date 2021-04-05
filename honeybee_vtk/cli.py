@@ -6,8 +6,6 @@ import pathlib
 import click
 from click.exceptions import ClickException
 
-from .writer import writer
-
 
 @click.group()
 def main():

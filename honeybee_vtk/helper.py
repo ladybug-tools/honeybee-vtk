@@ -8,9 +8,9 @@ from .types import PolyData
 
 def separate_by_type(data: List[PolyData]) -> Dict:
     """Separate PolyData objects by type."""
-    data = defaultdict(lambda: [])
+    data_dict = defaultdict(lambda: [])
 
     for d in data:
-        data[d.type].append(d)
+        data_dict[d.type].append(d)
 
-    return data
+    return data_dict
