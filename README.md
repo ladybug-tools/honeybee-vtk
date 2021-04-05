@@ -263,7 +263,112 @@ model.update_display_mode(DisplayMode.SurfaceWithEdges)
 model.shades.display_mode = DisplayMode.Wireframe
 model.shades.color = Color(0, 0, 0, 255)
 
+# create an HTML file with embedded visualization. You can share this HTML as is
+# and it will include all the information.
 model.to_html('.', name='two-rooms', show=True)
+
+# alternatively you can write it as a vtkjs file and visualize it in ParaviewGlance
+# the `to_html` method calls this method under the hood.
+# model.to_vtkjs(folder='.')
+
 ```
 
 ![Modified HBJSON model](/images/hbjson_model_2.png)
+
+
+## Load HB Model and daylight factor results
+
+```python
+
+from honeybee_vtk.model import Model, DisplayMode, SensorGridOptions
+import pathlib
+
+hbjson = r'./tests/assets/gridbased.hbjson'
+results_folder = r'./tests/assets/df_results'
+
+model = Model.from_hbjson(hbjson, load_grids=SensorGridOptions.Mesh)
+
+# load the results for each grid
+# note that we load the results using the order for model to ensure the order will match
+daylight_factor = []
+for grid in model.sensor_grids.data:
+    res_file = pathlib.Path(results_folder, f'{grid.identifier}.res')
+    grid_res = [float(v) for v in res_file.read_text().splitlines()]
+    daylight_factor.append(grid_res)
+
+# add the results to sensor grids as a new field
+# per face is set to True since we loaded grids as a mesh
+model.sensor_grids.add_data_fields(daylight_factor, name='DF', per_face=True)
+model.sensor_grids.color_by = 'DF'
+
+# make it pop!
+# change display mode for sensor grids to be surface with edges
+model.sensor_grids.display_mode = DisplayMode.SurfaceWithEdges
+# update model visualization to wireframe
+model.update_display_mode(DisplayMode.Wireframe)
+
+# export the model to a HTML file with embedded viewer and open the page in a browser
+model.to_html(folder='.', name='two-rooms', show=True)
+
+# alternatively you can write it as a vtkjs file and visualize it in ParaviewGlance
+# the `to_html` method calls this method under the hood.
+# model.to_vtkjs(folder='.')
+
+```
+
+![Daylight factor results](/images/daylight_factor.png)
+
+
+## Load HB Model and annual daylight results
+
+```python
+
+from honeybee_vtk.model import Model, DisplayMode, SensorGridOptions
+import pathlib
+
+hbjson = r'./tests/assets/gridbased.hbjson'
+results_folder = r'./tests/assets/annual_metrics'
+
+model = Model.from_hbjson(hbjson, load_grids=SensorGridOptions.Mesh)
+
+# load the results for each grid
+# note that we load the results using the order for model to ensure the order will match
+annual_metrics = [
+    {'folder': 'da', 'extension': 'da', 'name': 'Daylight Autonomy'},
+    {'folder': 'cda', 'extension': 'cda', 'name': 'Continuous Daylight Autonomy'},
+    {'folder': 'udi', 'extension': 'udi', 'name': 'Useful Daylight Illuminance'},
+    {'folder': 'udi_lower', 'extension': 'udi', 'name': 'Lower Daylight Illuminance'},
+    {'folder': 'udi_upper', 'extension': 'udi', 'name': 'Excessive Daylight Illuminance'}
+]
+for metric in annual_metrics:
+    results = []
+    for grid in model.sensor_grids.data:
+        res_file = pathlib.Path(
+            results_folder, metric['folder'], f'{grid.identifier}.{metric["extension"]}'
+        )
+        grid_res = [float(v) for v in res_file.read_text().splitlines()]
+        results.append(grid_res)
+
+    # add the results to sensor grids as a new field
+    # per face is set to True since we loaded grids as a mesh
+    model.sensor_grids.add_data_fields(results, name=metric['name'], per_face=True)
+
+# Set color by to Useful Daylight Illuminance
+model.sensor_grids.color_by = 'Useful Daylight Illuminance'
+
+# make it pop!
+# change display mode for sensor grids to be surface with edges
+model.sensor_grids.display_mode = DisplayMode.SurfaceWithEdges
+# update model visualization to wireframe
+model.update_display_mode(DisplayMode.Wireframe)
+
+# export the model to a HTML file with embedded viewer and open the page in a browser
+model.to_html('.', name='two-rooms', show=True)
+
+# alternatively you can write it as a vtkjs file and visualize it in ParaviewGlance
+# the `to_html` method calls this method under the hood.
+# model.to_vtkjs(folder='.')
+
+```
+
+![Annual daylight results](/images/annual_daylight_metrics.png)
