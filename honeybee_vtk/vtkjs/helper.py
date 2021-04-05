@@ -12,6 +12,7 @@ import os
 import shutil
 import sys
 import zipfile
+import pathlib
 
 try:
     import zlib
@@ -20,52 +21,73 @@ except ModuleNotFoundError:
     compression = zipfile.ZIP_STORED
 
 
-def convert_directory_to_zip_file(directory_path):
+def convert_directory_to_zip_file(
+    directory_path: str, remove: bool = True, extension='zip', move=True
+        ) -> str:
+
     if os.path.isfile(directory_path):
         return
 
-    zip_file_path = "%s.zip" % directory_path
-    zf = zipfile.ZipFile(zip_file_path, mode="w")
+    zip_file_path = f'{directory_path}.{extension}'
+    zf = zipfile.ZipFile(zip_file_path, mode='w')
 
     try:
         for dir_name, _, file_list in os.walk(directory_path):
             for fname in file_list:
-                full_path = os.path.join(dir_name, fname)
-                rel_path = "%s" % (os.path.rel_path(full_path, directory_path))
-                zf.write(full_path, arcname=rel_path, compress_type=compression)
+                full_path = pathlib.Path(dir_name, fname)
+                rel_path = full_path.relative_to(directory_path)
+                zf.write(
+                    full_path.as_posix(),
+                    arcname=rel_path.as_posix(),
+                    compress_type=compression
+                )
     finally:
         zf.close()
 
-    shutil.rmtree(directory_path)
-    shutil.move(zip_file_path, directory_path)
+    if remove:
+        shutil.rmtree(directory_path)
+    if move:
+        return shutil.move(zip_file_path, directory_path)
+    else:
+        return zip_file_path
 
 
-def add_data_to_viewer(dataPath, srcHtmlPath):
-    if os.path.isfile(dataPath) and os.path.exists(srcHtmlPath):
-        dstDir = os.path.dir_name(dataPath)
-        dstHtmlPath = os.path.join(dstDir, "%s.html" % os.path.basename(dataPath)[:-6])
+def add_data_to_viewer(data_path, src_html_path=None):
+    template = pathlib.Path(
+        pathlib.Path(__file__).parent, '../assets/ParaViewGlance.html'
+    ).resolve().as_posix()
+    src_html_path = src_html_path or template
+    if not os.path.isfile(data_path):
+        raise FileNotFoundError(f'Failed to find {data_path}')
+    if not os.path.exists(src_html_path):
+        raise FileNotFoundError(f'Failed to find source html file: {src_html_path}')
 
-        # Extract data as base64
-        with open(dataPath, "rb") as data:
-            dataContent = data.read()
-            base64Content = base64.b64encode(dataContent)
-            base64Content = base64Content.decode().replace("\n", "")
+    dstDir = os.path.dirname(data_path)
+    dstHtmlPath = os.path.join(dstDir, "%s.html" % os.path.basename(data_path)[:-6])
 
-        # Create new output file
-        with open(srcHtmlPath, mode="r", encoding="utf-8") as srcHtml:
-            with open(dstHtmlPath, mode="w", encoding="utf-8") as dstHtml:
-                for line in srcHtml:
-                    if "</body>" in line:
-                        dstHtml.write("<script>\n")
-                        dstHtml.write('var contentToLoad = "%s";\n\n' % base64Content)
-                        dstHtml.write(
-                            'Glance.importBase64Dataset("%s" , contentToLoad, glanceInstance.proxyManager);\n'
-                            % os.path.basename(dataPath)
-                        )
-                        dstHtml.write("glanceInstance.showApp();\n")
-                        dstHtml.write("</script>\n")
+    # Extract data as base64
+    with open(data_path, 'rb') as data:
+        data_content = data.read()
+        base64Content = base64.b64encode(data_content)
+        base64Content = base64Content.decode().replace('\n', '')
 
-                    dstHtml.write(line)
+    # Create new output file
+    with open(src_html_path, mode="r", encoding="utf-8") as srcHtml:
+        with open(dstHtmlPath, mode="w", encoding="utf-8") as dstHtml:
+            for line in srcHtml:
+                if "</body>" in line:
+                    dstHtml.write("<script>\n")
+                    dstHtml.write('var contentToLoad = "%s";\n\n' % base64Content)
+                    dstHtml.write(
+                        'Glance.importBase64Dataset("%s" , contentToLoad, glanceInstance.proxyManager);\n'
+                        % os.path.basename(data_path)
+                    )
+                    dstHtml.write("glanceInstance.showApp();\n")
+                    dstHtml.write("</script>\n")
+
+                dstHtml.write(line)
+
+    return dstHtmlPath
 
 
 def zipAllTimeSteps(directory_path):
@@ -170,7 +192,8 @@ def zipAllTimeSteps(directory_path):
         currentlyAddedData = set()
         # Regex that folders storing timestep data from paraview should follow
         reg = re.compile(r"^" + os.path.basename(directory_path) + r"\.[0-9]+$")
-        # We assume an object will not be deleted from a timestep to another so we create a generic index.json for each object
+        # We assume an object will not be deleted from a timestep to another so we
+        # create a generic index.json for each object
         genericIndexObj = {}
         genericIndexObj["series"] = []
         timeStep = 0
@@ -229,7 +252,8 @@ def zipAllTimeSteps(directory_path):
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print(
-            "Usage: directoryToFile /path/to/directory.vtkjs [/path/to/ParaViewGlance.html]"
+            'Usage: python helper.py /path/to/directory.vtkjs '
+            '[/path/to/ParaViewGlance.html]'
         )
     else:
         fileName = sys.argv[1]
