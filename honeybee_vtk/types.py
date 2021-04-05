@@ -16,7 +16,7 @@ import vtk
 
 from ladybug.color import Color
 
-from .vtkjs.schema import DataSetProperty, DataSet, DisplayMode
+from .vtkjs.schema import DataSetProperty, DataSet, DisplayMode, DataSetMapper
 
 
 class VTKWriters(enum.Enum):
@@ -185,8 +185,34 @@ class ModelDataSet:
         self.data = data or []
         self.color = color
         self.display_mode = DisplayMode.Shaded
+        self._fields = {}
+        self.color_by = None
 
-    # TODO: add color_by property to allow select a different datafield
+    def add_data_fields(self, data: List[List], name: str, per_face: bool = True):
+        """Add data fields to PolyData objects in this dataset.
+
+        Use this method to add data like temperature or illuminance values to PolyData
+        objects. The length of the input data should match the length of the data in
+        DataSet.
+
+        Args:
+            data: A list of list of values. There should be a list per data in DataSet.
+                The order of data should match the order of data in DataSet. You can
+                use data.identifier to match the orders before assigning them to DataSet.
+            name: Name of data (e.g. Useful Daylight Autonomy.)
+            per_face: A Boolean to indicate if the data is per face or per point. In
+                most cases except for sensor points that are loaded as sensors the data
+                are provided per face.
+
+        """
+        assert len(self.data) == len(data), \
+            f'Length of input data {len(data)} does not match the length of polydata ' \
+            f'in this dataset {len(self.data)}.'
+
+        for count, d in enumerate(data):
+            self.data[count].add_data(d, name=name, cell=per_face)
+        self._fields[name] = per_face
+
     @property
     def color(self) -> Color:
         """Diffuse color.
@@ -199,6 +225,28 @@ class ModelDataSet:
     @color.setter
     def color(self, value: Color):
         self._color = value if value else Color(204, 204, 204, 255)
+
+    @property
+    def color_by(self) -> str:
+        """Set the field that the DataSet should colored-by when exported to vtkjs.
+
+        By default the dataset will be colored by surface color and not data fields.
+        """
+        return self._color_by
+
+    @color_by.setter
+    def color_by(self, value: str):
+        if not value:
+            self._color_by = None
+        else:
+            assert value in self._fields, \
+                f'{value} is not a valid data field for this ModelDataSet. Available ' \
+                f'data fields are: {list(self._fields.keys())}'
+
+        for data in self.data:
+            data.color_by(value, self._fields[value])
+
+        self._color_by = value
 
     @property
     def opacity(self) -> float:
@@ -274,10 +322,15 @@ class ModelDataSet:
 
         ds_prop = DataSetProperty.parse_obj(prop)
 
+        mapper = DataSetMapper()
+        if self.color_by is not None:
+            mapper.colorByArrayName = self.color_by
+
         data = {
             'name': self.name,
             'httpDataSetReader': {'url': url if url is not None else self.name},
-            'property': ds_prop.dict()
+            'property': ds_prop.dict(),
+            'mapper': mapper.dict()
         }
 
         return DataSet.parse_obj(data)
