@@ -136,7 +136,7 @@ pts.to_vtk('.', 'colored_points')
 from ladybug.location import Location
 from ladybug.sunpath import Sunpath, Point3D, Vector3D
 from honeybee_vtk.to_vtk import convert_polyline, create_polyline
-from honeybee_vtk.types import PolyDataJoined
+from honeybee_vtk.types import JoinedPolyData
 import math
 
 # Create location. You can also extract location data from an epw file.
@@ -160,7 +160,7 @@ plot_points = [
 plot = create_polyline(plot_points)
 
 # join polylines into a single polydata
-sunpath = PolyDataJoined.from_polydata(sp_pls)
+sunpath = JoinedPolyData.from_polydata(sp_pls)
 # add plot
 sunpath.append(plot)
 
@@ -177,7 +177,7 @@ sunpath.to_vtk('.', 'sunpath')
 from ladybug.epw import EPW
 from ladybug.sunpath import Sunpath, Point3D, Vector3D
 from honeybee_vtk.to_vtk import convert_points, convert_polyline, create_polyline
-from honeybee_vtk.types import PolyDataJoined
+from honeybee_vtk.types import JoinedPolyData
 import math
 
 # Get location from epw file
@@ -202,7 +202,7 @@ plot_points = [
 plot = create_polyline(plot_points)
 
 # join polylines into a single polydata
-sunpath = PolyDataJoined.from_polydata(sp_pls)
+sunpath = JoinedPolyData.from_polydata(sp_pls)
 # add plot
 sunpath.append(plot)
 sunpath.to_vtk('.', 'sunpath')
@@ -232,6 +232,38 @@ sun_positions.to_vtk('.', 'sun_positions')
 ![sunpath with data](/images/sunpath_with_data.png)
 
 
-## Load HB model with data
+## Load HB model
 
-To be added!
+```python
+from honeybee_vtk.model import Model
+
+hbjson = r'./tests/assets/gridbased.hbjson'
+model = Model.from_hbjson(hbjson)
+model.to_html(folder='.', name='two-rooms', show=True)
+
+```
+
+![HBJSON model](/images/hbjson_model.png)
+
+
+## Load HB model - change display model and colors
+
+```python
+
+from honeybee_vtk.model import Model, DisplayMode
+from ladybug.color import Color
+
+hbjson = r'./tests/assets/gridbased.hbjson'
+model = Model.from_hbjson(hbjson)
+
+# update model visualization to show edges
+model.update_display_mode(DisplayMode.SurfaceWithEdges)
+
+# set shades to wireframe mode and change their color to black
+model.shades.display_mode = DisplayMode.Wireframe
+model.shades.color = Color(0, 0, 0, 255)
+
+model.to_html('.', name='two-rooms', show=True)
+```
+
+![Modified HBJSON model](/images/hbjson_model_2.png)
