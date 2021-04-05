@@ -13,7 +13,7 @@ from .types import ModelDataSet
 from .to_vtk import convert_aperture, convert_face, convert_room, convert_shade, \
     convert_sensor_grid
 from .helper import separate_by_type
-from .vtkjs.schema import IndexJSON, DisplayMode
+from .vtkjs.schema import IndexJSON, DisplayMode, SensorGridOptions
 from .vtkjs.helper import convert_directory_to_zip_file, add_data_to_viewer
 
 
@@ -53,34 +53,41 @@ class Model(object):
     You can control the style for each type separately.
 
     """
-    def __init__(self, model: HBModel, load_grids: bool = True) -> None:
+    def __init__(
+        self, model: HBModel,
+        load_grids: SensorGridOptions = SensorGridOptions.Ignore
+            ) -> None:
+
         super().__init__()
         # apertures and orphaned apertures
-        self._apertures = ModelDataSet('Aperture', color=self.color_by_type('Aperture'))
+        self._apertures = \
+            ModelDataSet('Aperture', color=self.get_default_color('Aperture'))
         # doors and orphaned doors
-        self._doors = ModelDataSet('Door', color=self.color_by_type('Door'))
+        self._doors = ModelDataSet('Door', color=self.get_default_color('Door'))
         # shades and orphaned shades
-        self._shades = ModelDataSet('Shade', color=self.color_by_type('Shade'))
+        self._shades = ModelDataSet('Shade', color=self.get_default_color('Shade'))
         # face objects based on type
-        self._walls = ModelDataSet('Wall', color=self.color_by_type('Wall'))
-        self._floors = ModelDataSet('Floor', color=self.color_by_type('Floor'))
+        self._walls = ModelDataSet('Wall', color=self.get_default_color('Wall'))
+        self._floors = ModelDataSet('Floor', color=self.get_default_color('Floor'))
         self._roof_ceilings = \
-            ModelDataSet('RoofCeiling', color=self.color_by_type('RoofCeiling'))
+            ModelDataSet('RoofCeiling', color=self.get_default_color('RoofCeiling'))
         self._air_boundaries = \
-            ModelDataSet('AirBoundary', color=self.color_by_type('AirBoundary'))
-        # self._sensor_grids = ModelDataSet('Grid', color=self.color_by_type('Grid'))
-        # self._grid_loaded = False
+            ModelDataSet('AirBoundary', color=self.get_default_color('AirBoundary'))
+        self._sensor_grids = ModelDataSet('Grid', color=self.get_default_color('Grid'))
         self._convert_model(model)
+        self._load_grids(model, load_grids)
+        self._sensor_grids_option = load_grids  # keep this for adding data
 
     @classmethod
-    def from_hbjson(cls, hbjson: str, load_grids=True):
+    def from_hbjson(
+        cls, hbjson: str, load_grids: SensorGridOptions = SensorGridOptions.Ignore
+            ):
         """Create the model from a HBJSON file."""
         hb_file = pathlib.Path(hbjson)
         assert hb_file.is_file(), f'{hbjson} doesn\'t exist.'
         model = HBModel.from_hbjson(hb_file.as_posix())
         return cls(model, load_grids)
 
-    # TODO: add missing types as properties
     @property
     def walls(self) -> ModelDataSet:
         """Model walls."""
@@ -116,28 +123,30 @@ class Model(object):
         """Air boundaries."""
         return self._air_boundaries
 
-    # def sensor_grids(self, load_type=0, force=False) -> ModelDataSet:
-    #     """Model sensor grids."""
-    #     if force or not self._grid_loaded:
-    #         self._load_grids(self, load_type)
-    #     return self._sensor_grids
+    @property
+    def sensor_grids(self) -> ModelDataSet:
+        """Sensor grids."""
+        return self._sensor_grids
 
-    # def _load_grids(self, grids_filter='*'):
-    #     model = self.hb_model
-    #     if hasattr(model.properties, 'radiance'):
-    #         for sensor_grid in model.properties.radiance.sensor_grids:
-    #             self._sensor_grids.append(convert_sensor_grid(sensor_grid))
-    #     self._grid_loaded = True
+    def _load_grids(self, model: HBModel, grid_options: SensorGridOptions):
+        """Load sensor grids."""
+        if grid_options == SensorGridOptions.Ignore:
+            return
+        if hasattr(model.properties, 'radiance'):
+            for sensor_grid in model.properties.radiance.sensor_grids:
+                self._sensor_grids.data.append(
+                    convert_sensor_grid(sensor_grid, grid_options)
+                )
 
     def update_display_mode(self, value: DisplayMode):
         """Change display mode for all the object types in the model.
 
-        For changing the display model for a single object type change the display_mode
-        property separately.
+        Sensor grids display model will not be affected. For changing the display model
+        for a single object type change the display_mode property separately.
 
-        :: codeblock
+        .. code-block:: python
 
-            model.walls.display_mode = DisplayMode.Wireframe
+            model.sensor_grids.display_mode = DisplayMode.Wireframe
 
         """
         for attr in DATA_SETS.values():
@@ -195,6 +204,14 @@ class Model(object):
                 # empty dataset
                 continue
             scene.append(data.as_data_set())
+
+        # add sensor grids
+        # it is separate from other DATA_SETS mainly for data visualization
+        data = self.sensor_grids
+        path = data.to_folder(folder)
+        if path:
+            scene.append(data.as_data_set())
+
         # write index.json
         index_json = IndexJSON()
         index_json.scene = scene
@@ -220,7 +237,7 @@ class Model(object):
         return html_file
 
     @staticmethod
-    def color_by_type(face_type) -> Color:
+    def get_default_color(face_type) -> Color:
         """Get the default color based of face type.
 
         Use these colors to generate visualizations that are familiar for Ladybug Tools

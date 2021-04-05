@@ -16,6 +16,13 @@ class DisplayMode(enum.Enum):
     Points = 0
 
 
+class SensorGridOptions(enum.Enum):
+    """Settings for loading sensor grids."""
+    Ignore = 0  # no loading
+    Sensors = 1  # load them as sensor points
+    Mesh = 2  # load them as mesh
+
+
 class Camera(BaseModel):
     """Camera in vtkjs viewer."""
     focalPoint: List[float] = Field(

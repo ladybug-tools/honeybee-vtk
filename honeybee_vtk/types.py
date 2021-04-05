@@ -29,14 +29,13 @@ class VTKWriters(enum.Enum):
 class PolyData(vtk.vtkPolyData):
     """A thin wrapper around vtk.vtkPolyData.
 
-    PolyData has an additional meta_data dictionary.
+    PolyData has additional fields for metadata information.
     """
     def __init__(self) -> None:
         super().__init__()
         self.identifier = None
         self.display_name = None
         self.type = None
-        self.meta_data = {}
 
     @staticmethod
     def _resolve_array_type(data):
@@ -116,16 +115,9 @@ class PolyData(vtk.vtkPolyData):
 
 
 class JoinedPolyData(vtk.vtkAppendPolyData):
-    """A thin wrapper around vtk.vtkAppendPolyData.
-
-    JoinedPolyData has an additional meta_data dictionary.
-    """
+    """A thin wrapper around vtk.vtkAppendPolyData."""
     def __init__(self) -> None:
         super().__init__()
-        # just keep track of all the assigned information
-        self.identifier = None
-        self.display_name = None
-        self.meta_data = {}
 
     @classmethod
     def from_polydata(cls, polydata: List[PolyData]):

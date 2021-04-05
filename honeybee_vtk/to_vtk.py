@@ -22,8 +22,10 @@ from honeybee.room import Room
 from honeybee.face import Face
 from honeybee.aperture import Aperture
 from honeybee.shade import Shade
+from honeybee_radiance.sensorgrid import SensorGrid
 
 from .types import PolyData, JoinedPolyData
+from .vtkjs.schema import SensorGridOptions
 
 
 def convert_face_3d(face: Face3D) -> PolyData:
@@ -75,13 +77,33 @@ def convert_mesh(mesh: Mesh3D) -> PolyData:
     return grid_vtk
 
 
-def convert_sensor_grid(sensor_grid) -> PolyData:
+def convert_sensor_grid(
+    sensor_grid: SensorGrid, load_option: SensorGridOptions = SensorGridOptions.Mesh
+        ) -> PolyData:
     """Convert a honeybee-radiance sensor grid to a vtkPolyData."""
-    return convert_mesh(sensor_grid.mesh)
+    if load_option == SensorGridOptions.Sensors:
+        # load sensors
+        points = [ap.pos for ap in sensor_grid.sensors]
+        grid_data = convert_points(points)
+    else:
+        mesh = sensor_grid.mesh
+        if mesh is None:
+            raise ValueError(
+                f'{sensor_grid.display_name} does not include mesh information. '
+                'Try again with SensorGridOptions.Sensors'
+                )
+        grid_data = convert_mesh(sensor_grid.mesh)
+
+    grid_data.identifier = sensor_grid.identifier
+    grid_data.display_name = sensor_grid.display_name
+    grid_data.type = 'Grid'
+    return grid_data
 
 
 def convert_shade(shade: Shade) -> PolyData:
     shade_data = convert_face_3d(shade.geometry)
+    shade_data.identifier = shade.identifier
+    shade_data.display_name = shade.display_name
     shade_data.type = 'Shade'
     return shade_data
 
@@ -89,6 +111,8 @@ def convert_shade(shade: Shade) -> PolyData:
 def convert_aperture(aperture: Aperture) -> List[PolyData]:
     aperture_data = convert_face_3d(aperture.geometry)
     aperture_data.type = 'Aperture'
+    aperture_data.identifier = aperture.identifier
+    aperture_data.display_name = aperture.display_name
     data = [aperture_data]
     for shade in aperture.outdoor_shades:
         shade_data = convert_shade(shade)
@@ -100,6 +124,8 @@ def convert_face(face: Face) -> List[PolyData]:
     """Convert a HBFace to a PolyData."""
     polydata = convert_face_3d(face.geometry)
     polydata.type = face.type.name
+    polydata.identifier = face.identifier
+    polydata.display_name = face.display_name
     data = [polydata]
     for aperture in face.apertures:
         data.extend(convert_aperture(aperture))
