@@ -283,8 +283,8 @@ model.to_html('.', name='two-rooms', show=True)
 from honeybee_vtk.model import Model, DisplayMode, SensorGridOptions
 import pathlib
 
-hbjson = r'./tests/assets/gridbased.hbjson'
-results_folder = r'./tests/assets/df_results'
+hbjson = r'./tests/assets/revit_model/model.hbjson'
+results_folder = r'./tests/assets/revit_model/df_results'
 
 model = Model.from_hbjson(hbjson, load_grids=SensorGridOptions.Mesh)
 
@@ -298,17 +298,19 @@ for grid in model.sensor_grids.data:
 
 # add the results to sensor grids as a new field
 # per face is set to True since we loaded grids as a mesh
-model.sensor_grids.add_data_fields(daylight_factor, name='DF', per_face=True)
-model.sensor_grids.color_by = 'DF'
+model.sensor_grids.add_data_fields(daylight_factor, name='Daylight Factor', per_face=True)
+model.sensor_grids.color_by = 'Daylight Factor'
 
 # make it pop!
 # change display mode for sensor grids to be surface with edges
 model.sensor_grids.display_mode = DisplayMode.SurfaceWithEdges
 # update model visualization to wireframe
 model.update_display_mode(DisplayMode.Wireframe)
+# make shades to be shaded with edge
+model.shades.display_mode = DisplayMode.SurfaceWithEdges
 
 # export the model to a HTML file with embedded viewer and open the page in a browser
-model.to_html(folder='.', name='two-rooms', show=True)
+model.to_html('c:/ladybug', name='revit-model', show=True)
 
 # alternatively you can write it as a vtkjs file and visualize it in ParaviewGlance
 # the `to_html` method calls this method under the hood.
@@ -316,7 +318,7 @@ model.to_html(folder='.', name='two-rooms', show=True)
 
 ```
 
-![Daylight factor results](/images/daylight_factor.png)
+![Daylight factor results](/images/revit_model_daylight_factor.png)
 
 
 ## Load HB Model and annual daylight results
