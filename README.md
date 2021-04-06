@@ -246,7 +246,7 @@ model.to_html(folder='.', name='two-rooms', show=True)
 ![HBJSON model](/images/hbjson_model.png)
 
 
-## Load HB model - change display model and colors
+## Load HB model - change display mode and colors
 
 ```python
 
@@ -374,3 +374,61 @@ model.to_html('.', name='two-rooms', show=True)
 ```
 
 ![Annual daylight results](/images/annual_daylight_metrics.png)
+
+
+## Save model with results as an image
+
+
+
+```python
+from honeybee_vtk.model import Model, DisplayMode, SensorGridOptions
+from honeybee_vtk.scene import Scene
+
+import pathlib
+
+hbjson = r'./tests/assets/gridbased.hbjson'
+results_folder = r'./tests/assets/df_results'
+
+model = Model.from_hbjson(hbjson, load_grids=SensorGridOptions.Mesh)
+
+# load the results for each grid
+# note that we load the results using the order for model to ensure the order will match
+daylight_factor = []
+for grid in model.sensor_grids.data:
+    res_file = pathlib.Path(results_folder, f'{grid.identifier}.res')
+    grid_res = [float(v) for v in res_file.read_text().splitlines()]
+    daylight_factor.append(grid_res)
+
+# add the results to sensor grids as a new field
+# per face is set to True since we loaded grids as a mesh
+model.sensor_grids.add_data_fields(
+    daylight_factor, name='Daylight Factor', per_face=True, data_range=(0, 20)
+)
+model.sensor_grids.color_by = 'Daylight Factor'
+
+# make it pop!
+# change display mode for sensor grids to be surface with edges
+model.sensor_grids.display_mode = DisplayMode.SurfaceWithEdges
+# update model visualization to wireframe
+model.update_display_mode(DisplayMode.Wireframe)
+# make shades to be shaded with edge
+model.shades.display_mode = DisplayMode.SurfaceWithEdges
+
+# create a scene to render the model
+scene = Scene()
+scene.add_model(model)
+# set a scale bar based on daylight factor values
+color_range = model.sensor_grids.active_field_info.color_range()
+
+# you can also save the scene as an image.
+# right now you can't control the camera but camera control can be implemented.
+scene.to_image('.', name='daylight_factor', image_scale=2, color_range=color_range)
+
+# alternatively you can start an interactive window
+# scene.show(color_range)
+
+```
+
+![Captured image](/images/captured_daylight_factor.png)
+
+![Interactive renderer](/images/interactive_scene.png)
