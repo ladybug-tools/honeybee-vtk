@@ -128,6 +128,13 @@ class Model(object):
         """Sensor grids."""
         return self._sensor_grids
 
+    def __iter__(self):
+        for dataset in (
+            self.apertures, self.walls, self.shades, self.doors, self.floors,
+            self.roof_ceilings, self.air_boundaries, self.sensor_grids
+                ):
+            yield dataset
+
     def _load_grids(self, model: HBModel, grid_options: SensorGridOptions):
         """Load sensor grids."""
         if grid_options == SensorGridOptions.Ignore:

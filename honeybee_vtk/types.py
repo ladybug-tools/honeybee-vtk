@@ -9,12 +9,12 @@ https://lorensen.github.io/VTKExamples/site/Cxx/PolyData/FieldData/
 
 """
 import enum
-from typing import Union, List
+from typing import Dict, Union, List
 import pathlib
 
 import vtk
 
-from ladybug.color import Color
+from ladybug.color import Color, Colorset
 
 from .vtkjs.schema import DataSetProperty, DataSet, DisplayMode, DataSetMapper
 
@@ -24,6 +24,38 @@ class VTKWriters(enum.Enum):
     legacy = 'vtk'
     ascii = 'vtp'
     binary = 'vtp'
+
+
+COLORSET = Colorset()
+
+
+class DataFieldInfo:
+    """Information for a data field."""
+    def __init__(self, name='default', range=None, colors=None, per_face=True) -> None:
+        self.name = name
+        self.data_range = range or (0, 100)
+        self.colors = colors or COLORSET.ecotect()
+        self.per_face = per_face
+
+    def color_range(self):
+        """A VTK lookup table that acts as a color range."""
+        minimum, maximum = self.data_range
+        color_values = self.colors
+        lut = vtk.vtkLookupTable()
+        lut.SetRange(minimum, maximum)
+        lut.SetRampToLinear()
+        lut.SetValueRange(minimum, maximum)
+        lut.SetHueRange(0, 0)
+        lut.SetSaturationRange(0, 0)
+
+        lut.SetNumberOfTableValues(len(color_values))
+        for count, color in enumerate(color_values):
+            lut.SetTableValue(
+                count, color.r / 255, color.g / 255, color.b / 255, color.a / 255
+            )
+        lut.Build()
+        lut.SetNanColor(1, 0, 0, 1)
+        return lut
 
 
 class PolyData(vtk.vtkPolyData):
@@ -36,6 +68,7 @@ class PolyData(vtk.vtkPolyData):
         self.identifier = None
         self.display_name = None
         self.type = None
+        self._fields = {}  # keep track of information for each data field.
 
     @staticmethod
     def _resolve_array_type(data):
@@ -46,11 +79,29 @@ class PolyData(vtk.vtkPolyData):
         else:
             raise ValueError(f'Unsupported input data type: {type(data)}')
 
-    def add_data(self, data: List, *, name=None, cell=True):
+    @property
+    def data_fields(self) -> Dict[str, DataFieldInfo]:
+        """Get data fields for this Polydata."""
+        return self._fields
+
+    def add_data(self, data: List, name, *, cell=True, color_set=None, data_range=None):
         """Add a list of data to a vtkPolyData.
 
         Data can be added to cells or points. By default the data will be added to cells.
+
+        Args:
+            data: A list of values. The length of the data should match the length of
+                DataCells or DataPoints in Polydata.
+            name: Name of data (e.g. Useful Daylight Autonomy.)
+            cell: A Boolean to indicate if the data is per cell or per point. In
+                most cases except for sensor points that are loaded as sensors the data
+                are provided per cell.
+            color_set: A Ladybug Tools color set. Use COLORSET to set colorset for data.
+            data_range: A list with two values for minimum and maximum values for legend.
         """
+        assert name not in self._fields, \
+            f'A data filed by name "{name}" already exist. Try a different name.'
+
         if isinstance(data[0], (list, tuple)):
             values = self._resolve_array_type(data[0][0])
             values.SetNumberOfComponents(len(data[0]))
@@ -79,8 +130,20 @@ class PolyData(vtk.vtkPolyData):
 
         self.Modified()
 
+        # store information
+        if not data_range:
+            data_range = tuple(values.GetRange())
+        if not color_set:
+            color_set = COLORSET.ecotect()
+
+        self._fields[name] = DataFieldInfo(name, data_range, color_set, cell)
+
     def color_by(self, name: str, cell=True) -> None:
         """Set the name for active data that should be used to color PolyData."""
+        assert name in self._fields, \
+            f'{name} is not a valid data field for this PolyData. Available ' \
+            f'data fields are: {list(self._fields)}'
+
         if cell:
             self.GetCellData().SetActiveScalars(name)
         else:
@@ -109,9 +172,6 @@ class PolyData(vtk.vtkPolyData):
 
         """
         return _write_to_folder(self, target_folder)
-
-    def to_vtkjs(self, target_folder, name):
-        pass
 
 
 class JoinedPolyData(vtk.vtkAppendPolyData):
@@ -185,10 +245,33 @@ class ModelDataSet:
         self.data = data or []
         self.color = color
         self.display_mode = DisplayMode.Shaded
-        self._fields = {}
         self.color_by = None
 
-    def add_data_fields(self, data: List[List], name: str, per_face: bool = True):
+    @property
+    def fields_info(self) -> dict:
+        return {} if not self.data else self.data[0]._fields
+
+    @property
+    def active_field_info(self) -> DataFieldInfo:
+        """Get information for active field info.
+
+        It will be the field info for the field that is set in color_by. If color_by
+        is not set the first field will be used. If no field is available a default
+        field will be generated.
+
+        """
+        info = self.fields_info
+        color_by = self.color_by
+        if not info:
+            return DataFieldInfo()
+        if not color_by:
+            return next(info.values())
+        return info[color_by]
+
+    def add_data_fields(
+        self, data: List[List], name: str, per_face: bool = True, color_set=None,
+        data_range=None
+            ):
         """Add data fields to PolyData objects in this dataset.
 
         Use this method to add data like temperature or illuminance values to PolyData
@@ -203,6 +286,8 @@ class ModelDataSet:
             per_face: A Boolean to indicate if the data is per face or per point. In
                 most cases except for sensor points that are loaded as sensors the data
                 are provided per face.
+            color_set: A Ladybug Tools color set. Use COLORSET to set colorset for data.
+            data_range: A list with two values for minimum and maximum values for legend.
 
         """
         assert len(self.data) == len(data), \
@@ -210,8 +295,13 @@ class ModelDataSet:
             f'in this dataset {len(self.data)}.'
 
         for count, d in enumerate(data):
-            self.data[count].add_data(d, name=name, cell=per_face)
-        self._fields[name] = per_face
+            self.data[count].add_data(
+                d, name=name, cell=per_face, color_set=color_set, data_range=data_range
+            )
+
+    @property
+    def is_empty(self):
+        return len(self.data) == 0
 
     @property
     def color(self) -> Color:
@@ -236,15 +326,16 @@ class ModelDataSet:
 
     @color_by.setter
     def color_by(self, value: str):
+        fields_info = self.fields_info
         if not value:
             self._color_by = None
         else:
-            assert value in self._fields, \
+            assert value in fields_info, \
                 f'{value} is not a valid data field for this ModelDataSet. Available ' \
-                f'data fields are: {list(self._fields.keys())}'
+                f'data fields are: {list(fields_info.keys())}'
 
         for data in self.data:
-            data.color_by(value, self._fields[value])
+            data.color_by(value, fields_info[value].per_face)
 
         self._color_by = value
 
@@ -303,7 +394,9 @@ class ModelDataSet:
 
         return _write_to_folder(data, target_folder.as_posix())
 
-    # TODO: change color by based on color_by input
+    # TODO: export color-range information for each dataset
+    # each dataset has its own information. If we can only have one then we should use
+    # the information for color_by field.
     def as_data_set(self, url=None) -> DataSet:
         """Convert to a vtkjs DataSet object.
 
