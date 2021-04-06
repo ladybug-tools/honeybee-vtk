@@ -3,16 +3,16 @@ import pathlib
 import shutil
 import webbrowser
 import tempfile
+from collections import defaultdict
 
-from typing import Dict
+from typing import Dict, List
 
 from honeybee.model import Model as HBModel
 from ladybug.color import Color
 
-from .types import ModelDataSet
+from .types import ModelDataSet, PolyData
 from .to_vtk import convert_aperture, convert_face, convert_room, convert_shade, \
     convert_sensor_grid
-from .helper import separate_by_type
 from .vtkjs.schema import IndexJSON, DisplayMode, SensorGridOptions
 from .vtkjs.helper import convert_directory_to_zip_file, add_data_to_viewer
 
@@ -156,17 +156,17 @@ class Model(object):
         """An internal method to convert the objects on class initiation."""
         for room in model.rooms:
             objects = convert_room(room)
-            self._add_objects(separate_by_type(objects))
+            self._add_objects(self.separate_by_type(objects))
         for face in model.faces:
             objects = convert_face(face)
-            self._add_objects(separate_by_type(objects))
+            self._add_objects(self.separate_by_type(objects))
         for face in model.orphaned_shades:
             self._shades.data.append(convert_shade(face))
         for face in model.orphaned_apertures:
             self._apertures.data.extend(convert_aperture(face))
         for face in model.orphaned_faces:
             objects = convert_face(face)
-            self._add_objects(separate_by_type(objects))
+            self._add_objects(self.separate_by_type(objects))
 
     def _add_objects(self, data: Dict) -> None:
         """Add object to different fields based on data type.
@@ -245,3 +245,13 @@ class Model(object):
         """
         color = _COLORSET.get(face_type, [1, 1, 1, 1])
         return Color(*(v * 255 for v in color))
+
+    @staticmethod
+    def separate_by_type(data: List[PolyData]) -> Dict:
+        """Separate PolyData objects by type."""
+        data_dict = defaultdict(lambda: [])
+
+        for d in data:
+            data_dict[d.type].append(d)
+
+        return data_dict
