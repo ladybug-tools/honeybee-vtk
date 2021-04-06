@@ -1,16 +1,31 @@
 """A VTK rendering scene."""
 import pathlib
-from typing import Tuple, Union
+import enum
+from typing import Tuple
 
 import vtk
 
-from ladybug.color import Colorset
+from .types import JoinedPolyData
+from .model import Model, ModelDataSet, DisplayMode
+
+
+class ImageTypes(enum.Enum):
+    """Supported image types."""
+    png = 'png'
+    jpg = 'jpg'
+    ps = 'ps'
+    tiff = 'tiff'
+    bmp = 'bmp'
+    pnm = 'pnm'
 
 
 class Scene(object):
-    """A rendering scene."""
+    """A rendering scene with a single viewport.
 
-    COLORSET = Colorset()
+    Once as scene is created you can export it to glTF, an image or just show it in an
+    interactive viewer.
+
+    """
 
     def __init__(self, background_color=None) -> None:
         super().__init__()
@@ -50,34 +65,16 @@ class Scene(object):
         # return the objects - the order is from outside to inside
         return interactor, window, renderer
 
-    def _color_range_collection(self, index=1):
-        """A VTK lookup table that acts as a color range."""
-        color_values = self.COLORSET[index]
-        lut = vtk.vtkLookupTable()
-        lut.SetRange(0, 100)
-        lut.SetRampToLinear()
-        lut.SetValueRange(0, 100)
-        lut.SetHueRange(0, 0)
-        lut.SetSaturationRange(0, 0)
+    def get_legend(self, color_range) -> vtk.vtkScalarBarWidget():
+        """Create a scalar bar widget.
 
-        lut.SetNumberOfTableValues(len(color_values))
-        for count, color in enumerate(color_values):
-            lut.SetTableValue(
-                count, color.r / 255, color.g / 255, color.b / 255, color.a / 255
-            )
-        lut.Build()
-        lut.SetNanColor(1, 0, 0, 1)
-        return lut
-
-    def get_legend(self, color_range=None) -> vtk.vtkRenderWindowInteractor():
-        """Add legend to an interactor.
-
+        Args:
+            color_range: A VTK LookUpTable object for color range. You can create one
+                from color_range method in `DataFieldInfo`.
         Returns:
-            Renderer with an embedded legend.
+            A VTK scalar bar widget.
         """
         # create the scalar_bar
-        if not color_range:
-            color_range = self._color_range_collection()
         scalar_bar = vtk.vtkScalarBarActor()
         scalar_bar.SetOrientationToHorizontal()
         scalar_bar.SetLookupTable(color_range)
@@ -88,47 +85,53 @@ class Scene(object):
         scalar_bar_widget.SetScalarBarActor(scalar_bar)
         return scalar_bar_widget
 
-    def add_object(
-        self,
-        polydata: Union[vtk.vtkPolyData, vtk.vtkAppendPolyData],
-        color_range=None, representation=None
-            ) -> vtk.vtkActor:
-        """Create a mapper and add retune it as an actor.
+    def add_model(self, model: Model):
+        """Add a model to scene."""
+        for ds in model:
+            if ds.is_empty:
+                continue
+            self.add_dataset(ds)
 
-        An actor can be added to the renderer.
-        """
-        if not color_range:
-            color_range = self._color_range_collection()
-        mapper = vtk.vtkPolyDataMapper()
+    def add_dataset(self, data_set: ModelDataSet):
+        """Create a dataset to scene as a VTK actor."""
+
         # calculate point data based on cell data
         cell_to_point = vtk.vtkCellDataToPointData()
-        if isinstance(polydata, vtk.vtkPolyData):
-            cell_to_point.SetInputData(polydata)
-        else:
+        if len(data_set.data) > 1:
+            polydata = JoinedPolyData.from_polydata(data_set.data)
             cell_to_point.SetInputConnection(polydata.GetOutputPort())
+        else:
+            polydata = data_set.data[0]
+            cell_to_point.SetInputData(polydata)
 
+        mapper = vtk.vtkPolyDataMapper()
         mapper.SetInputConnection(cell_to_point.GetOutputPort())
 
         # map cell data to pointdata
-        mapper.SetColorModeToMapScalars()
-        mapper.SetScalarModeToUsePointData()
-        mapper.SetScalarVisibility(True)
-        mapper.SetScalarRange(0, 100)
-        mapper.SetLookupTable(color_range)
-        mapper.Update()
+        if data_set.fields_info:
+            field_info = data_set.active_field_info
+            mapper.SetColorModeToMapScalars()
+            mapper.SetScalarModeToUsePointData()
+            mapper.SetScalarVisibility(True)
+            range_min, range_max = field_info.data_range
+            mapper.SetScalarRange(range_min, range_max)
+            mapper.SetLookupTable(field_info.color_range())
+            mapper.Update()
 
         actor = vtk.vtkActor()
         actor.SetMapper(mapper)
-        actor.GetProperty().EdgeVisibilityOn()
-        if representation == 'wireframe':
+
+        if data_set.edge_visibility:
+            actor.GetProperty().EdgeVisibilityOn()
+
+        if data_set.display_mode == DisplayMode.Wireframe:
             actor.GetProperty().SetRepresentationToWireframe()
+
         self._renderer.AddActor(actor)
 
-    def to_gltf(self, target_folder, name):
+    def to_gltf(self, folder, name):
         """Save the scene to a glTF file."""
-        legend = self.get_legend()
-        legend.On()
-        gltf_file_path = pathlib.Path(target_folder, f'{name}.gltf')
+        gltf_file_path = pathlib.Path(folder, f'{name}.gltf')
         exporter = vtk.vtkGLTFExporter()
         exporter.SaveNormalOn()
         exporter.InlineDataOn()
@@ -137,55 +140,83 @@ class Scene(object):
         exporter.SetRenderWindow(self._window)
         exporter.Modified()
         exporter.Write()
-        legend.Off()
         return gltf_file_path.as_posix()
 
-    # TODO: support different image types
-    # add support for other image exporters - see the reference link for more information
-    def to_jpeg(self, target_folder, file_name):
+    @staticmethod
+    def _get_image_writer(image_type: ImageTypes):
+        """Get vtk image writer for each image type."""
+        if image_type == ImageTypes.png:
+            writer = vtk.vtkPNGWriter()
+        elif image_type == ImageTypes.bmp:
+            writer = vtk.vtkBMPWriter()
+        elif image_type == ImageTypes.jpg:
+            writer = vtk.vtkJPEGWriter()
+        elif image_type == ImageTypes.pnm:
+            writer = vtk.vtkPNMWriter()
+        elif image_type == ImageTypes.ps:
+            writer = vtk.vtkPostScriptWriter()
+        elif image_type == ImageTypes.tiff:
+            writer = vtk.vtkTIFFWriter()
+        else:
+            raise ValueError(f'Invalid image type: {image_type}')
+        return writer
+
+    def to_image(
+        self, folder, name, image_type: ImageTypes = ImageTypes.png, *, rgba=True,
+        image_scale=1, color_range=None
+            ):
         """Save scene to an image.
 
-        Reference: https://lorensen.github.io/VTKExamples/site/Python/IO/ImageWriter/
+        Reference: https://kitware.github.io/vtk-examples/site/Python/IO/ImageWriter/
         """
         # for some reason calling the legend from another method causes an error
-        color_range = self._color_range_collection()
-        scalar_bar = vtk.vtkScalarBarActor()
-        scalar_bar.SetOrientationToHorizontal()
-        scalar_bar.SetLookupTable(color_range)
+        # that's why I'm including it here. This is a hack. User should have control
+        # on setting up the legend
+        if color_range:
+            scalar_bar = vtk.vtkScalarBarActor()
+            scalar_bar.SetOrientationToHorizontal()
+            scalar_bar.SetLookupTable(color_range)
 
-        # create the scalar_bar_widget
-        legend = vtk.vtkScalarBarWidget()
-        legend.SetInteractor(self._interactor)
-        legend.SetScalarBarActor(scalar_bar)
-        legend.On()
+            # create the scalar_bar_widget
+            legend = vtk.vtkScalarBarWidget()
+            legend.SetInteractor(self._interactor)
+            legend.SetScalarBarActor(scalar_bar)
+            legend.On()
+
         # render window
         self._window.Render()
-        jpeg_file_path = pathlib.Path(target_folder, file_name + ".jpeg")
-        writer = vtk.vtkJPEGWriter()
+        image_path = pathlib.Path(folder, f'{name}.{image_type.value}')
+        writer = self._get_image_writer(image_type)
+
         window_to_image_filter = vtk.vtkWindowToImageFilter()
         window_to_image_filter.SetInput(self._window)
-        window_to_image_filter.SetScale(1)  # image quality
-        window_to_image_filter.SetInputBufferTypeToRGB()
-        # Read from the front buffer.
-        window_to_image_filter.ReadFrontBufferOff()
-        window_to_image_filter.Update()
-        writer.SetFileName(jpeg_file_path.as_posix())
+        window_to_image_filter.SetScale(image_scale)  # image quality
+
+        # rgba is not supported for postscript image type
+        if rgba and image_type != ImageTypes.ps:
+            window_to_image_filter.SetInputBufferTypeToRGBA()
+        else:
+            window_to_image_filter.SetInputBufferTypeToRGB()
+            # Read from the front buffer.
+            window_to_image_filter.ReadFrontBufferOff()
+            window_to_image_filter.Update()
+
+        writer.SetFileName(image_path.as_posix())
         writer.SetInputConnection(window_to_image_filter.GetOutputPort())
         writer.Write()
-        legend.Off()
-        return jpeg_file_path.as_posix()
+        if color_range:
+            legend.Off()
 
-    def show(self):
+        return image_path.as_posix()
+
+    # TODO: Color range input is a hack - we should keep track of the data
+    # that is added to the scene and reuse them
+    def show(self, color_range=None):
         """Show rendered view."""
-        legend = self.get_legend()
-        legend.On()
+        if color_range:
+            legend = self.get_legend(color_range)
+            legend.On()
         self._window.Render()
         self._interactor.Start()
-        legend.Off()
-
-    def to_vtkjs(self):
-        """Export this scene as a vtkjs file.
-
-        This file can be opened in ParaView Glance viewer.
-        """
-        raise NotImplementedError()
+        if color_range:
+            legend.Off()
