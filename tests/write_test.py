@@ -1,16 +1,23 @@
 
 import os
-import zipfile
+import shutil
+from honeybee_vtk.model import Model
+from honeybee_vtk.vtkjs.schema import SensorGridOptions
 
 
 def test_write():
     file_path = './tests/assets/unnamed.hbjson'
-    assert True
-    # # Write with default settings
+    # Write with default settings
+    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
     # zip_path = writer(file_path, writer='vtk', target_folder='./tests/assets/temp')
-    # assert os.path.isfile(zip_path)
-    # zip_file = zipfile.ZipFile(zip_path)
-    # assert len(zip_file.namelist()) == 6
+    target_folder = './tests/assets/temp'
+    if os.path.isdir(target_folder):
+        shutil.rmtree(target_folder)
+    os.mkdir(target_folder)
+    model.to_html(folder=target_folder, name='Model')
+    html_path = os.path.join(target_folder, 'Model.html')
+    assert os.path.isfile(html_path)
+    shutil.rmtree(target_folder)
 
 
 # def test_write_grids():
