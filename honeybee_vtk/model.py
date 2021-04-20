@@ -3,13 +3,12 @@ import pathlib
 import shutil
 import webbrowser
 import tempfile
+import os
 from collections import defaultdict
-
+from zipfile import ZipFile
 from typing import Dict, List
-
 from honeybee.model import Model as HBModel
 from ladybug.color import Color
-
 from .types import ModelDataSet, PolyData
 from .to_vtk import convert_aperture, convert_face, convert_room, convert_shade, \
     convert_sensor_grid
@@ -201,12 +200,22 @@ class Model(object):
             except AttributeError:
                 raise AttributeError(f'Invalid attribute: {attr}')
 
-    def to_vtkjs(self, folder='.') -> str:
+    def to_vtkjs(self, folder='.', name=None) -> str:
+
+        # name of the vtkjs file
+        file_name = name or 'model'
+        # create a temp folder
+        temp_folder = tempfile.mkdtemp()
+        # The folder set by the user is the target folder
+        target_folder = os.path.abspath(folder)
+        # Set a file path to move the .zip file to the target folder
+        target_vtkjs_file = os.path.join(target_folder, file_name + '.vtkjs')
+
         # write every dataset
         scene = []
         for data_set in DATA_SETS.values():
             data = getattr(self, data_set)
-            path = data.to_folder(folder)
+            path = data.to_folder(temp_folder)
             if not path:
                 # empty dataset
                 continue
@@ -215,22 +224,31 @@ class Model(object):
         # add sensor grids
         # it is separate from other DATA_SETS mainly for data visualization
         data = self.sensor_grids
-        path = data.to_folder(folder)
+        path = data.to_folder(temp_folder)
         if path:
             scene.append(data.as_data_set())
 
         # write index.json
         index_json = IndexJSON()
         index_json.scene = scene
+        index_json.to_json(temp_folder)
 
-        index_json.to_json(folder)
         # zip as vtkjs
-        vtkjs_file = convert_directory_to_zip_file(folder, extension='vtkjs', move=False)
-        return vtkjs_file
+        temp_vtkjs_file = convert_directory_to_zip_file(temp_folder, extension='vtkjs', move=False)
+
+        # Move the generated vtkjs to target folder
+        shutil.move(temp_vtkjs_file, target_vtkjs_file)
+
+        return target_vtkjs_file
 
     def to_html(self, folder='.', name=None, show=False):
-        name = name or 'model'
-        html_file = pathlib.Path(folder, f'{name}.html')
+        # Name of the html file
+        file_name = name or 'model'
+        # Set the target folder
+        target_folder = os.path.abspath(folder)
+        # Set a file path to move the .zip file to the target folder
+        html_file = os.path.join(target_folder, file_name + '.html')
+        # Set temp folder to do the operation
         temp_folder = tempfile.mkdtemp()
         vtkjs_file = self.to_vtkjs(temp_folder)
         temp_html_file = add_data_to_viewer(vtkjs_file)
