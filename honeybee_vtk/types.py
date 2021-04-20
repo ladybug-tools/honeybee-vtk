@@ -384,14 +384,14 @@ class ModelDataSet:
         """
         sub_folder = sub_folder or self.name
         target_folder = pathlib.Path(folder, sub_folder)
+
         if len(self.data) == 0:
             print(f'ModelDataSet: {self.name} has no data to be exported to folder.')
             return
         elif len(self.data) == 1:
-            data = self.data
+            data = self.data[0]
         else:
             data = JoinedPolyData.from_polydata(self.data)
-
         return _write_to_folder(data, target_folder.as_posix())
 
     # TODO: export color-range information for each dataset
@@ -466,6 +466,7 @@ def _write_to_folder(polydata: Union[PolyData, JoinedPolyData], target_folder: s
     folder = pathlib.Path(target_folder)
     folder.mkdir(parents=True, exist_ok=True)
     writer.SetFileName(folder.as_posix())
+
     if isinstance(polydata, vtk.vtkPolyData):
         writer.SetInputData(polydata)
     else:
