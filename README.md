@@ -36,7 +36,7 @@ Usage: honeybee-vtk translate [OPTIONS] HBJSON_FILE
       hbjson-file: Path to an HBJSON file.
 
 Options:
-  -n, --name TEXT                 Name of the output file.  [default: none]
+  -n, --name TEXT                 Name of the output file.  [default: model]
   -f, --folder DIRECTORY          Path to target folder.  [default: .]
   -ft, --file-type [html|vtkjs]   Switch between html and vtkjs formats
                                   [default: html]
