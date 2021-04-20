@@ -88,7 +88,7 @@ honeybee-vtk translate "path to hbjson file" --folder="path to the target folder
 ## [API Documentation](https://www.ladybug.tools/honeybee-vtk/docs/)
 
 
-## Create arrows and write to a vtp file
+## Create arrows and write to a vtp file and open it in a minimalist desktop [viewer](https://kitware.github.io/F3D/)
 
 ```python
 from ladybug_geometry.geometry3d import Point3D, Vector3D
@@ -100,10 +100,9 @@ arrows = create_arrow(points, vectors)
 arrows.to_vtk('.', 'arrows')
 
 ```
-
 ![arrows](/images/arrows.png)
 
-## Create a group of points and color them based on distance from origin
+## Create a group of points and color them based on distance from origin, write them to a vtp file and and open it in a minimalist desktop [viewer](https://kitware.github.io/F3D/)
 
 ```python
 
