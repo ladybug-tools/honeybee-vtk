@@ -2,7 +2,6 @@
 
 import os
 import shutil
-import pathlib
 import pytest
 from ladybug.color import Color
 from honeybee_vtk.model import Model
