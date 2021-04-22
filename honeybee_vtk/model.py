@@ -5,7 +5,6 @@ import webbrowser
 import tempfile
 import os
 from collections import defaultdict
-from zipfile import ZipFile
 from typing import Dict, List
 from honeybee.model import Model as HBModel
 from ladybug.color import Color
@@ -128,6 +127,13 @@ class Model(object):
         return self._sensor_grids
 
     def __iter__(self):
+        """This dunder method makes this class an iterator object.
+
+        Due to this method, you can access apertures, walls, shades, doors, floors,
+        roof_ceilings, air_boundaries and sensor_grids in a model
+        like items of a list in Python. Which means, you can use loops on these objects
+        of a model.
+        """
         for dataset in (
             self.apertures, self.walls, self.shades, self.doors, self.floors,
             self.roof_ceilings, self.air_boundaries, self.sensor_grids
@@ -148,7 +154,7 @@ class Model(object):
         """Change display mode for all the object types in the model.
 
         Sensor grids display model will not be affected. For changing the display model
-        for a single object type change the display_mode property separately.
+        for a single object type, change the display_mode property separately.
 
         .. code-block:: python
 
@@ -234,7 +240,8 @@ class Model(object):
         index_json.to_json(temp_folder)
 
         # zip as vtkjs
-        temp_vtkjs_file = convert_directory_to_zip_file(temp_folder, extension='vtkjs', move=False)
+        temp_vtkjs_file = convert_directory_to_zip_file(temp_folder, extension='vtkjs',
+                                                        move=False)
 
         # Move the generated vtkjs to target folder
         shutil.move(temp_vtkjs_file, target_vtkjs_file)
@@ -266,7 +273,8 @@ class Model(object):
         """Get the default color based of face type.
 
         Use these colors to generate visualizations that are familiar for Ladybug Tools
-        users. User can overwrite these colors as needed.
+        users. User can overwrite these colors as needed. This method converts decimal
+        RGBA to integer RGBA values.
         """
         color = _COLORSET.get(face_type, [1, 1, 1, 1])
         return Color(*(v * 255 for v in color))
@@ -274,7 +282,7 @@ class Model(object):
     @staticmethod
     def separate_by_type(data: List[PolyData]) -> Dict:
         """Separate PolyData objects by type."""
-        data_dict = defaultdict(lambda: [])
+        data_dict = defaultdict(list)
 
         for d in data:
             data_dict[d.type].append(d)
