@@ -1,4 +1,5 @@
 """A VTK representation of HBModel."""
+
 import pathlib
 import shutil
 import webbrowser
@@ -55,6 +56,14 @@ class Model(object):
         self, model: HBModel,
         load_grids: SensorGridOptions = SensorGridOptions.Ignore
             ) -> None:
+        """Instantiate a honeybee-vtk model object.
+
+        Args:
+            model : A text string representing the path to the hbjson file.
+            load_grids: A SensorGridOptions object. Defaults to SensorGridOptions.Ignore
+                which will ignore the grids in hbjson and will not load them in the
+                honeybee-vtk model.
+        """
 
         super().__init__()
         # apertures and orphaned apertures
@@ -80,7 +89,17 @@ class Model(object):
     def from_hbjson(
         cls, hbjson: str, load_grids: SensorGridOptions = SensorGridOptions.Ignore
             ):
-        """Create the model from a HBJSON file."""
+        """Translate hbjson to a honeybee-vtk model.
+
+        Args:
+            model : A text string representing the path to the hbjson file.
+            load_grids: A SensorGridOptions object. Defaults to SensorGridOptions.Ignore
+                which will ignore the grids in hbjson and will not load them in the
+                honeybee-vtk model.
+
+        Returns:
+            A honeybee-vtk model object.
+        """
         hb_file = pathlib.Path(hbjson)
         assert hb_file.is_file(), f'{hbjson} doesn\'t exist.'
         model = HBModel.from_hbjson(hb_file.as_posix())
@@ -207,6 +226,21 @@ class Model(object):
                 raise AttributeError(f'Invalid attribute: {attr}')
 
     def to_vtkjs(self, folder='.', name=None) -> str:
+        """Write a vtkjs file.
+
+        Write your honeybee-vtk model to a vtkjs file that you can open in
+        Paraview-Glance.
+
+        Args:
+            folder: A valid text string representing the location of folder where
+                you'd want to write the vtkjs file. Defaults to current working
+                directory.
+            name : Name for the vtkjs file. File name will be Model.vtkjs if not
+                provided.
+
+        Returns:
+            A text string representing the file path to the vtkjs file.
+        """
 
         # name of the vtkjs file
         file_name = name or 'model'
@@ -249,6 +283,20 @@ class Model(object):
         return target_vtkjs_file
 
     def to_html(self, folder='.', name=None, show=False):
+        """Write an HTML file.
+
+        Write your honeybee-vtk model to an HTML file.
+
+        Args:
+            folder: A valid text string representing the location of folder where
+                you'd want to write the HTML file. Defaults to current working directory.
+            name : Name for the HTML file. File name will be Model.html if not provided.
+            show: A boolean value. If set to True, the HTML file will be opened in the
+                default browser. Defaults to False
+
+        Returns:
+            A text string representing the file path to the HTML file.
+        """
         # Name of the html file
         file_name = name or 'model'
         # Set the target folder
