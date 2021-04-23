@@ -42,10 +42,12 @@ Options:
                                   [default: html]
 
   -dm, --display-mode [shaded|surface|surfacewithedges|wireframe|points]
-                                  Set display mode for the model.
+                                  Set display mode for the model.  [default:
+                                  shaded]
+
   -go, --grid-options [ignore|points|meshes]
                                   Export sensor grids as either points or
-                                  meshes.
+                                  meshes.  [default: ignore]
 
   -sh, --show-html, --show        Open the generated HTML file in a browser.
                                   [default: False]
