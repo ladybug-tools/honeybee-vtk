@@ -4,7 +4,7 @@
 ![HBJSON exported to web](/images/room.gif)
 
 [![Build Status](https://github.com/ladybug-tools/honeybee-vtk/workflows/CI/badge.svg)](https://github.com/ladybug-tools/honeybee-vtk/actions)
-[![Coverage Status](https://coveralls.io/repos/github/ladybug-tools/honeybee-vtk/badge.svg)](https://coveralls.io/github/ladybug-tools/honeybee-vtk)
+[![Coverage Status](https://coveralls.io/repos/github/ladybug-tools/honeybee-vtk/badge.svg?branch=master)](https://coveralls.io/github/ladybug-tools/honeybee-vtk?branch=master)
 [![Python 3.7](https://img.shields.io/badge/python-3.7-green.svg)](https://www.python.org/downloads/release/python-370/)
 
 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/ladybug-tools/honeybee-vtk)](https://github.com/ladybug-tools/honeybee-vtk/releases)
