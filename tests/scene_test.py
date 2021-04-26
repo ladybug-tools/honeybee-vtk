@@ -40,10 +40,10 @@ def test_write_image():
         shutil.rmtree(target_folder)
     os.mkdir(target_folder)
 
-    scene.to_image(target_folder, name='daylight-factor', image_type=ImageTypes.jpg,
+    scene.to_image(target_folder, name='daylight-factor', image_type=ImageTypes.png,
                    image_scale=2, color_range=color_range)
 
-    image_path = os.path.join(target_folder, 'daylight-factor.jpg')
+    image_path = os.path.join(target_folder, 'daylight-factor.png')
     assert os.path.isfile(image_path)
 
     shutil.rmtree(target_folder)
