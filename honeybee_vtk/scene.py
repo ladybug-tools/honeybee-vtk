@@ -28,11 +28,58 @@ class Scene(object):
     """
 
     def __init__(self, background_color=None) -> None:
+        """Initialize a Scene object.
+
+        Args:
+            background_color: A tuple of three floats that represent RGB values of the
+                color that you'd like to set as the background color. Defaults to None.
+        """
         super().__init__()
-        interactor, window, renderer = self._create_render_window(background_color)
+        self.background_color = background_color
+        interactor, window, renderer = self._create_render_window(self._background_color)
         self._renderer = renderer
         self._window = window
         self._interactor = interactor
+
+    @property
+    def background_color(self):
+        """background_color for the scene.
+
+        This is a tuple of three floats that represent RGB values of the
+        color that you'd like to set as the background color. Defaults to None.
+
+        Returns:
+            A tuple of three float value if set, else None.
+        """
+        return self._background_color
+
+    @background_color.setter
+    def background_color(self, bg_color):
+        if not bg_color:
+            self._background_color = None
+        else:
+            if isinstance(bg_color, tuple) and len(bg_color) == 3\
+                    and self._check_tuple(bg_color):
+                self._background_color = bg_color
+            else:
+                raise ValueError(
+                    'Background color is a tuple with three integers'
+                    ' representing R, G, and B values.'
+                )
+
+    @staticmethod
+    def _check_tuple(bg_color):
+        """Check if all values in the tuple are integers.
+
+        Args:
+            bg_color: User input for background color
+
+        Returns:
+            A boolean value if True or None.
+        """
+        item_check = [isinstance(v, int) for v in bg_color]
+        if item_check.count(True) == 3:
+            return True
 
     def _create_render_window(self, background_color=None) \
             -> Tuple[
@@ -45,6 +92,10 @@ class Scene(object):
         window is set inside the interactor.
 
         If you are thinking why, the answer is that is how VTK is designed to work.
+
+        Args:
+            background_color: A tuple of three floats that represent RGB values of the
+                color that you'd like to set as the background color. Defaults to None.
 
         Returns:
             Tuple -- window_interactor, render_window, renderer
