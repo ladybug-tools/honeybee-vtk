@@ -11,44 +11,6 @@ from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 from honeybee_vtk.types import DataFieldInfo
 
 
-def test_write_image():
-    """Test if an image file can be successfully written."""
-
-    file_path = r'./tests/assets/gridbased.hbjson'
-    results_folder = r'./tests/assets/df_results'
-    target_folder = r'./tests/assets/temp'
-
-    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
-
-    daylight_factor = []
-    for grid in model.sensor_grids.data:
-        res_file = pathlib.Path(results_folder, f'{grid.identifier}.res')
-        grid_res = [float(v) for v in res_file.read_text().splitlines()]
-        daylight_factor.append(grid_res)
-
-    model.sensor_grids.add_data_fields(daylight_factor, name='Daylight-factor',
-                                       per_face=True, data_range=(0, 20))
-    model.sensor_grids.color_by = 'Daylight-factor'
-
-    scene = Scene()
-    scene.add_model(model)
-
-    color_range = model.sensor_grids.active_field_info.color_range()
-    assert isinstance(color_range, vtk.vtkLookupTable)
-
-    if os.path.isdir(target_folder):
-        shutil.rmtree(target_folder)
-    os.mkdir(target_folder)
-
-    scene.to_image(target_folder, name='daylight-factor', image_type=ImageTypes.png,
-                   image_scale=2, color_range=color_range)
-
-    image_path = os.path.join(target_folder, 'daylight-factor.png')
-    assert os.path.isfile(image_path)
-
-    shutil.rmtree(target_folder)
-
-
 def test_write_gltf():
     """Test if a gltf file can be successfully written."""
 
