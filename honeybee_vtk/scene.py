@@ -214,7 +214,7 @@ class Scene(object):
 
     def to_image(
         self, folder, name, image_type: ImageTypes = ImageTypes.png, *, rgba=True,
-        image_scale=1, color_range=None
+        image_scale=1, color_range=None, show=True
             ):
         """Save scene to an image.
 
@@ -235,6 +235,8 @@ class Scene(object):
             legend.On()
 
         # render window
+        if show:
+            self._window.OffScreenRenderingOn()
         self._window.Render()
         image_path = pathlib.Path(folder, f'{name}.{image_type.value}')
         writer = self._get_image_writer(image_type)
