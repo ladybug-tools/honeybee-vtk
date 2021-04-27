@@ -35,37 +35,10 @@ class Scene(object):
                 color that you'd like to set as the background color. Defaults to None.
         """
         super().__init__()
-        # self.background_color = background_color
         interactor, window, renderer = self._create_render_window(background_color)
         self._renderer = renderer
         self._window = window
         self._interactor = interactor
-
-    # @property
-    # def background_color(self):
-    #     """background_color for the scene.
-
-    #     This is a tuple of three floats that represent RGB values of the
-    #     color that you'd like to set as the background color. Defaults to None.
-
-    #     Returns:
-    #         A tuple of three float value if set, else None.
-    #     """
-    #     return self._background_color
-
-    # @background_color.setter
-    # def background_color(self, bg_color):
-    #     if not bg_color:
-    #         self._background_color = None
-    #     else:
-    #         if isinstance(bg_color, tuple) and len(bg_color) == 3\
-    #                 and self._check_tuple(bg_color):
-    #             self._background_color = bg_color
-    #         else:
-    #             raise ValueError(
-    #                 'Background color is a tuple with three integers'
-    #                 ' representing R, G, and B values.'
-    #             )
 
     @staticmethod
     def _check_tuple(bg_color):
@@ -108,6 +81,7 @@ class Scene(object):
         # set rendering window in window interactor
         interactor.SetRenderWindow(window)
 
+        # Validate background color and set it for the render window
         if not background_color:
             colors = vtk.vtkNamedColors()
             background_color = colors.GetColor3d("SlateGray")
@@ -123,6 +97,7 @@ class Scene(object):
 
         renderer.SetBackground(background_color)
         renderer.TwoSidedLightingOn()
+
         # return the objects - the order is from outside to inside
         return interactor, window, renderer
 
@@ -191,7 +166,15 @@ class Scene(object):
         self._renderer.AddActor(actor)
 
     def to_gltf(self, folder, name):
-        """Save the scene to a glTF file."""
+        """Save the scene to a glTF file.
+
+        Args:
+            folder: A valid path to where you'd like to write the gltf file.
+            name: Name of the gltf file as a text string.
+
+        Returns:
+            A text string representing the path to the gltf file.
+        """
         gltf_file_path = pathlib.Path(folder, f'{name}.gltf')
         exporter = vtk.vtkGLTFExporter()
         exporter.SaveNormalOn()
@@ -227,12 +210,24 @@ class Scene(object):
         image_scale=1, color_range=None, show=False
             ):
         """Save scene to an image.
-
         Reference: https://kitware.github.io/vtk-examples/site/Python/IO/ImageWriter/
+
+        Args:
+            folder: A valid path to where you'd like to write the image.
+            name: Name of the image as a text string.
+            image_type: An ImageType object
+            rgba: A boolean value to set the type of buffer. A True value sets
+                an RGBA buffer whereas a False value sets RGB buffer. Defaults to True.
+            image_scale: An integer value as a scale factor. Defaults to 1.
+            color_range: A vtk lookup table object which can be obtained
+                from the color_range mehtod of the DataFieldInfo object. Defaults to None.
+            show: A boolean value to decide if the the render window should pop up.
+                Defaults to False.
+
+        Returns:
+            A text string representing the path to the image.
         """
-        # for some reason calling the legend from another method causes an error
-        # that's why I'm including it here. This is a hack. User should have control
-        # on setting up the legend
+
         if color_range:
             scalar_bar = vtk.vtkScalarBarActor()
             scalar_bar.SetOrientationToHorizontal()
@@ -248,6 +243,7 @@ class Scene(object):
         if not show:
             self._window.OffScreenRenderingOn()
         self._window.Render()
+
         image_path = pathlib.Path(folder, f'{name}.{image_type.value}')
         writer = self._get_image_writer(image_type)
 
