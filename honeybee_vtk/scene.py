@@ -35,37 +35,37 @@ class Scene(object):
                 color that you'd like to set as the background color. Defaults to None.
         """
         super().__init__()
-        self.background_color = background_color
-        interactor, window, renderer = self._create_render_window(self._background_color)
+        # self.background_color = background_color
+        interactor, window, renderer = self._create_render_window(background_color)
         self._renderer = renderer
         self._window = window
         self._interactor = interactor
 
-    @property
-    def background_color(self):
-        """background_color for the scene.
+    # @property
+    # def background_color(self):
+    #     """background_color for the scene.
 
-        This is a tuple of three floats that represent RGB values of the
-        color that you'd like to set as the background color. Defaults to None.
+    #     This is a tuple of three floats that represent RGB values of the
+    #     color that you'd like to set as the background color. Defaults to None.
 
-        Returns:
-            A tuple of three float value if set, else None.
-        """
-        return self._background_color
+    #     Returns:
+    #         A tuple of three float value if set, else None.
+    #     """
+    #     return self._background_color
 
-    @background_color.setter
-    def background_color(self, bg_color):
-        if not bg_color:
-            self._background_color = None
-        else:
-            if isinstance(bg_color, tuple) and len(bg_color) == 3\
-                    and self._check_tuple(bg_color):
-                self._background_color = bg_color
-            else:
-                raise ValueError(
-                    'Background color is a tuple with three integers'
-                    ' representing R, G, and B values.'
-                )
+    # @background_color.setter
+    # def background_color(self, bg_color):
+    #     if not bg_color:
+    #         self._background_color = None
+    #     else:
+    #         if isinstance(bg_color, tuple) and len(bg_color) == 3\
+    #                 and self._check_tuple(bg_color):
+    #             self._background_color = bg_color
+    #         else:
+    #             raise ValueError(
+    #                 'Background color is a tuple with three integers'
+    #                 ' representing R, G, and B values.'
+    #             )
 
     @staticmethod
     def _check_tuple(bg_color):
@@ -111,6 +111,16 @@ class Scene(object):
         if not background_color:
             colors = vtk.vtkNamedColors()
             background_color = colors.GetColor3d("SlateGray")
+
+        elif isinstance(background_color, tuple) and len(background_color) == 3\
+                and self._check_tuple(background_color):
+            pass
+        else:
+            raise ValueError(
+                'Background color is a tuple with three integers'
+                ' representing R, G, and B values.'
+            )
+
         renderer.SetBackground(background_color)
         renderer.TwoSidedLightingOn()
         # return the objects - the order is from outside to inside
@@ -214,7 +224,7 @@ class Scene(object):
 
     def to_image(
         self, folder, name, image_type: ImageTypes = ImageTypes.png, *, rgba=True,
-        image_scale=1, color_range=None, show=True
+        image_scale=1, color_range=None, show=False
             ):
         """Save scene to an image.
 
@@ -235,7 +245,7 @@ class Scene(object):
             legend.On()
 
         # render window
-        if show:
+        if not show:
             self._window.OffScreenRenderingOn()
         self._window.Render()
         image_path = pathlib.Path(folder, f'{name}.{image_type.value}')
