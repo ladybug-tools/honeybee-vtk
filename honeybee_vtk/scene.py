@@ -73,12 +73,25 @@ class Scene(object):
         Returns:
             Tuple -- window_interactor, render_window, renderer
         """
+        # Setting camera
+        camera = vtk.vtkCamera()
+        camera.SetPosition(-44.64, -8.06, 65.62)
+        camera.SetFocalPoint(0.622, 0.156, -0.767)
+        camera.SetViewUp(0.74, 0.186, 0.64)
+        camera.SetViewAngle(52.908)
+        camera.SetUseHorizontalViewAngle(True)
+        camera.UseHorizontalViewAngleOn()
+
+        # Setting renderer, render window, and interactor
         renderer = vtk.vtkRenderer()
-        window = vtk.vtkRenderWindow()
-        interactor = vtk.vtkRenderWindowInteractor()
+        renderer.SetActiveCamera(camera)
+
         # add renderer to rendering window
+        window = vtk.vtkRenderWindow()
         window.AddRenderer(renderer)
+
         # set rendering window in window interactor
+        interactor = vtk.vtkRenderWindowInteractor()
         interactor.SetRenderWindow(window)
 
         # Validate background color and set it for the render window
@@ -97,6 +110,7 @@ class Scene(object):
 
         renderer.SetBackground(background_color)
         renderer.TwoSidedLightingOn()
+        # window.Render()
 
         # return the objects - the order is from outside to inside
         return interactor, window, renderer
@@ -206,7 +220,7 @@ class Scene(object):
         return writer
 
     def to_image(
-        self, folder, name, image_type: ImageTypes = ImageTypes.png, *, rgba=True,
+        self, folder, name, image_type: ImageTypes = ImageTypes.png, *, rgba=False,
         image_scale=1, color_range=None, show=False
             ):
         """Save scene to an image.
@@ -217,7 +231,8 @@ class Scene(object):
             name: Name of the image as a text string.
             image_type: An ImageType object
             rgba: A boolean value to set the type of buffer. A True value sets
-                an RGBA buffer whereas a False value sets RGB buffer. Defaults to True.
+                an the background color to black. A False value uses the Scene object's
+                background color. Defaults to False.
             image_scale: An integer value as a scale factor. Defaults to 1.
             color_range: A vtk lookup table object which can be obtained
                 from the color_range mehtod of the DataFieldInfo object. Defaults to None.
@@ -242,14 +257,18 @@ class Scene(object):
         # render window
         if not show:
             self._window.OffScreenRenderingOn()
+        self._window.SetSize(2400, 2000)
         self._window.Render()
 
         image_path = pathlib.Path(folder, f'{name}.{image_type.value}')
         writer = self._get_image_writer(image_type)
+        if image_type == ImageTypes.jpg:
+            writer.SetQuality(100)  # image quality
 
         window_to_image_filter = vtk.vtkWindowToImageFilter()
         window_to_image_filter.SetInput(self._window)
-        window_to_image_filter.SetScale(image_scale)  # image quality
+        window_to_image_filter.SetScale(image_scale)
+        
 
         # rgba is not supported for postscript image type
         if rgba and image_type != ImageTypes.ps:
@@ -263,6 +282,7 @@ class Scene(object):
         writer.SetFileName(image_path.as_posix())
         writer.SetInputConnection(window_to_image_filter.GetOutputPort())
         writer.Write()
+
         if color_range:
             legend.Off()
 
