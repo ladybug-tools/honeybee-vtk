@@ -94,3 +94,13 @@ def test_actors_in_scene():
     scene = Scene()
     scene.add_model(model)
     assert scene._renderer.VisibleActorCount() == 6
+
+
+def test_scene():
+    """Testing scene quality."""
+    file_path = r'./tests/assets/viewbased.hbjson'
+    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
+    # model.to_html(folder=r'./tests/assets/', show=True)
+    scene = Scene(background_color=(255,255,255))
+    scene.add_model(model)
+    scene.to_image(folder=r'./tests/assets/', image_type=ImageTypes.jpg, name='quality')
