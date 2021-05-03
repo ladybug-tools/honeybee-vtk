@@ -27,31 +27,77 @@ class Scene(object):
 
     """
 
-    def __init__(self, background_color=None) -> None:
+    def __init__(self, background_color=None, monochrome=False,
+                 monochrome_color=(0.54, 0.54, 0.54)) -> None:
         """Initialize a Scene object.
 
         Args:
             background_color: A tuple of three floats that represent RGB values of the
                 color that you'd like to set as the background color. Defaults to None.
+            monochrome: A boolean value. If set to True, one color will be applied to all
+                the geometry objects in Scene. This is especially useful when 
+                the DisplayMode is set to Wireframe and results are going to be
+                loaded to the model.
+            monochrome_color: A tuple of decimal numbers to represent RGB color.
+                Defaults to gray color.
         """
         super().__init__()
         interactor, window, renderer = self._create_render_window(background_color)
         self._renderer = renderer
         self._window = window
         self._interactor = interactor
+        self.monochrome = monochrome
+        self.monochrome_color = monochrome_color
+
+    @property
+    def monochrome(self):
+        return self._monochrome
+
+    @monochrome.setter
+    def monochrome(self, val):
+        self._monochrome = val
+
+    @property
+    def monochrome_color(self):
+        return self._monochrome_color
+
+    @monochrome_color.setter
+    def monochrome_color(self, val):
+        if not self._monochrome:
+            self._monochrome_color = None
+        elif self._check_tuple(val, float, max_val=1.0):
+            self._monochrome_color = val
+        else:
+            raise ValueError(
+                'monochrome color is a tuple with three decimal values less than 1'
+                ' representing R, G, and B.'
+            )
 
     @staticmethod
-    def _check_tuple(bg_color):
+    def _check_tuple(color, val_type, max_val=None):
         """Check if all values in the tuple are integers.
 
         Args:
-            bg_color: User input for background color
+            color: User input for color value
+            val_type: Object type that you'd want as values in a tuple. Examples are
+                int or float.
+            max_val: A number either integer or float. The values in the tuple shall be
+                less than this number.
 
         Returns:
             A boolean value if True or None.
         """
-        item_check = [isinstance(v, int) for v in bg_color]
-        if item_check.count(True) == 3:
+        # Check if all values in tuple are of expected object type
+        item_check = [isinstance(v, val_type) for v in color]
+
+        # Check if all values are less than the maximum allowed value
+        if max_val:
+            val_check = [v < max_val for v in color]
+        else:
+            val_check = [True] * 3
+
+        # final check
+        if item_check.count(True) == 3 and val_check.count(True) == 3:
             return True
 
     def _create_render_window(self, background_color=None) \
@@ -100,7 +146,7 @@ class Scene(object):
             background_color = colors.GetColor3d("SlateGray")
 
         elif isinstance(background_color, tuple) and len(background_color) == 3\
-                and self._check_tuple(background_color):
+                and self._check_tuple(background_color, int):
             pass
         else:
             raise ValueError(
@@ -170,6 +216,12 @@ class Scene(object):
 
         actor = vtk.vtkActor()
         actor.SetMapper(mapper)
+
+        # Assign Ladybug Tools colors
+        if self._monochrome:
+            actor.GetProperty().SetColor(self._monochrome_color)
+        else:
+            actor.GetProperty().SetColor(data_set.rgb_to_decimal())
 
         if data_set.edge_visibility:
             actor.GetProperty().EdgeVisibilityOn()
@@ -268,7 +320,6 @@ class Scene(object):
         window_to_image_filter = vtk.vtkWindowToImageFilter()
         window_to_image_filter.SetInput(self._window)
         window_to_image_filter.SetScale(image_scale)
-        
 
         # rgba is not supported for postscript image type
         if rgba and image_type != ImageTypes.ps:
