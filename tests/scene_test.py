@@ -65,8 +65,13 @@ def test_class_initialization():
     assert isinstance(scene._interactor, vtk.vtkRenderWindowInteractor)
     assert isinstance(scene._window, vtk.vtkRenderWindow)
     assert isinstance(scene._renderer, vtk.vtkRenderer)
+    assert scene.monochrome == False
+    scene = Scene(background_color=(255, 255, 255), monochrome=True)
+    assert scene.monochrome_color == (0.54, 0.54, 0.54)
     with pytest.raises(ValueError):
         scene = Scene(background_color=(123.24, 23, 255))
+    with pytest.raises(ValueError):
+        scene = Scene(background_color=(255, 255, 255), monochrome=True, monochrome_color=(0,0,0))
 
 
 def test_legend():
@@ -113,11 +118,10 @@ def test_scene_grids():
     model.sensor_grids.color_by = 'Daylight-factor'
 
     model.sensor_grids.display_mode = DisplayMode.SurfaceWithEdges
-    # model.update_display_mode(DisplayMode.Wireframe)
+    model.update_display_mode(DisplayMode.SurfaceWithEdges)
 
-    scene = Scene(background_color=(255, 255, 255), monochrome=True)
+    scene = Scene(background_color=(255, 255, 255))
     scene.add_model(model)
     color_range = model.sensor_grids.active_field_info.color_range()
-    scene.to_image(folder=r'./tests/assets/', image_type=ImageTypes.jpg,
-                   name='grids', color_range=color_range)
-
+    scene.to_image(folder=r'./tests/assets/', image_type=ImageTypes.png,
+                   name='1', color_range=color_range)
