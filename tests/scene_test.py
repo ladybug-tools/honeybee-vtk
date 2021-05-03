@@ -96,11 +96,28 @@ def test_actors_in_scene():
     assert scene._renderer.VisibleActorCount() == 6
 
 
-def test_scene():
-    """Testing scene quality."""
-    file_path = r'./tests/assets/viewbased.hbjson'
+def test_scene_grids():
+    file_path = r'./tests/assets/gridbased.hbjson'
+    results_folder = r'./tests/assets/df_results'
+
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
-    # model.to_html(folder=r'./tests/assets/', show=True)
-    scene = Scene(background_color=(255,255,255))
+
+    daylight_factor = []
+    for grid in model.sensor_grids.data:
+        res_file = pathlib.Path(results_folder, f'{grid.identifier}.res')
+        grid_res = [float(v) for v in res_file.read_text().splitlines()]
+        daylight_factor.append(grid_res)
+
+    model.sensor_grids.add_data_fields(daylight_factor, name='Daylight-factor',
+                                       per_face=True, data_range=(0, 20))
+    model.sensor_grids.color_by = 'Daylight-factor'
+
+    model.sensor_grids.display_mode = DisplayMode.SurfaceWithEdges
+    # model.update_display_mode(DisplayMode.Wireframe)
+
+    scene = Scene(background_color=(255, 255, 255), monochrome=True)
     scene.add_model(model)
-    scene.to_image(folder=r'./tests/assets/', image_type=ImageTypes.jpg, name='quality')
+    color_range = model.sensor_grids.active_field_info.color_range()
+    scene.to_image(folder=r'./tests/assets/', image_type=ImageTypes.jpg,
+                   name='grids', color_range=color_range)
+
