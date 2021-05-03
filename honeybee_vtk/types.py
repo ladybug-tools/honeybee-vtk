@@ -374,6 +374,10 @@ class ModelDataSet:
         else:
             return True
 
+    def rgb_to_decimal(self):
+        """RGB color in decimal."""
+        return (self.color[0]/255, self.color[1]/255, self.color[2]/255)
+
     def to_folder(self, folder, sub_folder=None) -> str:
         """Write data information to a folder.
 
