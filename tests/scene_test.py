@@ -9,6 +9,7 @@ from honeybee_vtk.model import Model
 from honeybee_vtk.scene import Scene, ImageTypes
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 from honeybee_vtk.types import DataFieldInfo
+from honeybee_vtk.camera import Camera
 
 
 def test_write_gltf():
@@ -120,7 +121,10 @@ def test_scene_grids():
     model.sensor_grids.display_mode = DisplayMode.SurfaceWithEdges
     model.update_display_mode(DisplayMode.SurfaceWithEdges)
 
-    scene = Scene(background_color=(255, 255, 255))
+    camera = Camera(position=(-50.28, -30.32, 58.64), direction=(0.59, 0.44, -0.67),
+                    up_vector=(0.53, 0.40, 0.74), h_size=52.90)
+
+    scene = Scene(background_color=(255, 255, 255), camera=camera.to_vtk())
     scene.add_model(model)
     color_range = model.sensor_grids.active_field_info.color_range()
     scene.to_image(folder=r'./tests/assets/', image_type=ImageTypes.png,
