@@ -7,6 +7,8 @@ import vtk
 
 from .types import JoinedPolyData
 from .model import Model, ModelDataSet, DisplayMode
+from ._helper import _check_tuple
+from .camera import Camera
 
 
 class ImageTypes(enum.Enum):
@@ -27,21 +29,23 @@ class Scene(object):
 
     """
 
-    def __init__(self, background_color=None, monochrome=False,
-                 monochrome_color=(0.54, 0.54, 0.54)) -> None:
+    def __init__(self, background_color=None, camera=None, monochrome=None,
+                 monochrome_color=None) -> None:
         """Initialize a Scene object.
 
         Args:
             background_color: A tuple of three floats that represent RGB values of the
                 color that you'd like to set as the background color. Defaults to None.
+            camera: A Camera object. Defaults to None.
             monochrome: A boolean value. If set to True, one color will be applied to all
-                the geometry objects in Scene. This is especially useful when 
+                the geometry objects in Scene. This is especially useful when
                 the DisplayMode is set to Wireframe and results are going to be
                 loaded to the model.
             monochrome_color: A tuple of decimal numbers to represent RGB color.
                 Defaults to gray color.
         """
-        super().__init__()
+        self._cameras = []
+        self.camera = camera
         interactor, window, renderer = self._create_render_window(background_color)
         self._renderer = renderer
         self._window = window
@@ -55,7 +59,14 @@ class Scene(object):
 
     @monochrome.setter
     def monochrome(self, val):
-        self._monochrome = val
+        if not val:
+            self._monochrome = False
+        elif isinstance(val, bool):
+            self._monochrome = val
+        else:
+            raise ValueError(
+                f'A boolean value required. Instead got {val}.'
+            )
 
     @property
     def monochrome_color(self):
@@ -63,9 +74,9 @@ class Scene(object):
 
     @monochrome_color.setter
     def monochrome_color(self, val):
-        if not self._monochrome:
-            self._monochrome_color = None
-        elif self._check_tuple(val, float, max_val=1.0):
+        if not self._monochrome or not val:
+            self._monochrome_color = (0.54, 0.54, 0.54)
+        elif _check_tuple(val, float, max_val=1.0):
             self._monochrome_color = val
         else:
             raise ValueError(
@@ -73,32 +84,23 @@ class Scene(object):
                 ' representing R, G, and B.'
             )
 
-    @staticmethod
-    def _check_tuple(color, val_type, max_val=None):
-        """Check if all values in the tuple are integers.
+    @property
+    def camera(self):
+        """Vtk camera object."""
+        return self._camera
 
-        Args:
-            color: User input for color value
-            val_type: Object type that you'd want as values in a tuple. Examples are
-                int or float.
-            max_val: A number either integer or float. The values in the tuple shall be
-                less than this number.
-
-        Returns:
-            A boolean value if True or None.
-        """
-        # Check if all values in tuple are of expected object type
-        item_check = [isinstance(v, val_type) for v in color]
-
-        # Check if all values are less than the maximum allowed value
-        if max_val:
-            val_check = [v < max_val for v in color]
+    @camera.setter
+    def camera(self, val):
+        if not val:
+            default_camera = Camera()
+            self._camera = default_camera.to_vtk()
+            self._cameras.append(self._camera)
+        elif isinstance(val, vtk.vtkCamera):
+            self._cameras.append(val)
         else:
-            val_check = [True] * 3
-
-        # final check
-        if item_check.count(True) == 3 and val_check.count(True) == 3:
-            return True
+            raise ValueError(
+                f'A camera object required. Instead got {val}.'
+            )
 
     def _create_render_window(self, background_color=None) \
             -> Tuple[
@@ -120,13 +122,7 @@ class Scene(object):
             Tuple -- window_interactor, render_window, renderer
         """
         # Setting camera
-        camera = vtk.vtkCamera()
-        camera.SetPosition(-44.64, -8.06, 65.62)
-        camera.SetFocalPoint(0.622, 0.156, -0.767)
-        camera.SetViewUp(0.74, 0.186, 0.64)
-        camera.SetViewAngle(52.908)
-        camera.SetUseHorizontalViewAngle(True)
-        camera.UseHorizontalViewAngleOn()
+        camera = self._cameras[0]
 
         # Setting renderer, render window, and interactor
         renderer = vtk.vtkRenderer()
@@ -146,7 +142,7 @@ class Scene(object):
             background_color = colors.GetColor3d("SlateGray")
 
         elif isinstance(background_color, tuple) and len(background_color) == 3\
-                and self._check_tuple(background_color, int):
+                and _check_tuple(background_color, int):
             pass
         else:
             raise ValueError(
@@ -156,7 +152,6 @@ class Scene(object):
 
         renderer.SetBackground(background_color)
         renderer.TwoSidedLightingOn()
-        # window.Render()
 
         # return the objects - the order is from outside to inside
         return interactor, window, renderer
