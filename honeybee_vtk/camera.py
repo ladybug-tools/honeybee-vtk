@@ -1,12 +1,11 @@
 """A VTK camera object."""
 
 import vtk
-from honeybee_radiance.view import View
 from honeybee.typing import clean_and_id_rad_string
 from ._helper import _check_tuple
 
 
-class Camera(View):
+class Camera:
     """Create a vtk camera object.
 
         Args:
@@ -27,9 +26,6 @@ class Camera(View):
     def __init__(self, identifier=None, position=None, direction=None,
                  up_vector=None, h_size=None):
 
-        super().__init__(identifier=identifier, position=position, direction=direction,
-                         up_vector=up_vector, h_size=h_size)
-                         
         self.identifier = identifier
         self.position = position
         self.direction = direction
@@ -128,11 +124,21 @@ class Camera(View):
         return camera
 
     @classmethod
-    def from_hbjson(cls, model):
-        """Create camera objects from the radiance views in an hbjson model.
+    def from_model(cls, model):
+        """Create camera objects from the radiance views in a Model object.
 
         Args:
-            model: An hbjson model object.
-        """
-        pass
+            model: A Model object.
 
+        Returns:
+            A list of vtk camera objects.
+        """
+        if len(model.views) == 0:
+            raise ValueError(
+                'No radiance views were found in the hbjson file.'
+            )
+        else:
+            return [cls(position=view.position.value,
+                    direction=view.direction.value,
+                    up_vector=view.up_vector.value,
+                    h_size=view.h_size.value).to_vtk() for view in model.views]
