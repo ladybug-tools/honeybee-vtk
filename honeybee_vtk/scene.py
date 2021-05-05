@@ -28,15 +28,17 @@ class Scene(object):
     interactive viewer.
 
     """
+    __slots__ = ('_cameras', '_renderer', '_window', '_interactor',
+                 '_monochrome', '_monochrome_color')
 
-    def __init__(self, background_color=None, camera=None, monochrome=None,
+    def __init__(self, background_color=None, cameras=None, monochrome=None,
                  monochrome_color=None) -> None:
         """Initialize a Scene object.
 
         Args:
             background_color: A tuple of three floats that represent RGB values of the
                 color that you'd like to set as the background color. Defaults to None.
-            camera: A Camera object. Defaults to None.
+            cameras: A list of vtk camera objects. Defaults to None.
             monochrome: A boolean value. If set to True, one color will be applied to all
                 the geometry objects in Scene. This is especially useful when
                 the DisplayMode is set to Wireframe and results are going to be
@@ -44,8 +46,7 @@ class Scene(object):
             monochrome_color: A tuple of decimal numbers to represent RGB color.
                 Defaults to gray color.
         """
-        self._cameras = []
-        self.camera = camera
+        self.cameras = cameras
         interactor, window, renderer = self._create_render_window(background_color)
         self._renderer = renderer
         self._window = window
@@ -85,21 +86,39 @@ class Scene(object):
             )
 
     @property
-    def camera(self):
-        """Vtk camera object."""
-        return self._camera
+    def cameras(self):
+        """A list of vtk cameras."""
+        return self._cameras
 
-    @camera.setter
-    def camera(self, val):
-        if not val:
-            default_camera = Camera()
-            self._camera = default_camera.to_vtk()
-            self._cameras.append(self._camera)
+    @cameras.setter
+    def cameras(self, val):
+        if isinstance(val, list) and _check_tuple(val, vtk.vtkCamera):
+            self._cameras = val
+        elif isinstance(val, vtk.vtkCamera):
+            self._cameras = [val]
+        elif not val:
+            camera = Camera()
+            self._cameras = [camera.to_vtk()]
+        else:
+            raise ValueError(
+                'Either a list of vtk camera objects or a vtk camera object is expected.'
+                f' Instead got {val}.'
+            )
+
+    def add_cameras(self, val):
+        """Add vtk camera objects to a scene object.
+
+        Args:
+            val: Either a list of vtk camera objects or a single vtk camera object.
+        """
+        if isinstance(val, list) and _check_tuple(val, vtk.vtkCamera):
+            self._cameras.extend(val)
         elif isinstance(val, vtk.vtkCamera):
             self._cameras.append(val)
         else:
             raise ValueError(
-                f'A camera object required. Instead got {val}.'
+                'Either a list of vtk camera objects or a vtk camera object is expected.'
+                f' Instead got {val}.'
             )
 
     def _create_render_window(self, background_color=None) \
@@ -117,12 +136,13 @@ class Scene(object):
         Args:
             background_color: A tuple of three floats that represent RGB values of the
                 color that you'd like to set as the background color. Defaults to None.
+            cameras: Either a list of vtk camera objects or a vtk camera object.
 
         Returns:
             Tuple -- window_interactor, render_window, renderer
         """
         # Setting camera
-        camera = self._cameras[0]
+        camera = self.cameras[0]
 
         # Setting renderer, render window, and interactor
         renderer = vtk.vtkRenderer()
@@ -268,7 +288,7 @@ class Scene(object):
 
     def to_image(
         self, folder, name, image_type: ImageTypes = ImageTypes.png, *, rgba=False,
-        image_scale=1, color_range=None, show=False
+        image_scale=1, width=2400, height=2000, color_range=None, show=False
             ):
         """Save scene to an image.
         Reference: https://kitware.github.io/vtk-examples/site/Python/IO/ImageWriter/
@@ -281,8 +301,11 @@ class Scene(object):
                 an the background color to black. A False value uses the Scene object's
                 background color. Defaults to False.
             image_scale: An integer value as a scale factor. Defaults to 1.
+            width: An integer value that sets the width of image in pixels.
+            height: An integer value that sets the height of image in pixels.
             color_range: A vtk lookup table object which can be obtained
-                from the color_range mehtod of the DataFieldInfo object. Defaults to None.
+                from the color_range mehtod of the DataFieldInfo object.
+                Defaults to None.
             show: A boolean value to decide if the the render window should pop up.
                 Defaults to False.
 
@@ -304,7 +327,7 @@ class Scene(object):
         # render window
         if not show:
             self._window.OffScreenRenderingOn()
-        self._window.SetSize(2400, 2000)
+        self._window.SetSize(width, height)
         self._window.Render()
 
         image_path = pathlib.Path(folder, f'{name}.{image_type.value}')
