@@ -66,13 +66,15 @@ def test_class_initialization():
     assert isinstance(scene._interactor, vtk.vtkRenderWindowInteractor)
     assert isinstance(scene._window, vtk.vtkRenderWindow)
     assert isinstance(scene._renderer, vtk.vtkRenderer)
-    assert scene.monochrome == False
+    assert scene.monochrome is False
     scene = Scene(background_color=(255, 255, 255), monochrome=True)
     assert scene.monochrome_color == (0.54, 0.54, 0.54)
     with pytest.raises(ValueError):
         scene = Scene(background_color=(123.24, 23, 255))
     with pytest.raises(ValueError):
-        scene = Scene(background_color=(255, 255, 255), monochrome=True, monochrome_color=(0,0,0))
+        scene = Scene(background_color=(255, 255, 255), monochrome=True,
+                      monochrome_color=(0,0,0))
+    assert isinstance(scene.cameras[0], vtk.vtkCamera)
 
 
 def test_legend():
@@ -102,7 +104,59 @@ def test_actors_in_scene():
     assert scene._renderer.VisibleActorCount() == 6
 
 
-def test_scene_grids():
+def test_scene_camera():
+    "Test a scene constructed with a camera object."
+    camera = Camera(position=(-50.28, -30.32, 58.64), direction=(0.59, 0.44, -0.67),
+                    up_vector=(0.53, 0.40, 0.74), h_size=52.90)
+    scene = Scene(background_color=(255, 255, 255), cameras=camera.to_vtk())
+    assert len(scene.cameras) == 1
+
+
+def test_scene_cameras():
+    """Test a scene constructed with a list of camera objects."""
+    file_path = r'./tests/assets/viewbased.hbjson'
+    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh,
+                              load_views=True)
+    cameras = Camera.from_model(model)
+    scene = Scene(background_color=(255, 255, 255), cameras=cameras)
+    assert len(scene.cameras) == 1
+
+
+def test_add_cameras():
+    """Test adding a list of cameras."""
+    file_path = r'./tests/assets/viewbased.hbjson'
+    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
+    # Check is valuerror is raised in case the radiance views are not loaded on model
+    with pytest.raises(ValueError):
+        cameras = Camera.from_model(model)
+
+    # Check the number of cameras extracted hbjson
+    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh,
+                              load_views=True)
+    cameras = Camera.from_model(model)
+    assert len(cameras) == 1
+
+    camera = Camera(position=(-50.28, -30.32, 58.64), direction=(0.59, 0.44, -0.67),
+                    up_vector=(0.53, 0.40, 0.74), h_size=52.90)
+    scene = Scene(background_color=(255, 255, 255))
+
+    # Adding a list of camera objects
+    cameras.append(camera.to_vtk())
+    scene.add_cameras(cameras)
+    assert len(scene.cameras) == 3
+
+
+def test_add_camera():
+    """Test adding a camera."""
+    camera = Camera(position=(-50.28, -30.32, 58.64), direction=(0.59, 0.44, -0.67),
+                    up_vector=(0.53, 0.40, 0.74), h_size=52.90)
+    scene = Scene(background_color=(255, 255, 255))
+
+    scene.add_cameras(camera.to_vtk())
+    assert len(scene.cameras) == 2
+
+
+def test_DELETE():
     file_path = r'./tests/assets/gridbased.hbjson'
     results_folder = r'./tests/assets/df_results'
 
@@ -124,7 +178,7 @@ def test_scene_grids():
     camera = Camera(position=(-50.28, -30.32, 58.64), direction=(0.59, 0.44, -0.67),
                     up_vector=(0.53, 0.40, 0.74), h_size=52.90)
 
-    scene = Scene(background_color=(255, 255, 255), camera=camera.to_vtk())
+    scene = Scene(background_color=(255, 255, 255), cameras=camera.to_vtk())
     scene.add_model(model)
     color_range = model.sensor_grids.active_field_info.color_range()
     scene.to_image(folder=r'./tests/assets/', image_type=ImageTypes.png,
