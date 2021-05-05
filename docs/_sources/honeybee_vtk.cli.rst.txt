@@ -1,0 +1,7 @@
+honeybee\_vtk.cli module
+========================
+
+.. automodule:: honeybee_vtk.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:

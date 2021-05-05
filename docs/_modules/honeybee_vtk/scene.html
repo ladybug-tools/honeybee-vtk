@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>honeybee_vtk.scene &#8212; honeybee vtk  documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          honeybee vtk</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../honeybee_vtk.html">honeybee_vtk package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../honeybee_vtk.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.cli.html">honeybee_vtk.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../honeybee_vtk.html">honeybee_vtk package</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../honeybee_vtk.html">honeybee_vtk package</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <h1>Source code for honeybee_vtk.scene</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;A VTK rendering scene.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">enum</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">vtk</span>
+
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">JoinedPolyData</span>
+<span class="kn">from</span> <span class="nn">.model</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">ModelDataSet</span><span class="p">,</span> <span class="n">DisplayMode</span>
+
+
+<div class="viewcode-block" id="ImageTypes"><a class="viewcode-back" href="../../honeybee_vtk.scene.html#honeybee_vtk.scene.ImageTypes">[docs]</a><span class="k">class</span> <span class="nc">ImageTypes</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Supported image types.&quot;&quot;&quot;</span>
+    <span class="n">png</span> <span class="o">=</span> <span class="s1">&#39;png&#39;</span>
+    <span class="n">jpg</span> <span class="o">=</span> <span class="s1">&#39;jpg&#39;</span>
+    <span class="n">ps</span> <span class="o">=</span> <span class="s1">&#39;ps&#39;</span>
+    <span class="n">tiff</span> <span class="o">=</span> <span class="s1">&#39;tiff&#39;</span>
+    <span class="n">bmp</span> <span class="o">=</span> <span class="s1">&#39;bmp&#39;</span>
+    <span class="n">pnm</span> <span class="o">=</span> <span class="s1">&#39;pnm&#39;</span></div>
+
+
+<div class="viewcode-block" id="Scene"><a class="viewcode-back" href="../../honeybee_vtk.scene.html#honeybee_vtk.scene.Scene">[docs]</a><span class="k">class</span> <span class="nc">Scene</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A rendering scene with a single viewport.</span>
+
+<span class="sd">    Once as scene is created you can export it to glTF, an image or just show it in an</span>
+<span class="sd">    interactive viewer.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">background_color</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a Scene object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            background_color: A tuple of three floats that represent RGB values of the</span>
+<span class="sd">                color that you&#39;d like to set as the background color. Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="n">interactor</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">renderer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_render_window</span><span class="p">(</span><span class="n">background_color</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_renderer</span> <span class="o">=</span> <span class="n">renderer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_window</span> <span class="o">=</span> <span class="n">window</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_interactor</span> <span class="o">=</span> <span class="n">interactor</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_check_tuple</span><span class="p">(</span><span class="n">bg_color</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check if all values in the tuple are integers.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            bg_color: User input for background color</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A boolean value if True or None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">item_check</span> <span class="o">=</span> <span class="p">[</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">bg_color</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">item_check</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">_create_render_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">background_color</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> \
+            <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span>
+                <span class="n">vtk</span><span class="o">.</span><span class="n">vtkRenderWindowInteractor</span><span class="p">,</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkRenderWindow</span><span class="p">,</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkRenderer</span>
+            <span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Create a rendering window with a single renderer and an interactor.</span>
+
+<span class="sd">        The objects are embedded inside each other:</span>
+<span class="sd">        interactor is the outmost layer. A render is added to a window and then the</span>
+<span class="sd">        window is set inside the interactor.</span>
+
+<span class="sd">        If you are thinking why, the answer is that is how VTK is designed to work.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            background_color: A tuple of three floats that represent RGB values of the</span>
+<span class="sd">                color that you&#39;d like to set as the background color. Defaults to None.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tuple -- window_interactor, render_window, renderer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">renderer</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkRenderer</span><span class="p">()</span>
+        <span class="n">window</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkRenderWindow</span><span class="p">()</span>
+        <span class="n">interactor</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkRenderWindowInteractor</span><span class="p">()</span>
+        <span class="c1"># add renderer to rendering window</span>
+        <span class="n">window</span><span class="o">.</span><span class="n">AddRenderer</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
+        <span class="c1"># set rendering window in window interactor</span>
+        <span class="n">interactor</span><span class="o">.</span><span class="n">SetRenderWindow</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+
+        <span class="c1"># Validate background color and set it for the render window</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">background_color</span><span class="p">:</span>
+            <span class="n">colors</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkNamedColors</span><span class="p">()</span>
+            <span class="n">background_color</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">GetColor3d</span><span class="p">(</span><span class="s2">&quot;SlateGray&quot;</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">background_color</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">background_color</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>\
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_tuple</span><span class="p">(</span><span class="n">background_color</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;Background color is a tuple with three integers&#39;</span>
+                <span class="s1">&#39; representing R, G, and B values.&#39;</span>
+            <span class="p">)</span>
+
+        <span class="n">renderer</span><span class="o">.</span><span class="n">SetBackground</span><span class="p">(</span><span class="n">background_color</span><span class="p">)</span>
+        <span class="n">renderer</span><span class="o">.</span><span class="n">TwoSidedLightingOn</span><span class="p">()</span>
+
+        <span class="c1"># return the objects - the order is from outside to inside</span>
+        <span class="k">return</span> <span class="n">interactor</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">renderer</span>
+
+<div class="viewcode-block" id="Scene.get_legend"><a class="viewcode-back" href="../../honeybee_vtk.scene.html#honeybee_vtk.scene.Scene.get_legend">[docs]</a>    <span class="k">def</span> <span class="nf">get_legend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_range</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkScalarBarWidget</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Create a scalar bar widget.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            color_range: A VTK LookUpTable object for color range. You can create one</span>
+<span class="sd">                from color_range method in `DataFieldInfo`.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            A VTK scalar bar widget.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># create the scalar_bar</span>
+        <span class="n">scalar_bar</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkScalarBarActor</span><span class="p">()</span>
+        <span class="n">scalar_bar</span><span class="o">.</span><span class="n">SetOrientationToHorizontal</span><span class="p">()</span>
+        <span class="n">scalar_bar</span><span class="o">.</span><span class="n">SetLookupTable</span><span class="p">(</span><span class="n">color_range</span><span class="p">)</span>
+
+        <span class="c1"># create the scalar_bar_widget</span>
+        <span class="n">scalar_bar_widget</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkScalarBarWidget</span><span class="p">()</span>
+        <span class="n">scalar_bar_widget</span><span class="o">.</span><span class="n">SetInteractor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_interactor</span><span class="p">)</span>
+        <span class="n">scalar_bar_widget</span><span class="o">.</span><span class="n">SetScalarBarActor</span><span class="p">(</span><span class="n">scalar_bar</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">scalar_bar_widget</span></div>
+
+<div class="viewcode-block" id="Scene.add_model"><a class="viewcode-back" href="../../honeybee_vtk.scene.html#honeybee_vtk.scene.Scene.add_model">[docs]</a>    <span class="k">def</span> <span class="nf">add_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a model to scene.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">ds</span> <span class="ow">in</span> <span class="n">model</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ds</span><span class="o">.</span><span class="n">is_empty</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_dataset</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Scene.add_dataset"><a class="viewcode-back" href="../../honeybee_vtk.scene.html#honeybee_vtk.scene.Scene.add_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">add_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_set</span><span class="p">:</span> <span class="n">ModelDataSet</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a dataset to scene as a VTK actor.&quot;&quot;&quot;</span>
+
+        <span class="c1"># calculate point data based on cell data</span>
+        <span class="n">cell_to_point</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkCellDataToPointData</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_set</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">polydata</span> <span class="o">=</span> <span class="n">JoinedPolyData</span><span class="o">.</span><span class="n">from_polydata</span><span class="p">(</span><span class="n">data_set</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">cell_to_point</span><span class="o">.</span><span class="n">SetInputConnection</span><span class="p">(</span><span class="n">polydata</span><span class="o">.</span><span class="n">GetOutputPort</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">polydata</span> <span class="o">=</span> <span class="n">data_set</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">cell_to_point</span><span class="o">.</span><span class="n">SetInputData</span><span class="p">(</span><span class="n">polydata</span><span class="p">)</span>
+
+        <span class="n">mapper</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPolyDataMapper</span><span class="p">()</span>
+        <span class="n">mapper</span><span class="o">.</span><span class="n">SetInputConnection</span><span class="p">(</span><span class="n">cell_to_point</span><span class="o">.</span><span class="n">GetOutputPort</span><span class="p">())</span>
+
+        <span class="c1"># map cell data to pointdata</span>
+        <span class="k">if</span> <span class="n">data_set</span><span class="o">.</span><span class="n">fields_info</span><span class="p">:</span>
+            <span class="n">field_info</span> <span class="o">=</span> <span class="n">data_set</span><span class="o">.</span><span class="n">active_field_info</span>
+            <span class="n">mapper</span><span class="o">.</span><span class="n">SetColorModeToMapScalars</span><span class="p">()</span>
+            <span class="n">mapper</span><span class="o">.</span><span class="n">SetScalarModeToUsePointData</span><span class="p">()</span>
+            <span class="n">mapper</span><span class="o">.</span><span class="n">SetScalarVisibility</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">range_min</span><span class="p">,</span> <span class="n">range_max</span> <span class="o">=</span> <span class="n">field_info</span><span class="o">.</span><span class="n">data_range</span>
+            <span class="n">mapper</span><span class="o">.</span><span class="n">SetScalarRange</span><span class="p">(</span><span class="n">range_min</span><span class="p">,</span> <span class="n">range_max</span><span class="p">)</span>
+            <span class="n">mapper</span><span class="o">.</span><span class="n">SetLookupTable</span><span class="p">(</span><span class="n">field_info</span><span class="o">.</span><span class="n">color_range</span><span class="p">())</span>
+            <span class="n">mapper</span><span class="o">.</span><span class="n">Update</span><span class="p">()</span>
+
+        <span class="n">actor</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkActor</span><span class="p">()</span>
+        <span class="n">actor</span><span class="o">.</span><span class="n">SetMapper</span><span class="p">(</span><span class="n">mapper</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">data_set</span><span class="o">.</span><span class="n">edge_visibility</span><span class="p">:</span>
+            <span class="n">actor</span><span class="o">.</span><span class="n">GetProperty</span><span class="p">()</span><span class="o">.</span><span class="n">EdgeVisibilityOn</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">data_set</span><span class="o">.</span><span class="n">display_mode</span> <span class="o">==</span> <span class="n">DisplayMode</span><span class="o">.</span><span class="n">Wireframe</span><span class="p">:</span>
+            <span class="n">actor</span><span class="o">.</span><span class="n">GetProperty</span><span class="p">()</span><span class="o">.</span><span class="n">SetRepresentationToWireframe</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_renderer</span><span class="o">.</span><span class="n">AddActor</span><span class="p">(</span><span class="n">actor</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Scene.to_gltf"><a class="viewcode-back" href="../../honeybee_vtk.scene.html#honeybee_vtk.scene.Scene.to_gltf">[docs]</a>    <span class="k">def</span> <span class="nf">to_gltf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save the scene to a glTF file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            folder: A valid path to where you&#39;d like to write the gltf file.</span>
+<span class="sd">            name: Name of the gltf file as a text string.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A text string representing the path to the gltf file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gltf_file_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.gltf&#39;</span><span class="p">)</span>
+        <span class="n">exporter</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkGLTFExporter</span><span class="p">()</span>
+        <span class="n">exporter</span><span class="o">.</span><span class="n">SaveNormalOn</span><span class="p">()</span>
+        <span class="n">exporter</span><span class="o">.</span><span class="n">InlineDataOn</span><span class="p">()</span>
+        <span class="n">exporter</span><span class="o">.</span><span class="n">SetFileName</span><span class="p">(</span><span class="n">gltf_file_path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+        <span class="n">exporter</span><span class="o">.</span><span class="n">SetActiveRenderer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_renderer</span><span class="p">)</span>
+        <span class="n">exporter</span><span class="o">.</span><span class="n">SetRenderWindow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_window</span><span class="p">)</span>
+        <span class="n">exporter</span><span class="o">.</span><span class="n">Modified</span><span class="p">()</span>
+        <span class="n">exporter</span><span class="o">.</span><span class="n">Write</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">gltf_file_path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_image_writer</span><span class="p">(</span><span class="n">image_type</span><span class="p">:</span> <span class="n">ImageTypes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get vtk image writer for each image type.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">image_type</span> <span class="o">==</span> <span class="n">ImageTypes</span><span class="o">.</span><span class="n">png</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPNGWriter</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">image_type</span> <span class="o">==</span> <span class="n">ImageTypes</span><span class="o">.</span><span class="n">bmp</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkBMPWriter</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">image_type</span> <span class="o">==</span> <span class="n">ImageTypes</span><span class="o">.</span><span class="n">jpg</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkJPEGWriter</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">image_type</span> <span class="o">==</span> <span class="n">ImageTypes</span><span class="o">.</span><span class="n">pnm</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPNMWriter</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">image_type</span> <span class="o">==</span> <span class="n">ImageTypes</span><span class="o">.</span><span class="n">ps</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPostScriptWriter</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">image_type</span> <span class="o">==</span> <span class="n">ImageTypes</span><span class="o">.</span><span class="n">tiff</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkTIFFWriter</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid image type: </span><span class="si">{</span><span class="n">image_type</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">writer</span>
+
+<div class="viewcode-block" id="Scene.to_image"><a class="viewcode-back" href="../../honeybee_vtk.scene.html#honeybee_vtk.scene.Scene.to_image">[docs]</a>    <span class="k">def</span> <span class="nf">to_image</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">image_type</span><span class="p">:</span> <span class="n">ImageTypes</span> <span class="o">=</span> <span class="n">ImageTypes</span><span class="o">.</span><span class="n">png</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">rgba</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">image_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">color_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save scene to an image.</span>
+<span class="sd">        Reference: https://kitware.github.io/vtk-examples/site/Python/IO/ImageWriter/</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            folder: A valid path to where you&#39;d like to write the image.</span>
+<span class="sd">            name: Name of the image as a text string.</span>
+<span class="sd">            image_type: An ImageType object</span>
+<span class="sd">            rgba: A boolean value to set the type of buffer. A True value sets</span>
+<span class="sd">                an RGBA buffer whereas a False value sets RGB buffer. Defaults to True.</span>
+<span class="sd">            image_scale: An integer value as a scale factor. Defaults to 1.</span>
+<span class="sd">            color_range: A vtk lookup table object which can be obtained</span>
+<span class="sd">                from the color_range mehtod of the DataFieldInfo object. Defaults to None.</span>
+<span class="sd">            show: A boolean value to decide if the the render window should pop up.</span>
+<span class="sd">                Defaults to False.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A text string representing the path to the image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">color_range</span><span class="p">:</span>
+            <span class="n">scalar_bar</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkScalarBarActor</span><span class="p">()</span>
+            <span class="n">scalar_bar</span><span class="o">.</span><span class="n">SetOrientationToHorizontal</span><span class="p">()</span>
+            <span class="n">scalar_bar</span><span class="o">.</span><span class="n">SetLookupTable</span><span class="p">(</span><span class="n">color_range</span><span class="p">)</span>
+
+            <span class="c1"># create the scalar_bar_widget</span>
+            <span class="n">legend</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkScalarBarWidget</span><span class="p">()</span>
+            <span class="n">legend</span><span class="o">.</span><span class="n">SetInteractor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_interactor</span><span class="p">)</span>
+            <span class="n">legend</span><span class="o">.</span><span class="n">SetScalarBarActor</span><span class="p">(</span><span class="n">scalar_bar</span><span class="p">)</span>
+            <span class="n">legend</span><span class="o">.</span><span class="n">On</span><span class="p">()</span>
+
+        <span class="c1"># render window</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">show</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_window</span><span class="o">.</span><span class="n">OffScreenRenderingOn</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_window</span><span class="o">.</span><span class="n">Render</span><span class="p">()</span>
+
+        <span class="n">image_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">image_type</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_image_writer</span><span class="p">(</span><span class="n">image_type</span><span class="p">)</span>
+
+        <span class="n">window_to_image_filter</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkWindowToImageFilter</span><span class="p">()</span>
+        <span class="n">window_to_image_filter</span><span class="o">.</span><span class="n">SetInput</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_window</span><span class="p">)</span>
+        <span class="n">window_to_image_filter</span><span class="o">.</span><span class="n">SetScale</span><span class="p">(</span><span class="n">image_scale</span><span class="p">)</span>  <span class="c1"># image quality</span>
+
+        <span class="c1"># rgba is not supported for postscript image type</span>
+        <span class="k">if</span> <span class="n">rgba</span> <span class="ow">and</span> <span class="n">image_type</span> <span class="o">!=</span> <span class="n">ImageTypes</span><span class="o">.</span><span class="n">ps</span><span class="p">:</span>
+            <span class="n">window_to_image_filter</span><span class="o">.</span><span class="n">SetInputBufferTypeToRGBA</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">window_to_image_filter</span><span class="o">.</span><span class="n">SetInputBufferTypeToRGB</span><span class="p">()</span>
+            <span class="c1"># Read from the front buffer.</span>
+            <span class="n">window_to_image_filter</span><span class="o">.</span><span class="n">ReadFrontBufferOff</span><span class="p">()</span>
+            <span class="n">window_to_image_filter</span><span class="o">.</span><span class="n">Update</span><span class="p">()</span>
+
+        <span class="n">writer</span><span class="o">.</span><span class="n">SetFileName</span><span class="p">(</span><span class="n">image_path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">SetInputConnection</span><span class="p">(</span><span class="n">window_to_image_filter</span><span class="o">.</span><span class="n">GetOutputPort</span><span class="p">())</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">Write</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">color_range</span><span class="p">:</span>
+            <span class="n">legend</span><span class="o">.</span><span class="n">Off</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">image_path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span></div>
+
+    <span class="c1"># TODO: Color range input is a hack - we should keep track of the data</span>
+    <span class="c1"># that is added to the scene and reuse them</span>
+<div class="viewcode-block" id="Scene.show"><a class="viewcode-back" href="../../honeybee_vtk.scene.html#honeybee_vtk.scene.Scene.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Show rendered view.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">color_range</span><span class="p">:</span>
+            <span class="n">legend</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_legend</span><span class="p">(</span><span class="n">color_range</span><span class="p">)</span>
+            <span class="n">legend</span><span class="o">.</span><span class="n">On</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_window</span><span class="o">.</span><span class="n">Render</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_interactor</span><span class="o">.</span><span class="n">Start</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">color_range</span><span class="p">:</span>
+            <span class="n">legend</span><span class="o">.</span><span class="n">Off</span><span class="p">()</span></div></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

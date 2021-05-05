@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>honeybee_vtk.scene module &#8212; honeybee vtk  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="honeybee_vtk.to_vtk module" href="honeybee_vtk.to_vtk.html" />
+    <link rel="prev" title="honeybee_vtk.model module" href="honeybee_vtk.model.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          honeybee vtk</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="honeybee_vtk.html">honeybee_vtk package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee_vtk.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.cli.html">honeybee_vtk.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">honeybee_vtk.scene module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="honeybee_vtk.html">honeybee_vtk package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="honeybee_vtk.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee_vtk.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.cli.html">honeybee_vtk.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">honeybee_vtk.scene module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="honeybee_vtk.model.html" title="Previous Chapter: honeybee_vtk.model module"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; honeybee_vtk....</span>
+    </a>
+  </li>
+  <li>
+    <a href="honeybee_vtk.to_vtk.html" title="Next Chapter: honeybee_vtk.to_vtk module"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">honeybee_vtk.... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="_sources/honeybee_vtk.scene.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="honeybee_vtk.html">honeybee_vtk package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="honeybee_vtk.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee_vtk.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.cli.html">honeybee_vtk.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">honeybee_vtk.scene module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <div class="section" id="module-honeybee_vtk.scene">
+<span id="honeybee-vtk-scene-module"></span><h1>honeybee_vtk.scene module<a class="headerlink" href="#module-honeybee_vtk.scene" title="Permalink to this headline">¶</a></h1>
+<p>A VTK rendering scene.</p>
+<dl class="py class">
+<dt id="honeybee_vtk.scene.ImageTypes">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">honeybee_vtk.scene.</span></code><code class="sig-name descname"><span class="pre">ImageTypes</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee_vtk/scene.html#ImageTypes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.scene.ImageTypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Supported image types.</p>
+<dl class="py attribute">
+<dt id="honeybee_vtk.scene.ImageTypes.bmp">
+<code class="sig-name descname"><span class="pre">bmp</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'bmp'</span></em><a class="headerlink" href="#honeybee_vtk.scene.ImageTypes.bmp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.scene.ImageTypes.jpg">
+<code class="sig-name descname"><span class="pre">jpg</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'jpg'</span></em><a class="headerlink" href="#honeybee_vtk.scene.ImageTypes.jpg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.scene.ImageTypes.png">
+<code class="sig-name descname"><span class="pre">png</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'png'</span></em><a class="headerlink" href="#honeybee_vtk.scene.ImageTypes.png" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.scene.ImageTypes.pnm">
+<code class="sig-name descname"><span class="pre">pnm</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'pnm'</span></em><a class="headerlink" href="#honeybee_vtk.scene.ImageTypes.pnm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.scene.ImageTypes.ps">
+<code class="sig-name descname"><span class="pre">ps</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'ps'</span></em><a class="headerlink" href="#honeybee_vtk.scene.ImageTypes.ps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.scene.ImageTypes.tiff">
+<code class="sig-name descname"><span class="pre">tiff</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'tiff'</span></em><a class="headerlink" href="#honeybee_vtk.scene.ImageTypes.tiff" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="honeybee_vtk.scene.Scene">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">honeybee_vtk.scene.</span></code><code class="sig-name descname"><span class="pre">Scene</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">background_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee_vtk/scene.html#Scene"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.scene.Scene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A rendering scene with a single viewport.</p>
+<p>Once as scene is created you can export it to glTF, an image or just show it in an
+interactive viewer.</p>
+<dl class="py method">
+<dt id="honeybee_vtk.scene.Scene.add_dataset">
+<code class="sig-name descname"><span class="pre">add_dataset</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_set</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.ModelDataSet" title="honeybee_vtk.types.ModelDataSet"><span class="pre">honeybee_vtk.types.ModelDataSet</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee_vtk/scene.html#Scene.add_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.scene.Scene.add_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dataset to scene as a VTK actor.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.scene.Scene.add_model">
+<code class="sig-name descname"><span class="pre">add_model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="honeybee_vtk.model.html#honeybee_vtk.model.Model" title="honeybee_vtk.model.Model"><span class="pre">honeybee_vtk.model.Model</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee_vtk/scene.html#Scene.add_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.scene.Scene.add_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a model to scene.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.scene.Scene.get_legend">
+<code class="sig-name descname"><span class="pre">get_legend</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color_range</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">(vtkmodules.vtkInteractionWidgets.vtkScalarBarWidget)0x7f32491e9750</span><a class="reference internal" href="_modules/honeybee_vtk/scene.html#Scene.get_legend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.scene.Scene.get_legend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a scalar bar widget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>color_range</strong> – A VTK LookUpTable object for color range. You can create one
+from color_range method in <cite>DataFieldInfo</cite>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A VTK scalar bar widget.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.scene.Scene.show">
+<code class="sig-name descname"><span class="pre">show</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee_vtk/scene.html#Scene.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.scene.Scene.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show rendered view.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.scene.Scene.to_gltf">
+<code class="sig-name descname"><span class="pre">to_gltf</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee_vtk/scene.html#Scene.to_gltf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.scene.Scene.to_gltf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the scene to a glTF file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder</strong> – A valid path to where you’d like to write the gltf file.</p></li>
+<li><p><strong>name</strong> – Name of the gltf file as a text string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A text string representing the path to the gltf file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.scene.Scene.to_image">
+<code class="sig-name descname"><span class="pre">to_image</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">folder</span></em>, <em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">image_type:</span> <span class="pre">honeybee_vtk.scene.ImageTypes</span> <span class="pre">=</span> <span class="pre">&lt;ImageTypes.png:</span> <span class="pre">'png'&gt;</span></em>, <em class="sig-param"><span class="pre">*</span></em>, <em class="sig-param"><span class="pre">rgba=True</span></em>, <em class="sig-param"><span class="pre">image_scale=1</span></em>, <em class="sig-param"><span class="pre">color_range=None</span></em>, <em class="sig-param"><span class="pre">show=False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee_vtk/scene.html#Scene.to_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.scene.Scene.to_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save scene to an image.
+Reference: <a class="reference external" href="https://kitware.github.io/vtk-examples/site/Python/IO/ImageWriter/">https://kitware.github.io/vtk-examples/site/Python/IO/ImageWriter/</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder</strong> – A valid path to where you’d like to write the image.</p></li>
+<li><p><strong>name</strong> – Name of the image as a text string.</p></li>
+<li><p><strong>image_type</strong> – An ImageType object</p></li>
+<li><p><strong>rgba</strong> – A boolean value to set the type of buffer. A True value sets
+an RGBA buffer whereas a False value sets RGB buffer. Defaults to True.</p></li>
+<li><p><strong>image_scale</strong> – An integer value as a scale factor. Defaults to 1.</p></li>
+<li><p><strong>color_range</strong> – A vtk lookup table object which can be obtained
+from the color_range mehtod of the DataFieldInfo object. Defaults to None.</p></li>
+<li><p><strong>show</strong> – A boolean value to decide if the the render window should pop up.
+Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A text string representing the path to the image.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.5.4.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
