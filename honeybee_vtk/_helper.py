@@ -21,8 +21,8 @@ def _check_tuple(val, val_type, max_val=None):
     if max_val:
         val_check = [v < max_val for v in val]
     else:
-        val_check = [True] * 3
+        val_check = [True] * len(val)
 
     # final check
-    if item_check.count(True) == 3 and val_check.count(True) == 3:
+    if item_check.count(True) == len(val) and val_check.count(True) == len(val):
         return True
