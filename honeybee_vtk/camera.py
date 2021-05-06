@@ -135,7 +135,8 @@ class Camera:
         """
         if len(model.views) == 0:
             raise ValueError(
-                'No radiance views were found in the hbjson file.'
+                'Either load_views was not set to True while create a honeybee-vtk Model'
+                ' or no radiance views were found in the hbjson file.'
             )
         else:
             return [cls(position=view.position.value,
