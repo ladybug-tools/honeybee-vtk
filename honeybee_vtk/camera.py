@@ -1,7 +1,9 @@
 """A VTK camera object."""
 
 import vtk
+from math import tan, sin
 from honeybee.typing import clean_and_id_rad_string
+from ladybug_geometry.geometry3d.pointvector import Point3D
 from ._helper import _check_tuple
 
 
@@ -21,16 +23,23 @@ class Camera:
                 Defaults to (0.0, 1.0, 0.0).
             h_size: A decimal value representing the horizontal view angle.
                 Defaults to 60.0.
+            v_size: A decimal value representing the vertical view angle.
+                Defaults to 60.0.
+            view_type: Choose between a perspective and parallel view type. 'v' will set
+                the perspective view and 'l' will set the parallel view. Defaults to 'v'
+                which is the perspective view.
         """
 
     def __init__(self, identifier=None, position=None, direction=None,
-                 up_vector=None, h_size=None):
+                 up_vector=None, h_size=None, v_size=None, view_type=None):
 
         self.identifier = identifier
         self.position = position
         self.direction = direction
         self.up_vector = up_vector
         self.h_size = h_size
+        self.v_size = v_size
+        self.view_type = view_type
 
     @property
     def identifier(self):
@@ -108,17 +117,60 @@ class Camera:
                 f'The value must be a decimal number. Instead got {val}.'
             )
 
+    @property
+    def v_size(self):
+        """Verical view angle."""
+        return self._v_size
+
+    @v_size.setter
+    def v_size(self, val):
+        if not val:
+            self._v_size = 60.0
+        elif isinstance(val, float):
+            self._v_size = val
+        else:
+            raise ValueError(
+                f'The value must be a decimal number. Instead got {val}.'
+            )
+
+    @property
+    def view_type(self):
+        """View type."""
+        return self._view_type
+
+    @view_type.setter
+    def view_type(self, val):
+        if not val:
+            self.view_type = 'v'
+        elif isinstance(val, str) and val.lower() in ['v', 'l']:
+            self._view_type = val
+        else:
+            raise ValueError(
+                f'Only "v" and "l" are accepted. Instead got {val}.'
+            )
+
     def to_vtk(self):
         """Get a vtk camera object."""
         camera = vtk.vtkCamera()
+
         # The location of camera in a 3D space
         camera.SetPosition(self._position)
+
         # The direction to the point where the camera is looking at
         camera.SetFocalPoint(self._direction)
+
         # Where the top of the camera is
         camera.SetViewUp(self._up_vector)
+
         # Horizontal view angle
         camera.SetViewAngle(self._h_size)
+
+        if self._view_type == 'l':
+            camera.SetParallelProjection(True)
+            camera.ParallelProjectionOn()
+            # TODO: Setting parallel scale needs further look
+            camera.SetParallelScale(self._v_size / 2)
+
         camera.SetUseHorizontalViewAngle(True)
         camera.UseHorizontalViewAngleOn()
         return camera
@@ -142,4 +194,6 @@ class Camera:
             return [cls(position=view.position.value,
                     direction=view.direction.value,
                     up_vector=view.up_vector.value,
-                    h_size=view.h_size.value).to_vtk() for view in model.views]
+                    h_size=view.h_size.value,
+                    v_size=view.v_size.value,
+                    view_type=view.type.value).to_vtk() for view in model.views]
