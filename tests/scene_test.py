@@ -34,7 +34,7 @@ def test_write_gltf():
     model.update_display_mode(DisplayMode.Shaded)
 
     scene = Scene(background_color=(0,0,0), model=model)
-    interactor, window, renderer = scene.create_render_window()
+    window, renderer = scene.create_render_window()[1:]
 
     if os.path.isdir(target_folder):
         shutil.rmtree(target_folder)
@@ -170,7 +170,7 @@ def test_export_image():
     """Test export images method."""
     file_path = r'./tests/assets/gridbased.hbjson'
     results_folder = r'./tests/assets/df_results'
-    target_folder = r'./tests/assets/temp'
+    target_folder = r'./tests/assets/temp1'
 
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh,
                               load_views=True)
@@ -194,14 +194,12 @@ def test_export_image():
     scene = Scene(model=model, background_color=(255, 255, 255),
                   monochrome=True, monochrome_color=(0.0, 0.0, 0.0))
 
-    # A camera setup using the constructor
+    # Create a camera Parallel projection camera using the constructor
     camera = Camera(position=(-50.28, -30.32, 58.64), direction=(0.59, 0.44, -0.67),
-                    up_vector=(0.53, 0.40, 0.74), h_size=52.90)
+                    up_vector=(0.53, 0.40, 0.74), h_size=52.90, view_type='l').to_vtk()
 
-    # Add all the camera to the scene
-    scene.add_cameras(camera.to_vtk())
-
-    interactor, window = scene.create_render_window()[0:2]
+    # Create a rendering window using the camera defined above
+    interactor, window = scene.create_render_window(camera=camera)[0:2]
 
     # if target folder exists, delete it and create a fresh new folder
     if os.path.isdir(target_folder):
@@ -236,14 +234,14 @@ def test_export_images():
                                        per_face=True, data_range=(0, 20))
     model.sensor_grids.color_by = 'Daylight-factor'
     model.sensor_grids.display_mode = DisplayMode.SurfaceWithEdges
-    model.update_display_mode(DisplayMode.Wireframe)
+    model.update_display_mode(DisplayMode.SurfaceWithEdges)
 
     # Setup legend
     color_range = model.sensor_grids.active_field_info.color_range()
 
     # Initialize a scene
     scene = Scene(model=model, background_color=(255, 255, 255),
-                  monochrome=True, monochrome_color=(0.0, 0.0, 0.0))
+                  monochrome=False, monochrome_color=(0.0, 0.0, 0.0))
 
     # A camera setup using the constructor
     camera = Camera(position=(-50.28, -30.32, 58.64), direction=(0.59, 0.44, -0.67),
@@ -269,5 +267,5 @@ def test_export_images():
 
     for path in images_path:
         assert os.path.isfile(path)
+
     shutil.rmtree(target_folder)
-    
