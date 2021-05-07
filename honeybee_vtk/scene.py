@@ -130,6 +130,17 @@ class Scene(object):
 
     @cameras.setter
     def cameras(self, val):
+        """Set up cameras
+
+        Note: The scene object has one camera with perspective view by default.
+        If you use this method to set a single camera or a list of cameras then
+        the default camera will be removed. If you wish to preserve the default
+        camera then initialize a Scene object without setting cameras and then
+        use add_cameras method.
+
+        Args:
+            val: A single vtk camera object or a list of vtk camera objects.
+        """
         if isinstance(val, list) and _check_tuple(val, vtk.vtkCamera):
             self._cameras = val
         elif isinstance(val, vtk.vtkCamera):
@@ -182,6 +193,13 @@ class Scene(object):
         # in the scene
         if not camera:
             camera = self._cameras[0]
+        elif isinstance(camera, vtk.vtkCamera):
+            pass
+        else:
+            raise ValueError(
+                f'The camera must be a vtk camera object. Instead got {camera}. Make'
+                ' sure to use the to_vtk method once a camera is created.'
+            )
 
         # Setting renderer, render window, and interactor
         renderer = vtk.vtkRenderer()
