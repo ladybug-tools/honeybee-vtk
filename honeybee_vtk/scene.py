@@ -406,6 +406,7 @@ class Scene(object):
         if not show:
             window.OffScreenRenderingOn()
             window.SetSize(image_width, image_height)
+            window.Render()
         else:
             window.SetSize(width, height)
             window.Render()
