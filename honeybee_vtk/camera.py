@@ -1,10 +1,7 @@
 """A VTK camera object."""
 
 import vtk
-from math import tan, sin
 from honeybee.typing import clean_and_id_rad_string
-from ladybug_geometry.geometry3d.pointvector import Point3D
-from ._helper import _check_tuple
 
 
 class Camera:
@@ -13,17 +10,17 @@ class Camera:
         Args:
             identifier: A text string to be used as a name for the camera.
                 Defaults to None.
-            position: A tuple of three decimal values that represent the x, y and z
+            position: A tuple of three numbers that represent the x, y and z
                 coordinates of camera in a 3D space. Defaults to (0.0, 0.0, 25.0).
-            direction: A tuple of three decimal values that represent the x, y, and z
+            direction: A tuple of three numbers that represent the x, y, and z
                 components of a vector towards the aim of the camera.
                 Defaults to (0.0, 0.0, -1.0).
-            up_vector: A tuple of three decimal values to represent the x, y, and z
+            up_vector: A tuple of three numbers to represent the x, y, and z
                 component of the vector that represents where the top of the camera is.
                 Defaults to (0.0, 1.0, 0.0).
-            h_size: A decimal value representing the horizontal view angle.
+            h_size: A number representing the horizontal view angle.
                 Defaults to 60.0.
-            v_size: A decimal value representing the vertical view angle.
+            v_size: A number representing the vertical view angle.
                 Defaults to 60.0.
             view_type: Choose between a perspective and parallel view type. 'v' will set
                 the perspective view and 'l' will set the parallel view. Defaults to 'v'
@@ -62,11 +59,12 @@ class Camera:
     def position(self, val):
         if not val:
             self._position = (0.0, 0.0, 50.0)
-        elif _check_tuple(val, float):
+        elif isinstance(val, tuple) and len(val) == 3:
             self._position = val
         else:
             raise ValueError(
-                f'The value must be a tuple with three decimal values. Instead got {val}'
+                'The value must be a tuple with three numbers representing x, y, and z'
+                f' coordinates. Instead got {val}.'
             )
 
     @property
@@ -78,11 +76,12 @@ class Camera:
     def direction(self, val):
         if not val:
             self._direction = (0.0, 0.0, -1.0)
-        elif _check_tuple(val, float):
+        elif isinstance(val, tuple) and len(val) == 3:
             self._direction = val
         else:
             raise ValueError(
-                f'The value must be a tuple with three decimal values. Instead got {val}'
+                'The value must be a tuple with three numbers representing x, y, and z'
+                f' components of a vector. Instead got {val}.'
             )
 
     @property
@@ -94,11 +93,12 @@ class Camera:
     def up_vector(self, val):
         if not val:
             self._up_vector = (0.0, 1.0, 0.0)
-        elif _check_tuple(val, float):
+        elif isinstance(val, tuple) and len(val) == 3:
             self._up_vector = val
         else:
             raise ValueError(
-                f'The value must be a tuple with three decimal values. Instead got {val}'
+                'The value must be a tuple with three numbers representing x, y, and z'
+                f' components of a vector. Instead got {val}.'
             )
 
     @property
@@ -110,11 +110,11 @@ class Camera:
     def h_size(self, val):
         if not val:
             self._h_size = 60.0
-        elif isinstance(val, float):
+        elif val:
             self._h_size = val
         else:
             raise ValueError(
-                f'The value must be a decimal number. Instead got {val}.'
+                f'The value must be a number. Instead got {val}.'
             )
 
     @property
@@ -126,11 +126,11 @@ class Camera:
     def v_size(self, val):
         if not val:
             self._v_size = 60.0
-        elif isinstance(val, float):
+        elif val:
             self._v_size = val
         else:
             raise ValueError(
-                f'The value must be a decimal number. Instead got {val}.'
+                f'The value must be a number. Instead got {val}.'
             )
 
     @property
@@ -152,16 +152,12 @@ class Camera:
     def to_vtk(self):
         """Get a vtk camera object."""
         camera = vtk.vtkCamera()
-
         # The location of camera in a 3D space
         camera.SetPosition(self._position)
-
         # The direction to the point where the camera is looking at
         camera.SetFocalPoint(self._direction)
-
         # Where the top of the camera is
         camera.SetViewUp(self._up_vector)
-
         # Horizontal view angle
         camera.SetViewAngle(self._h_size)
 
@@ -173,6 +169,7 @@ class Camera:
 
         camera.SetUseHorizontalViewAngle(True)
         camera.UseHorizontalViewAngleOn()
+
         return camera
 
     @classmethod
