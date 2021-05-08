@@ -54,7 +54,8 @@ class Model(object):
     """
     def __init__(
         self, model: HBModel,
-        load_grids: SensorGridOptions = SensorGridOptions.Ignore
+        load_grids: SensorGridOptions = SensorGridOptions.Ignore,
+        load_views: bool = False
             ) -> None:
         """Instantiate a honeybee-vtk model object.
 
@@ -63,8 +64,10 @@ class Model(object):
             load_grids: A SensorGridOptions object. Defaults to SensorGridOptions.Ignore
                 which will ignore the grids in hbjson and will not load them in the
                 honeybee-vtk model.
+            load_views: A boolean. If set to True, radiance views from the hbjson will
+                be loaded which can be used later to export images of the same views.
+                Defaults to False.
         """
-
         super().__init__()
         # apertures and orphaned apertures
         self._apertures = \
@@ -81,14 +84,16 @@ class Model(object):
         self._air_boundaries = \
             ModelDataSet('AirBoundary', color=self.get_default_color('AirBoundary'))
         self._sensor_grids = ModelDataSet('Grid', color=self.get_default_color('Grid'))
+        self._views = []
         self._convert_model(model)
         self._load_grids(model, load_grids)
+        self._load_views(model, load_views)
         self._sensor_grids_option = load_grids  # keep this for adding data
 
     @classmethod
-    def from_hbjson(
-        cls, hbjson: str, load_grids: SensorGridOptions = SensorGridOptions.Ignore
-            ):
+    def from_hbjson(cls, hbjson: str,
+                    load_grids: SensorGridOptions = SensorGridOptions.Ignore,
+                    load_views: bool = False):
         """Translate hbjson to a honeybee-vtk model.
 
         Args:
@@ -96,6 +101,9 @@ class Model(object):
             load_grids: A SensorGridOptions object. Defaults to SensorGridOptions.Ignore
                 which will ignore the grids in hbjson and will not load them in the
                 honeybee-vtk model.
+            load_views: A boolean. If set to True, radiance views from the hbjson will
+                be loaded which can be used later to export images of the same views.
+                Defaults to False.
 
         Returns:
             A honeybee-vtk model object.
@@ -103,7 +111,7 @@ class Model(object):
         hb_file = pathlib.Path(hbjson)
         assert hb_file.is_file(), f'{hbjson} doesn\'t exist.'
         model = HBModel.from_hbjson(hb_file.as_posix())
-        return cls(model, load_grids)
+        return cls(model, load_grids, load_views)
 
     @property
     def walls(self) -> ModelDataSet:
@@ -145,6 +153,11 @@ class Model(object):
         """Sensor grids."""
         return self._sensor_grids
 
+    @property
+    def views(self):
+        """List of radiance view objects found in hbjson."""
+        return self._views
+
     def __iter__(self):
         """This dunder method makes this class an iterator object.
 
@@ -168,6 +181,14 @@ class Model(object):
                 self._sensor_grids.data.append(
                     convert_sensor_grid(sensor_grid, grid_options)
                 )
+
+    def _load_views(self, model: HBModel, load_views: bool):
+        """Load radiance views."""
+        if not load_views:
+            return
+        elif hasattr(model.properties, 'radiance'):
+            for view in model.properties.radiance.views:
+                self._views.append(view)
 
     def update_display_mode(self, value: DisplayMode):
         """Change display mode for all the object types in the model.

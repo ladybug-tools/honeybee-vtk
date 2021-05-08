@@ -113,3 +113,12 @@ def test_default_colors():
     assert model.get_default_color('Grid') == Color(235, 63, 102, 255)
 
 
+def test_views():
+    """Test if views are being read from hbjson."""
+    file_path = r'./tests/assets/viewbased.hbjson'
+    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh,
+                              load_views=False)
+    assert len(model.views) == 0
+    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh,
+                              load_views=True)
+    assert len(model.views) == 1
