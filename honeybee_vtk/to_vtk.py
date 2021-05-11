@@ -122,7 +122,7 @@ def convert_aperture(aperture: Aperture) -> List[PolyData]:
 
 def convert_face(face: Face) -> List[PolyData]:
     """Convert a HBFace to a PolyData."""
-    polydata = convert_face_3d(face.geometry)
+    polydata = convert_face_3d(face.punched_geometry)
     polydata.type = face.type.name
     polydata.identifier = face.identifier
     polydata.display_name = face.display_name
