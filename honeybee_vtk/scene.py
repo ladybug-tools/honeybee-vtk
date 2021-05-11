@@ -34,27 +34,19 @@ class Scene(object):
     Args:
         background_color: A tuple of three integers that represent RGB values of the
             color that you'd like to set as the background color. Defaults to gray.
-        model: A Model camera object created using honeybee-vtk.
+        actors: A list of vtk actors.
         cameras: A list of vtk camera objects. Defaults to one camera that shows the
             scene from top.
-        monochrome: A boolean value. If set to True, one color will be applied to all
-            the geometry objects in Scene. This is especially useful when
-            the DisplayMode is set to Wireframe and results are going to be
-            loaded to the model.
-        monochrome_color: A tuple of decimal numbers to represent RGB color.
-            Defaults to gray.
+        
     """
-    __slots__ = ('_background_color', '_model', '_cameras', '_monochrome',
-                 '_monochrome_color')
+    __slots__ = ('_background_color', '_cameras','_actors')
 
-    def __init__(self, background_color=None, model=None, cameras=None, monochrome=None,
+    def __init__(self, background_color=None, actors=None, cameras=None, monochrome=None,
                  monochrome_color=None) -> None:
 
         self.background_color = background_color
-        self.model = model
+        self.actors = actors
         self.cameras = cameras
-        self.monochrome = monochrome
-        self.monochrome_color = monochrome_color
 
     @property
     def background_color(self):
@@ -75,52 +67,25 @@ class Scene(object):
             )
 
     @property
-    def model(self):
-        """Model object to be added to the scene which will turn into actors."""
+    def actors(self):
+        """A list of vtk actors to be added to the scene."""
         return self._model
 
-    @model.setter
-    def model(self, val):
-        if isinstance(val, Model):
-            self._model = val
-        elif not val:
-            self._model = None
-        else:
-            raise ValueError(
-                f'A Model object created using honeybee-vtk required. Intead got {val}.'
-            )
-
-    @property
-    def monochrome(self):
-        """Switch for monochrome colors."""
-        return self._monochrome
-
-    @monochrome.setter
-    def monochrome(self, val):
+    @actors.setter
+    def actors(self, val):
         if not val:
-            self._monochrome = False
-        elif isinstance(val, bool):
-            self._monochrome = val
+            self._actors = None
+        elif isinstance(val, list):
+            check = [isinstance(actor, vtk.vtkActor) for actor in val]
+            if check.count(True) == len(val):
+                self._actors = val
+            else:
+                raise ValueError(
+                    'All items in the list must be vtkActor type.'
+                )
         else:
             raise ValueError(
-                f'A boolean value required. Instead got {val}.'
-            )
-
-    @property
-    def monochrome_color(self):
-        """Color to be used in monochrome mode."""
-        return self._monochrome_color
-
-    @monochrome_color.setter
-    def monochrome_color(self, val):
-        if not self._monochrome or not val:
-            self._monochrome_color = (0.54, 0.54, 0.54)
-        elif _check_tuple(val, float, max_val=1.0):
-            self._monochrome_color = val
-        else:
-            raise ValueError(
-                'monochrome color is a tuple with three decimal values less than 1'
-                ' representing R, G, and B.'
+                f'A list of vtk actors required. Intead got {val}.'
             )
 
     @property
@@ -206,9 +171,8 @@ class Scene(object):
         
 
         # Add actors to the window if model(actor) has arrived at the scene
-        if self._model:
-            actors = self._get_actors(self._model, renderer)
-            for actor in actors:
+        if self._actors:
+            for actor in self._actors:
                 renderer.AddActor(actor)
 
         # add renderer to rendering window
@@ -227,28 +191,6 @@ class Scene(object):
         renderer.SetActiveCamera(camera)
         # return the objects - the order is from outside to inside
         return interactor, window, renderer
-
-    @staticmethod
-    def _get_bounds(actors):
-        """Get bounds for all the actors in the model
-
-        Args:
-            actors: A list of vtk actors.
-
-        Returns:
-            A list of points that represent the bounds of actors. Here, each point is a
-                tuple of x, y, and z coordinates.
-        """
-        points = []
-
-        for actor in actors:
-            bound = actor.GetBounds()
-            pt_min = (bound[0], bound[2], bound[4])
-            pt_max = (bound[1], bound[3], bound[5])
-            min_max = [pt_min, pt_max]
-            points.extend(min_max)
-
-        return points
 
     def get_legend(self, color_range, interactor) -> vtk.vtkScalarBarWidget():
         """Create a scalar bar widget.
@@ -272,79 +214,6 @@ class Scene(object):
         scalar_bar_widget.SetInteractor(interactor)
         scalar_bar_widget.SetScalarBarActor(scalar_bar)
         return scalar_bar_widget
-
-    def _get_actors(self, model: Model, renderer):
-        """Get actors created from the model.
-
-        Args:
-            model: A Model camera object created using honeybee-vtk.
-            renderer: A vtk renderer object created using create_render_window method.
-
-        Returns:
-            A list of vtk actor objects created from the model.
-        """
-        actors = []
-
-        for ds in model:
-            if ds.is_empty:
-                continue
-            actors.append(self._add_dataset(ds, renderer))
-
-        return actors
-
-    def _add_dataset(self, data_set: ModelDataSet, renderer):
-        """Add a dataset to scene as a VTK actor.
-
-        This method is only used in add_model method.
-
-        Args:
-            data_set: A ModelDataSet object from a Model object created using
-                honeybee-vtk.
-            renderer: A vtk renderer object created using create_render_window method.
-
-        Returns:
-            A vtk actor object created from a dataset in model.
-        """
-
-        # calculate point data based on cell data
-        cell_to_point = vtk.vtkCellDataToPointData()
-        if len(data_set.data) > 1:
-            polydata = JoinedPolyData.from_polydata(data_set.data)
-            cell_to_point.SetInputConnection(polydata.GetOutputPort())
-        else:
-            polydata = data_set.data[0]
-            cell_to_point.SetInputData(polydata)
-
-        mapper = vtk.vtkPolyDataMapper()
-        mapper.SetInputConnection(cell_to_point.GetOutputPort())
-
-        # map cell data to pointdata
-        if data_set.fields_info:
-            field_info = data_set.active_field_info
-            mapper.SetColorModeToMapScalars()
-            mapper.SetScalarModeToUsePointData()
-            mapper.SetScalarVisibility(True)
-            range_min, range_max = field_info.data_range
-            mapper.SetScalarRange(range_min, range_max)
-            mapper.SetLookupTable(field_info.color_range())
-            mapper.Update()
-
-        actor = vtk.vtkActor()
-        actor.SetMapper(mapper)
-
-        # Assign Ladybug Tools colors
-        if self._monochrome:
-            actor.GetProperty().SetColor(self._monochrome_color)
-        else:
-            actor.GetProperty().SetColor(data_set.rgb_to_decimal())
-
-        if data_set.edge_visibility:
-            actor.GetProperty().EdgeVisibilityOn()
-
-        if data_set.display_mode == DisplayMode.Wireframe:
-            actor.GetProperty().SetRepresentationToWireframe()
-
-        return actor
 
     def export_gltf(self, folder, renderer, window, name):
         """Export a scene to a glTF file.
