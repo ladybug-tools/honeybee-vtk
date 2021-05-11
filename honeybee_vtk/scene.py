@@ -203,11 +203,13 @@ class Scene(object):
 
         # Setting renderer, render window, and interactor
         renderer = vtk.vtkRenderer()
-        renderer.SetActiveCamera(camera)
+        
 
         # Add actors to the window if model(actor) has arrived at the scene
         if self._model:
-            self.add_model(self._model, renderer)
+            actors = self._get_actors(self._model, renderer)
+            for actor in actors:
+                renderer.AddActor(actor)
 
         # add renderer to rendering window
         window = vtk.vtkRenderWindow()
@@ -221,8 +223,32 @@ class Scene(object):
         renderer.SetBackground(self._background_color)
         renderer.TwoSidedLightingOn()
 
+        # Assign camera to the renderer
+        renderer.SetActiveCamera(camera)
         # return the objects - the order is from outside to inside
         return interactor, window, renderer
+
+    @staticmethod
+    def _get_bounds(actors):
+        """Get bounds for all the actors in the model
+
+        Args:
+            actors: A list of vtk actors.
+
+        Returns:
+            A list of points that represent the bounds of actors. Here, each point is a
+                tuple of x, y, and z coordinates.
+        """
+        points = []
+
+        for actor in actors:
+            bound = actor.GetBounds()
+            pt_min = (bound[0], bound[2], bound[4])
+            pt_max = (bound[1], bound[3], bound[5])
+            min_max = [pt_min, pt_max]
+            points.extend(min_max)
+
+        return points
 
     def get_legend(self, color_range, interactor) -> vtk.vtkScalarBarWidget():
         """Create a scalar bar widget.
@@ -247,17 +273,24 @@ class Scene(object):
         scalar_bar_widget.SetScalarBarActor(scalar_bar)
         return scalar_bar_widget
 
-    def add_model(self, model: Model, renderer):
-        """Add a model to the scene.
+    def _get_actors(self, model: Model, renderer):
+        """Get actors created from the model.
 
         Args:
             model: A Model camera object created using honeybee-vtk.
             renderer: A vtk renderer object created using create_render_window method.
+
+        Returns:
+            A list of vtk actor objects created from the model.
         """
+        actors = []
+
         for ds in model:
             if ds.is_empty:
                 continue
-            self._add_dataset(ds, renderer)
+            actors.append(self._add_dataset(ds, renderer))
+
+        return actors
 
     def _add_dataset(self, data_set: ModelDataSet, renderer):
         """Add a dataset to scene as a VTK actor.
@@ -268,6 +301,9 @@ class Scene(object):
             data_set: A ModelDataSet object from a Model object created using
                 honeybee-vtk.
             renderer: A vtk renderer object created using create_render_window method.
+
+        Returns:
+            A vtk actor object created from a dataset in model.
         """
 
         # calculate point data based on cell data
@@ -308,7 +344,7 @@ class Scene(object):
         if data_set.display_mode == DisplayMode.Wireframe:
             actor.GetProperty().SetRepresentationToWireframe()
 
-        renderer.AddActor(actor)
+        return actor
 
     def export_gltf(self, folder, renderer, window, name):
         """Export a scene to a glTF file.
