@@ -154,19 +154,25 @@ class Camera:
         camera = vtk.vtkCamera()
         # The location of camera in a 3D space
         camera.SetPosition(self._position)
-        # The direction to the point where the camera is looking at
-        camera.SetFocalPoint(self._direction)
+
+        if self._view_type == 'l':
+            fp = (self._position[0]+self._direction[0],
+                  self._position[1]+self._direction[1],
+                  self._position[2]+self._direction[2])
+            # The direction to the point where the camera is looking at
+            camera.SetFocalPoint(fp)
+            camera.SetParallelProjection(True)
+            # TODO: Need to find a better way to set parallel scale
+            camera.SetParallelScale(self._v_size)
+            camera.ParallelProjectionOn()
+        else:
+            # The direction to the point where the camera is looking at
+            camera.SetFocalPoint(self._direction)
+
         # Where the top of the camera is
         camera.SetViewUp(self._up_vector)
         # Horizontal view angle
         camera.SetViewAngle(self._h_size)
-
-        if self._view_type == 'l':
-            camera.SetParallelProjection(True)
-            camera.ParallelProjectionOn()
-            # TODO: Setting parallel scale needs further look
-            camera.SetParallelScale(self._v_size / 2)
-
         camera.SetUseHorizontalViewAngle(True)
         camera.UseHorizontalViewAngleOn()
 
