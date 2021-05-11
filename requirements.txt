@@ -1,4 +1,3 @@
 honeybee-core>=1.44.1
 honeybee-radiance>=1.38.13
 vtk==9.0.1
-click>=7.1.2
