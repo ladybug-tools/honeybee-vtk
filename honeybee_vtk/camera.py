@@ -164,7 +164,10 @@ class Camera:
                 )
 
             # get adjusted camera position
-            position = self.adjusted_position(bounds, self._position, self._direction)
+            adjusted_position = self.adjusted_position(bounds, self._position, self._direction)
+
+            # The location of camera in a 3D space
+            camera.SetPosition(adjusted_position)
 
             # get a focal_point on the same axis as the camera position. This is
             # necessary for flat views
@@ -196,14 +199,20 @@ class Camera:
     def adjusted_position(self, bounds):
         # Create Ladybug Point object
         position = Point3D(self._position[0], self._position[1], self._position[2])
-
+        print(self._direction)
         # If the camera is looking in the Z direction
-        if not self._direction[2]:
+        if self._direction[2]:
             points_to_check = [Point3D(point[0], point[1], point[2]) for point in
                                bounds if point[2]]
             distance_to_position = [position.distance_to_point(point) for point
                                     in points_to_check]
-            points_distance = dict(zip(points_to_check, distance_to_position))
+            points_distance = dict(zip(distance_to_position, points_to_check))
+            sorted_distances = [distance for distance in sorted(points_distance.keys())]
+            nearest_point_z_cord = points_distance[sorted_distances[0]].z
+            factor = 3
+            adjusted_position = (self._position[0], self._position[1],
+                                 nearest_point_z_cord+factor)
+            return adjusted_position
 
     @classmethod
     def from_model(cls, model):
