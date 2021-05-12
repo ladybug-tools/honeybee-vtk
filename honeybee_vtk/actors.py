@@ -158,20 +158,13 @@ class Actors:
 
         return actor
 
-    @staticmethod
-    def get_bounds(actors):
-        """Get bounds for all the actors in the model
+    def get_bounds(self):
+        """Get A list of points that represent the bounds of actors. Here, each point
+        is a tuple of x, y, and z coordinates."""
 
-        Args:
-            actors: A list of vtk actors.
-
-        Returns:
-            A list of points that represent the bounds of actors. Here, each point is a
-                tuple of x, y, and z coordinates.
-        """
         points = []
 
-        for actor in actors:
+        for actor in self.to_vtk():
             bound = actor.GetBounds()
             pt_min = (bound[0], bound[2], bound[4])
             pt_max = (bound[1], bound[3], bound[5])
