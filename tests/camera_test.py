@@ -5,6 +5,7 @@ import vtk
 from honeybee_vtk.camera import Camera
 from honeybee_vtk.model import Model
 from honeybee_vtk.vtkjs.schema import SensorGridOptions
+from honeybee_vtk.actors import Actors
 
 
 def test_to_vtk():
@@ -28,7 +29,6 @@ def test_to_vtk():
 def test_from_model():
     """Test if views are being read from hbjson."""
     file_path = r'./tests/assets/viewbased.hbjson'
-
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
 
     # Checking if valueerror is raised when from_model is called on a model with no views
@@ -42,6 +42,13 @@ def test_from_model():
     cameras_check = [isinstance(camera, vtk.vtkCamera) for camera in cameras]
     assert cameras_check.count(True) == len(cameras)
 
+
+def test_adjusted_camera():
+    """Test creation of adjusted camera."""
+    file_path = r'./tests/assets/gridbased.hbjson'
+    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
+    bounds = Actors(model=model).get_bounds()
+    adjusted_camera = Camera().adjusted_position(bounds)
 
 
     
