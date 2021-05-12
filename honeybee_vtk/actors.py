@@ -51,7 +51,7 @@ class Actors:
             self._model = None
         else:
             raise ValueError(
-                f'A Model object created using honeybee-vtk required. Intead got {val}.'
+                f'A Model object created using honeybee-vtk required. Instead got {val}.'
             )
     
     @property
@@ -86,7 +86,7 @@ class Actors:
                 'monochrome color is a tuple with three decimal values less than 1'
                 ' representing R, G, and B.'
             )
-    
+
     def to_vtk(self):
         """Get a list of vtk actors from the model.
 
@@ -179,3 +179,5 @@ class Actors:
             points.extend(min_max)
 
         return points
+
+        
