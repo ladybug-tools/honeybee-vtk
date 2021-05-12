@@ -238,10 +238,14 @@ def test_export_images():
     color_range = model.sensor_grids.active_field_info.color_range()
 
     # actors
-    actors = Actors(model=model).to_vtk()
+    actors = Actors(model=model)
+    actors_list = actors.to_vtk()
+
+    # bounds of actors
+    bounds = actors.get_bounds()
 
     # Initialize a scene
-    scene = Scene(actors=actors, background_color=(255, 255, 255),
+    scene = Scene(actors=actors_list, background_color=(255, 255, 255),
                   monochrome=False, monochrome_color=(0.0, 0.0, 0.0))
 
     # A camera setup using the constructor
@@ -252,7 +256,7 @@ def test_export_images():
     cameras = Camera.from_model(model)
 
     # Gather all the cameras
-    cameras.append(camera.to_vtk())
+    cameras.append(camera.to_vtk(bounds))
 
     # Add all the cameras to the scene
     scene.add_cameras(cameras)
@@ -264,9 +268,10 @@ def test_export_images():
 
     # Export images for all the cameras
     images_path = scene.export_images(folder=target_folder, image_type=ImageTypes.png,
-                                      name='camera', color_range=color_range)
+                                      name='camera')
 
     for path in images_path:
         assert os.path.isfile(path)
 
     shutil.rmtree(target_folder)
+
