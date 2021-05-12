@@ -2,6 +2,7 @@
 
 import vtk
 from honeybee.typing import clean_and_id_rad_string
+from ladybug_geometry.geometry3d.pointvector import Point3D
 
 
 class Camera:
@@ -149,16 +150,28 @@ class Camera:
                 f'Only "v" and "l" are accepted. Instead got {val}.'
             )
 
-    def to_vtk(self):
+    def to_vtk(self, bounds=None):
         """Get a vtk camera object."""
         camera = vtk.vtkCamera()
-        # The location of camera in a 3D space
-        camera.SetPosition(self._position)
 
         if self._view_type == 'l':
+            # Get bounds if flat a flat view is requested
+            if self._direction in [(0, 0, -1), (0, 0, 1), (1, 0, 0),
+                                   (-1, 0, 0), (0, 1, 0), (0, -1, 0)] and not bounds:
+                raise ValueError(
+                    'Bounds of actors are required to generate one of the flat views.'
+                    ' Use get_bounds method of the Actors object to get these bounds.'
+                )
+
+            # get adjusted camera position
+            position = self.adjusted_position(bounds, self._position, self._direction)
+
+            # get a focal_point on the same axis as the camera position. This is
+            # necessary for flat views
             fp = (self._position[0]+self._direction[0],
                   self._position[1]+self._direction[1],
                   self._position[2]+self._direction[2])
+
             # The direction to the point where the camera is looking at
             camera.SetFocalPoint(fp)
             camera.SetParallelProjection(True)
@@ -166,6 +179,8 @@ class Camera:
             camera.SetParallelScale(self._v_size)
             camera.ParallelProjectionOn()
         else:
+            # The location of camera in a 3D space
+            camera.SetPosition(self._position)
             # The direction to the point where the camera is looking at
             camera.SetFocalPoint(self._direction)
 
@@ -177,6 +192,18 @@ class Camera:
         camera.UseHorizontalViewAngleOn()
 
         return camera
+
+    def adjusted_position(self, bounds):
+        # Create Ladybug Point object
+        position = Point3D(self._position[0], self._position[1], self._position[2])
+
+        # If the camera is looking in the Z direction
+        if not self._direction[2]:
+            points_to_check = [Point3D(point[0], point[1], point[2]) for point in
+                               bounds if point[2]]
+            distance_to_position = [position.distance_to_point(point) for point
+                                    in points_to_check]
+            points_distance = dict(zip(points_to_check, distance_to_position))
 
     @classmethod
     def from_model(cls, model):
