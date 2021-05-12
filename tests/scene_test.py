@@ -59,57 +59,49 @@ def test_image_types():
     assert ImageTypes.pnm.value == 'pnm'
 
 
-# def test_class_initialization():
-#     """Test if the attributes of the class are set correctly."""
+def test_class_initialization():
+    """Test if the attributes of the class are set correctly."""
 
-#     scene = Scene(background_color=(255, 255, 255))
-#     assert scene.monochrome is False
+    scene = Scene(background_color=(255, 255, 255))
+  
+    # Check that decimal values not allowed in background color
+    with pytest.raises(ValueError):
+        scene = Scene(background_color=(123.24, 23, 255))
 
-#     # Check default monochrome color
-#     scene = Scene(background_color=(255, 255, 255), monochrome=True)
-#     assert scene.monochrome_color == (0.54, 0.54, 0.54)
-
-#     # Check that decimal values not allowed in background color
-#     with pytest.raises(ValueError):
-#         scene = Scene(background_color=(123.24, 23, 255))
-
-#     # Check that integer values not allowed in monochrome color
-#     with pytest.raises(ValueError):
-#         scene = Scene(background_color=(255, 255, 255), monochrome=True,
-#                       monochrome_color=(0,0,0))
-
-#     # Check a vtk camera object is attached by default
-#     assert isinstance(scene.cameras[0], vtk.vtkCamera)
+    # Check a vtk camera object is attached by default
+    assert isinstance(scene.cameras[0], vtk.vtkCamera)
 
 
-# def test_legend():
-#     """Test legend."""
+def test_legend():
+    """Test legend."""
 
-#     data_field = DataFieldInfo()
-#     color_range = data_field.color_range()
-#     scene = Scene()
-#     interactor = scene.create_render_window()[0]
-#     legend = scene.get_legend(color_range, interactor)
-#     assert isinstance(legend, vtk.vtkScalarBarWidget)
+    data_field = DataFieldInfo()
+    color_range = data_field.color_range()
+    scene = Scene()
+    interactor = scene.create_render_window()[0]
+    legend = scene.get_legend(color_range, interactor)
+    assert isinstance(legend, vtk.vtkScalarBarWidget)
 
 
-# def test_actors_in_scene():
-#     """Test if all the dataset in a model are being added to the scene."""
+def test_actors_in_scene():
+    """Test if all the dataset in a model are being added to the scene."""
 
-#     file_path = r'./tests/assets/gridbased.hbjson'
-#     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
+    file_path = r'./tests/assets/gridbased.hbjson'
+    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
 
-#     # Test the number of non-empty datasets in the model
-#     non_empty_datasets = 0
-#     for dataset in model:
-#         if not dataset.is_empty:
-#             non_empty_datasets += 1
-#     assert non_empty_datasets == 6
+    # Test the number of non-empty datasets in the model
+    non_empty_datasets = 0
+    for dataset in model:
+        if not dataset.is_empty:
+            non_empty_datasets += 1
+    assert non_empty_datasets == 6
 
-#     # Test that all the non-empty datasets are being added to the scene
-#     scene = Scene(model=model)
-#     renderer = scene.create_render_window()[2]
-#     assert renderer.VisibleActorCount() == 6
+    # Test that all the non-empty datasets are being added to the scene
+    
+    actors = Actors(model=model)
+    scene = Scene(actors=actors)
+    renderer = scene.create_render_window()[2]
+    assert renderer.VisibleActorCount() == 6
 
 
 # def test_scene_camera():
