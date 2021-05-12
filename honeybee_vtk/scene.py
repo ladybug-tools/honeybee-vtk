@@ -85,8 +85,9 @@ class Scene(object):
                 )
         else:
             raise ValueError(
-                f'A list of vtk actors required. Intead got {val}.'
-            )
+                f'A list of vtk actors required. Instead got {val}. Make sure to use'
+                ' to_vtk method.'
+                )
 
     @property
     def cameras(self):
