@@ -5,6 +5,7 @@ from honeybee.typing import clean_and_id_rad_string
 from .model import Model, ModelDataSet, DisplayMode
 from .types import JoinedPolyData
 from ._helper import _check_tuple
+from ladybug_geometry.geometry3d.pointvector import Point3D
 
 
 class Actors:
@@ -159,15 +160,15 @@ class Actors:
         return actor
 
     def get_bounds(self):
-        """Get A list of points that represent the bounds of actors. Here, each point
-        is a tuple of x, y, and z coordinates."""
+        """Get A list of Ladybug Point3D objects that represent the bounds of actors.
+        Here, each point is a tuple of x, y, and z coordinates."""
 
         points = []
 
         for actor in self.to_vtk():
             bound = actor.GetBounds()
-            pt_min = (bound[0], bound[2], bound[4])
-            pt_max = (bound[1], bound[3], bound[5])
+            pt_min = Point3D(bound[0], bound[2], bound[4])
+            pt_max = Point3D(bound[1], bound[3], bound[5])
             min_max = [pt_min, pt_max]
             points.extend(min_max)
 
