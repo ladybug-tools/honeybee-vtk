@@ -39,6 +39,14 @@ class Camera:
         self.h_size = h_size
         self.v_size = v_size
         self.view_type = view_type
+        self._flat_view_directions = {
+                (0, 0, -1): [2, '+'],
+                (0, 0, 1): [2, '-'],
+                (0, 1, 0): [1, '+'],
+                (0, -1, 0): [1, '-'],
+                (1, 0, 0): [0, '+'],
+                (-1, 0, 0): [0, '-'],
+            }
 
     @property
     def identifier(self):
@@ -150,7 +158,19 @@ class Camera:
             raise ValueError(
                 f'Only "v" and "l" are accepted. Instead got {val}.'
             )
-    
+
+    @property
+    def flat_view_direction(self):
+        """This dictionary with, direction of camera : [index, +/-] structure.
+
+        Here, index referers to the index of the camera position. For example, in case
+        of (0, 0, -1), the camera will move along the Z axis. This means the z cordinate
+        of camera position (index = 2) will be modified to move camera through space.
+        The + and - indicates the direction on a particular axis. For example, [2, '+']
+        means the camera will move along Z axis and in +Z direction.
+        """
+        return self._flat_view_directions
+
     def to_vtk(self, bounds=None, camera_offset=None):
         """Get a vtk camera object."""
         camera = vtk.vtkCamera()
@@ -159,12 +179,12 @@ class Camera:
         if self._view_type == 'l':
             print(self._position, self._direction)
             # # Get bounds if flat a flat view is requested
-            if self._direction in [(0, 0, -1), (0, 0, 1), (1, 0, 0),
-                                   (-1, 0, 0), (0, 1, 0), (0, -1, 0)]:
+            if self._direction in self._flat_view_directions:
                 if not bounds:
                     raise ValueError(
-                        'Bounds of actors are required to generate one of the flat views.'
-                        ' Use get_bounds method of the Actors object to get these bounds.'
+                        'Bounds of actors are required to generate one of the flat'
+                        ' views. Use get_bounds method of the Actors object to get'
+                        ' these bounds.'
                     )
                 # get adjusted camera position
                 position = self.adjusted_position(bounds, camera_offset)
@@ -176,7 +196,7 @@ class Camera:
 
             # The location of camera in a 3D space
             camera.SetPosition(position)
-            
+
             # get a focal_point on the same axis as the camera position. This is
             # necessary for flat views
             fp = (position[0]+self._direction[0],
@@ -220,7 +240,7 @@ class Camera:
 
         # If the camera is looking in the Z direction
         if self._direction[2]:
-            nearest_point = self._nearest_point(bounds, 2)
+            nearest_point = self._nearest_point(bounds)
             nearest_point_z_cord = nearest_point.z
             if nearest_point_z_cord < 0 or nearest_point_z_cord == 0:
                 factor *= -1
@@ -230,7 +250,7 @@ class Camera:
 
         # If the camera is looking in the Y direction
         elif self._direction[1]:
-            nearest_point = self._nearest_point(bounds, 1)
+            nearest_point = self._nearest_point(bounds)
             nearest_point_y_cord = nearest_point.y
             if nearest_point_y_cord < 0:
                 factor *= -1
@@ -240,7 +260,7 @@ class Camera:
 
         # If the camera is looking in the x direction
         elif self._direction[0]:
-            nearest_point = self._nearest_point(bounds, 0)
+            nearest_point = self._nearest_point(bounds)
             nearest_point_x_cord = nearest_point.x
             if nearest_point_x_cord < 0:
                 factor *= -1
@@ -248,29 +268,27 @@ class Camera:
                                  self._position[2])
             return adjusted_position
 
-    def _nearest_point(self, bounds, index):
+    def _nearest_point(self, bounds):
 
-        # Create Ladybug Point object
-        position = Point3D(self._position[0], self._position[1], self._position[2])
+        # Check axis(index) and direction to find the nearest point
+        index, dir = self._flat_view_directions[self._direction]
 
-        # find points for which the requested coordinate is not zero
-        # points_to_check = [Point3D(point[0], point[1], point[2]) for point in
-        #                    bounds if point[index]]
+        # dictionary with cordinate(int):Point3D structure
+        cord_point = {point[index]: point for point in bounds}
 
-        # get distance of each point to the existing camera position
-        distance_to_position = [position.distance_to_point(point) for point
-                                in bounds]
+        # if z-axis
+        if index == 2:
+            if dir == '+':
+                nearest_point = cord_point[sorted(cord_point, reverse=True)[0]]
+            else:
+                nearest_point = cord_point[sorted(cord_point)[0]]
+        # if x-axis or y-axis
+        else:
+            if dir == '+':
+                nearest_point = cord_point[sorted(cord_point)[0]]
+            else:
+                nearest_point = cord_point[sorted(cord_point, reverse=True)[0]]
 
-        # dictionary with distance : Point3D structure
-        distance_point = dict(zip(distance_to_position, bounds))
-
-        # sort distances in ascending order
-        sorted_distances = [distance for distance in sorted(distance_point.keys())]
-
-        # get the nearest point which should be the first point in the list
-        nearest_point = distance_point[sorted_distances[0]]
-
-        print("nearest point", nearest_point)
         return nearest_point
 
 
