@@ -26,12 +26,12 @@ class Actors:
         self.model = model
         self.monochrome = monochrome
         self.monochrome_color = monochrome_color
-    
+
     @property
     def cast_id(self):
         """Id of actors."""
         return self._cast_id
-    
+
     @cast_id.setter
     def cast_id(self, val):
         if not val:
@@ -54,7 +54,7 @@ class Actors:
             raise ValueError(
                 f'A Model object created using honeybee-vtk required. Instead got {val}.'
             )
-    
+
     @property
     def monochrome(self):
         """Switch for monochrome colors."""
