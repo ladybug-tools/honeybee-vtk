@@ -25,7 +25,7 @@ class Scene(object):
     Vtk derives inspiration from a movie set in naming its objects. Imagine a scene
     being prepared at a movie set. The scene has a background. It has a few actors.
     And, there are a few cameras setup to capture the scene from different angles. A
-    scene is vtk is defined in the similar fashion. It has a background color, some
+    scene in vtk is defined in the similar fashion. It has a background color, some
     actors i.e. geometry objects from model, and a few cameras around the scene.
 
     Args:
@@ -36,8 +36,6 @@ class Scene(object):
             view from top.
 
     """
-    __slots__ = ('_background_color', '_cameras', '_actors')
-
     def __init__(self, background_color=None, actors=None, cameras=None) -> None:
 
         self.background_color = background_color
@@ -88,8 +86,7 @@ class Scene(object):
         """Set up vtk cameras.
 
         Note: The scene object has one camera with perspective view by default.
-        If you use this method to set a single camera or a list of cameras, or if you
-        use the add_camera method to add more cameras to the scene then the default
+        If you use this method to set a single camera or a list of cameras, the default
         camera will be removed.
 
         Args:
@@ -176,6 +173,7 @@ class Scene(object):
 
         # Assign camera to the renderer
         renderer.SetActiveCamera(camera.to_vtk())
+
         # return the objects - the order is from outside to inside
         return interactor, window, renderer
 
@@ -300,7 +298,7 @@ class Scene(object):
             window.SetSize(image_width, image_height)
             window.Render()
         else:
-            window.SetSize(width, height)
+            window.SetSize(image_width, image_height)
             window.Render()
             interactor.Initialize()
             interactor.Start()
