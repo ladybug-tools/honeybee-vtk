@@ -4,6 +4,7 @@ import vtk
 from honeybee.typing import clean_and_id_rad_string
 from ladybug_geometry.geometry3d.pointvector import Point3D
 from .actors import Actors
+from ._helper import _check_tuple
 
 
 class Camera:
@@ -30,7 +31,8 @@ class Camera:
         """
 
     def __init__(self, identifier=None, position=None, direction=None,
-                 up_vector=None, h_size=None, v_size=None, view_type=None, bounds=None):
+                 up_vector=None, h_size=None, v_size=None, view_type=None,
+                 bounds=None, camera_offset=None):
 
         self.identifier = identifier
         self.position = position
@@ -39,6 +41,8 @@ class Camera:
         self.h_size = h_size
         self.v_size = v_size
         self.view_type = view_type
+        self.bounds = bounds
+        self.camera_offset = camera_offset
         self._flat_view_directions = {
                 (0, 0, -1): [2, '+'],
                 (0, 0, 1): [2, '-'],
@@ -47,7 +51,7 @@ class Camera:
                 (1, 0, 0): [0, '+'],
                 (-1, 0, 0): [0, '-'],
             }
-
+    
     @property
     def identifier(self):
         """Name of the camera object."""
@@ -160,6 +164,39 @@ class Camera:
             )
 
     @property
+    def bounds(self):
+        """Bounds of actors to be used in parallel projection."""
+        return self._bounds
+
+    @bounds.setter
+    def bounds(self, val):
+        if not val:
+            self._bounds = None
+        elif isinstance(val, list) and _check_tuple(val, Point3D):
+            self._bounds = val
+        else:
+            raise ValueError(
+                f'A list of Point3D objects expected. Instead got {val}.'
+            )
+
+    @property
+    def camera_offset(self):
+        """Camera offset is a distance that will be kept between the outermost face of
+        the actors and adjusted camera position in parallel projection."""
+        return self._camera_offset
+
+    @camera_offset.setter
+    def camera_offset(self, val):
+        if not val:
+            self._camera_offset = 1
+        elif isinstance(val, int):
+            self._camera_offset = val
+        else:
+            raise ValueError(
+                f'An integer is expected. Instead got {val}.'
+            )
+
+    @property
     def flat_view_direction(self):
         """This dictionary with, direction of camera : [index, +/-] structure.
 
@@ -171,7 +208,7 @@ class Camera:
         """
         return self._flat_view_directions
 
-    def to_vtk(self, bounds=None, camera_offset=None):
+    def to_vtk(self):
         """Get a vtk camera object."""
         camera = vtk.vtkCamera()
 
@@ -180,14 +217,14 @@ class Camera:
             print(self._position, self._direction)
             # # Get bounds if flat a flat view is requested
             if self._direction in self._flat_view_directions:
-                if not bounds:
+                if not self._bounds:
                     raise ValueError(
                         'Bounds of actors are required to generate one of the flat'
                         ' views. Use get_bounds method of the Actors object to get'
                         ' these bounds.'
                     )
                 # get adjusted camera position
-                position = self.adjusted_position(bounds, camera_offset)
+                position = self._adjusted_position()
                 print("Adjusted position", position)
                 print(" ")
             else:
@@ -226,55 +263,51 @@ class Camera:
 
         return camera
 
-    def adjusted_position(self, bounds, camera_offset):
-
-        # setting camera offset from bounds of actors
-        if not camera_offset:
-            factor = 1
-        elif isinstance(camera_offset, int):
-            factor = camera_offset
-        else:
-            raise ValueError(
-                f'Camera offset accepts and integer value. Instead got {camera_offset}.'
-            )
+    def _adjusted_position(self):
 
         # If the camera is looking in the Z direction
         if self._direction[2]:
-            nearest_point = self._nearest_point(bounds)
+            nearest_point = self._nearest_point()
             nearest_point_z_cord = nearest_point.z
             if nearest_point_z_cord < 0 or nearest_point_z_cord == 0:
-                factor *= -1
+                offset = self._camera_offset * -1
+            else:
+                offset = self._camera_offset
             adjusted_position = (self._position[0], self._position[1],
-                                 nearest_point_z_cord + factor)
+                                 nearest_point_z_cord + offset)
             return adjusted_position
 
         # If the camera is looking in the Y direction
         elif self._direction[1]:
-            nearest_point = self._nearest_point(bounds)
+            nearest_point = self._nearest_point()
             nearest_point_y_cord = nearest_point.y
             if nearest_point_y_cord < 0:
-                factor *= -1
-            adjusted_position = (self._position[0], nearest_point_y_cord + factor,
+                offset = self._camera_offset * -1
+            else:
+                offset = self._camera_offset
+            adjusted_position = (self._position[0], nearest_point_y_cord + offset,
                                  self._position[2])
             return adjusted_position
 
         # If the camera is looking in the x direction
         elif self._direction[0]:
-            nearest_point = self._nearest_point(bounds)
+            nearest_point = self._nearest_point()
             nearest_point_x_cord = nearest_point.x
             if nearest_point_x_cord < 0:
-                factor *= -1
-            adjusted_position = (nearest_point_x_cord + factor, self._position[1],
+                offset = self._camera_offset * -1
+            else:
+                offset = self._camera_offset
+            adjusted_position = (nearest_point_x_cord + offset, self._position[1],
                                  self._position[2])
             return adjusted_position
 
-    def _nearest_point(self, bounds):
+    def _nearest_point(self):
 
         # Check axis(index) and direction to find the nearest point
         index, dir = self._flat_view_directions[self._direction]
 
         # dictionary with cordinate(int):Point3D structure
-        cord_point = {point[index]: point for point in bounds}
+        cord_point = {point[index]: point for point in self._bounds}
 
         # if z-axis
         if index == 2:
@@ -314,4 +347,5 @@ class Camera:
                     up_vector=view.up_vector.value,
                     h_size=view.h_size.value,
                     v_size=view.v_size.value,
-                    view_type=view.type.value).to_vtk(bounds) for view in model.views]
+                    view_type=view.type.value,
+                    bounds=bounds) for view in model.views]
