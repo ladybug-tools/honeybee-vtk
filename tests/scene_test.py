@@ -35,7 +35,7 @@ def test_write_gltf():
     model.update_display_mode(DisplayMode.Shaded)
 
     actors = Actors("gltf", model)
-    scene = Scene(background_color=(0,0,0), actors=actors.to_vtk())
+    scene = Scene(background_color=(0,0,0), actors=actors)
     window, renderer = scene.create_render_window()[1:]
 
     if os.path.isdir(target_folder):
@@ -63,13 +63,13 @@ def test_class_initialization():
     """Test if the attributes of the class are set correctly."""
 
     scene = Scene(background_color=(255, 255, 255))
-  
+
     # Check that decimal values not allowed in background color
     with pytest.raises(ValueError):
         scene = Scene(background_color=(123.24, 23, 255))
 
-    # Check a vtk camera object is attached by default
-    assert isinstance(scene.cameras[0], vtk.vtkCamera)
+    # Check a Camera object is attached by default
+    assert isinstance(scene.cameras[0], Camera)
 
 
 def test_legend():
@@ -98,7 +98,7 @@ def test_actors_in_scene():
 
     # Test that all the non-empty datasets are being added to the scene
 
-    actors = Actors(model=model).to_vtk()
+    actors = Actors(model=model)
     scene = Scene(actors=actors)
     renderer = scene.create_render_window()[2]
     assert renderer.VisibleActorCount() == 6
@@ -109,7 +109,7 @@ def test_scene_camera():
 
     camera = Camera(position=(-50.28, -30.32, 58.64), direction=(0.59, 0.44, -0.67),
                     up_vector=(0.53, 0.40, 0.74), h_size=52.90)
-    scene = Scene(background_color=(255, 255, 255), cameras=camera.to_vtk())
+    scene = Scene(background_color=(255, 255, 255), cameras=camera)
     assert len(scene.cameras) == 1
 
 
@@ -144,7 +144,7 @@ def test_add_cameras():
     scene = Scene(background_color=(255, 255, 255))
 
     # Adding a list of camera objects
-    cameras.append(camera.to_vtk())
+    cameras.append(camera)
     scene.add_cameras(cameras)
     assert len(scene.cameras) == 3
 
@@ -156,7 +156,7 @@ def test_add_camera():
                     up_vector=(0.53, 0.40, 0.74), h_size=52.90)
     scene = Scene(background_color=(255, 255, 255))
 
-    scene.add_cameras(camera.to_vtk())
+    scene.add_cameras(camera)
     assert len(scene.cameras) == 2
 
 
@@ -187,14 +187,14 @@ def test_export_image():
     color_range = model.sensor_grids.active_field_info.color_range()
 
     # actors
-    actors = Actors(model=model).to_vtk()
+    actors = Actors(model=model)
 
     # Initialize a scene
     scene = Scene(background_color=(255, 255, 255), actors=actors)
 
     # Create a camera Parallel projection camera using the constructor
     camera = Camera(position=(-50.28, -30.32, 58.64), direction=(0.59, 0.44, -0.67),
-                    up_vector=(0.53, 0.40, 0.74), h_size=52.90, view_type='l').to_vtk()
+                    up_vector=(0.53, 0.40, 0.74), h_size=52.90, view_type='l')
 
     # Create a rendering window using the camera defined above
     interactor, window = scene.create_render_window(camera=camera)[0:2]
@@ -239,14 +239,9 @@ def test_export_images():
 
     # actors
     actors = Actors(model=model)
-    actors_list = actors.to_vtk()
-
-    # bounds of actors
-    bounds = actors.get_bounds()
 
     # Initialize a scene
-    scene = Scene(actors=actors_list, background_color=(255, 255, 255),
-                  monochrome=False, monochrome_color=(0.0, 0.0, 0.0))
+    scene = Scene(actors=actors, background_color=(255, 255, 255))
 
     # A camera setup using the constructor
     camera = Camera(position=(-50.28, -30.32, 58.64), direction=(0.59, 0.44, -0.67),
@@ -256,7 +251,7 @@ def test_export_images():
     cameras = Camera.from_model(model)
 
     # Gather all the cameras
-    cameras.append(camera.to_vtk(bounds))
+    cameras.append(camera)
 
     # Add all the cameras to the scene
     scene.add_cameras(cameras)
