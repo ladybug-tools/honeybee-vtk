@@ -2,14 +2,11 @@
 
 import pathlib
 import enum
-from typing import Tuple
-
 import vtk
-
-from .types import JoinedPolyData
-from .model import Model, ModelDataSet, DisplayMode
+from typing import Tuple
 from ._helper import _check_tuple
 from .camera import Camera
+from .actors import Actors
 
 
 class ImageTypes(enum.Enum):
@@ -34,15 +31,14 @@ class Scene(object):
     Args:
         background_color: A tuple of three integers that represent RGB values of the
             color that you'd like to set as the background color. Defaults to gray.
-        actors: A list of vtk actors.
-        cameras: A list of vtk camera objects. Defaults to one camera that shows the
-            scene from top.
-        
-    """
-    __slots__ = ('_background_color', '_cameras','_actors')
+        actors: An Actors object.
+        cameras: A list of Camera objects. Defaults to one Camera that shows the
+            view from top.
 
-    def __init__(self, background_color=None, actors=None, cameras=None, monochrome=None,
-                 monochrome_color=None) -> None:
+    """
+    __slots__ = ('_background_color', '_cameras', '_actors')
+
+    def __init__(self, background_color=None, actors=None, cameras=None) -> None:
 
         self.background_color = background_color
         self.actors = actors
@@ -75,18 +71,11 @@ class Scene(object):
     def actors(self, val):
         if not val:
             self._actors = None
-        elif isinstance(val, list):
-            check = [isinstance(actor, vtk.vtkActor) for actor in val]
-            if check.count(True) == len(val):
-                self._actors = val
-            else:
-                raise ValueError(
-                    'All items in the list must be vtkActor type.'
-                )
+        elif isinstance(val, Actors):
+            self._actors = val
         else:
             raise ValueError(
-                f'A list of vtk actors required. Instead got {val}. Make sure to use'
-                ' to_vtk method.'
+                f'An Actors object expected. Instead got {val}.'
                 )
 
     @property
@@ -96,44 +85,43 @@ class Scene(object):
 
     @cameras.setter
     def cameras(self, val):
-        """Set up cameras
+        """Set up vtk cameras.
 
         Note: The scene object has one camera with perspective view by default.
-        If you use this method to set a single camera or a list of cameras then
-        the default camera will be removed. If you wish to preserve the default
-        camera then initialize a Scene object without setting cameras and then
-        use add_cameras method.
+        If you use this method to set a single camera or a list of cameras, or if you
+        use the add_camera method to add more cameras to the scene then the default
+        camera will be removed.
 
         Args:
-            val: A single vtk camera object or a list of vtk camera objects.
+            val: A single Camera object or a list of Camera objects.
         """
-        if isinstance(val, list) and _check_tuple(val, vtk.vtkCamera):
+        if isinstance(val, list) and _check_tuple(val, Camera):
             self._cameras = val
-        elif isinstance(val, vtk.vtkCamera):
+        elif isinstance(val, Camera):
             self._cameras = [val]
         elif not val:
             camera = Camera()
-            self._cameras = [camera.to_vtk()]
+            self._cameras = [camera]
         else:
             raise ValueError(
-                'Either a list of vtk camera objects or a vtk camera object is expected.'
-                f' Instead got {val}. Make sure to use to_vtk method.'
+                'Either a list of Camera objects or a Camera object is expected.'
+                f' Instead got {val}.'
             )
 
     def add_cameras(self, val):
-        """Add vtk camera objects to a scene object.
+        """Add Camera objects to a scene object.
 
         Args:
-            val: Either a list of vtk camera objects or a single vtk camera object.
+            val: Either a list of Camera objects or a single Camera object.
         """
-        if isinstance(val, list) and _check_tuple(val, vtk.vtkCamera):
+        if isinstance(val, list) and _check_tuple(val, Camera):
             self._cameras.extend(val)
-        elif isinstance(val, vtk.vtkCamera):
+        elif isinstance(val, Camera):
             self._cameras.append(val)
         else:
             raise ValueError(
-                'Either a list of vtk camera objects or a vtk camera object is expected.'
-                f' Instead got {val}. Make sure to use to_vtk method.'
+                'Either a list of Camera objects or a Camera object is expected.'
+                f' Instead got {val}.'
             )
 
     def create_render_window(self, camera=None) \
@@ -146,7 +134,7 @@ class Scene(object):
         A render is added to a window and then the window is set inside the interactor.
 
         Args:
-            camera: A vtk camera object.
+            camera: A Camera object.
 
         Returns:
             A tuple of following;
@@ -159,21 +147,19 @@ class Scene(object):
         # in the scene
         if not camera:
             camera = self._cameras[0]
-        elif isinstance(camera, vtk.vtkCamera):
+        elif isinstance(camera, Camera):
             pass
         else:
             raise ValueError(
-                f'The camera must be a vtk camera object. Instead got {camera}. Make'
-                ' sure to use the to_vtk method once a camera is created.'
+                f'The camera must be a Camera object. Instead got {camera}.'
             )
 
         # Setting renderer, render window, and interactor
         renderer = vtk.vtkRenderer()
-        
 
         # Add actors to the window if model(actor) has arrived at the scene
         if self._actors:
-            for actor in self._actors:
+            for actor in self._actors.to_vtk():
                 renderer.AddActor(actor)
 
         # add renderer to rendering window
@@ -189,7 +175,7 @@ class Scene(object):
         renderer.TwoSidedLightingOn()
 
         # Assign camera to the renderer
-        renderer.SetActiveCamera(camera)
+        renderer.SetActiveCamera(camera.to_vtk())
         # return the objects - the order is from outside to inside
         return interactor, window, renderer
 
