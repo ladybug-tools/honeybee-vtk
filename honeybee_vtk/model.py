@@ -55,7 +55,7 @@ class Model(object):
     def __init__(
         self, model: HBModel,
         load_grids: SensorGridOptions = SensorGridOptions.Ignore,
-        load_views: bool = False
+        load_views: bool = True
             ) -> None:
         """Instantiate a honeybee-vtk model object.
 
@@ -66,7 +66,7 @@ class Model(object):
                 honeybee-vtk model.
             load_views: A boolean. If set to True, radiance views from the hbjson will
                 be loaded which can be used later to export images of the same views.
-                Defaults to False.
+                Defaults to True.
         """
         super().__init__()
         # apertures and orphaned apertures
@@ -93,7 +93,7 @@ class Model(object):
     @classmethod
     def from_hbjson(cls, hbjson: str,
                     load_grids: SensorGridOptions = SensorGridOptions.Ignore,
-                    load_views: bool = False):
+                    load_views: bool = True):
         """Translate hbjson to a honeybee-vtk model.
 
         Args:
@@ -103,7 +103,7 @@ class Model(object):
                 honeybee-vtk model.
             load_views: A boolean. If set to True, radiance views from the hbjson will
                 be loaded which can be used later to export images of the same views.
-                Defaults to False.
+                Defaults to True.
 
         Returns:
             A honeybee-vtk model object.
