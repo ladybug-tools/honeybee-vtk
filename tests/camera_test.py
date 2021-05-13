@@ -39,16 +39,10 @@ def test_from_model():
                               load_views=True)
 
     cameras = Camera.from_model(model)
-    cameras_check = [isinstance(camera, vtk.vtkCamera) for camera in cameras]
+    cameras_check = [isinstance(camera, Camera) for camera in cameras]
     assert cameras_check.count(True) == len(cameras)
 
 
-def test_adjusted_camera():
-    """Test creation of adjusted camera."""
-    file_path = r'./tests/assets/gridbased.hbjson'
-    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
-    bounds = Actors(model=model).get_bounds()
-    adjusted_camera = Camera().adjusted_position(bounds)
 
 
     
