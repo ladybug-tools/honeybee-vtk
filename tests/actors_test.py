@@ -28,7 +28,7 @@ def test_monochrome():
     actors.set_to_monochrome(True)
     assert actors.monochrome
 
-    with pytest.raises(ValueError):
+    with pytest.raises(AssertionError):
         actors.set_to_monochrome(True, (255, 123, 33))
 
     actors.set_to_monochrome(True, (0.34, 0.44, 0.55))
