@@ -12,7 +12,7 @@ def _check_tuple(val, val_type, max_val=None):
             less than this number.
 
     Returns:
-        A boolean value if True or None.
+        A boolean value if True.
     """
     # Check if all values in tuple are of expected object type
     item_check = [isinstance(v, val_type) for v in val]
@@ -23,6 +23,12 @@ def _check_tuple(val, val_type, max_val=None):
     else:
         val_check = [True] * len(val)
 
-    # final check
-    if item_check.count(True) == len(val) and val_check.count(True) == len(val):
-        return True
+    assert item_check.count(True) == len(val), (
+        f'The values in tuple must be {val_type} type.'
+        )
+
+    assert val_check.count(True) == len(val), (
+        f'The values in tuple must be less than {max_val}.'
+        )
+
+    return True
