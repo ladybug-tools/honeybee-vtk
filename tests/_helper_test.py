@@ -20,5 +20,6 @@ def test_check_tuple():
     assert _check_tuple(val, int, max_val=4)
 
     val = (0.1, 0.2, 0.3)
-    
+
     assert _check_tuple(val, float, 1)
+    assert _check_tuple(val, float)
