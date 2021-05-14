@@ -162,6 +162,8 @@ class Camera(View):
         nearest_point = self._outermost_point()
         cord = nearest_point[index]
 
+        # If the cordinate we're looking for is negative the offset needs to be applied
+        # in negative as well
         if cord <= 0:
             offset = self._camera_offset * -1
         else:
