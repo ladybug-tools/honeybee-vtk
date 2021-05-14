@@ -65,7 +65,7 @@ def test_class_initialization():
     scene = Scene(background_color=(255, 255, 255))
 
     # Check that decimal values not allowed in background color
-    with pytest.raises(ValueError):
+    with pytest.raises(AssertionError):
         scene = Scene(background_color=(123.24, 23, 255))
 
     # Check a Camera object is attached by default
