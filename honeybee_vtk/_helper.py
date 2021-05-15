@@ -23,12 +23,7 @@ def _check_tuple(val, val_type, max_val=None):
     else:
         val_check = [True] * len(val)
 
-    assert item_check.count(True) == len(val), (
-        f'The values in tuple must be {val_type} type.'
-        )
-
-    assert val_check.count(True) == len(val), (
-        f'The values in tuple must be less than {max_val}.'
-        )
+    assert all(item_check), f'The values in tuple must be {val_type} type.'
+    assert all(val_check), f'The values in tuple must be less than {max_val}.'
 
     return True
