@@ -6,7 +6,7 @@ import vtk
 from typing import Tuple
 from ._helper import _check_tuple
 from .camera import Camera
-from .actors import Actors
+from .actor import Actor
 
 
 class ImageTypes(enum.Enum):
@@ -31,7 +31,7 @@ class Scene(object):
     Args:
         background_color: A tuple of three integers that represent RGB values of the
             color that you'd like to set as the background color. Defaults to gray.
-        actors: An Actors object.
+        actors: A list of Actor objects. Defaults to None.
         cameras: A list of Camera objects. Defaults to one Camera that shows the
             view from top.
 
@@ -62,18 +62,21 @@ class Scene(object):
 
     @property
     def actors(self):
-        """A list of vtk actors to be added to the scene."""
-        return self._model
+        """A dictionary of vtk actor name: vtk actor structure."""
+        return self._actors
 
     @actors.setter
     def actors(self, val):
         if not val:
             self._actors = None
-        elif isinstance(val, Actors):
-            self._actors = val
+        elif isinstance(val, list) and _check_tuple(val, Actor):
+            self._actors = {actor.name: actor for actor in val}
+        elif isinstance(val, Actor):
+            self._actors = {val.name: val}
         else:
             raise ValueError(
-                f'An Actors object expected. Instead got {val}.'
+                'Either a list of Actor objects or an Actor object is expected.'
+                f' Instead got {val}.'
                 )
 
     @property
@@ -106,7 +109,7 @@ class Scene(object):
             )
 
     def add_cameras(self, val):
-        """Add Camera objects to a scene object.
+        """Add vtk Camera objects to a Scene.
 
         Args:
             val: Either a list of Camera objects or a single Camera object.
@@ -120,6 +123,31 @@ class Scene(object):
                 'Either a list of Camera objects or a Camera object is expected.'
                 f' Instead got {val}.'
             )
+
+    def add_actors(self, val):
+        """add vtk Actor objects to a Scene.
+
+        Args:
+            val: Either a list of Actors objects or a single Actor object.
+        """
+        if isinstance(val, list) and _check_tuple(val, Actor):
+            self._actors.extend(val)
+        elif isinstance(val, Actor):
+            self._actors.append(val)
+        else:
+            raise ValueError(
+                'Either a list of Actor objects or an Actor object is expected.'
+                f' Instead got {val}.'
+            )
+
+    def remove_actor(self, name):
+        if name in ['Aperture', 'Door', 'Shade', 'Wall', 'Floor', 'RoofCeiling',
+                    'AirBoundary', 'Grid']:
+            try:
+                del self._actors[name]
+            except KeyError:
+                raise KeyError(
+                    f'{name} is not found in the actors attached to this scene.')
 
     def create_render_window(self, camera=None) \
         -> Tuple[
@@ -156,8 +184,8 @@ class Scene(object):
 
         # Add actors to the window if model(actor) has arrived at the scene
         if self._actors:
-            for actor in self._actors.to_vtk():
-                renderer.AddActor(actor)
+            for actor in self._actors.values():
+                renderer.AddActor(actor.to_vtk())
 
         # add renderer to rendering window
         window = vtk.vtkRenderWindow()
@@ -172,7 +200,11 @@ class Scene(object):
         renderer.TwoSidedLightingOn()
 
         # Assign camera to the renderer
-        renderer.SetActiveCamera(camera.to_vtk())
+        if camera.type == 'v':
+            renderer.SetActiveCamera(camera.to_vtk())
+        else:
+            bounds = Actor.get_bounds(self.actors.values())
+            renderer.SetActiveCamera(camera.to_vtk(bounds=bounds))
 
         # return the objects - the order is from outside to inside
         return interactor, window, renderer
