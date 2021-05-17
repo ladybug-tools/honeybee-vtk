@@ -2,9 +2,6 @@
 
 import vtk
 from honeybee_radiance.view import View
-from ladybug_geometry.geometry3d.pointvector import Point3D
-from .actors import Actors
-from ._helper import _check_tuple
 
 
 class Camera(View):
@@ -33,15 +30,12 @@ class Camera(View):
         """
 
     def __init__(self, identifier='camera', position=(0, 0, 50), direction=(0, 0, -1),
-                 up_vector=(0, 1, 0), h_size=60, v_size=60, type='v', bounds=None,
-                 camera_offset=None):
+                 up_vector=(0, 1, 0), h_size=60, v_size=60, type='v'):
 
         super().__init__(
             identifier=identifier, position=position, direction=direction,
             up_vector=up_vector, h_size=h_size, v_size=v_size, type=type)
 
-        self.bounds = bounds
-        self.camera_offset = camera_offset
         self._flat_view_directions = {
                 (0, 0, -1): [2, '+'],
                 (0, 0, 1): [2, '-'],
@@ -50,39 +44,6 @@ class Camera(View):
                 (1, 0, 0): [0, '+'],
                 (-1, 0, 0): [0, '-'],
             }
-
-    @property
-    def bounds(self):
-        """Bounds of actors to be used in parallel projection."""
-        return self._bounds
-
-    @bounds.setter
-    def bounds(self, val):
-        if not val:
-            self._bounds = None
-        elif isinstance(val, list) and _check_tuple(val, Point3D):
-            self._bounds = val
-        else:
-            raise ValueError(
-                f'A list of Point3D objects expected. Instead got {val}.'
-            )
-
-    @property
-    def camera_offset(self):
-        """Camera offset is a distance that will be kept between the outermost face of
-        the actors and adjusted camera position in parallel projection."""
-        return self._camera_offset
-
-    @camera_offset.setter
-    def camera_offset(self, val):
-        if not val:
-            self._camera_offset = 1
-        elif isinstance(val, int):
-            self._camera_offset = val
-        else:
-            raise ValueError(
-                f'An integer is expected. Instead got {val}.'
-            )
 
     @property
     def flat_view_direction(self):
@@ -96,7 +57,7 @@ class Camera(View):
         """
         return self._flat_view_directions
 
-    def to_vtk(self):
+    def to_vtk(self, bounds=None):
         """Get a vtk camera object."""
         camera = vtk.vtkCamera()
 
@@ -105,14 +66,14 @@ class Camera(View):
 
             # If a flat view in Parallel projection is requested
             if self._direction.value in self._flat_view_directions:
-                if not self._bounds:
+                if not bounds:
                     raise ValueError(
                         'Bounds of actors are required to generate one of the flat'
                         ' views. Use get_bounds method of the Actors object to get'
                         ' these bounds.'
                     )
                 # get adjusted camera position
-                position = self._adjusted_position()
+                position = self._adjusted_position(bounds)
 
             # If only parallel projection is requested
             else:
@@ -150,7 +111,7 @@ class Camera(View):
 
         return camera
 
-    def _adjusted_position(self):
+    def _adjusted_position(self, bounds):
         """Get adjusted camera position.
 
         This method helps bring camera close to the model within an offset distance.
@@ -159,15 +120,16 @@ class Camera(View):
             Adjusted camera position in the form of a tuple with three decimal values.
         """
         index = self._flat_view_directions[self._direction.value][0]
-        nearest_point = self._outermost_point()
+        nearest_point = self._outermost_point(bounds)
         cord = nearest_point[index]
+        min_camera_offset = 1
 
         # If the cordinate we're looking for is negative the offset needs to be applied
         # in negative as well
         if cord <= 0:
-            offset = self._camera_offset * -1
+            offset = min_camera_offset * -1
         else:
-            offset = self._camera_offset
+            offset = min_camera_offset
 
         # if the camera needs to move along x-axis
         if index == 0:
@@ -186,7 +148,7 @@ class Camera(View):
 
         return adjusted_position
 
-    def _outermost_point(self):
+    def _outermost_point(self, bounds):
         """Find the outermost point in a Model.
 
         This method looks at the bounds of the actors and finds the outermost point
@@ -202,7 +164,7 @@ class Camera(View):
         index, dir = self._flat_view_directions[self._direction.value]
 
         # dictionary with cordinate(int):Point3D structure
-        cord_point = {point[index]: point for point in self._bounds}
+        cord_point = {point[index]: point for point in bounds}
 
         # if z-axis
         if index == 2:
@@ -219,7 +181,6 @@ class Camera(View):
 
         return outermost_point
 
-
     @classmethod
     def from_model(cls, model):
         """Create a list of Camera objects from the radiance views in a Model object.
@@ -235,12 +196,9 @@ class Camera(View):
                 'No radiance views were found in the hbjson file.'
             )
         else:
-            bounds = Actors(model=model).get_bounds()
-
             return [cls(position=view.position,
                     direction=view.direction,
                     up_vector=view.up_vector,
                     h_size=view.h_size,
                     v_size=view.v_size,
-                    type=view.type,
-                    bounds=bounds) for view in model.views]
+                    type=view.type) for view in model.views]
