@@ -2,7 +2,7 @@
 
 import pytest
 import vtk
-from honeybee_vtk.actors import Actors
+from honeybee_vtk.actor import Actor
 from honeybee_vtk.model import Model
 from ladybug_geometry.geometry3d.pointvector import Point3D
 
@@ -11,47 +11,42 @@ def test_class_initialization():
     """Test default properties of a Actors object."""
 
     with pytest.raises(TypeError):
-        actors = Actors()
+        actors = Actor()
 
     file_path = r'./tests/assets/gridbased.hbjson'
     model = Model.from_hbjson(file_path)
-    actors = Actors(model)
-    assert not actors.monochrome
-    assert actors.monochrome_color == (0.54, 0.54, 0.54)
+    actors = Actor.from_model(model)
+    for actor in actors:
+        assert not actor.monochrome_color
 
 
 def test_monochrome():
     """Test setting actors to monochrome colors."""
     file_path = r'./tests/assets/gridbased.hbjson'
     model = Model.from_hbjson(file_path)
-    actors = Actors(model)
-    actors.set_to_monochrome(True)
-    assert actors.monochrome
-
+    actors = Actor.from_model(model)
     with pytest.raises(AssertionError):
-        actors.set_to_monochrome(True, (255, 123, 33))
+        actors[0].get_monochrome((255, 123, 33))
 
-    actors.set_to_monochrome(True, (0.34, 0.44, 0.55))
-    assert actors.monochrome_color == (0.34, 0.44, 0.55)
+    actors[0].get_monochrome((0.34, 0.44, 0.55))
+    assert actors[0].monochrome_color == (0.34, 0.44, 0.55)
 
 
 def test_to_vtk():
     """Test the to_vtk method."""
     file_path = r'./tests/assets/gridbased.hbjson'
     model = Model.from_hbjson(file_path)
-    actors = Actors(model)
-    vtk_actors = actors.to_vtk()
-    assert isinstance(vtk_actors, list)
-    check = [isinstance(actor, vtk.vtkActor) for actor in vtk_actors]
-    assert check.count(True) == len(vtk_actors)
+    actors = Actor.from_model(model)
+    for actor in actors:
+        assert isinstance(actor.to_vtk(), vtk.vtkActor)
 
 
 def test_bounds():
     """Test bounds."""
     file_path = r'./tests/assets/gridbased.hbjson'
     model = Model.from_hbjson(file_path)
-    actors = Actors(model)
-    bounds = actors.get_bounds()
+    actors = Actor.from_model(model)
+    bounds = Actor.get_bounds(actors)
     assert isinstance(bounds, list)
     check = [isinstance(point, Point3D) for point in bounds]
     assert check.count(True) == len(bounds)
