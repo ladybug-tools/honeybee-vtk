@@ -6,7 +6,7 @@ from ladybug_geometry.geometry3d.pointvector import Point3D
 from honeybee_vtk.camera import Camera
 from honeybee_vtk.model import Model
 from honeybee_vtk.vtkjs.schema import SensorGridOptions
-from honeybee_vtk.actors import Actors
+from honeybee_vtk.actor import Actor
 
 
 def test_to_vtk():
@@ -21,8 +21,6 @@ def test_to_vtk():
     assert camera.h_size.value == 60
     assert camera.v_size.value == 60
     assert camera.type.value == 'v'
-    assert not camera.bounds
-    assert camera.camera_offset == 1
     assert camera.flat_view_direction[(0, 0, -1)] == [2, '+']
     assert camera.flat_view_direction[(0, 0, 1)] == [2, '-']
     assert camera.flat_view_direction[(0, 1, 0)] == [1, '+']
@@ -57,28 +55,11 @@ def test_assign_bounds():
     """Test bounds assignment."""
     file_path = r'./tests/assets/viewbased.hbjson'
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
-    camera = Camera()
 
-    with pytest.raises(ValueError):
-        camera.bounds = model
-
-    actors = Actors(model)
-    bounds = actors.get_bounds()
-    camera.bounds = bounds
-    assert isinstance(camera.bounds, list)
+    actors = Actor.from_model(model)
+    bounds = Actor.get_bounds(actors)
     check = [isinstance(point, Point3D) for point in bounds]
     assert check.count(True) == len(bounds)
-
-
-def test_assign_camera_offset():
-    """Test assigning camera offset."""
-    camera = Camera()
-
-    with pytest.raises(ValueError):
-        camera.camera_offset = 2.3
-
-    camera.camera_offset = 3
-    assert camera.camera_offset == 3
 
 
 def test_adjustable_postion():
@@ -89,7 +70,6 @@ def test_adjustable_postion():
               Point3D(-8.00, -7.00, 0.00), Point3D(12.00, 20.00, 15.00),
               Point3D(-8.00, -4.00, 0.00), Point3D(13.00, 9.00, 0.00),
               Point3D(-8.00, -4.00, 3.00), Point3D(13.00, 9.00, 5.00)]
-    camera = Camera(position=(0, 0, 5000), direction=(0, 0, -1), bounds=bounds)
-    assert camera._outermost_point() == Point3D(12.00, 20.00, 15.00)
-    assert camera._adjusted_position() == (0, 0, 16)
-
+    camera = Camera(position=(0, 0, 5000), direction=(0, 0, -1))
+    assert camera._outermost_point(bounds=bounds) == Point3D(12.00, 20.00, 15.00)
+    assert camera._adjusted_position(bounds=bounds) == (0, 0, 16)
