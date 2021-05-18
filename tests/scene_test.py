@@ -126,11 +126,10 @@ def test_scene_cameras():
     """Test a scene constructed with a list of camera objects."""
 
     file_path = r'./tests/assets/viewbased.hbjson'
-    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh,
-                              load_views=True)
-    cameras = Camera.from_model(model)
+    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
+
     scene = Scene(background_color=(255, 255, 255))
-    scene.add_cameras(cameras)
+    scene.add_cameras(model.cameras)
     assert len(scene.cameras) == 1
 
 
@@ -138,18 +137,11 @@ def test_add_cameras():
     """Test adding a list of cameras."""
 
     file_path = r'./tests/assets/viewbased.hbjson'
-    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh,
-                              load_views=False)
-    # Check is valuerror is raised in case the radiance views are not loaded on model
-    with pytest.raises(ValueError):
-        cameras = Camera.from_model(model)
 
     # Check the number of cameras extracted hbjson
-    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh,
-                              load_views=True)
-    cameras = Camera.from_model(model)
-    assert len(cameras) == 1
-
+    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
+    assert len(model.cameras) == 1
+    cameras = model.cameras
     camera = Camera(position=(-50.28, -30.32, 58.64), direction=(0.59, 0.44, -0.67),
                     up_vector=(0.53, 0.40, 0.74), h_size=52.90)
 
@@ -180,8 +172,7 @@ def test_export_image():
     results_folder = r'./tests/assets/df_results'
     target_folder = r'./tests/assets/temp1'
 
-    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh,
-                              load_views=True)
+    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
 
     daylight_factor = []
     for grid in model.sensor_grids.data:
@@ -232,8 +223,7 @@ def test_export_images():
     results_folder = r'./tests/assets/df_results'
     target_folder = r'./tests/assets/temp'
 
-    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh,
-                              load_views=True)
+    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
 
     daylight_factor = []
     for grid in model.sensor_grids.data:
@@ -259,7 +249,7 @@ def test_export_images():
                     up_vector=(0.53, 0.40, 0.74), h_size=52.90)
 
     # Cameras extracted from hbjson
-    cameras = Camera.from_model(model)
+    cameras = model.cameras
 
     # Gather all the cameras
     cameras.append(camera)
