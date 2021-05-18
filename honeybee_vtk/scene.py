@@ -1,10 +1,12 @@
 """A VTK scene."""
 
+from __future__ import annotations
 import pathlib
 import enum
 import vtk
-from typing import Tuple
-from ._helper import _check_tuple
+import warnings
+from typing import List, Tuple, Dict, Union
+from ._helper import _validate_input
 from .camera import Camera
 from .actor import Actor
 
@@ -31,28 +33,23 @@ class Scene(object):
     Args:
         background_color: A tuple of three integers that represent RGB values of the
             color that you'd like to set as the background color. Defaults to gray.
-        actors: A list of Actor objects. Defaults to None.
-        cameras: A list of Camera objects. Defaults to one Camera that shows the
-            view from top.
-
     """
-    def __init__(self, background_color=None, actors=None, cameras=None) -> None:
-
+    def __init__(self, background_color: Tuple[int, int, int] = None) -> None:
         self.background_color = background_color
-        self.actors = actors
-        self.cameras = cameras
+        self._actors = {}
+        self._cameras = []
 
     @property
-    def background_color(self):
+    def background_color(self) -> Tuple[int, int, int]:
         """background_color for the scene."""
         return self._background_color
 
     @background_color.setter
-    def background_color(self, val):
+    def background_color(self, val: Tuple[int, int, int]) -> None:
         if not val:
             colors = vtk.vtkNamedColors()
             self._background_color = colors.GetColor3d("SlateGray")
-        elif _check_tuple(val, int):
+        elif _validate_input(val, int):
             self._background_color = val
         else:
             raise ValueError(
@@ -61,60 +58,22 @@ class Scene(object):
             )
 
     @property
-    def actors(self):
+    def actors(self) -> Dict[str, Actor]:
         """A dictionary of vtk actor name: vtk actor structure."""
         return self._actors
 
-    @actors.setter
-    def actors(self, val):
-        if not val:
-            self._actors = None
-        elif isinstance(val, list) and _check_tuple(val, Actor):
-            self._actors = {actor.name: actor for actor in val}
-        elif isinstance(val, Actor):
-            self._actors = {val.name: val}
-        else:
-            raise ValueError(
-                'Either a list of Actor objects or an Actor object is expected.'
-                f' Instead got {val}.'
-                )
-
     @property
-    def cameras(self):
+    def cameras(self) -> List[Camera]:
         """A list of vtk cameras setup in the scene."""
         return self._cameras
 
-    @cameras.setter
-    def cameras(self, val):
-        """Set up vtk cameras.
-
-        Note: The scene object has one camera with perspective view by default.
-        If you use this method to set a single camera or a list of cameras, the default
-        camera will be removed.
-
-        Args:
-            val: A single Camera object or a list of Camera objects.
-        """
-        if isinstance(val, list) and _check_tuple(val, Camera):
-            self._cameras = val
-        elif isinstance(val, Camera):
-            self._cameras = [val]
-        elif not val:
-            camera = Camera()
-            self._cameras = [camera]
-        else:
-            raise ValueError(
-                'Either a list of Camera objects or a Camera object is expected.'
-                f' Instead got {val}.'
-            )
-
-    def add_cameras(self, val):
+    def add_cameras(self, val: Union[Camera, List[Camera]]) -> None:
         """Add vtk Camera objects to a Scene.
 
         Args:
             val: Either a list of Camera objects or a single Camera object.
         """
-        if isinstance(val, list) and _check_tuple(val, Camera):
+        if isinstance(val, list) and _validate_input(val, Camera):
             self._cameras.extend(val)
         elif isinstance(val, Camera):
             self._cameras.append(val)
@@ -124,23 +83,24 @@ class Scene(object):
                 f' Instead got {val}.'
             )
 
-    def add_actors(self, val):
+    def add_actors(self, val: Union[Actor, List[Actor]]) -> None:
         """add vtk Actor objects to a Scene.
 
         Args:
             val: Either a list of Actors objects or a single Actor object.
         """
-        if isinstance(val, list) and _check_tuple(val, Actor):
-            self._actors.extend(val)
+        if isinstance(val, list) and _validate_input(val, Actor):
+            for v in val:
+                self._actors[v.name] = v
         elif isinstance(val, Actor):
-            self._actors.append(val)
+            self._actors[val.name] = val
         else:
             raise ValueError(
                 'Either a list of Actor objects or an Actor object is expected.'
                 f' Instead got {val}.'
             )
 
-    def remove_actor(self, name):
+    def remove_actor(self, name: str) -> None:
         if name in ['Aperture', 'Door', 'Shade', 'Wall', 'Floor', 'RoofCeiling',
                     'AirBoundary', 'Grid']:
             try:
@@ -149,7 +109,7 @@ class Scene(object):
                 raise KeyError(
                     f'{name} is not found in the actors attached to this scene.')
 
-    def create_render_window(self, camera=None) \
+    def create_render_window(self, camera: Camera = None) \
         -> Tuple[
             vtk.vtkRenderWindowInteractor, vtk.vtkRenderWindow, vtk.vtkRenderer
         ]:
@@ -170,7 +130,12 @@ class Scene(object):
         """
         # if camera is not provided use the first camera in the list of cameras setup
         # in the scene
-        if not camera:
+        if not camera and not self._cameras:
+            raise ValueError(
+                'Either provide a Camera object to this method or add a Camera object'
+                ' to this Scene object.'
+            )
+        elif not camera and self._cameras:
             camera = self._cameras[0]
         elif isinstance(camera, Camera):
             pass
@@ -186,6 +151,8 @@ class Scene(object):
         if self._actors:
             for actor in self._actors.values():
                 renderer.AddActor(actor.to_vtk())
+        else:
+            warnings.warn('Actors should be added to this scene.')
 
         # add renderer to rendering window
         window = vtk.vtkRenderWindow()
@@ -209,7 +176,10 @@ class Scene(object):
         # return the objects - the order is from outside to inside
         return interactor, window, renderer
 
-    def get_legend(self, color_range, interactor) -> vtk.vtkScalarBarWidget():
+    def get_legend(
+            self,
+            color_range: vtk.vtkLookupTable,
+            interactor: vtk.vtkRenderWindowInteractor) -> vtk.vtkScalarBarWidget():
         """Create a scalar bar widget.
 
         Args:
@@ -232,7 +202,12 @@ class Scene(object):
         scalar_bar_widget.SetScalarBarActor(scalar_bar)
         return scalar_bar_widget
 
-    def export_gltf(self, folder, renderer, window, name):
+    def export_gltf(
+            self,
+            folder: str,
+            renderer: vtk.vtkRenderer,
+            window: vtk.vtkRenderWindow,
+            name: str) -> str:
         """Export a scene to a glTF file.
 
         Args:
@@ -261,7 +236,7 @@ class Scene(object):
         return gltf_file_path.as_posix()
 
     @staticmethod
-    def _get_image_writer(image_type: ImageTypes):
+    def _get_image_writer(image_type: ImageTypes) -> None:
         """Get vtk image writer for each image type."""
         if image_type == ImageTypes.png:
             writer = vtk.vtkPNGWriter()
@@ -279,10 +254,20 @@ class Scene(object):
             raise ValueError(f'Invalid image type: {image_type}')
         return writer
 
-    def export_image(self, folder, name, window, interactor,
-                     image_type: ImageTypes = ImageTypes.png,
-                     *, rgba=False, image_scale=1, image_width=2400, image_height=2000,
-                     color_range=None, show=False):
+    def export_image(
+            self,
+            folder: str,
+            name: str,
+            window: vtk.vtkRenderWindow,
+            interactor: vtk.vtkRenderWindowInteractor,
+            image_type: ImageTypes = ImageTypes.png,
+            *,
+            image_scale: int = 1,
+            image_width: int = 2400,
+            image_height: int = 2000,
+            color_range: vtk.vtkLookupTable = None,
+            rgba: bool = False,
+            show: bool = False) -> str:
         """Export the scene as an image.
 
         Reference: https://kitware.github.io/vtk-examples/site/Python/IO/ImageWriter/
@@ -297,15 +282,15 @@ class Scene(object):
             interactor: A vtk renderwindowinteractor object created using
                 create_render_window method.
             image_type: An ImageType object.
-            rgba: A boolean value to set the type of buffer. A True value sets
-                an the background color to black. A False value uses the Scene object's
-                background color. Defaults to False.
             image_scale: An integer value as a scale factor. Defaults to 1.
             image_width: An integer value that sets the width of image in pixels.
             image_height: An integer value that sets the height of image in pixels.
             color_range: A vtk lookup table object which can be obtained
                 from the color_range mehtod of the DataFieldInfo object.
                 Defaults to None.
+            rgba: A boolean value to set the type of buffer. A True value sets
+                an the background color to black. A False value uses the Scene object's
+                background color. Defaults to False.
             show: A boolean value to decide if the the render window should pop up.
                 Defaults to False.
 
@@ -363,9 +348,16 @@ class Scene(object):
         return image_path.as_posix()
 
     def export_images(
-        self, folder, name, image_type: ImageTypes = ImageTypes.png, *, rgba=False,
-        image_scale=1, image_width=2400, image_height=2000, color_range=None
-            ):
+            self,
+            folder: str,
+            name: str,
+            image_type: ImageTypes = ImageTypes.png,
+            *,
+            image_scale: int = 1,
+            image_width: int = 2400,
+            image_height: int = 2000,
+            color_range: vtk.vtkLookupTable = None,
+            rgba: bool = False) -> Tuple[str]:
         """Export all the cameras setup in a scene as images.
 
         This method calls export_image method under the hood.
@@ -374,15 +366,15 @@ class Scene(object):
             folder: A valid path to where you'd like to write the images.
             name: A text string that will be used as a name for the images.
             image_type: An ImageType object.
-            rgba: A boolean value to set the type of buffer. A True value sets
-                an the background color to black. A False value uses the Scene object's
-                background color. Defaults to False.
             image_scale: An integer value as a scale factor. Defaults to 1.
             image_width: An integer value that sets the width of image in pixels.
             image_height: An integer value that sets the height of image in pixels.
             color_range: A vtk lookup table object which can be obtained
                 from the color_range mehtod of the DataFieldInfo object.
                 Defaults to None.
+            rgba: A boolean value to set the type of buffer. A True value sets
+                an the background color to black. A False value uses the Scene object's
+                background color. Defaults to False.
 
         Returns:
             A tuple of paths to each exported image.

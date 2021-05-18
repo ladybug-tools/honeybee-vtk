@@ -1,5 +1,6 @@
 """A VTK representation of HBModel."""
 
+from __future__ import annotations
 import pathlib
 import shutil
 import webbrowser
@@ -7,8 +8,10 @@ import tempfile
 import os
 from collections import defaultdict
 from typing import Dict, List
+from honeybee.facetype import face_types
 from honeybee.model import Model as HBModel
 from ladybug.color import Color
+from .camera import Camera
 from .types import ModelDataSet, PolyData
 from .to_vtk import convert_aperture, convert_face, convert_room, convert_shade, \
     convert_sensor_grid
@@ -55,7 +58,7 @@ class Model(object):
     def __init__(
         self, model: HBModel,
         load_grids: SensorGridOptions = SensorGridOptions.Ignore,
-        load_views: bool = True
+        load_cameras: bool = True
             ) -> None:
         """Instantiate a honeybee-vtk model object.
 
@@ -64,9 +67,9 @@ class Model(object):
             load_grids: A SensorGridOptions object. Defaults to SensorGridOptions.Ignore
                 which will ignore the grids in hbjson and will not load them in the
                 honeybee-vtk model.
-            load_views: A boolean. If set to True, radiance views from the hbjson will
-                be loaded which can be used later to export images of the same views.
-                Defaults to True.
+            load_cameras: A boolean. If set to True, radiance views from the hbjson will
+                be converted to vtk camera objects and will be added to this model.
+                These cameras can be used later to export images. Defaults to True.
         """
         super().__init__()
         # apertures and orphaned apertures
@@ -84,16 +87,16 @@ class Model(object):
         self._air_boundaries = \
             ModelDataSet('AirBoundary', color=self.get_default_color('AirBoundary'))
         self._sensor_grids = ModelDataSet('Grid', color=self.get_default_color('Grid'))
-        self._views = []
+        self._cameras = []
         self._convert_model(model)
         self._load_grids(model, load_grids)
-        self._load_views(model, load_views)
+        self._load_cameras(model, load_cameras)
         self._sensor_grids_option = load_grids  # keep this for adding data
 
     @classmethod
     def from_hbjson(cls, hbjson: str,
                     load_grids: SensorGridOptions = SensorGridOptions.Ignore,
-                    load_views: bool = True):
+                    load_views: bool = True) -> Model:
         """Translate hbjson to a honeybee-vtk model.
 
         Args:
@@ -154,9 +157,9 @@ class Model(object):
         return self._sensor_grids
 
     @property
-    def views(self):
-        """List of radiance view objects found in hbjson."""
-        return self._views
+    def cameras(self):
+        """List of Camera objects attached to this Model object."""
+        return self._cameras
 
     def __iter__(self):
         """This dunder method makes this class an iterator object.
@@ -172,7 +175,7 @@ class Model(object):
                 ):
             yield dataset
 
-    def _load_grids(self, model: HBModel, grid_options: SensorGridOptions):
+    def _load_grids(self, model: HBModel, grid_options: SensorGridOptions) -> None:
         """Load sensor grids."""
         if grid_options == SensorGridOptions.Ignore:
             return
@@ -182,15 +185,20 @@ class Model(object):
                     convert_sensor_grid(sensor_grid, grid_options)
                 )
 
-    def _load_views(self, model: HBModel, load_views: bool):
+    def _load_cameras(self, model: HBModel, load_cameras: bool) -> None:
         """Load radiance views."""
-        if not load_views:
+        if not load_cameras:
             return
-        elif hasattr(model.properties, 'radiance'):
+        elif hasattr(model.properties, 'radiance') and \
+                'views' in model.properties.radiance:
             for view in model.properties.radiance.views:
-                self._views.append(view)
+                self._cameras.append(Camera.from_view(view))
+        else:
+            raise ValueError(
+                'No radiance views found in HBJSON.'
+            )
 
-    def update_display_mode(self, value: DisplayMode):
+    def update_display_mode(self, value: DisplayMode) -> None:
         """Change display mode for all the object types in the model.
 
         Sensor grids display model will not be affected. For changing the display model
@@ -246,7 +254,7 @@ class Model(object):
             except AttributeError:
                 raise AttributeError(f'Invalid attribute: {attr}')
 
-    def to_vtkjs(self, folder='.', name=None) -> str:
+    def to_vtkjs(self, folder: str = '.', name: str = None) -> str:
         """Write a vtkjs file.
 
         Write your honeybee-vtk model to a vtkjs file that you can open in
@@ -303,7 +311,7 @@ class Model(object):
 
         return target_vtkjs_file
 
-    def to_html(self, folder='.', name=None, show=False):
+    def to_html(self, folder: str = '.', name: str = None, show: bool = False) -> str:
         """Write an HTML file.
 
         Write your honeybee-vtk model to an HTML file.
@@ -338,7 +346,7 @@ class Model(object):
         return html_file
 
     @staticmethod
-    def get_default_color(face_type) -> Color:
+    def get_default_color(face_type: face_types) -> Color:
         """Get the default color based of face type.
 
         Use these colors to generate visualizations that are familiar for Ladybug Tools

@@ -1,6 +1,10 @@
 """A VTK camera object."""
-
+from __future__ import annotations
 import vtk
+from honeybee_vtk.model import Model
+from honeybee_radiance.view import View
+from typing import List, Tuple
+from ladybug_geometry.geometry3d.pointvector import Point3D
 from honeybee_radiance.view import View
 
 
@@ -29,8 +33,15 @@ class Camera(View):
                 which is the perspective view.
         """
 
-    def __init__(self, identifier='camera', position=(0, 0, 50), direction=(0, 0, -1),
-                 up_vector=(0, 1, 0), h_size=60, v_size=60, type='v'):
+    def __init__(
+            self,
+            identifier: str ='camera',
+            position: Tuple[float, float, float] = (0, 0, 50),
+            direction: Tuple[float, float, float] = (0, 0, -1),
+            up_vector: Tuple[float, float, float] = (0, 1, 0),
+            h_size: int = 60,
+            v_size: int = 60,
+            type: str = 'v') -> None:
 
         super().__init__(
             identifier=identifier, position=position, direction=direction,
@@ -46,7 +57,7 @@ class Camera(View):
             }
 
     @property
-    def flat_view_direction(self):
+    def flat_view_direction(self) -> dict:
         """This dictionary with, direction of camera : [index, +/-] structure.
 
         Here, index referers to the index of the camera position. For example, in case
@@ -57,7 +68,7 @@ class Camera(View):
         """
         return self._flat_view_directions
 
-    def to_vtk(self, bounds=None):
+    def to_vtk(self, bounds: List[Point3D] = None) -> vtk.vtkCamera:
         """Get a vtk camera object."""
         camera = vtk.vtkCamera()
 
@@ -111,7 +122,7 @@ class Camera(View):
 
         return camera
 
-    def _adjusted_position(self, bounds):
+    def _adjusted_position(self, bounds: List[Point3D]) -> Tuple[float, float, float]:
         """Get adjusted camera position.
 
         This method helps bring camera close to the model within an offset distance.
@@ -148,7 +159,7 @@ class Camera(View):
 
         return adjusted_position
 
-    def _outermost_point(self, bounds):
+    def _outermost_point(self, bounds: List[Point3D]) -> Point3D:
         """Find the outermost point in a Model.
 
         This method looks at the bounds of the actors and finds the outermost point
@@ -182,23 +193,19 @@ class Camera(View):
         return outermost_point
 
     @classmethod
-    def from_model(cls, model):
-        """Create a list of Camera objects from the radiance views in a Model object.
+    def from_view(cls: Camera, view: View) -> Camera:
+        """Create a Camera object from a radiance view.
 
         Args:
-            model: A honeybee-vtk Model object.
+            view: A radiance view
 
         Returns:
-            A list of Camera objects.
+            A Camera object.
         """
-        if len(model.views) == 0:
-            raise ValueError(
-                'No radiance views were found in the hbjson file.'
-            )
-        else:
-            return [cls(position=view.position,
-                    direction=view.direction,
-                    up_vector=view.up_vector,
-                    h_size=view.h_size,
-                    v_size=view.v_size,
-                    type=view.type) for view in model.views]
+        return cls(
+                position=view.position,
+                direction=view.direction,
+                up_vector=view.up_vector,
+                h_size=view.h_size,
+                v_size=view.v_size,
+                type=view.type)

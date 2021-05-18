@@ -1,9 +1,11 @@
 """Vtk actors that are added to a vtk scene."""
 
+from __future__ import annotations
 import vtk
-from .model import ModelDataSet, DisplayMode
+from typing import List, Tuple
+from .model import Model, ModelDataSet, DisplayMode
 from .types import JoinedPolyData
-from ._helper import _check_tuple
+from ._helper import _validate_input
 from ladybug_geometry.geometry3d.pointvector import Point3D
 
 
@@ -23,12 +25,12 @@ class Actor:
         self._monochrome_color = None
 
     @property
-    def modeldataset(self):
+    def modeldataset(self) -> ModelDataSet:
         """A honeybee-vtk Model object."""
         return self._modeldataset
 
     @modeldataset.setter
-    def modeldataset(self, val: ModelDataSet):
+    def modeldataset(self, val: ModelDataSet) -> None:
         if isinstance(val, ModelDataSet):
             self._modeldataset = val
         else:
@@ -38,15 +40,15 @@ class Actor:
             )
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self._name
 
     @property
-    def monochrome_color(self):
+    def monochrome_color(self) -> Tuple[float, float, float]:
         """Color to be used if actors are to be painted in a monochrome color."""
         return self._monochrome_color
 
-    def get_monochrome(self, monochrome_color):
+    def get_monochrome(self, monochrome_color: Tuple[float, float, float]) -> None:
         """Get actors in monochrome color.
 
         This is especially useful when the wireframe display-mode is being used.
@@ -55,7 +57,7 @@ class Actor:
             monochrome_color: A color that you'd like to paint actors with. Color here
                 is a tuple of three decimal values representing R,G, and B.
         """
-        if _check_tuple(monochrome_color, float, max_val=1.0):
+        if _validate_input(monochrome_color, float, max_val=1.0):
             self._monochrome_color = monochrome_color
         else:
             raise ValueError(
@@ -63,7 +65,7 @@ class Actor:
                 ' representing R, G, and B.'
             )
 
-    def to_vtk(self):
+    def to_vtk(self) -> vtk.vtkActor:
         """Create a vtk actor from a ModelDataSet object."""
 
         # calculate point data based on cell data
@@ -107,7 +109,7 @@ class Actor:
         return actor
 
     @classmethod
-    def from_model(cls, model):
+    def from_model(cls, model: Model) -> List[Actor]:
         """Create a list of vtk actors from a honeybee-vtk model.
 
         Args:
@@ -119,7 +121,7 @@ class Actor:
         return [cls(modeldataset=ds) for ds in model if len(ds.data) > 0]
 
     @staticmethod
-    def get_bounds(actors):
+    def get_bounds(actors: List[Actor]) -> List[Point3D]:
         """Get a list of Ladybug Point3D objects that represent the bounds of actors.
 
         Bounds of an actor are the outermost vertices of an actor. A bound is a tuple of
