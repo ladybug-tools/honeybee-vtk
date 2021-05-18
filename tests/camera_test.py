@@ -7,6 +7,7 @@ from honeybee_vtk.camera import Camera
 from honeybee_vtk.model import Model
 from honeybee_vtk.vtkjs.schema import SensorGridOptions
 from honeybee_vtk.actor import Actor
+from honeybee.model import Model as HBModel
 
 
 def test_to_vtk():
@@ -33,22 +34,21 @@ def test_to_vtk():
     assert isinstance(camera, vtk.vtkCamera)
 
 
-def test_from_model():
+def test_no_view():
     """Test if views are being read from hbjson."""
-    file_path = r'./tests/assets/viewbased.hbjson'
-    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh,
-                              load_views=False)
+    file_path = r'./tests/assets/unnamed.hbjson'
 
+    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
     # Checking if valueerror is raised when from_model is called on a model with no views
-    with pytest.raises(ValueError):
-        camera = Camera.from_model(model)
+    with pytest.warns(Warning):
+        model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
 
-    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh,
-                              load_views=True)
 
-    cameras = Camera.from_model(model)
-    check = [isinstance(camera, Camera) for camera in cameras]
-    assert check.count(True) == len(cameras)
+def test_model_with_views():
+    """Test if all the views in the model are being loaded as Camera objects."""
+    file_path = r'./tests/assets/gridbased.hbjson'
+    model = Model.from_hbjson(file_path)
+    assert len(model.cameras) == 6
 
 
 def test_assign_bounds():
