@@ -1,8 +1,6 @@
 """A VTK camera object."""
 from __future__ import annotations
 import vtk
-from honeybee_vtk.model import Model
-from honeybee_radiance.view import View
 from typing import List, Tuple
 from ladybug_geometry.geometry3d.pointvector import Point3D
 from honeybee_radiance.view import View

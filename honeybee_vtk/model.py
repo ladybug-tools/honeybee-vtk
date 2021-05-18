@@ -6,6 +6,7 @@ import shutil
 import webbrowser
 import tempfile
 import os
+import warnings
 from collections import defaultdict
 from typing import Dict, List
 from honeybee.facetype import face_types
@@ -96,7 +97,7 @@ class Model(object):
     @classmethod
     def from_hbjson(cls, hbjson: str,
                     load_grids: SensorGridOptions = SensorGridOptions.Ignore,
-                    load_views: bool = True) -> Model:
+                    load_cameras: bool = True) -> Model:
         """Translate hbjson to a honeybee-vtk model.
 
         Args:
@@ -114,7 +115,7 @@ class Model(object):
         hb_file = pathlib.Path(hbjson)
         assert hb_file.is_file(), f'{hbjson} doesn\'t exist.'
         model = HBModel.from_hbjson(hb_file.as_posix())
-        return cls(model, load_grids, load_views)
+        return cls(model, load_grids, load_cameras)
 
     @property
     def walls(self) -> ModelDataSet:
@@ -189,13 +190,12 @@ class Model(object):
         """Load radiance views."""
         if not load_cameras:
             return
-        elif hasattr(model.properties, 'radiance') and \
-                'views' in model.properties.radiance:
+        elif len(model.properties.radiance.views) > 0:
             for view in model.properties.radiance.views:
                 self._cameras.append(Camera.from_view(view))
         else:
-            raise ValueError(
-                'No radiance views found in HBJSON.'
+            warnings.warn(
+                'views not found in HBJSON.'
             )
 
     def update_display_mode(self, value: DisplayMode) -> None:
