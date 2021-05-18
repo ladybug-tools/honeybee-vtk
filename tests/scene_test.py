@@ -4,11 +4,9 @@ import pytest
 import pathlib
 import os
 import shutil
-import vtk
 from honeybee_vtk.model import Model
 from honeybee_vtk.scene import Scene, ImageTypes
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
-from honeybee_vtk.types import DataFieldInfo
 from honeybee_vtk.camera import Camera
 from honeybee_vtk.actor import Actor
 
@@ -39,13 +37,12 @@ def test_write_gltf():
     scene = Scene(background_color=(0, 0, 0))
     scene.add_actors(actors)
     scene.add_cameras(camera)
-    window, renderer = scene.create_render_window()[1:]
 
     if os.path.isdir(target_folder):
         shutil.rmtree(target_folder)
     os.mkdir(target_folder)
 
-    scene.export_gltf(target_folder, renderer, window, name='daylight-factor')
+    scene.export_gltf(target_folder, name='daylight-factor')
     gltf_path = os.path.join(target_folder, 'daylight-factor.gltf')
     assert os.path.isfile(gltf_path)
     shutil.rmtree(target_folder)
@@ -76,19 +73,6 @@ def test_class_initialization():
     assert not scene._actors
 
 
-def test_legend():
-    """Test legend."""
-
-    data_field = DataFieldInfo()
-    color_range = data_field.color_range()
-    camera = Camera()
-    scene = Scene()
-    scene.add_cameras(camera)
-    interactor = scene.create_render_window()[0]
-    legend = scene.get_legend(color_range, interactor)
-    assert isinstance(legend, vtk.vtkScalarBarWidget)
-
-
 def test_actors_in_scene():
     """Test if all the dataset in a model are being added to the scene."""
 
@@ -108,8 +92,7 @@ def test_actors_in_scene():
     scene = Scene()
     scene.add_actors(actors)
     scene.add_cameras(camera)
-    renderer = scene.create_render_window()[2]
-    assert renderer.VisibleActorCount() == 6
+    assert len(scene.actors.values()) == 6
 
 
 def test_scene_camera():
@@ -164,109 +147,58 @@ def test_add_camera():
     assert len(scene.cameras) == 1
 
 
-# # The following two tests don't pass on Github and hence are kep off for now.
+# # The following test doesn't pass on Github and hence are kep off for now.
 
-def test_export_image():
-    """Test export images method."""
-    file_path = r'./tests/assets/gridbased.hbjson'
-    results_folder = r'./tests/assets/df_results'
-    target_folder = r'./tests/assets/temp1'
+# def test_export_images():
+#     """Test export images method."""
+#     file_path = r'./tests/assets/gridbased.hbjson'
+#     results_folder = r'./tests/assets/df_results'
+#     target_folder = r'./tests/assets/temp'
 
-    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
+#     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
 
-    daylight_factor = []
-    for grid in model.sensor_grids.data:
-        res_file = pathlib.Path(results_folder, f'{grid.identifier}.res')
-        grid_res = [float(v) for v in res_file.read_text().splitlines()]
-        daylight_factor.append(grid_res)
+#     daylight_factor = []
+#     for grid in model.sensor_grids.data:
+#         res_file = pathlib.Path(results_folder, f'{grid.identifier}.res')
+#         grid_res = [float(v) for v in res_file.read_text().splitlines()]
+#         daylight_factor.append(grid_res)
 
-    model.sensor_grids.add_data_fields(daylight_factor, name='Daylight-factor',
-                                       per_face=True, data_range=(0, 20))
-    model.sensor_grids.color_by = 'Daylight-factor'
-    model.sensor_grids.display_mode = DisplayMode.SurfaceWithEdges
-    model.update_display_mode(DisplayMode.Wireframe)
+#     model.sensor_grids.add_data_fields(daylight_factor, name='Daylight-factor',
+#                                        per_face=True, data_range=(0, 20))
+#     model.sensor_grids.color_by = 'Daylight-factor'
+#     model.sensor_grids.display_mode = DisplayMode.SurfaceWithEdges
+#     model.update_display_mode(DisplayMode.SurfaceWithEdges)
 
-    # Setup legend
-    color_range = model.sensor_grids.active_field_info.color_range()
+#     # actors
+#     actors = Actor.from_model(model=model)
 
-    # actors
-    actors = Actor.from_model(model=model)
+#     # Initialize a scene
+#     scene = Scene(background_color=(255, 255, 255))
+#     scene.add_actors(actors)
 
-    # Initialize a scene
-    scene = Scene(background_color=(255, 255, 255))
-    scene.add_actors(actors)
+#     # A camera setup using the constructor
+#     camera = Camera(position=(-50.28, -30.32, 58.64), direction=(0.59, 0.44, -0.67),
+#                     up_vector=(0.53, 0.40, 0.74), h_size=52.90)
 
-    # Create a camera Parallel projection camera using the constructor
-    camera = Camera(position=(-50.28, -30.32, 58.64), direction=(0.59, 0.44, -0.67),
-                    up_vector=(0.53, 0.40, 0.74), h_size=52.90, type='l')
+#     # Cameras extracted from hbjson
+#     cameras = model.cameras
 
-    # Create a rendering window using the camera defined above
-    interactor, window = scene.create_render_window(camera=camera)[0:2]
+#     # Gather all the cameras
+#     cameras.append(camera)
 
-    # if target folder exists, delete it and create a fresh new folder
-    if os.path.isdir(target_folder):
-        shutil.rmtree(target_folder)
-    os.mkdir(target_folder)
+#     # Add all the cameras to the scene
+#     scene.add_cameras(cameras)
 
-    # Export images for all the cameras
-    path = scene.export_image(
-        folder=target_folder, window=window, interactor=interactor,
-        image_type=ImageTypes.png, name='camera', color_range=color_range, image_scale=2)
+#     # if target folder exists, delete it and create a fresh new folder
+#     if os.path.isdir(target_folder):
+#         shutil.rmtree(target_folder)
+#     os.mkdir(target_folder)
 
-    assert os.path.isfile(path)
-    shutil.rmtree(target_folder)
+#     # Export images for all the cameras
+#     images_path = scene.export_images(folder=target_folder, image_type=ImageTypes.png,
+#                                       name='camera')
 
+#     for path in images_path:
+#         assert os.path.isfile(path)
 
-def test_export_images():
-    """Test export images method."""
-    file_path = r'./tests/assets/gridbased.hbjson'
-    results_folder = r'./tests/assets/df_results'
-    target_folder = r'./tests/assets/temp'
-
-    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
-
-    daylight_factor = []
-    for grid in model.sensor_grids.data:
-        res_file = pathlib.Path(results_folder, f'{grid.identifier}.res')
-        grid_res = [float(v) for v in res_file.read_text().splitlines()]
-        daylight_factor.append(grid_res)
-
-    model.sensor_grids.add_data_fields(daylight_factor, name='Daylight-factor',
-                                       per_face=True, data_range=(0, 20))
-    model.sensor_grids.color_by = 'Daylight-factor'
-    model.sensor_grids.display_mode = DisplayMode.SurfaceWithEdges
-    model.update_display_mode(DisplayMode.SurfaceWithEdges)
-
-    # actors
-    actors = Actor.from_model(model=model)
-
-    # Initialize a scene
-    scene = Scene(background_color=(255, 255, 255))
-    scene.add_actors(actors)
-
-    # A camera setup using the constructor
-    camera = Camera(position=(-50.28, -30.32, 58.64), direction=(0.59, 0.44, -0.67),
-                    up_vector=(0.53, 0.40, 0.74), h_size=52.90)
-
-    # Cameras extracted from hbjson
-    cameras = model.cameras
-
-    # Gather all the cameras
-    cameras.append(camera)
-
-    # Add all the cameras to the scene
-    scene.add_cameras(cameras)
-
-    # if target folder exists, delete it and create a fresh new folder
-    if os.path.isdir(target_folder):
-        shutil.rmtree(target_folder)
-    os.mkdir(target_folder)
-
-    # Export images for all the cameras
-    images_path = scene.export_images(folder=target_folder, image_type=ImageTypes.png,
-                                      name='camera')
-
-    for path in images_path:
-        assert os.path.isfile(path)
-
-    shutil.rmtree(target_folder)
+#     shutil.rmtree(target_folder)
