@@ -6,6 +6,8 @@ from typing import List, Tuple, Dict, Union
 from ._helper import _validate_input
 from .camera import Camera
 from .actor import Actor
+from .window import Window
+from .types import ImageTypes
 
 
 class Scene(object):
@@ -25,6 +27,7 @@ class Scene(object):
         self.background_color = background_color
         self._actors = {}
         self._cameras = []
+        self._windows = []
 
     @property
     def background_color(self) -> Tuple[int, int, int]:
@@ -54,6 +57,11 @@ class Scene(object):
         """A list of vtk cameras setup in the scene."""
         return self._cameras
 
+    @property
+    def windows(self) -> List[Window]:
+        """A list of vtk windows setup in the scene."""
+        return self._windows
+
     def add_cameras(self, val: Union[Camera, List[Camera]]) -> None:
         """Add vtk Camera objects to a Scene.
 
@@ -62,8 +70,15 @@ class Scene(object):
         """
         if isinstance(val, list) and _validate_input(val, Camera):
             self._cameras.extend(val)
+            for v in val:
+                self._windows.append(Window(
+                    background_color=self._background_color, camera=v,
+                    actors=self._actors))
         elif isinstance(val, Camera):
             self._cameras.append(val)
+            self._windows.append(Window(
+                background_color=self._background_color, camera=val,
+                actors=self._actors))
         else:
             raise ValueError(
                 'Either a list of Camera objects or a Camera object is expected.'
@@ -88,6 +103,12 @@ class Scene(object):
             )
 
     def remove_actor(self, name: str) -> None:
+        """Remove an actor from scene by name.
+
+        Args:
+            name: A string representing the name of the actor you would like to remove
+                from the scene.
+        """
         if name in ['Aperture', 'Door', 'Shade', 'Wall', 'Floor', 'RoofCeiling',
                     'AirBoundary', 'Grid']:
             try:
@@ -96,74 +117,61 @@ class Scene(object):
                 raise KeyError(
                     f'{name} is not found in the actors attached to this scene.')
 
-    def get_legend(
-            self,
-            color_range: vtk.vtkLookupTable,
-            interactor: vtk.vtkRenderWindowInteractor) -> vtk.vtkScalarBarWidget():
-        """Create a scalar bar widget.
-
-        Args:
-            color_range: A VTK LookUpTable object for color range. You can create one
-                from color_range method in `DataFieldInfo`.
-            interactor: A vtk renderwindowinteractor object that can be created using
-                the create_render_window method.
-
-        Returns:
-            A VTK scalar bar widget.
-        """
-        # create the scalar_bar
-        scalar_bar = vtk.vtkScalarBarActor()
-        scalar_bar.SetOrientationToHorizontal()
-        scalar_bar.SetLookupTable(color_range)
-
-        # create the scalar_bar_widget
-        scalar_bar_widget = vtk.vtkScalarBarWidget()
-        scalar_bar_widget.SetInteractor(interactor)
-        scalar_bar_widget.SetScalarBarActor(scalar_bar)
-        return scalar_bar_widget
-
     def export_images(
-            self,
-            folder: str,
-            name: str,
-            image_type: ImageTypes = ImageTypes.png,
-            *,
-            image_scale: int = 1,
-            image_width: int = 2400,
-            image_height: int = 2000,
-            color_range: vtk.vtkLookupTable = None,
-            rgba: bool = False) -> Tuple[str]:
-        """Export all the cameras setup in a scene as images.
+            self, folder: str, name: str = 'Camera',
+            image_type: ImageTypes = ImageTypes.png, *,
+            image_scale: int = 1, image_width: int = 2200, image_height: int = 2000,
+            color_range: vtk.vtkLookupTable = None, rgba: bool = False,
+            show: bool = False) -> List[str]:
 
-        This method calls export_image method under the hood.
+        """Export all the cameras in the scene as images.
+
+        Reference: https://kitware.github.io/vtk-examples/site/Python/IO/ImageWriter/
+        This method is able to export an image in '.png', '.jpg', '.ps', '.tiff', '.bmp',
+        and '.pnm' formats.
 
         Args:
             folder: A valid path to where you'd like to write the images.
-            name: A text string that will be used as a name for the images.
+            name: Name of the image as a text string.
             image_type: An ImageType object.
             image_scale: An integer value as a scale factor. Defaults to 1.
             image_width: An integer value that sets the width of image in pixels.
+                Defaults to 2200.
             image_height: An integer value that sets the height of image in pixels.
+                Defaults to 2000.
             color_range: A vtk lookup table object which can be obtained
                 from the color_range mehtod of the DataFieldInfo object.
                 Defaults to None.
             rgba: A boolean value to set the type of buffer. A True value sets
                 an the background color to black. A False value uses the Scene object's
                 background color. Defaults to False.
+            show: A boolean value to decide if the the render window should pop up.
+                Defaults to False.
 
         Returns:
-            A tuple of paths to each exported image.
+            A list of text strings representing the paths to the exported images.
         """
-        file_paths = []
 
-        for count, camera in enumerate(self._cameras):
-            # Create a render window for each camera setup in the scene.
-            interactor, window = self.create_render_window(camera)[0:2]
-            file_paths.append(
-                self.export_image(folder=folder, name=name + '_' + str(count),
-                                  window=window, interactor=interactor,
-                                  image_type=image_type, rgba=rgba,
-                                  image_scale=image_scale, image_width=image_width,
-                                  image_height=image_height, color_range=color_range)
-                                  )
-        return tuple(file_paths)
+        return [window._export_image(
+            folder=folder, name=name + '_' + str(count), image_type=image_type,
+            image_scale=image_scale, image_width=image_width, image_height=image_height,
+            color_range=color_range, rgba=rgba, show=show)
+            for count, window in enumerate(self._windows)]
+
+    def export_gltf(self, folder: str, name: str = 'Camera') -> str:
+        """Export a scene to a glTF file.
+
+        Args:
+            folder: A valid path to where you'd like to write the gltf file.
+            name: Name of the gltf file as a text string.
+
+        Returns:
+            A text string representing the path to the gltf file.
+        """
+        if self._windows:
+            return self._windows[0]._export_gltf(folder=folder, name=name)
+        else:
+            raise ValueError(
+                'Please add at least one camera to the scene.'
+            )
+

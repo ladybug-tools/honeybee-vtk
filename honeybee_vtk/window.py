@@ -10,7 +10,22 @@ from .types import ImageTypes
 
 
 class Window:
-    def __init__(self, actors: List[Actor] = None, camera: Camera = None):
+    """Initialize a Window object.
+
+    This is more of a helper class and the interface for this class is the Scene object.
+    This class takes a camera and a list of actors to create a vtk interactor, a vtk
+    renderWindow, and a vtk renderer objects.
+
+    Args:
+        background_color: A tuple of three integers that represent RGB values of the
+            color that you'd like to set as the background color. Defaults to gray.
+        camera: A Camera object.
+        actors: A list of Actor objects. Defaults to None.
+    """
+    def __init__(self, background_color, camera: Camera,
+                 actors: List[Actor] = None) -> None:
+
+        self._background_color = background_color
         self._actors = actors
         self._camera = camera
         self._interactor = None
@@ -57,13 +72,13 @@ class Window:
         if self._camera.type == 'v':
             renderer.SetActiveCamera(self._camera.to_vtk())
         else:
-            bounds = Actor.get_bounds(self.actors.values())
+            bounds = Actor.get_bounds(self._actors.values())
             renderer.SetActiveCamera(self._camera.to_vtk(bounds=bounds))
 
         # the order is from outside to inside
         self._interactor, self._window, self._renderer = (interactor, window, renderer)
 
-    def export_gltf(self, folder: str, name: str) -> str:
+    def _export_gltf(self, folder: str, name: str) -> str:
         """Export a scene to a glTF file.
 
         Args:
@@ -107,12 +122,12 @@ class Window:
             raise ValueError(f'Invalid image type: {image_type}')
         return writer
 
-    def export_image(
+    def _export_image(
             self, folder: str, name: str, image_type: ImageTypes = ImageTypes.png, *,
             image_scale: int = 1, image_width: int = 2200, image_height: int = 2000,
             color_range: vtk.vtkLookupTable = None, rgba: bool = False,
             show: bool = False) -> str:
-        """Export the scene as an image.
+        """Export the window as an image.
 
         Reference: https://kitware.github.io/vtk-examples/site/Python/IO/ImageWriter/
         This method is able to export an image in '.png', '.jpg', '.ps', '.tiff', '.bmp',
@@ -189,37 +204,3 @@ class Window:
 
         return image_path.as_posix()
 
-    # def export_images(
-    #         self, folder: str, name: str, image_type: ImageTypes = ImageTypes.png, *,
-    #         image_scale: int = 1, image_width: int = 2200, image_height: int = 2000,
-    #         color_range: vtk.vtkLookupTable = None, rgba: bool = False) -> Tuple[str]:
-    #     """Export all the cameras setup in a scene as images.
-
-    #     This method calls export_image method under the hood.
-
-    #     Args:
-    #         folder: A valid path to where you'd like to write the images.
-    #         name: A text string that will be used as a name for the images.
-    #         image_type: An ImageType object.
-    #         image_scale: An integer value as a scale factor. Defaults to 1.
-    #         image_width: An integer value that sets the width of image in pixels.
-    #         image_height: An integer value that sets the height of image in pixels.
-    #         color_range: A vtk lookup table object which can be obtained
-    #             from the color_range mehtod of the DataFieldInfo object.
-    #             Defaults to None.
-    #         rgba: A boolean value to set the type of buffer. A True value sets
-    #             an the background color to black. A False value uses the Scene object's
-    #             background color. Defaults to False.
-
-    #     Returns:
-    #         A tuple of paths to exported images.
-    #     """
-    #     file_paths = []
-
-    #     for count, camera in enumerate(self._cameras):
-    #         file_paths.append(
-    #             self.export_image(folder=folder, name=name + '_' + str(count),
-    #                               image_type=image_type, image_scale=image_scale,
-    #                               image_width=image_width, image_height=image_height,
-    #                               color_range=color_range, rgba=rgba))
-    #     return tuple(file_paths)
