@@ -28,6 +28,14 @@ class VTKWriters(enum.Enum):
 
 COLORSET = Colorset()
 
+class ImageTypes(enum.Enum):
+    """Supported image types."""
+    png = 'png'
+    jpg = 'jpg'
+    ps = 'ps'
+    tiff = 'tiff'
+    bmp = 'bmp'
+    pnm = 'pnm'
 
 class DataFieldInfo:
     """Information for a data field."""
