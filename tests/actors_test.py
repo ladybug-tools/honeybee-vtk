@@ -25,7 +25,7 @@ def test_monochrome():
     file_path = r'./tests/assets/gridbased.hbjson'
     model = Model.from_hbjson(file_path)
     actors = Actor.from_model(model)
-    with pytest.raises(AssertionError):
+    with pytest.raises(ValueError):
         actors[0].get_monochrome((255, 123, 33))
 
     actors[0].get_monochrome((0.34, 0.44, 0.55))

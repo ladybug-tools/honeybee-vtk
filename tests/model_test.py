@@ -117,5 +117,5 @@ def test_views():
     """Test if views are being read from hbjson."""
     file_path = r'./tests/assets/viewbased.hbjson'
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
-    assert len(model.views) == 1
+    assert len(model.cameras) == 1
 
