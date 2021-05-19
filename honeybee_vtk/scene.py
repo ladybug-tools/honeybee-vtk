@@ -111,18 +111,25 @@ class Scene:
             name: A string representing the name of the actor you would like to remove
                 from the scene.
         """
-        if name in ['Aperture', 'Door', 'Shade', 'Wall', 'Floor', 'RoofCeiling',
-                    'AirBoundary', 'Grid']:
+        valid_names = tuple(['Aperture', 'Door', 'Shade', 'Wall', 'Floor', 'RoofCeiling',
+                            'AirBoundary', 'Grid'])
+
+        if name in valid_names:
             try:
                 del self._actors[name]
             except KeyError:
                 raise KeyError(
                     f'{name} is not found in the actors in this scene.')
+        else:
+            raise ValueError(
+                'Name of the actors should be from one the following'
+                f' values {valid_names}.'
+            )
 
     def export_images(
             self, folder: str, name: str = 'Camera',
             image_type: ImageTypes = ImageTypes.png, *,
-            image_scale: int = 1, image_width: int = 2200, image_height: int = 2000,
+            image_scale: int = 1, image_width: int = 2000, image_height: int = 2000,
             color_range: vtk.vtkLookupTable = None, rgba: bool = False,
             show: bool = False) -> List[str]:
 
@@ -138,7 +145,7 @@ class Scene:
             image_type: An ImageType object.
             image_scale: An integer value as a scale factor. Defaults to 1.
             image_width: An integer value that sets the width of image in pixels.
-                Defaults to 2200.
+                Defaults to 2000.
             image_height: An integer value that sets the height of image in pixels.
                 Defaults to 2000.
             color_range: A vtk lookup table object which can be obtained
