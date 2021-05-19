@@ -1,4 +1,4 @@
-"""A vtk render window."""
+"""An assistant class to the Scene object."""
 
 import vtk
 import warnings
@@ -9,11 +9,11 @@ from .camera import Camera
 from .types import ImageTypes
 
 
-class Window:
-    """Initialize a Window object.
+class Assistant:
+    """Initialize an Assistant object.
 
     This is more of a helper class and the interface for this class is the Scene object.
-    This class takes a camera and a list of actors to create a vtk interactor, a vtk
+    This class takes a camera and a list of actors to assemble a vtk interactor, a vtk
     renderWindow, and a vtk renderer objects.
 
     Args:
