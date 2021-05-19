@@ -7,7 +7,6 @@ from honeybee_vtk.camera import Camera
 from honeybee_vtk.model import Model
 from honeybee_vtk.vtkjs.schema import SensorGridOptions
 from honeybee_vtk.actor import Actor
-from honeybee.model import Model as HBModel
 
 
 def test_to_vtk():
