@@ -2,22 +2,24 @@
 
 from __future__ import annotations
 import vtk
-from typing import List, Tuple, Dict, Union
+from typing import List, Tuple, Union
 from ._helper import _validate_input
 from .camera import Camera
 from .actor import Actor
-from .window import Window
+from .assistant import Assistant
 from .types import ImageTypes
 
 
-class Scene(object):
+class Scene:
     """Initialize a Scene object.
 
     Vtk derives inspiration from a movie set in naming its objects. Imagine a scene
-    being prepared at a movie set. The scene has a background. It has a few actors.
-    And, there are a few cameras setup to capture the scene from different angles. A
+    being prepared at a movie set. The scene has a background. It has a few actors, there
+    are assistants running around making sure everything is ready, and there are a few
+    cameras setup to capture the scene from different angles. A
     scene in vtk is defined in the similar fashion. It has a background color, some
-    actors i.e. geometry objects from model, and a few cameras around the scene.
+    actors i.e. geometry objects from model, a few cameras around the scene, and
+    assistants equal the number of cameras setup in the scene.
 
     Args:
         background_color: A tuple of three integers that represent RGB values of the
@@ -27,7 +29,7 @@ class Scene(object):
         self.background_color = background_color
         self._actors = {}
         self._cameras = []
-        self._windows = []
+        self._assistants = []
 
     @property
     def background_color(self) -> Tuple[int, int, int]:
@@ -48,22 +50,22 @@ class Scene(object):
             )
 
     @property
-    def actors(self) -> Dict[str, Actor]:
-        """A dictionary of vtk actor name: vtk actor structure."""
-        return self._actors
+    def actors(self) -> List[str]:
+        """A dictionary of honeybee-vtk actor name: vtk actor structure."""
+        return self._actors.keys()
 
     @property
     def cameras(self) -> List[Camera]:
-        """A list of vtk cameras setup in the scene."""
+        """A list of honeybee-vtk cameras setup in the scene."""
         return self._cameras
 
     @property
-    def windows(self) -> List[Window]:
-        """A list of vtk windows setup in the scene."""
-        return self._windows
+    def assistants(self) -> List[Assistant]:
+        """A list of honeybee-vtk assistants working in the scene."""
+        return self._assistants
 
     def add_cameras(self, val: Union[Camera, List[Camera]]) -> None:
-        """Add vtk Camera objects to a Scene.
+        """Add a honeybee-vtk Camera objects to a Scene.
 
         Args:
             val: Either a list of Camera objects or a single Camera object.
@@ -71,12 +73,12 @@ class Scene(object):
         if isinstance(val, list) and _validate_input(val, Camera):
             self._cameras.extend(val)
             for v in val:
-                self._windows.append(Window(
+                self._assistants.append(Assistant(
                     background_color=self._background_color, camera=v,
                     actors=self._actors))
         elif isinstance(val, Camera):
             self._cameras.append(val)
-            self._windows.append(Window(
+            self._assistants.append(Assistant(
                 background_color=self._background_color, camera=val,
                 actors=self._actors))
         else:
@@ -86,7 +88,7 @@ class Scene(object):
             )
 
     def add_actors(self, val: Union[Actor, List[Actor]]) -> None:
-        """add vtk Actor objects to a Scene.
+        """add honeybee-vtk Actor objects to a Scene.
 
         Args:
             val: Either a list of Actors objects or a single Actor object.
@@ -115,7 +117,7 @@ class Scene(object):
                 del self._actors[name]
             except KeyError:
                 raise KeyError(
-                    f'{name} is not found in the actors attached to this scene.')
+                    f'{name} is not found in the actors in this scene.')
 
     def export_images(
             self, folder: str, name: str = 'Camera',
@@ -152,11 +154,11 @@ class Scene(object):
             A list of text strings representing the paths to the exported images.
         """
 
-        return [window._export_image(
+        return [assistant._export_image(
             folder=folder, name=name + '_' + str(count), image_type=image_type,
             image_scale=image_scale, image_width=image_width, image_height=image_height,
             color_range=color_range, rgba=rgba, show=show)
-            for count, window in enumerate(self._windows)]
+            for count, assistant in enumerate(self._assistants)]
 
     def export_gltf(self, folder: str, name: str = 'Camera') -> str:
         """Export a scene to a glTF file.
@@ -168,10 +170,9 @@ class Scene(object):
         Returns:
             A text string representing the path to the gltf file.
         """
-        if self._windows:
-            return self._windows[0]._export_gltf(folder=folder, name=name)
+        if self._assistants:
+            return self._assistants[0]._export_gltf(folder=folder, name=name)
         else:
             raise ValueError(
-                'Please add at least one camera to the scene.'
+                'At least one camera needs to be setup to export an image.'
             )
-
