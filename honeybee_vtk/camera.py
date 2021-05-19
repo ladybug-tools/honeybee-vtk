@@ -33,7 +33,7 @@ class Camera(View):
 
     def __init__(
             self,
-            identifier: str ='camera',
+            identifier: str = 'camera',
             position: Tuple[float, float, float] = (0, 0, 50),
             direction: Tuple[float, float, float] = (0, 0, -1),
             up_vector: Tuple[float, float, float] = (0, 1, 0),
