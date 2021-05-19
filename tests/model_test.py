@@ -118,4 +118,4 @@ def test_views():
     file_path = r'./tests/assets/viewbased.hbjson'
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
     assert len(model.cameras) == 1
-
+    
