@@ -17,8 +17,7 @@ def _validate_input(val: Union[List, Tuple], val_type: Any, max_val: int = None)
         A boolean value if True.
     """
     if not max_val:
-        check_val = list(map(lambda v: isinstance(v, val_type), val))
+        return all(list(map(lambda v: isinstance(v, val_type), val)))
     else:
-        check_val = list(map(lambda v: isinstance(v, val_type) and v < max_val, val))
-
-    return all(check_val)
+        return all(list(map(lambda v: isinstance(v, val_type) and v < max_val, val)))
+        
