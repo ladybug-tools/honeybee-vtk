@@ -72,8 +72,14 @@ class Assistant:
         if self._camera.type == 'v':
             renderer.SetActiveCamera(self._camera.to_vtk())
         else:
-            bounds = Actor.get_bounds(self._actors.values())
-            renderer.SetActiveCamera(self._camera.to_vtk(bounds=bounds))
+            if self._actors:
+                bounds = Actor.get_bounds(self._actors.values())
+                renderer.SetActiveCamera(self._camera.to_vtk(bounds=bounds))
+            else:
+                warnings.warn(
+                    'Parallel projection is requested in one of the cameras. For this,'
+                    ' actors are required to be added to the scene.'
+                )
 
         # the order is from outside to inside
         self._interactor, self._window, self._renderer = (interactor, window, renderer)
@@ -124,7 +130,7 @@ class Assistant:
 
     def _export_image(
             self, folder: str, name: str, image_type: ImageTypes = ImageTypes.png, *,
-            image_scale: int = 1, image_width: int = 2200, image_height: int = 2000,
+            image_scale: int = 1, image_width: int = 2000, image_height: int = 2000,
             color_range: vtk.vtkLookupTable = None, rgba: bool = False,
             show: bool = False) -> str:
         """Export the window as an image.
@@ -139,7 +145,7 @@ class Assistant:
             image_type: An ImageType object.
             image_scale: An integer value as a scale factor. Defaults to 1.
             image_width: An integer value that sets the width of image in pixels.
-                Defaults to 2200.
+                Defaults to 2000.
             image_height: An integer value that sets the height of image in pixels.
                 Defaults to 2000.
             color_range: A vtk lookup table object which can be obtained
