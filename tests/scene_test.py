@@ -11,6 +11,20 @@ from honeybee_vtk.camera import Camera
 from honeybee_vtk.actor import Actor
 
 
+def test_class_initialization():
+    """Test if the attributes of the class are set correctly."""
+
+    scene = Scene(background_color=(255, 255, 255))
+
+    # Check that decimal values not allowed in background color
+    with pytest.raises(ValueError):
+        scene = Scene(background_color=(123.24, 23, 255))
+
+    # Check default values for cameras and actors
+    assert not scene._cameras
+    assert not scene._actors
+
+    
 def test_write_gltf():
     """Test if a gltf file can be successfully written."""
 
@@ -45,12 +59,12 @@ def test_write_gltf():
     scene.export_gltf(target_folder, name='daylight-factor')
     gltf_path = os.path.join(target_folder, 'daylight-factor.gltf')
     assert os.path.isfile(gltf_path)
+
     shutil.rmtree(target_folder)
 
 
 def test_image_types():
     """Tests all the image types."""
-
     assert ImageTypes.png.value == 'png'
     assert ImageTypes.jpg.value == 'jpg'
     assert ImageTypes.ps.value == 'ps'
@@ -59,18 +73,7 @@ def test_image_types():
     assert ImageTypes.pnm.value == 'pnm'
 
 
-def test_class_initialization():
-    """Test if the attributes of the class are set correctly."""
 
-    scene = Scene(background_color=(255, 255, 255))
-
-    # Check that decimal values not allowed in background color
-    with pytest.raises(ValueError):
-        scene = Scene(background_color=(123.24, 23, 255))
-
-    # Check default values for cameras and actors
-    assert not scene._cameras
-    assert not scene._actors
 
 
 def test_actors_in_scene():
@@ -92,7 +95,7 @@ def test_actors_in_scene():
     scene = Scene()
     scene.add_actors(actors)
     scene.add_cameras(camera)
-    assert len(scene.actors.values()) == 6
+    assert len(scene.actors) == 6
 
 
 def test_scene_camera():
