@@ -32,6 +32,14 @@ def export():
     help='choose the type of image file.', show_default=True
 )
 @click.option(
+    '--image-width', '-iw', type=int, default=2000, help='Width of image in pixels.',
+    show_default=True
+)
+@click.option(
+    '--image-height', '-ih', type=int, default=2000, help='Height of image in pixels.',
+    show_default=True
+)
+@click.option(
     '--background-color', '-bc', type=(int, int, int), default=(255, 255, 255),
     help='background color for images', show_default=True
 )
@@ -51,8 +59,8 @@ def export():
     default='shaded', help='Set display mode for the Sensorgrids.', show_default=True
 )
 def export(
-        hbjson_file, name, folder, image_type, background_color, display_mode_model,
-        grid_options, display_mode_grid):
+        hbjson_file, name, folder, image_type, image_width, image_height,
+        background_color, display_mode_model, grid_options, display_mode_grid):
     """Export images from an HBJSON file.
 
     \b
@@ -124,7 +132,10 @@ def export(
         scene = Scene(background_color=background_color)
         scene.add_actors(actors)
         scene.add_cameras(cameras)
-        output = scene.export_images(folder=folder, name=name, image_type=image_type)
+
+        output = scene.export_images(
+            folder=folder, name=name, image_type=image_type,
+            image_width=image_width, image_height=image_height)
 
     except Exception as e:
         raise ClickException(f'Translation failed:\n{e}')
