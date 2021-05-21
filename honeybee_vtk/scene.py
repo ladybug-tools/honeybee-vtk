@@ -72,15 +72,8 @@ class Scene:
         """
         if isinstance(val, list) and _validate_input(val, Camera):
             self._cameras.extend(val)
-            for v in val:
-                self._assistants.append(Assistant(
-                    background_color=self._background_color, camera=v,
-                    actors=self._actors))
         elif isinstance(val, Camera):
             self._cameras.append(val)
-            self._assistants.append(Assistant(
-                background_color=self._background_color, camera=val,
-                actors=self._actors))
         else:
             raise ValueError(
                 'Either a list of Camera objects or a Camera object is expected.'
@@ -126,6 +119,22 @@ class Scene:
                 f' values {valid_names}.'
             )
 
+    def update_scene(self):
+        """Update the scene.
+
+        This method will use the latest cameras in the scene and actors to create
+        assistant object.
+        """
+        if self._cameras and self._actors:
+            for camera in self._cameras:
+                self._assistants = [Assistant(
+                            background_color=self._background_color, camera=camera,
+                            actors=self._actors) for camera in self._cameras]
+        else:
+            raise ValueError(
+                'Add cameras and actors to the scene first.'
+            )
+
     def export_images(
             self, folder: str, name: str = 'Camera',
             image_type: ImageTypes = ImageTypes.png, *,
@@ -160,6 +169,7 @@ class Scene:
         Returns:
             A list of text strings representing the paths to the exported images.
         """
+        self.update_scene()
 
         return [assistant._export_image(
             folder=folder, name=name + '_' + str(count), image_type=image_type,
@@ -177,6 +187,8 @@ class Scene:
         Returns:
             A text string representing the path to the gltf file.
         """
+        self.update_scene()
+
         if self._assistants:
             return self._assistants[0]._export_gltf(folder=folder, name=name)
         else:
