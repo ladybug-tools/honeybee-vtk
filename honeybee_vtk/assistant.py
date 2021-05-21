@@ -1,9 +1,8 @@
 """An assistant class to the Scene object."""
 
 import vtk
-import warnings
 import pathlib
-from typing import List
+from typing import List, Tuple
 from .actor import Actor
 from .camera import Camera
 from .types import ImageTypes
@@ -18,12 +17,12 @@ class Assistant:
 
     Args:
         background_color: A tuple of three integers that represent RGB values of the
-            color that you'd like to set as the background color. Defaults to gray.
+            color that you'd like to set as the background color.
         camera: A Camera object.
-        actors: A list of Actor objects. Defaults to None.
+        actors: A dictionary of actors from a Scene object
     """
-    def __init__(self, background_color, camera: Camera,
-                 actors: List[Actor] = None) -> None:
+    def __init__(self, background_color: Tuple[int, int, int], camera: Camera,
+                 actors: dict) -> None:
 
         self._background_color = background_color
         self._actors = actors
@@ -50,11 +49,8 @@ class Assistant:
         renderer = vtk.vtkRenderer()
 
         # Add actors to the window
-        if self._actors:
-            for actor in self._actors.values():
-                renderer.AddActor(actor.to_vtk())
-        else:
-            warnings.warn('Actors should be added to this scene.')
+        for actor in self._actors.values():
+            renderer.AddActor(actor.to_vtk())
 
         # add renderer to rendering window
         window = vtk.vtkRenderWindow()
@@ -72,14 +68,8 @@ class Assistant:
         if self._camera.type == 'v':
             renderer.SetActiveCamera(self._camera.to_vtk())
         else:
-            if self._actors:
-                bounds = Actor.get_bounds(self._actors.values())
-                renderer.SetActiveCamera(self._camera.to_vtk(bounds=bounds))
-            else:
-                warnings.warn(
-                    'Parallel projection is requested in one of the cameras. For this,'
-                    ' actors are required to be added to the scene.'
-                )
+            bounds = Actor.get_bounds(self._actors.values())
+            renderer.SetActiveCamera(self._camera.to_vtk(bounds=bounds))
 
         # the order is from outside to inside
         self._interactor, self._window, self._renderer = (interactor, window, renderer)
