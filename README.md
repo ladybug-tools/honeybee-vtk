@@ -26,7 +26,7 @@ pip install honeybee-vtk
 ```python
 import honeybee_vtk
 ```
-## Usage
+## Translate a HBJSON file to an HTML or vtkjs file
 ```console
 Usage: honeybee-vtk translate [OPTIONS] HBJSON_FILE
 
@@ -51,6 +51,43 @@ Options:
 
   -sh, --show-html, --show        Open the generated HTML file in a browser.
                                   [default: False]
+
+  --help                          Show this message and exit.
+```
+
+## Export images from the radiance views in a HBJSON file
+```console
+Usage: honeybee-vtk export-images [OPTIONS] HBJSON_FILE
+
+  Export images from an radiance views in an HBJSON file.
+
+  Args:
+      hbjson-file: Path to an HBJSON file.
+
+Options:
+  -n, --name TEXT                 Name of image files.  [default: Camera]
+  -f, --folder DIRECTORY          Path to target folder.  [default: .]
+  -it, --image-type [png|jpg|ps|tiff|bmp|pnm]
+                                  choose the type of image file.  [default:
+                                  jpg]
+
+  -iw, --image-width INTEGER      Width of image in pixels.  [default: 2000]
+  -ih, --image-height INTEGER     Height of image in pixels.  [default: 2000]
+  -bc, --background-color <INTEGER INTEGER INTEGER>...
+                                  background color for images  [default: 255,
+                                  255, 255]
+
+  -dmm, --display-mode-model [shaded|surface|surfacewithedges|wireframe|points]
+                                  Set display mode for the model.  [default:
+                                  shaded]
+
+  -go, --grid-options [ignore|points|meshes]
+                                  Export sensor grids as either points or
+                                  meshes.  [default: ignore]
+
+  -dmg, --display-mode-grid [shaded|surface|surfacewithedges|wireframe|points]
+                                  Set display mode for the Sensorgrids.
+                                  [default: shaded]
 
   --help                          Show this message and exit.
 ```
