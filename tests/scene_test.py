@@ -1,16 +1,17 @@
 """Unit test for scene module."""
 
-from honeybee_vtk.assistant import Assistant
+
 import pytest
 import pathlib
 import os
 import shutil
 import vtk
 from honeybee_vtk.model import Model
-from honeybee_vtk.scene import Scene, ImageTypes
+from honeybee_vtk.scene import Scene
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 from honeybee_vtk.camera import Camera
 from honeybee_vtk.actor import Actor
+from honeybee_vtk.types import ImageTypes
 
 
 def test_class_initialization():
@@ -48,10 +49,6 @@ def test_properties():
     for actor in scene.actors:
         assert isinstance(actor, str)
 
-    assert len(scene.assistants) == 6
-    for assistant in scene.assistants:
-        assert isinstance(assistant, Assistant)
-
 
 def test_scene_camera():
     "Test a scene constructed with a camera object."
@@ -78,9 +75,7 @@ def test_add_cameras_from_model():
     cameras.append(camera)
 
     scene = Scene(background_color=(255, 255, 255))
-
-    with pytest.warns(Warning):
-        scene.add_cameras(cameras)
+    scene.add_cameras(cameras)
     assert len(scene.cameras) == 7
 
 
