@@ -20,7 +20,7 @@ setuptools.setup(
     install_requires=requirements,
     include_package_data=True,
     entry_points={
-        "console_scripts": ["honeybee-vtk = honeybee_vtk.cli:main"]
+        "console_scripts": ["honeybee-vtk = honeybee_vtk.cli:vtk"]
     },
     classifiers=[
         "Programming Language :: Python :: 3.7",
