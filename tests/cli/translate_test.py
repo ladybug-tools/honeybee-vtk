@@ -13,7 +13,7 @@ def test_translate_recipe():
     file_path = './tests/assets/unnamed.hbjson' 
     target_folder = './tests/target'
 
-    # Optional arguments are deliberately capitalized or uppercased to testing
+    # Optional arguments are deliberately capitalized or uppercased for testing
     result = runner.invoke(translate, [
         file_path, '--name', 'Model', '--folder', target_folder, '--file-type',
         'HTML', '--display-mode', 'Shaded', '--grid-options', 'MESHES'])
@@ -23,7 +23,7 @@ def test_translate_recipe():
     assert os.path.isfile(html_path)
     nukedir(target_folder, True)
 
-    # Optional arguments are deliberately capitalized or uppercased to testing
+    # Optional arguments are deliberately capitalized or uppercased for testing
     result = runner.invoke(translate, [
         file_path, '--name', 'Model', '--folder', target_folder, '--file-type',
         'VTKJS', '--display-mode', 'Shaded', '--grid-options', 'Points'])
