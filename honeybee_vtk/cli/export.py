@@ -61,7 +61,7 @@ def export():
 def export(
         hbjson_file, name, folder, image_type, image_width, image_height,
         background_color, display_mode_model, grid_options, display_mode_grid):
-    """Export images from an HBJSON file.
+    """Export images from radiance views in a HBJSON file.
 
     \b
     Args:
