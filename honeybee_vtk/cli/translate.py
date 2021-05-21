@@ -10,12 +10,12 @@ from honeybee_vtk.model import Model
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 
 @click.group()
-def main():
+def translate():
     """Honeybee VTK commands entry point."""
     pass
 
 
-@main.command('translate')
+@translate.command('translate')
 @click.argument('hbjson-file')
 @click.option(
     '--name', '-n', help='Name of the output file.', default="model", show_default=True
@@ -43,7 +43,7 @@ def main():
     '--show-html', '--show', '-sh', is_flag=True, default=False,
     help='Open the generated HTML file in a browser.', show_default=True
 )
-def translate_recipe(
+def translate(
         hbjson_file, name, folder, file_type, display_mode, grid_options, show_html):
     """Translate a HBJSON file to an HTML or a vtkjs file.
 
@@ -89,3 +89,5 @@ def translate_recipe(
     else:
         print(f'Success: {output}', file=sys.stderr)
         return sys.exit(0)
+
+
