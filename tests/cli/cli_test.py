@@ -3,7 +3,7 @@
 import pytest
 import os
 from click.testing import CliRunner
-from honeybee_vtk.cli import translate_recipe
+from honeybee_vtk.cli.translate import translate
 from ladybug.futil import nukedir
 
 
@@ -14,7 +14,7 @@ def test_translate_recipe():
     target_folder = './tests/target'
 
     # Optional arguments are deliberately capitalized or uppercased to testing
-    result = runner.invoke(translate_recipe, [
+    result = runner.invoke(translate, [
         file_path, '--name', 'Model', '--folder', target_folder, '--file-type',
         'HTML', '--display-mode', 'Shaded', '--grid-options', 'MESHES'])
 
@@ -24,7 +24,7 @@ def test_translate_recipe():
     nukedir(target_folder, True)
 
     # Optional arguments are deliberately capitalized or uppercased to testing
-    result = runner.invoke(translate_recipe, [
+    result = runner.invoke(translate, [
         file_path, '--name', 'Model', '--folder', target_folder, '--file-type',
         'VTKJS', '--display-mode', 'Shaded', '--grid-options', 'Points'])
 
