@@ -10,6 +10,12 @@ updates:
   - dependency-name: coveralls
     versions:
     - 3.0.0
+  - dependency-name: Sphinx
+    versions:
+    - 3.5.4
+  - dependency-name: Sphinx-click
+    versions:
+    - 3.0.0
   commit-message:
     prefix: fix
     prefix-development: chore
