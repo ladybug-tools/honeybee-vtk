@@ -51,7 +51,7 @@ class Scene:
 
     @property
     def actors(self) -> List[str]:
-        """A dictionary of honeybee-vtk actor name: vtk actor structure."""
+        """A list of actor names in the scene."""
         return self._actors.keys()
 
     @property
