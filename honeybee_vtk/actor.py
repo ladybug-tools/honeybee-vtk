@@ -145,3 +145,21 @@ class Actor:
             points.extend(min_max)
 
         return points
+
+    @staticmethod
+    def get_centroid(actors: List[Actor]) -> Point3D:
+        """Get Centroid of actors.
+
+        Args:
+            actors: A list of honeybee-vtk actor objects.
+
+        Returns:
+            Centroid as a Point3D object.
+        """
+        points = Actor.get_bounds(actors)
+
+        x = sum([point.x for point in points]) / len(points)
+        y = sum([point.y for point in points]) / len(points)
+        z = sum([point.z for point in points]) / len(points)
+
+        return (x, y, z)
