@@ -126,10 +126,9 @@ class Scene:
         assistant object.
         """
         if self._cameras and self._actors:
-            for camera in self._cameras:
-                self._assistants = [Assistant(
-                            background_color=self._background_color, camera=camera,
-                            actors=self._actors) for camera in self._cameras]
+            self._assistants = [Assistant(
+                        background_color=self._background_color, camera=camera,
+                        actors=self._actors) for camera in self._cameras]
         else:
             raise ValueError(
                 'Add cameras and actors to the scene first.'
