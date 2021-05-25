@@ -19,7 +19,7 @@ def test_to_vtk():
     assert camera.direction.value == (0, 0, -1)
     assert camera.up_vector.value == (0, 1, 0)
     assert camera.h_size.value == 60
-    assert camera.v_size.value == 60
+    assert camera.v_size.value == 30
     assert camera.type.value == 'v'
     assert camera.flat_view_direction[(0, 0, -1)] == [2, '+']
     assert camera.flat_view_direction[(0, 0, 1)] == [2, '-']
