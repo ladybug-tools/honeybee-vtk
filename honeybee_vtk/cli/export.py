@@ -3,7 +3,6 @@
 import pathlib
 import sys
 import click
-from click import types
 from click.exceptions import ClickException
 
 from honeybee_vtk.actor import Actor
@@ -12,7 +11,6 @@ from honeybee_vtk.camera import Camera
 from honeybee_vtk.model import Model
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 from honeybee_vtk.types import ImageTypes
-from honeybee_vtk._helper import get_adjuested_centroid
 
 
 @click.group()
