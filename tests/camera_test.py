@@ -15,7 +15,7 @@ def test_to_vtk():
     # Initialize a camera object and assess all the default properties
     camera = Camera()
     assert camera.identifier[0:6] == 'camera'
-    assert camera.position.value == (0, 0, 50)
+    assert camera.position.value == (0, 0, 100)
     assert camera.direction.value == (0, 0, -1)
     assert camera.up_vector.value == (0, 1, 0)
     assert camera.h_size.value == 60
