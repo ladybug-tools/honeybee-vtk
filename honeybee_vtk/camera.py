@@ -38,7 +38,7 @@ class Camera(View):
             direction: Tuple[float, float, float] = (0, 0, -1),
             up_vector: Tuple[float, float, float] = (0, 1, 0),
             h_size: int = 60,
-            v_size: int = 60,
+            v_size: int = 30,
             type: str = 'v') -> None:
 
         super().__init__(
