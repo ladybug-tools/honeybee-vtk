@@ -2,7 +2,7 @@
 
 import vtk
 import pathlib
-from typing import List, Tuple
+from typing import Tuple
 from .actor import Actor
 from .camera import Camera
 from .types import ImageTypes
