@@ -1,15 +1,19 @@
-from honeybee_vtk.actor import Actor
-from honeybee_vtk.scene import Scene
-from honeybee_vtk.camera import Camera
+
 
 import pathlib
 import sys
 import click
+from click import types
 from click.exceptions import ClickException
 
+from honeybee_vtk.actor import Actor
+from honeybee_vtk.scene import Scene
+from honeybee_vtk.camera import Camera
 from honeybee_vtk.model import Model
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 from honeybee_vtk.types import ImageTypes
+from honeybee_vtk._helper import get_adjuested_centroid
+
 
 @click.group()
 def export():
@@ -122,7 +126,9 @@ def export(
 
         # Set a default camera if there are not cameras in the model
         if not model.cameras:
-            camera = Camera()
+            # Use the centroid of the model for the camera position
+            actors = Actor.from_model(model=model)
+            camera = Camera(position=Actor.get_centroid(actors), type='l')
             cameras = [camera]
         else:
             cameras = model.cameras
