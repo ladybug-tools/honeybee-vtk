@@ -34,7 +34,7 @@ def export():
     help='choose the type of image file.', show_default=True
 )
 @click.option(
-    '--image-width', '-iw', type=int, default=2000, help='Width of image in pixels.',
+    '--image-width', '-iw', type=int, default=2500, help='Width of image in pixels.',
     show_default=True
 )
 @click.option(
@@ -122,20 +122,21 @@ def export(
         elif display_mode_model == 'points':
             model.sensor_grids.display_mode = DisplayMode.Points
 
-        # Set a default camera if there are not cameras in the model
-        if not model.cameras:
-            # Use the centroid of the model for the camera position
-            actors = Actor.from_model(model=model)
-            camera = Camera(position=Actor.get_centroid(actors), type='l')
-            cameras = [camera]
-        else:
-            cameras = model.cameras
-
         actors = Actor.from_model(model)
 
         scene = Scene(background_color=background_color)
         scene.add_actors(actors)
-        scene.add_cameras(cameras)
+
+        # Set a default camera if there are not cameras in the model
+        if not model.cameras:
+            # Use the centroid of the model for the camera position
+            actors = Actor.from_model(model=model)
+            position = Actor.get_centroid(actors)
+            camera = Camera(position=position, type='l')
+            scene.add_cameras(camera)
+        else:
+            cameras = model.cameras
+            scene.add_cameras(cameras)
 
         output = scene.export_images(
             folder=folder, name=name, image_type=image_type,
