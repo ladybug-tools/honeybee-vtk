@@ -4,9 +4,12 @@ import vtk
 from typing import Tuple
 from ladybug.color import Colorset
 
+COLORSET = Colorset()
+
 
 class LegendParameters:
-    def __init__(self, colors: Colorset, range: Tuple[int, int]) -> None:
+    def __init__(self, colors: Colorset = COLORSET.ecotect(),
+        range: Tuple[int, int] = (0, 100)) -> None:
         self._colors = colors
         self._range = range
 
