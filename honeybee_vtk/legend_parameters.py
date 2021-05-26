@@ -9,29 +9,9 @@ COLORSET = Colorset()
 
 class LegendParameters:
     def __init__(self, colors: Colorset = COLORSET.ecotect(),
-        range: Tuple[int, int] = (0, 100)) -> None:
+                 range: Tuple[int, int] = (0, 100)) -> None:
         self._colors = colors
         self._range = range
-
-    def get_lookuptable(self) -> vtk.vtkLookupTable:
-        """Get a vtk lookuptable."""
-        minimum, maximum = self._range
-        color_values = self._colors
-        lut = vtk.vtkLookupTable()
-        lut.SetRange(minimum, maximum)
-        lut.SetRampToLinear()
-        lut.SetValueRange(minimum, maximum)
-        lut.SetHueRange(0, 0)
-        lut.SetSaturationRange(0, 0)
-
-        lut.SetNumberOfTableValues(len(color_values))
-        for count, color in enumerate(color_values):
-            lut.SetTableValue(
-                count, color.r / 255, color.g / 255, color.b / 255, color.a / 255
-            )
-        lut.Build()
-        lut.SetNanColor(1, 0, 0, 1)
-        return lut
 
     def get_legend_widget(
             self, interactor: vtk.vtkRenderWindowInteractor) -> vtk.vtkScalarBarWidget():
