@@ -9,13 +9,12 @@ https://lorensen.github.io/VTKExamples/site/Cxx/PolyData/FieldData/
 
 """
 import enum
-from typing import Dict, Union, List
 import pathlib
-
 import vtk
 
+from typing import Dict, Union, List, Tuple
 from ladybug.color import Color, Colorset
-
+from .legend_parameters import LegendParameters
 from .vtkjs.schema import DataSetProperty, DataSet, DisplayMode, DataSetMapper
 
 
@@ -39,31 +38,15 @@ class ImageTypes(enum.Enum):
 
 class DataFieldInfo:
     """Information for a data field."""
-    def __init__(self, name='default', range=None, colors=None, per_face=True) -> None:
+    def __init__(self, name: str='default', range: Tuple[int, int]=None,
+        colors: Colorset=None, per_face: bool=True) -> None:
         self.name = name
-        self.data_range = range or (0, 100)
-        self.colors = colors or COLORSET.ecotect()
+        self._legend = LegendParameters(colors, range)
         self.per_face = per_face
 
-    def color_range(self):
-        """A VTK lookup table that acts as a color range."""
-        minimum, maximum = self.data_range
-        color_values = self.colors
-        lut = vtk.vtkLookupTable()
-        lut.SetRange(minimum, maximum)
-        lut.SetRampToLinear()
-        lut.SetValueRange(minimum, maximum)
-        lut.SetHueRange(0, 0)
-        lut.SetSaturationRange(0, 0)
-
-        lut.SetNumberOfTableValues(len(color_values))
-        for count, color in enumerate(color_values):
-            lut.SetTableValue(
-                count, color.r / 255, color.g / 255, color.b / 255, color.a / 255
-            )
-        lut.Build()
-        lut.SetNanColor(1, 0, 0, 1)
-        return lut
+    @property
+    def legend(self):
+        return self._legend
 
 
 class PolyData(vtk.vtkPolyData):
