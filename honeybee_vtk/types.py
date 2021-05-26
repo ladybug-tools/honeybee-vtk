@@ -66,6 +66,26 @@ class DataFieldInfo:
         """Legend associated with the DataFieldInfo object."""
         return self._legend_param
 
+    def get_lookuptable(self) -> vtk.vtkLookupTable:
+        """Get a vtk lookuptable."""
+        minimum, maximum = self.data_range
+        color_values = self.colors
+        lut = vtk.vtkLookupTable()
+        lut.SetRange(minimum, maximum)
+        lut.SetRampToLinear()
+        lut.SetValueRange(minimum, maximum)
+        lut.SetHueRange(0, 0)
+        lut.SetSaturationRange(0, 0)
+
+        lut.SetNumberOfTableValues(len(color_values))
+        for count, color in enumerate(color_values):
+            lut.SetTableValue(
+                count, color.r / 255, color.g / 255, color.b / 255, color.a / 255
+            )
+        lut.Build()
+        lut.SetNanColor(1, 0, 0, 1)
+        return lut
+
 
 class PolyData(vtk.vtkPolyData):
     """A thin wrapper around vtk.vtkPolyData.
@@ -104,6 +124,8 @@ class PolyData(vtk.vtkPolyData):
             data: A list of values. The length of the data should match the length of
                 DataCells or DataPoints in Polydata.
             name: Name of data (e.g. Useful Daylight Autonomy.)
+            add_legend: A boolean to indicate if legend for this DataFieldInfo shall be
+            added. Defaults to False.
             cell: A Boolean to indicate if the data is per cell or per point. In
                 most cases except for sensor points that are loaded as sensors the data
                 are provided per cell.
