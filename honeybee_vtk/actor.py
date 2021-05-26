@@ -48,6 +48,13 @@ class Actor:
         """Color to be used if actors are to be painted in a monochrome color."""
         return self._monochrome_color
 
+    @property
+    def legends(self):
+        """Legends to be added for this actor."""
+        legends = [info.legend for info in self._modeldataset.fields_info.values()
+                   if info.legend]
+        return legends
+
     def get_monochrome(self, monochrome_color: Tuple[float, float, float]) -> None:
         """Get actors in monochrome color.
 
@@ -86,9 +93,10 @@ class Actor:
             mapper.SetColorModeToMapScalars()
             mapper.SetScalarModeToUsePointData()
             mapper.SetScalarVisibility(True)
+            print(field_info.data_range)
             range_min, range_max = field_info.data_range
             mapper.SetScalarRange(range_min, range_max)
-            mapper.SetLookupTable(field_info.color_range())
+            mapper.SetLookupTable(field_info.get_lookuptable())
             mapper.Update()
 
         actor = vtk.vtkActor()

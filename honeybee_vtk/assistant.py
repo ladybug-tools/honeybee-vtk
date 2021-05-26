@@ -52,6 +52,24 @@ class Assistant:
         for actor in self._actors.values():
             renderer.AddActor(actor.to_vtk())
 
+        lut = vtk.vtkLookupTable()
+
+        scalar_bar = vtk.vtkScalarBarActor()
+        scalar_bar.SetOrientationToVertical()
+        scalar_bar.SetLookupTable(lut)
+
+        scalar_bar1 = vtk.vtkScalarBarActor()
+        scalar_bar1.SetOrientation(45)
+        scalar_bar1.SetPosition(0.1, 0.2)
+        scalar_bar1.SetHeight(0.1)
+        scalar_bar1.SetOrientationToHorizontal()
+        scalar_bar1.SetLookupTable(lut)
+
+        renderer.AddActor(scalar_bar)
+        renderer.AddActor(scalar_bar1)
+
+
+
         # add renderer to rendering window
         window = vtk.vtkRenderWindow()
         window.AddRenderer(renderer)
@@ -146,21 +164,11 @@ class Assistant:
                 background color. Defaults to False.
             show: A boolean value to decide if the the render window should pop up.
                 Defaults to False.
+            legends: Legends to add to the image.
 
         Returns:
             A text string representing the path to the image.
         """
-
-        if color_range:
-            scalar_bar = vtk.vtkScalarBarActor()
-            scalar_bar.SetOrientationToHorizontal()
-            scalar_bar.SetLookupTable(color_range)
-
-            # create the scalar_bar_widget
-            legend = vtk.vtkScalarBarWidget()
-            legend.SetInteractor(self._interactor)
-            legend.SetScalarBarActor(scalar_bar)
-            legend.On()
 
         # render window
         if not show:
@@ -194,9 +202,6 @@ class Assistant:
         writer.SetFileName(image_path.as_posix())
         writer.SetInputConnection(window_to_image_filter.GetOutputPort())
         writer.Write()
-
-        if color_range:
-            legend.Off()
 
         return image_path.as_posix()
 
