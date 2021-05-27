@@ -8,27 +8,25 @@ For that purpose we should start to look into FieldData:
 https://lorensen.github.io/VTKExamples/site/Cxx/PolyData/FieldData/
 
 """
-import enum
+
 import pathlib
 import vtk
 
+from enum import Enum
 from typing import Dict, Union, List, Tuple
 from ladybug.color import Color, Colorset
-from .legend_parameters import LegendParameters
+from .legend import Legend
 from .vtkjs.schema import DataSetProperty, DataSet, DisplayMode, DataSetMapper
 
 
-class VTKWriters(enum.Enum):
+class VTKWriters(Enum):
     """Vtk writers."""
     legacy = 'vtk'
     ascii = 'vtp'
     binary = 'vtp'
 
 
-COLORSET = Colorset()
-
-
-class ImageTypes(enum.Enum):
+class ImageTypes(Enum):
     """Supported image types."""
     png = 'png'
     jpg = 'jpg'
@@ -46,8 +44,6 @@ class DataFieldInfo:
     theme to be used in visualization of the data.
 
     Args:
-        add_legend: A boolean to indicate if legend for this DataFieldInfo shall be
-            added. Defaults to False.
         name: A string representing the name of for data.
         range: A tuple of min, max values. Defaults to (0, 100).
         colors: A Ladybug Colorset object. Defaults to Ecotect colorset.
@@ -55,45 +51,18 @@ class DataFieldInfo:
             most cases except for sensor points that are loaded as sensors the data
             are provided per face.
     """
-    def __init__(self, add_legend,
-                 name: str = 'default',
-                 range: Tuple[int, int] = (0, 100),
-                 colors: Colorset = COLORSET.ecotect(),
-                 per_face: bool = True, ) -> None:
+    def __init__(self, name: str = 'default', range: Tuple[int, int] = (0, 100),
+                 color_set: Colorset = Colorset.ecotect(), per_face: bool = True
+                 ) -> None:
 
         self.name = name
-        self.data_range = range
         self.per_face = per_face
-        self.colors = colors
-        if add_legend:
-            self._legend = LegendParameters(self.colors, self.data_range)
-        else:
-            self._legend = None
+        self._legend = Legend(name=name, color_set=color_set, range=range)
 
     @property
-    def legend(self):
+    def legend(self) -> Legend:
         """Legend associated with the DataFieldInfo object."""
         return self._legend
-
-    def get_lookuptable(self) -> vtk.vtkLookupTable:
-        """Get a vtk lookuptable."""
-        minimum, maximum = self.data_range
-        color_values = self.colors
-        lut = vtk.vtkLookupTable()
-        lut.SetRange(minimum, maximum)
-        lut.SetRampToLinear()
-        lut.SetValueRange(minimum, maximum)
-        lut.SetHueRange(0, 0)
-        lut.SetSaturationRange(0, 0)
-
-        lut.SetNumberOfTableValues(len(color_values))
-        for count, color in enumerate(color_values):
-            lut.SetTableValue(
-                count, color.r / 255, color.g / 255, color.b / 255, color.a / 255
-            )
-        lut.Build()
-        lut.SetNanColor(1, 0, 0, 1)
-        return lut
 
 
 class PolyData(vtk.vtkPolyData):
@@ -122,7 +91,7 @@ class PolyData(vtk.vtkPolyData):
         """Get data fields for this Polydata."""
         return self._fields
 
-    def add_data(self, data: List, name, add_legend, *, cell=True, color_set=None,
+    def add_data(self, data: List, name, *, cell=True, color_set=None,
                  data_range=None):
         """Add a list of data to a vtkPolyData.
 
@@ -132,8 +101,6 @@ class PolyData(vtk.vtkPolyData):
             data: A list of values. The length of the data should match the length of
                 DataCells or DataPoints in Polydata.
             name: Name of data (e.g. Useful Daylight Autonomy.)
-            add_legend: A boolean to indicate if legend for this DataFieldInfo shall be
-            added. Defaults to False.
             cell: A Boolean to indicate if the data is per cell or per point. In
                 most cases except for sensor points that are loaded as sensors the data
                 are provided per cell.
@@ -175,9 +142,9 @@ class PolyData(vtk.vtkPolyData):
         if not data_range:
             data_range = tuple(values.GetRange())
         if not color_set:
-            color_set = COLORSET.ecotect()
+            color_set = Colorset.ecotect()
 
-        self._fields[name] = DataFieldInfo(name, add_legend, data_range, color_set, cell)
+        self._fields[name] = DataFieldInfo(name, data_range, color_set, cell)
 
     def color_by(self, name: str, cell=True) -> None:
         """Set the name for active data that should be used to color PolyData."""
@@ -306,13 +273,12 @@ class ModelDataSet:
         if not info:
             return DataFieldInfo()
         if not color_by:
-            return next(info.values())
+            return next(iter(info.values()))
         return info[color_by]
 
     def add_data_fields(
         self, data: List[List], name: str, per_face: bool = True, color_set=None,
-        data_range=None, add_legend: bool = False
-            ):
+        data_range=None):
         """Add data fields to PolyData objects in this dataset.
 
         Use this method to add data like temperature or illuminance values to PolyData
@@ -329,9 +295,6 @@ class ModelDataSet:
                 are provided per face.
             color_set: A Ladybug Tools color set. Use COLORSET to set colorset for data.
             data_range: A list with two values for minimum and maximum values for legend.
-            add_legend: A boolean to indicate if legend for this DataFieldInfo shall be
-            added. Defaults to False.
-
         """
         assert len(self.data) == len(data), \
             f'Length of input data {len(data)} does not match the length of polydata ' \
@@ -339,9 +302,7 @@ class ModelDataSet:
 
         for count, d in enumerate(data):
             self.data[count].add_data(
-                d, name=name, cell=per_face, color_set=color_set, data_range=data_range,
-                add_legend=add_legend
-            )
+                d, name=name, cell=per_face, color_set=color_set, data_range=data_range)
 
     @property
     def is_empty(self):
