@@ -20,9 +20,10 @@ class Assistant:
             color that you'd like to set as the background color.
         camera: A Camera object.
         actors: A dictionary of actors from a Scene object
+        legends: A list of legends to be added to the scene
     """
     def __init__(self, background_color: Tuple[int, int, int], camera: Camera,
-                 actors: dict) -> None:
+                 actors: dict, legends: list) -> None:
 
         self._background_color = background_color
         self._actors = actors
@@ -30,6 +31,7 @@ class Assistant:
         self._interactor = None
         self._window = None
         self._renderer = None
+        self._legends = legends
         self._create_window()
 
     def _create_window(self) -> None:
@@ -52,23 +54,10 @@ class Assistant:
         for actor in self._actors.values():
             renderer.AddActor(actor.to_vtk())
 
-        lut = vtk.vtkLookupTable()
-
-        scalar_bar = vtk.vtkScalarBarActor()
-        scalar_bar.SetOrientationToVertical()
-        scalar_bar.SetLookupTable(lut)
-
-        scalar_bar1 = vtk.vtkScalarBarActor()
-        scalar_bar1.SetOrientation(45)
-        scalar_bar1.SetPosition(0.1, 0.2)
-        scalar_bar1.SetHeight(0.1)
-        scalar_bar1.SetOrientationToHorizontal()
-        scalar_bar1.SetLookupTable(lut)
-
-        renderer.AddActor(scalar_bar)
-        renderer.AddActor(scalar_bar1)
-
-
+        # Add legends to the window
+        if self._legends:
+            for legend in self._legends:
+                renderer.AddActor(legend.get_scalarbar())
 
         # add renderer to rendering window
         window = vtk.vtkRenderWindow()
