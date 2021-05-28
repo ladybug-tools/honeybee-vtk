@@ -7,6 +7,7 @@ from .model import Model, ModelDataSet, DisplayMode
 from .types import JoinedPolyData
 from ._helper import _validate_input
 from ladybug_geometry.geometry3d.pointvector import Point3D
+from .legend import Legend
 
 
 class Actor:
@@ -49,11 +50,10 @@ class Actor:
         return self._monochrome_color
 
     @property
-    def legends(self):
-        """Legends to be added for this actor."""
-        legends = [info.legend for info in self._modeldataset.fields_info.values()
-                   if info.legend]
-        return legends
+    def legends(self) -> List[Legend]:
+        """Legends found in the DataFieldInfo objects of ModelDataSet of this actor."""
+        return [info.legend for info in self._modeldataset.fields_info.values()
+                if info.legend]
 
     def get_monochrome(self, monochrome_color: Tuple[float, float, float]) -> None:
         """Get actors in monochrome color.
@@ -93,10 +93,10 @@ class Actor:
             mapper.SetColorModeToMapScalars()
             mapper.SetScalarModeToUsePointData()
             mapper.SetScalarVisibility(True)
-            print(field_info.data_range)
-            range_min, range_max = field_info.data_range
+
+            range_min, range_max = field_info.legend.range
             mapper.SetScalarRange(range_min, range_max)
-            mapper.SetLookupTable(field_info.get_lookuptable())
+            mapper.SetLookupTable(field_info.legend.get_lookuptable())
             mapper.Update()
 
         actor = vtk.vtkActor()
@@ -158,6 +158,9 @@ class Actor:
     def get_centroid(actors: List[Actor]) -> Point3D:
         """Get Centroid of actors.
 
+        This method is used in CLI to create a default Top view camera for models that
+        don't have any radiance views.
+
         Args:
             actors: A list of honeybee-vtk actor objects.
 
@@ -171,3 +174,4 @@ class Actor:
         z = sum([point.z for point in points]) / len(points)
 
         return (x, y, z)
+        
