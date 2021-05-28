@@ -9,7 +9,7 @@ class Legend:
     def __init__(self, name, color_set, range: Tuple[int, int] = (0, 100),
                  show_legend: bool = False, orientation: str = 'vertical',
                  location: Tuple[float, float] = (0.0, 0.0)
-        ) -> None:
+                ) -> None:
 
         self._name = name
         self._colors = color_set
@@ -32,7 +32,7 @@ class Legend:
         return self._show_legend
 
     @show_legend.setter
-    def show_legend(self, val):
+    def show_legend(self, val) -> None:
         if isinstance(val, bool):
             self._show_legend = val
         else:
