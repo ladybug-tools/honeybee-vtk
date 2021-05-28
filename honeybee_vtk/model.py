@@ -203,16 +203,21 @@ class Model(object):
 
     def _convert_model(self, model: HBModel) -> None:
         """An internal method to convert the objects on class initiation."""
+
         for room in model.rooms:
             objects = convert_room(room)
             self._add_objects(self.separate_by_type(objects))
+
         for face in model.faces:
             objects = convert_face(face)
             self._add_objects(self.separate_by_type(objects))
+
         for face in model.orphaned_shades:
             self._shades.data.append(convert_shade(face))
+
         for face in model.orphaned_apertures:
             self._apertures.data.extend(convert_aperture(face))
+
         for face in model.orphaned_faces:
             objects = convert_face(face)
             self._add_objects(self.separate_by_type(objects))
