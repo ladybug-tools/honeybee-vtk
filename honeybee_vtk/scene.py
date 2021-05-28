@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 import vtk
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union, Dict
 from ._helper import _validate_input
 from .camera import Camera
 from .actor import Actor
 from .assistant import Assistant
 from .types import ImageTypes
+from .legend import Legend
 
 
 class Scene:
@@ -51,7 +52,7 @@ class Scene:
 
     @property
     def actors(self) -> List[str]:
-        """A list of actor names in the scene."""
+        """Name of actors in the scene."""
         return self._actors.keys()
 
     @property
@@ -63,6 +64,15 @@ class Scene:
     def assistants(self) -> List[Assistant]:
         """A list of honeybee-vtk assistants working in the scene."""
         return self._assistants
+
+    @property
+    def legends(self) -> Dict[str, Legend]:
+        """Legends in the scene that can be added to the images."""
+        legends_dict = {}
+        for actor in self._actors.values():
+            for legend in actor.legends:
+                legends_dict[legend.name] = legend
+        return legends_dict
 
     def add_cameras(self, val: Union[Camera, List[Camera]]) -> None:
         """Add a honeybee-vtk Camera objects to a Scene.
@@ -119,24 +129,24 @@ class Scene:
                 f' values {valid_names}.'
             )
 
-    def update_scene(self):
+    def update_scene(self) -> None:
         """Update the scene.
 
-        This method will use the latest cameras in the scene and actors to create
+        This method will use the latest cameras, actors, and visible legends to create
         assistant object.
         """
         if self._cameras and self._actors:
-            self._assistants = [Assistant(
-                        background_color=self._background_color, camera=camera,
-                        actors=self._actors) for camera in self._cameras]
+            if self.legends:
+                visible_legends = [legend for legend in self.legends.values()
+                                   if legend.show_legend]
+            self._assistants = [
+                Assistant(background_color=self._background_color, camera=camera,
+                          actors=self._actors, legends=visible_legends) for
+                camera in self._cameras]
         else:
             raise ValueError(
                 'Add cameras and actors to the scene first.'
             )
-
-    def legends(self):
-        """Legends in the scene that can be added to the images."""
-        return [legend for actor in self._actors.values() for legend in actor.legends]
 
     def export_images(
             self, folder: str, name: str = 'Camera',
