@@ -170,10 +170,6 @@ class Scene:
                 'Add cameras and actors to the scene first.'
             )
 
-    def legends(self):
-        """Legends in the scene that can be added to the images."""
-        return [legend for actor in self._actors.values() for legend in actor.legends]
-
     def export_images(
             self, folder: str, name: str = 'Camera',
             image_type: ImageTypes = ImageTypes.png, *,
