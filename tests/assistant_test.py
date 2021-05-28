@@ -19,7 +19,8 @@ def test_initialization():
     scene = Scene()
     scene.add_actors(actors)
     scene.add_cameras(camera)
-    assistant = Assistant(background_color=(0, 0, 0), camera=camera, actors=scene._actors)
+    assistant = Assistant(background_color=(0, 0, 0), camera=camera,
+                          actors=scene._actors, legends=scene.legends)
     assert isinstance(assistant._interactor, vtk.vtkRenderWindowInteractor)
     assert isinstance(assistant._window, vtk.vtkRenderWindow)
     assert isinstance(assistant._renderer, vtk.vtkRenderer)
