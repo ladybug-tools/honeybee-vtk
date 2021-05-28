@@ -6,13 +6,14 @@ import pathlib
 import os
 import shutil
 import vtk
+import csv
 from honeybee_vtk.model import Model
 from honeybee_vtk.scene import Scene
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 from honeybee_vtk.camera import Camera
 from honeybee_vtk.actor import Actor
 from honeybee_vtk.types import ImageTypes
-
+from ladybug.color import Colorset
 
 def test_class_initialization():
     """Test if the attributes of the class are set correctly."""
@@ -159,8 +160,10 @@ def test_export_images():
     file_path = r'./tests/assets/gridbased.hbjson'
     results_folder = r'./tests/assets/df_results'
     target_folder = r'./tests/assets/temp'
+    csv_path = r'./tests/assets/radiation.csv'
 
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
+    model.update_display_mode(DisplayMode.Wireframe)
 
     daylight_factor = []
     for grid in model.sensor_grids.data:
@@ -169,18 +172,35 @@ def test_export_images():
         daylight_factor.append(grid_res)
 
     model.sensor_grids.add_data_fields(daylight_factor, name='Daylight-factor',
-                                       per_face=True, data_range=(0, 20), add_legend=True)
+                                       per_face=True, data_range=(0, 20))
     model.sensor_grids.color_by = 'Daylight-factor'
     model.sensor_grids.display_mode = DisplayMode.SurfaceWithEdges
-    model.update_display_mode(DisplayMode.Wireframe)
 
-    color_range = model.sensor_grids.active_field_info.get_lookuptable()
+    radiation = []
+    with open(csv_path) as csvfile:
+        csvreader = csv.reader(csvfile)
+        for data in csvreader:
+            radiation.append([float(data[0])])
+
+    model.shades.add_data_fields(radiation, name='Radiation', data_range=(0, 2000),
+                                 color_set=Colorset.original())
+    model.shades.color_by = 'Radiation'
+    model.shades.display_mode = DisplayMode.SurfaceWithEdges
+
     # actors
     actors = Actor.from_model(model=model)
 
     # Initialize a scene
     scene = Scene(background_color=(255, 255, 255))
     scene.add_actors(actors)
+
+    scene.legends['Daylight-factor'].orientation = 'horizontal'
+    scene.legends['Daylight-factor'].show_legend = True
+    scene.legends['Daylight-factor'].position = (0.0, 0.1)
+
+    scene.legends['Radiation'].show_legend = True
+    scene.legends['Radiation'].position = (0.5, 0.1)
+    scene.legends['Radiation'].orientation = 'horizontal'
 
     # A camera setup using the constructor
     camera = Camera(position=(-50.28, -30.32, 58.64), direction=(0.59, 0.44, -0.67),
@@ -202,7 +222,7 @@ def test_export_images():
 
     # Export images for all the cameras
     images_path = scene.export_images(folder=target_folder, image_type=ImageTypes.png,
-                                      name='camera', color_range=color_range)
+                                      name='camera')
 
     for path in images_path:
         assert os.path.isfile(path)
