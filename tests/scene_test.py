@@ -15,7 +15,6 @@ from honeybee_vtk.actor import Actor
 from honeybee_vtk.types import ImageTypes, Colors
 from honeybee_vtk.legend_parameter import LabelFormat, Orientation
 
-
 def test_class_initialization():
     """Test if the attributes of the class are set correctly."""
 
