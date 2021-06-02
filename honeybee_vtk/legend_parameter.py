@@ -317,7 +317,7 @@ class LegendParameter:
             self._height = val
         else:
             raise ValueError(
-                'Height accepts a decimal number up to 0.95.'
+                'Height accepts a decimal number up to 0.05.'
             )
 
     @property
@@ -353,12 +353,12 @@ class LegendParameter:
                 'Number of labels must be an integer less than or equal to the number of'
                 f'colors in the colors property. instead got {val}.'
             )
-    
+
     @property
     def label_type(self) -> LabelType:
         """The format of legend labels."""
         return self._label_type
-    
+
     @label_type.setter
     def label_type(self, val) -> None:
         if not val:
@@ -369,30 +369,31 @@ class LegendParameter:
             raise ValueError(
                 f'A LabelType object expected. Instead got {type(val).__name__}'
             )
-    
+
     @property
     def label_position(self) -> int:
         """The position of labels and the legend title on a legend.
-        
+
         The value of 0 would mean that the labels and the title would not preced the
         legend. The value of 1 would mean that the labels and the title would precede
         the legend.
         """
         return self._label_position
-    
+
     @label_position.setter
     def label_position(self, val):
         if not val:
             self._label_position = 0
-        elif isinstance(val , int) and val in [0, 1]:
+        elif isinstance(val, int) and val in [0, 1]:
             self._label_position = val
         else:
             raise ValueError(
                 f'Label position only accepts 0 or 1 as a value. Instead got {val}.'
             )
-    
+
     @property
     def label_font(self) -> Font:
+        """Font for the legend labels."""
         return self._label_font
 
     @property
@@ -529,8 +530,3 @@ class LegendParameter:
             f' Font of label: {self._label_font} |'
             f' Font of title: {self._title_font}'
         )
-
-
-
-        
-    
