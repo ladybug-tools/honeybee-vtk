@@ -7,7 +7,7 @@ from .model import Model, ModelDataSet, DisplayMode
 from .types import JoinedPolyData
 from ._helper import _validate_input
 from ladybug_geometry.geometry3d.pointvector import Point3D
-from .legend import Legend
+from .legend_parameter import LegendParameter
 
 
 class Actor:
@@ -20,6 +20,7 @@ class Actor:
     Args:
         modeldataset: A ModelDataSet object from a honeybee-vtk Model.
     """
+
     def __init__(self, modeldataset: ModelDataSet) -> None:
         self.modeldataset = modeldataset
         self._name = self._modeldataset.name
@@ -50,10 +51,10 @@ class Actor:
         return self._monochrome_color
 
     @property
-    def legends(self) -> List[Legend]:
-        """Legends found in the DataFieldInfo objects of ModelDataSet of this actor."""
-        return [info.legend for info in self._modeldataset.fields_info.values()
-                if info.legend]
+    def legend_parameters(self) -> List[LegendParameter]:
+        """Legend parameters in the DataFieldInfo of ModelDataSet of this actor."""
+        return [info.legend_parameter for info in self._modeldataset.fields_info.values()
+                if info.legend_parameter]
 
     def get_monochrome(self, monochrome_color: Tuple[float, float, float]) -> None:
         """Get actors in monochrome color.
@@ -94,9 +95,9 @@ class Actor:
             mapper.SetScalarModeToUsePointData()
             mapper.SetScalarVisibility(True)
 
-            range_min, range_max = field_info.legend.range
+            range_min, range_max = field_info.legend_parameter.range
             mapper.SetScalarRange(range_min, range_max)
-            mapper.SetLookupTable(field_info.legend.get_lookuptable())
+            mapper.SetLookupTable(field_info.legend_parameter.get_lookuptable())
             mapper.Update()
 
         actor = vtk.vtkActor()
@@ -174,4 +175,3 @@ class Actor:
         z = sum([point.z for point in points]) / len(points)
 
         return (x, y, z)
-        

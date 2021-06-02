@@ -14,8 +14,8 @@ import vtk
 
 from enum import Enum
 from typing import Dict, Union, List, Tuple
-from ladybug.color import Color, Colorset
-from .legend import Legend
+from ladybug.color import Color
+from .legend_parameter import LegendParameter, Colors
 from .vtkjs.schema import DataSetProperty, DataSet, DisplayMode, DataSetMapper
 
 
@@ -46,23 +46,25 @@ class DataFieldInfo:
     Args:
         name: A string representing the name of for data.
         range: A tuple of min, max values. Defaults to (0, 100).
-        colors: A Ladybug Colorset object. Defaults to Ecotect colorset.
+        colors: A Colors object that defines colors for the legend. 
+            Defaults to Ecotect colorset.
         per_face : A Boolean to indicate if the data is per face or per point. In
             most cases except for sensor points that are loaded as sensors the data
             are provided per face.
     """
+
     def __init__(self, name: str = 'default', range: Tuple[int, int] = (0, 100),
-                 color_set: Colorset = Colorset.ecotect(), per_face: bool = True
+                 colors: Colors = Colors.ecotect, per_face: bool = True
                  ) -> None:
 
         self.name = name
         self.per_face = per_face
-        self._legend = Legend(name=name, color_set=color_set, range=range)
+        self._legend_param = LegendParameter(name=name, colors=colors, range=range)
 
     @property
-    def legend(self) -> Legend:
+    def legend_parameter(self) -> LegendParameter:
         """Legend associated with the DataFieldInfo object."""
-        return self._legend
+        return self._legend_param
 
 
 class PolyData(vtk.vtkPolyData):
@@ -70,6 +72,7 @@ class PolyData(vtk.vtkPolyData):
 
     PolyData has additional fields for metadata information.
     """
+
     def __init__(self) -> None:
         super().__init__()
         self.identifier = None
@@ -91,7 +94,7 @@ class PolyData(vtk.vtkPolyData):
         """Get data fields for this Polydata."""
         return self._fields
 
-    def add_data(self, data: List, name, *, cell=True, color_set=None,
+    def add_data(self, data: List, name, *, cell=True, colors=None,
                  data_range=None):
         """Add a list of data to a vtkPolyData.
 
@@ -104,8 +107,9 @@ class PolyData(vtk.vtkPolyData):
             cell: A Boolean to indicate if the data is per cell or per point. In
                 most cases except for sensor points that are loaded as sensors the data
                 are provided per cell.
-            color_set: A Ladybug Tools color set. Use COLORSET to set colorset for data.
-            data_range: A list with two values for minimum and maximum values for legend.
+            colors: A Colors object that defines colors for the legend.
+            data_range: A list with two values for minimum and maximum values for legend
+                parameters.
         """
         assert name not in self._fields, \
             f'A data filed by name "{name}" already exist. Try a different name.'
@@ -141,10 +145,10 @@ class PolyData(vtk.vtkPolyData):
         # store information
         if not data_range:
             data_range = tuple(values.GetRange())
-        if not color_set:
-            color_set = Colorset.ecotect()
+        if not colors:
+            colors = Colors.ecotect
 
-        self._fields[name] = DataFieldInfo(name, data_range, color_set, cell)
+        self._fields[name] = DataFieldInfo(name, data_range, colors, cell)
 
     def color_by(self, name: str, cell=True) -> None:
         """Set the name for active data that should be used to color PolyData."""
@@ -184,6 +188,7 @@ class PolyData(vtk.vtkPolyData):
 
 class JoinedPolyData(vtk.vtkAppendPolyData):
     """A thin wrapper around vtk.vtkAppendPolyData."""
+
     def __init__(self) -> None:
         super().__init__()
 
@@ -248,6 +253,7 @@ class ModelDataSet:
     for those PolyData. All the objects in ModelDataSet will have the same
     representation.
     """
+
     def __init__(self, name, data: List[PolyData] = None, color: Color = None) -> None:
         self.name = name
         self.data = data or []
@@ -277,7 +283,7 @@ class ModelDataSet:
         return info[color_by]
 
     def add_data_fields(
-        self, data: List[List], name: str, per_face: bool = True, color_set=None,
+        self, data: List[List], name: str, per_face: bool = True, colors=None,
             data_range=None):
         """Add data fields to PolyData objects in this dataset.
 
@@ -293,8 +299,9 @@ class ModelDataSet:
             per_face: A Boolean to indicate if the data is per face or per point. In
                 most cases except for sensor points that are loaded as sensors the data
                 are provided per face.
-            color_set: A Ladybug Tools color set. Use COLORSET to set colorset for data.
-            data_range: A list with two values for minimum and maximum values for legend.
+            colors: A Colors object that defines colors for the legend.
+            data_range: A list with two values for minimum and maximum values for legend
+                parameters.
         """
         assert len(self.data) == len(data), \
             f'Length of input data {len(data)} does not match the length of polydata ' \
@@ -302,7 +309,7 @@ class ModelDataSet:
 
         for count, d in enumerate(data):
             self.data[count].add_data(
-                d, name=name, cell=per_face, color_set=color_set, data_range=data_range)
+                d, name=name, cell=per_face, colors=colors, data_range=data_range)
 
     @property
     def is_empty(self):
@@ -445,7 +452,7 @@ class ModelDataSet:
 def _write_to_file(
     polydata: Union[PolyData, JoinedPolyData], target_folder: str, file_name: str,
     writer: VTKWriters = VTKWriters.binary
-        ):
+):
     """Write vtkPolyData to a file."""
     # Write as a vtk file
     extension = writer.value

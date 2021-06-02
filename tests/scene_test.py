@@ -12,8 +12,9 @@ from honeybee_vtk.scene import Scene
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 from honeybee_vtk.camera import Camera
 from honeybee_vtk.actor import Actor
-from honeybee_vtk.types import ImageTypes
-from ladybug.color import Colorset
+from honeybee_vtk.types import ImageTypes, Colors
+from honeybee_vtk.legend_parameter import Orientation
+
 
 def test_class_initialization():
     """Test if the attributes of the class are set correctly."""
@@ -183,7 +184,7 @@ def test_export_images():
             radiation.append([float(data[0])])
 
     model.shades.add_data_fields(radiation, name='Radiation', data_range=(0, 2000),
-                                 color_set=Colorset.original())
+                                 colors=Colors.original)
     model.shades.color_by = 'Radiation'
     model.shades.display_mode = DisplayMode.SurfaceWithEdges
 
@@ -194,13 +195,13 @@ def test_export_images():
     scene = Scene(background_color=(255, 255, 255))
     scene.add_actors(actors)
 
-    scene.legends['Daylight-factor'].orientation = 'horizontal'
-    scene.legends['Daylight-factor'].show_legend = True
-    scene.legends['Daylight-factor'].position = (0.0, 0.1)
+    scene.legend_parameters['Daylight-factor'].orientation = Orientation.horizontal
+    scene.legend_parameters['Daylight-factor'].show_legend = True
+    scene.legend_parameters['Daylight-factor'].position = (0.0, 0.1)
 
-    scene.legends['Radiation'].show_legend = True
-    scene.legends['Radiation'].position = (0.5, 0.1)
-    scene.legends['Radiation'].orientation = 'horizontal'
+    scene.legend_parameters['Radiation'].show_legend = True
+    scene.legend_parameters['Radiation'].position = (0.5, 0.1)
+    scene.legend_parameters['Radiation'].orientation = Orientation.horizontal
 
     # A camera setup using the constructor
     camera = Camera(position=(-50.28, -30.32, 58.64), direction=(0.59, 0.44, -0.67),
@@ -228,6 +229,3 @@ def test_export_images():
         assert os.path.isfile(path)
 
     shutil.rmtree(target_folder)
-
-
-    
