@@ -8,7 +8,7 @@ from .camera import Camera
 from .actor import Actor
 from .assistant import Assistant
 from .types import ImageTypes
-from .legend import Legend
+from .legend_parameter import LegendParameter
 
 
 class Scene:
@@ -26,6 +26,7 @@ class Scene:
         background_color: A tuple of three integers that represent RGB values of the
             color that you'd like to set as the background color. Defaults to gray.
     """
+
     def __init__(self, background_color: Tuple[int, int, int] = None) -> None:
         self.background_color = background_color
         self._actors = {}
@@ -66,12 +67,12 @@ class Scene:
         return self._assistants
 
     @property
-    def legends(self) -> Dict[str, Legend]:
+    def legend_parameters(self) -> Dict[str, LegendParameter]:
         """Legends in the scene that can be added to the images."""
         legends_dict = {}
         for actor in self._actors.values():
-            for legend in actor.legends:
-                legends_dict[legend.name] = legend
+            for legend_param in actor.legend_parameters:
+                legends_dict[legend_param.name] = legend_param
         return legends_dict
 
     def add_cameras(self, val: Union[Camera, List[Camera]]) -> None:
@@ -115,7 +116,7 @@ class Scene:
                 from the scene.
         """
         valid_names = tuple(['Aperture', 'Door', 'Shade', 'Wall', 'Floor', 'RoofCeiling',
-                            'AirBoundary', 'Grid'])
+                             'AirBoundary', 'Grid'])
 
         if name in valid_names:
             try:
@@ -132,17 +133,18 @@ class Scene:
     def update_scene(self) -> None:
         """Update the scene.
 
-        This method will use the latest cameras, actors, and visible legends to create
-        assistant object.
+        This method will use the latest cameras, actors, and visible legend parameters
+        to create assistant object.
         """
         if self._cameras and self._actors:
-            if self.legends:
-                visible_legends = [legend for legend in self.legends.values()
-                                   if legend.show_legend]
+            if self.legend_parameters:
+                visible_legend_params = [
+                    legend_param for legend_param in self.legend_parameters.values()
+                    if legend_param.show_legend]
             self._assistants = [
                 Assistant(background_color=self._background_color, camera=camera,
-                          actors=self._actors, legends=visible_legends) for
-                camera in self._cameras]
+                          actors=self._actors, legend_parameters=visible_legend_params)
+                for camera in self._cameras]
         else:
             raise ValueError(
                 'Add cameras and actors to the scene first.'
@@ -154,7 +156,6 @@ class Scene:
             image_scale: int = 1, image_width: int = 2000, image_height: int = 2000,
             color_range: vtk.vtkLookupTable = None, rgba: bool = False,
             show: bool = False) -> List[str]:
-
         """Export all the cameras in the scene as images.
 
         Reference: https://kitware.github.io/vtk-examples/site/Python/IO/ImageWriter/
