@@ -13,14 +13,19 @@ def test_initialization():
     """Test objct initialization."""
 
     file_path = r'./tests/assets/gridbased.hbjson'
+
     model = Model.from_hbjson(hbjson=file_path)
     actors = Actor.from_model(model=model)
     camera = Camera()
     scene = Scene()
     scene.add_actors(actors)
     scene.add_cameras(camera)
-    assistant = Assistant(background_color=(0, 0, 0), camera=camera,
-                          actors=scene._actors, legends=scene.legends)
+
+    assistant = Assistant(
+        background_color=(0, 0, 0), camera=camera, actors=scene._actors,
+        legend_parameters=scene.legend_parameters)
+
     assert isinstance(assistant._interactor, vtk.vtkRenderWindowInteractor)
     assert isinstance(assistant._window, vtk.vtkRenderWindow)
     assert isinstance(assistant._renderer, vtk.vtkRenderer)
+    assert isinstance(assistant._legend_params, dict)
