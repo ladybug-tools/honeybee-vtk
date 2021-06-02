@@ -9,7 +9,7 @@ from ._helper import _validate_input
 
 class LabelType (Enum):
     """Setting the type of the Label on a Legend.
-    
+
     Types refers to two point decimal numbers, three point decimal numbers, and integers.
     """
     decimal_two = '%#6.2f'
@@ -64,11 +64,12 @@ class Font:
             bold: A boolean to specify whether the fonts should be made bold. If not
                 set, the fonts will not be made bold. Defaults to None.
         """
+
     def __init__(
-        self, color: Tuple[float, float, float]=None, size: int=None, bold: bool=None
-        ) -> None:
-        
-        self.color= color
+            self, color: Tuple[float, float, float] = None, size: int = None,
+            bold: bool = None) -> None:
+
+        self.color = color
         self.size = size
         self.bold = bold
 
@@ -76,24 +77,24 @@ class Font:
     def color(self) -> Tuple[float, float, float]:
         """Color of fonts in RGB decimal."""
         return self._color
-    
+
     @color.setter
     def color(self, val) -> None:
         if not val:
             self._color = (0, 0, 0)
-        elif isinstance(val ,tuple) and _validate_input(val, int, 256):
+        elif isinstance(val, tuple) and _validate_input(val, int, 256):
             self._color = (val[0]/255, val[1]/255, val[1]/255)
         else:
             raise ValueError(
                 'Color accepts a tuple of three integers for R, G, and B values.'
                 f' Instead got {val}.'
             )
-    
+
     @property
     def size(self) -> int:
         """Size of fonts."""
         return self._size
-    
+
     @size.setter
     def size(self, val) -> None:
         if not val:
@@ -104,7 +105,7 @@ class Font:
             raise ValueError(
                 f'Size expects an integer value. Instead got {type(val).__name__}.'
             )
-    
+
     @property
     def bold(self) -> bool:
         """To make font bold nor not."""
@@ -130,7 +131,14 @@ class Font:
             font.BoldOn()
         return font
 
-        
+    def __repr__(self) -> Tuple[str]:
+        return (
+            f'Font color: {self._color} |'
+            f' Font size: {self._size} |'
+            f' Bold: {self._bold}'
+        )
+
+
 class LegendParameter:
     """Legend parameters for the vtk legend (scalarbar) object.
 
@@ -192,8 +200,8 @@ class LegendParameter:
             number_of_labels: int = None,
             label_type: LabelType = None,
             label_position: int = None,
-            label_font = None,
-            title_font = None) -> None:
+            label_font=None,
+            title_font=None) -> None:
 
         self.name = name
         self.colors = colors
@@ -251,7 +259,7 @@ class LegendParameter:
     def range(self, val) -> None:
         if not val:
             self._range = (0, 100)
-        elif isinstance(val, tuple):
+        elif isinstance(val, tuple) and len(val) == 2:
             self._range = val
         else:
             raise ValueError(
@@ -332,11 +340,11 @@ class LegendParameter:
     def height(self, val) -> None:
         if not val:
             self._height = 0.05
-        elif val < 0.96:
+        elif val < 0.06:
             self._height = val
         else:
             raise ValueError(
-                'Height accepts a decimal number up to 0.95.'
+                'Height accepts a decimal number up to 0.05.'
             )
 
     @property
@@ -372,12 +380,12 @@ class LegendParameter:
                 'Number of labels must be an integer less than or equal to the number of'
                 f'colors in the colors property. instead got {val}.'
             )
-    
+
     @property
     def label_type(self) -> LabelType:
         """The format of legend labels."""
         return self._label_type
-    
+
     @label_type.setter
     def label_type(self, val) -> None:
         if not val:
@@ -388,35 +396,62 @@ class LegendParameter:
             raise ValueError(
                 f'A LabelType object expected. Instead got {type(val).__name__}'
             )
-    
+
     @property
     def label_position(self) -> int:
         """The position of labels and the legend title on a legend.
-        
+
         The value of 0 would mean that the labels and the title would not preced the
         legend. The value of 1 would mean that the labels and the title would precede
         the legend.
         """
         return self._label_position
-    
+
     @label_position.setter
     def label_position(self, val):
         if not val:
             self._label_position = 0
-        elif isinstance(val , int) and val in [0, 1]:
+        elif isinstance(val, int) and val in [0, 1]:
             self._label_position = val
         else:
             raise ValueError(
                 f'Label position only accepts 0 or 1 as a value. Instead got {val}.'
             )
-    
+
     @property
     def label_font(self) -> Font:
+        """Font for the legend labels."""
         return self._label_font
+
+    @label_font.setter
+    def label_font(self, val) -> None:
+        if not val:
+            self._label_font = Font(color=(0, 0, 0), size=30)
+        elif isinstance(val, Font):
+            self._label_font = val
+        else:
+            raise ValueError(
+                f'Label font expects a Font object. Instead got {type(val).__name__}.'
+            )
+
+    @property
+    def title_font(self) -> Font:
+        """Font for the legend title."""
+        return self._title_font
+
+    @title_font.setter
+    def title_font(self, val) -> None:
+        if not val:
+            self._title_font = Font(color=(0, 0, 0), size=50, bold=True)
+        elif isinstance(val, Font):
+            self._title_font = val
+        else:
+            raise ValueError(
+                f'Title font expects a Font object. Instead got {type(val).__name__}.'
+            )
 
     def get_lookuptable(self) -> vtk.vtkLookupTable:
         """Get a vtk lookuptable."""
-        print(len(self._colors.value))
         minimum, maximum = self._range
         color_values = self._colors.value
         lut = vtk.vtkLookupTable()
@@ -459,29 +494,32 @@ class LegendParameter:
         if self._number_of_labels:
             scalar_bar.SetNumberOfLabels(self._number_of_labels)
 
+        # setting the type of labels. Such as integers, decimals, etc.
         scalar_bar.SetLabelFormat(self._label_type.value)
+
+        # Setting whether the labels and title should precede the legend
         scalar_bar.SetTextPosition(self._label_position)
 
-        label_font = vtk.vtkTextProperty()
-        label_font.SetColor(0, 0, 0)
-        label_font.SetFontSize(30)
-        scalar_bar.SetLabelTextProperty(label_font)
+        scalar_bar.SetLabelTextProperty(self._label_font.to_vtk())
+        scalar_bar.SetTitleTextProperty(self._title_font.to_vtk())
 
-        title_font = vtk.vtkTextProperty()
-        title_font.SetColor(0, 0, 0)
-        title_font.SetFontSize(50)
-        title_font.BoldOn()
-        scalar_bar.SetTitleTextProperty(title_font)
-
-        # scalar_bar.SetAnnotationTextScaling(3)
-        # scalar_bar.AnnotationTextScalingOn()
         return scalar_bar
 
-    def __repr__(self) -> str:
-        return f'Legend visibility: {self._show_legend}, Legend color scheme: '\
-            f'{self._colors.name}, Legend range: {self._range}.'
-
-
-
-        
-    
+    def __repr__(self) -> Tuple[str]:
+        return (
+            f'Legend name: {self._name} |'
+            f' Legend visibility: {self._show_legend} |'
+            f' Legend color scheme: {self._colors.name} |'
+            f' Legend range: {self._range} |'
+            f' Legend visibility: {self._show_legend} |'
+            f' Legend orientation: {self._orientation} |'
+            f' Legend position: {self._position} |'
+            f' Legend width: {self._width} |'
+            f' Legend height: {self._height} |'
+            f' Number of colors in legend: {self._number_of_colors} |'
+            f' Number of lables in legend: {self._number_of_labels} |'
+            f' Type of label: {self._label_type} |'
+            f' Position of label: {self._label_position} |'
+            f' Font of label: {self._label_font} |'
+            f' Font of title: {self._title_font}'
+        )
