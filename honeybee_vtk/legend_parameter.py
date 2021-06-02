@@ -8,7 +8,10 @@ from ._helper import _validate_input
 
 
 class LabelType (Enum):
-    """Type of text for the text on a legend."""
+    """Setting the type of the Label on a Legend.
+    
+    Types refers to two point decimal numbers, three point decimal numbers, and integers.
+    """
     decimal_two = '%#6.2f'
     decimal_three = '%-#6.3f'
     default = '%-#6.3g'
@@ -52,8 +55,87 @@ class Colors(Enum):
     view_study = Colorset.view_study()
 
 
+class Font:
+    """Fonts for the legend.
+
+        Args:
+            color: A tuple of three integer values for R, G, and B. Defaults to None.
+            size: An integer representing the size of fonts in points. Defaults to None.
+            bold: A boolean to specify whether the fonts should be made bold. If not
+                set, the fonts will not be made bold. Defaults to None.
+        """
+    def __init__(
+        self, color: Tuple[float, float, float]=None, size: int=None, bold: bool=None
+        ) -> None:
+        
+        self.color= color
+        self.size = size
+        self.bold = bold
+
+    @property
+    def color(self) -> Tuple[float, float, float]:
+        """Color of fonts in RGB decimal."""
+        return self._color
+    
+    @color.setter
+    def color(self, val) -> None:
+        if not val:
+            self._color = (0, 0, 0)
+        elif isinstance(val ,tuple) and _validate_input(val, int, 256):
+            self._color = (val[0]/255, val[1]/255, val[1]/255)
+        else:
+            raise ValueError(
+                'Color accepts a tuple of three integers for R, G, and B values.'
+                f' Instead got {val}.'
+            )
+    
+    @property
+    def size(self) -> int:
+        """Size of fonts."""
+        return self._size
+    
+    @size.setter
+    def size(self, val) -> None:
+        if not val:
+            self._size = 30
+        elif isinstance(val, int):
+            self._size = val
+        else:
+            raise ValueError(
+                f'Size expects an integer value. Instead got {type(val).__name__}.'
+            )
+    
+    @property
+    def bold(self) -> bool:
+        """To make font bold nor not."""
+        return self._bold
+
+    @bold.setter
+    def bold(self, val) -> None:
+        if not val:
+            self._bold = False
+        elif isinstance(val, bool):
+            self._bold = val
+        else:
+            raise ValueError(
+                f'Bold accepts boolean values only. Instead got {val}.'
+            )
+
+    def to_vtk(self) -> vtk.vtkTextProperty:
+        """Create a vtk TextProperty object."""
+        font = vtk.vtkTextProperty()
+        font.SetColor(self._color[0], self._color[1], self._color[2])
+        font.SetFontSize(self._size)
+        if self._bold:
+            font.BoldOn()
+        return font
+
+        
 class LegendParameter:
     """Legend parameters for the vtk legend (scalarbar) object.
+
+    A vtk legend has a number of colors, labels, and a title. Here, labels mean the 
+    numbers you see on a legend such as 0, 1, 2, 3, 4, 5 on a legend with max value of 5.
 
         Args:
             name: A text string representing the name of the legend object and the
@@ -87,6 +169,13 @@ class LegendParameter:
                 Defaults to None.
             number_of_labels: An integer representing the number of text labels on a
                 legend. Default to None.
+            label_type: A LabelType object.
+            label_position: 0 or 1. The value of 0 would mean that the labels and the
+                title would not precede the legend. The value of 1 would mean that the
+                labels and the title would precede the legend.. If not set, the labels
+                and the title will not precede the legend. Defaults to None.
+            label_font: A Font object. Defaults to None.
+            title_font: A font object. Defaults to None.
         """
 
     def __init__(
@@ -100,7 +189,11 @@ class LegendParameter:
             width: float = None,
             height: float = None,
             number_of_colors: int = None,
-            number_of_labels: int = None) -> None:
+            number_of_labels: int = None,
+            label_type: LabelType = None,
+            label_position: int = None,
+            label_font = None,
+            title_font = None) -> None:
 
         self.name = name
         self.colors = colors
@@ -112,6 +205,10 @@ class LegendParameter:
         self.height = height
         self.number_of_colors = number_of_colors
         self.number_of_labels = number_of_labels
+        self.label_type = label_type
+        self.label_position = label_position
+        self.label_font = label_font
+        self.title_font = title_font
 
     @property
     def name(self) -> str:
@@ -275,6 +372,47 @@ class LegendParameter:
                 'Number of labels must be an integer less than or equal to the number of'
                 f'colors in the colors property. instead got {val}.'
             )
+    
+    @property
+    def label_type(self) -> LabelType:
+        """The format of legend labels."""
+        return self._label_type
+    
+    @label_type.setter
+    def label_type(self, val) -> None:
+        if not val:
+            self._label_type = LabelType.integer
+        elif isinstance(val, LabelType):
+            self._label_type = val
+        else:
+            raise ValueError(
+                f'A LabelType object expected. Instead got {type(val).__name__}'
+            )
+    
+    @property
+    def label_position(self) -> int:
+        """The position of labels and the legend title on a legend.
+        
+        The value of 0 would mean that the labels and the title would not preced the
+        legend. The value of 1 would mean that the labels and the title would precede
+        the legend.
+        """
+        return self._label_position
+    
+    @label_position.setter
+    def label_position(self, val):
+        if not val:
+            self._label_position = 0
+        elif isinstance(val , int) and val in [0, 1]:
+            self._label_position = val
+        else:
+            raise ValueError(
+                f'Label position only accepts 0 or 1 as a value. Instead got {val}.'
+            )
+    
+    @property
+    def label_font(self) -> Font:
+        return self._label_font
 
     def get_lookuptable(self) -> vtk.vtkLookupTable:
         """Get a vtk lookuptable."""
@@ -321,8 +459,8 @@ class LegendParameter:
         if self._number_of_labels:
             scalar_bar.SetNumberOfLabels(self._number_of_labels)
 
-        scalar_bar.SetLabelFormat(LabelType.integer.value)
-        scalar_bar.SetTextPosition(0)
+        scalar_bar.SetLabelFormat(self._label_type.value)
+        scalar_bar.SetTextPosition(self._label_position)
 
         label_font = vtk.vtkTextProperty()
         label_font.SetColor(0, 0, 0)
@@ -342,3 +480,8 @@ class LegendParameter:
     def __repr__(self) -> str:
         return f'Legend visibility: {self._show_legend}, Legend color scheme: '\
             f'{self._colors.name}, Legend range: {self._range}.'
+
+
+
+        
+    
