@@ -18,6 +18,7 @@ def export():
     """Honeybee VTK commands entry point."""
     pass
 
+
 @export.command('export-images')
 @click.argument('hbjson-file')
 @click.option(
@@ -26,11 +27,11 @@ def export():
 @click.option(
     '--folder', '-f', help='Path to target folder.',
     type=click.Path(exists=False, file_okay=False, resolve_path=True,
-    dir_okay=True), default='.', show_default=True
+                    dir_okay=True), default='.', show_default=True
 )
 @click.option(
     '--image-type', '-it', type=click.Choice(['png', 'jpg', 'ps', 'tiff', 'bmp', 'pnm'],
-    case_sensitive=False), default='jpg',
+                                             case_sensitive=False), default='jpg',
     help='choose the type of image file.', show_default=True
 )
 @click.option(
@@ -47,22 +48,27 @@ def export():
 )
 @click.option(
     '--display-mode-model', '-dmm', type=click.Choice(['shaded', 'surface',
-    'surfacewithedges', 'wireframe', 'points'], case_sensitive=False),
+                                                       'surfacewithedges', 'wireframe', 'points'], case_sensitive=False),
     default='shaded', help='Set display mode for the model.', show_default=True
 )
 @click.option(
     '--grid-options', '-go', type=click.Choice(['ignore', 'points', 'meshes'],
-    case_sensitive=False), default='ignore', help='Export sensor grids as either'
+                                               case_sensitive=False), default='ignore', help='Export sensor grids as either'
     ' points or meshes.', show_default=True,
 )
 @click.option(
     '--display-mode-grid', '-dmg', type=click.Choice(['shaded', 'surface',
-    'surfacewithedges', 'wireframe', 'points'], case_sensitive=False),
+                                                      'surfacewithedges', 'wireframe', 'points'], case_sensitive=False),
     default='shaded', help='Set display mode for the Sensorgrids.', show_default=True
+)
+@click.option(
+    '--view', '-vf', help='File Path to the Radiance view file.',
+    type=click.Path(exists=True),
+    default=None, show_default=True, multiple=True
 )
 def export(
         hbjson_file, name, folder, image_type, image_width, image_height,
-        background_color, display_mode_model, grid_options, display_mode_grid):
+        background_color, display_mode_model, grid_options, display_mode_grid, view):
     """Export images from radiance views in a HBJSON file.
 
     \b
@@ -128,15 +134,24 @@ def export(
         scene.add_actors(actors)
 
         # Set a default camera if there are not cameras in the model
-        if not model.cameras:
+        if not model.cameras and not view:
             # Use the centroid of the model for the camera position
             actors = Actor.from_model(model=model)
             position = Actor.get_centroid(actors)
             camera = Camera(position=position, type='l')
             scene.add_cameras(camera)
+
         else:
-            cameras = model.cameras
-            scene.add_cameras(cameras)
+            # Collection cameras from model, if the model has it
+            if len(model.cameras) != 0:
+                cameras = model.cameras
+                scene.add_cameras(cameras)
+
+            # if view files are provided collect them
+            if view:
+                for vf in view:
+                    camera = Camera.from_view_file(file_path=vf)
+                    scene.add_cameras(camera)
 
         output = scene.export_images(
             folder=folder, name=name, image_type=image_type,
