@@ -72,3 +72,10 @@ def test_adjustable_postion():
     camera = Camera(position=(0, 0, 5000), direction=(0, 0, -1))
     assert camera._outermost_point(bounds=bounds) == Point3D(12.00, 20.00, 15.00)
     assert camera._adjusted_position(bounds=bounds) == (0, 0, 16)
+
+
+def test_from_view_file():
+    """Test creation of a camera object from a Radiance view file."""
+    vf = r"D:\Github\wip\honeybee-vtk\view.vf"
+    camera = Camera.from_view_file(vf)
+    assert 1 == 2
