@@ -76,6 +76,6 @@ def test_adjustable_postion():
 
 def test_from_view_file():
     """Test creation of a camera object from a Radiance view file."""
-    vf = r"D:\Github\wip\honeybee-vtk\view.vf"
+    vf = r'./tests/assets/view.vf'
     camera = Camera.from_view_file(vf)
-    assert 1 == 2
+    assert isinstance(camera, Camera)
