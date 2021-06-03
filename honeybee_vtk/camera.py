@@ -1,6 +1,7 @@
 """A VTK camera object."""
 from __future__ import annotations
 import vtk
+from pathlib import Path
 from typing import List, Tuple
 from ladybug_geometry.geometry3d.pointvector import Point3D
 from honeybee_radiance.view import View
@@ -46,13 +47,13 @@ class Camera(View):
             up_vector=up_vector, h_size=h_size, v_size=v_size, type=type)
 
         self._flat_view_directions = {
-                (0, 0, -1): [2, '+'],
-                (0, 0, 1): [2, '-'],
-                (0, 1, 0): [1, '+'],
-                (0, -1, 0): [1, '-'],
-                (1, 0, 0): [0, '+'],
-                (-1, 0, 0): [0, '-'],
-            }
+            (0, 0, -1): [2, '+'],
+            (0, 0, 1): [2, '-'],
+            (0, 1, 0): [1, '+'],
+            (0, -1, 0): [1, '-'],
+            (1, 0, 0): [0, '+'],
+            (-1, 0, 0): [0, '-'],
+        }
 
     @property
     def flat_view_direction(self) -> dict:
@@ -201,9 +202,26 @@ class Camera(View):
             A Camera object.
         """
         return cls(
-                position=view.position,
-                direction=view.direction,
-                up_vector=view.up_vector,
-                h_size=view.h_size,
-                v_size=view.v_size,
-                type=view.type)
+            position=view.position,
+            direction=view.direction,
+            up_vector=view.up_vector,
+            h_size=view.h_size,
+            v_size=view.v_size,
+            type=view.type)
+
+    @classmethod
+    def from_view_file(cls: Camera, file_path: str) -> Camera:
+
+        view_file = Path(file_path)
+
+        if view_file.is_file() and view_file.as_posix()[-3:] == '.vf':
+            view = View.from_file(view_file.as_posix())
+            print(view)
+            # with view_file.open(encoding='utf-8') as f:
+            #     out = f.readlines()[4]
+            #     print(out)
+
+        else:
+            raise FileNotFoundError(
+                'Radiance view file not found.'
+            )
