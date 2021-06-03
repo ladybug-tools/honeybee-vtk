@@ -211,16 +211,19 @@ class Camera(View):
 
     @classmethod
     def from_view_file(cls: Camera, file_path: str) -> Camera:
+        """Create a Camera object from a radiance view file.
+
+        Args:
+            file_path: A valid path to a radiance view file with .vf extension.
+
+        Returns:
+            A Camera object.
+        """
 
         view_file = Path(file_path)
 
         if view_file.is_file() and view_file.as_posix()[-3:] == '.vf':
-            view = View.from_file(view_file.as_posix())
-            print(view)
-            # with view_file.open(encoding='utf-8') as f:
-            #     out = f.readlines()[4]
-            #     print(out)
-
+            return Camera.from_view(view=View.from_file(view_file.as_posix()))
         else:
             raise FileNotFoundError(
                 'Radiance view file not found.'
