@@ -12,8 +12,7 @@ from honeybee_vtk.scene import Scene
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 from honeybee_vtk.camera import Camera
 from honeybee_vtk.actor import Actor
-from honeybee_vtk.types import ImageTypes, Colors
-from honeybee_vtk.legend_parameter import LabelFormat, Orientation
+from honeybee_vtk.types import ImageTypes
 
 
 def test_class_initialization():
