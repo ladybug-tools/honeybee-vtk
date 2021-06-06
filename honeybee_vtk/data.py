@@ -78,12 +78,16 @@ class DataConfig(BaseModel):
             'walls', 'apertures', 'shades', 'doors', 'floors', 'roof_ceilings',
                 'air_boundaries'):
 
-            file = open(file_path, "r")
+            assert len(self.file_paths) == 1, 'Only one file needs to be provided'
+            f' in order to load data on {self.object_name}.'
+
+            # get number of non-empty lines in the file
+            file = open(self.file_paths[0], "r")
             nonempty_lines = [line.strip("\n") for line in file if line != "\n"]
             line_count = len(nonempty_lines)
             file.close()
 
-            print(line_count)
+            if line_count == len(model.self.object_name.data)
 
 
 class Json_schema(BaseModel):
