@@ -2,7 +2,6 @@
 
 import json
 from pathlib import Path
-from test import ModelDS
 from typing import Dict, List
 from pydantic import BaseModel, validator, Field
 from enum import Enum
@@ -75,12 +74,13 @@ class Data(BaseModel):
             air_boundaries = model.air_boundaries.data
 
         # if object name is "grid" check that the name of files match the grid names
-        if self.object_name == 'grid':
+        if self.object_name == 'sensor_grids':
             grid_names = [grid.identifier for grid in model.sensor_grids.data]
             file_names = [Path(path).name.split('.')[0] for path in self.file_paths]
             if len(grid_names) != len(file_names) or grid_names != file_names:
                 raise ValueError(
-                    'The file names must match the grid identifiers in HBJSON.'
+                    'The number of files and the file names must match the grid'
+                    ' identifiers in HBJSON.'
                 )
             return True
 
@@ -90,8 +90,9 @@ class Data(BaseModel):
             'walls', 'apertures', 'shades', 'doors', 'floors', 'roof_ceilings',
                 'air_boundaries'):
 
-            assert len(self.file_paths) == 1, 'Only one file shall to be provided'
-            f' in order to load data on {self.object_name}.'
+            assert len(self.file_paths) == 1, 'Only one file shall to be provided'\
+                f' in order to load data on {self.object_name}. Multiple files are'\
+                'provided in the config file.'
 
             file = open(self.file_paths[0], "r")
             nonempty_line_count = len(
@@ -99,7 +100,7 @@ class Data(BaseModel):
             )
             file.close()
 
-            if nonempty_line_count != len(ModelDS[self.object_name].value):
+            if nonempty_line_count != len(ModelData[self.object_name].value):
                 raise ValueError(
                     'The length of data in the file does not match the number of faces'
                     ' in the model.'
@@ -109,7 +110,7 @@ class Data(BaseModel):
 
 class DataConfig(BaseModel):
 
-    data: Dict[str: Data] = Field(
+    data: Dict[str, Data] = Field(
         description='A dictionary to introduce data that you would like to mount.'
         ' The key must be any text and the value must be DataConfig.'
     )
