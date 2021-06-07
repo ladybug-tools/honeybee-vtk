@@ -56,9 +56,10 @@ class Model(object):
     You can control the style for each type separately.
 
     """
+
     def __init__(
-        self, model: HBModel,
-        load_grids: SensorGridOptions = SensorGridOptions.Ignore) -> None:
+            self, model: HBModel,
+            load_grids: SensorGridOptions = SensorGridOptions.Ignore) -> None:
         """Instantiate a honeybee-vtk model object.
 
         Args:
@@ -164,7 +165,7 @@ class Model(object):
         for dataset in (
             self.apertures, self.walls, self.shades, self.doors, self.floors,
             self.roof_ceilings, self.air_boundaries, self.sensor_grids
-                ):
+        ):
             yield dataset
 
     def _load_grids(self, model: HBModel, grid_options: SensorGridOptions) -> None:
@@ -186,6 +187,17 @@ class Model(object):
             warnings.warn(
                 'views not found in HBJSON.'
             )
+
+    def _load_data(self, config: dict) -> None:
+        """Load data from json.
+
+        This method is only used in cli.
+
+        Args:
+            config: A dictionary returned by check_data_config
+        """
+        data = [val for val in config['data'].values()]
+        return data
 
     def update_display_mode(self, value: DisplayMode) -> None:
         """Change display mode for all the object types in the model.
