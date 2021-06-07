@@ -11,6 +11,10 @@ from .vtkjs.schema import SensorGridOptions
 
 class Data(BaseModel):
 
+    acceptable_object_names = (
+        'walls', 'apertures', 'shades', 'doors', 'floors', 'roof_ceilings',
+        'air_boundaries', 'sensor_grids')
+
     name: str = Field(
         description='Name to be give to data. Example, "Daylight-Factor".'
     )
@@ -32,14 +36,11 @@ class Data(BaseModel):
 
     @validator('object_name')
     def validate_object(cls, v):
-        accepted_object_names = (
-            'walls', 'apertures', 'shades', 'doors', 'floors', 'roof_ceilings',
-            'air_boundaries', 'sensor_grids')
-        if v in accepted_object_names:
+        if v in cls.acceptable_object_names:
             return v
         else:
             raise ValueError(
-                f'Object name should be from these {accepted_object_names}.'
+                f'Object name should be from these {cls.acceptable_object_names}.'
                 f' Instead got {v}.'
             )
 
@@ -86,13 +87,18 @@ class Data(BaseModel):
 
         # if object_name is other than grid check that length of data matches the length
         # of data in the model for that object.
-        elif self.object_name in (
-            'walls', 'apertures', 'shades', 'doors', 'floors', 'roof_ceilings',
-                'air_boundaries'):
+        elif self.object_name in self.acceptable_object_names[:-1]:
 
-            assert len(self.file_paths) == 1, 'Only one file shall to be provided'\
-                f' in order to load data on {self.object_name}. Multiple files are'\
-                'provided in the config file.'
+            if len(self.file_paths) == 0:
+                raise ValueError(
+                    'File path not found in the config file.'
+                )
+            elif len(self.file_paths) > 0:
+                raise ValueError(
+                    'Only one file path needs to be provided in order to load data on'
+                    f' {self.object_name}. Multiple files are provided in the config'
+                    ' file.'
+                )
 
             file = open(self.file_paths[0], "r")
             nonempty_line_count = len(
