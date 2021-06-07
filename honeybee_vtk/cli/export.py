@@ -11,6 +11,7 @@ from honeybee_vtk.camera import Camera
 from honeybee_vtk.model import Model
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 from honeybee_vtk.types import ImageTypes
+from honeybee_vtk.data import check_data_config
 
 
 @click.group()
@@ -62,13 +63,14 @@ def export():
     default='shaded', help='Set display mode for the Sensorgrids.', show_default=True
 )
 @click.option(
-    '--view', '-vf', help='File Path to the Radiance view file.',
+    '--data-config', '-dc', help='File Path to the data-config json file.',
     type=click.Path(exists=True),
-    default=None, show_default=True, multiple=True
+    default=None, show_default=True
 )
 def export(
         hbjson_file, name, folder, image_type, image_width, image_height,
-        background_color, display_mode_model, grid_options, display_mode_grid, view):
+        background_color, display_mode_model, grid_options, display_mode_grid,
+        data_config):
     """Export images from radiance views in a HBJSON file.
 
     \b
@@ -147,11 +149,8 @@ def export(
                 cameras = model.cameras
                 scene.add_cameras(cameras)
 
-            # if view files are provided collect them
-            if view:
-                for vf in view:
-                    camera = Camera.from_view_file(file_path=vf)
-                    scene.add_cameras(camera)
+        if data_config:
+            print(check_data_config(data_config, hbjson_file))
 
         output = scene.export_images(
             folder=folder, name=name, image_type=image_type,
