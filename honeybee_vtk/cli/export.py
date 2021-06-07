@@ -49,18 +49,21 @@ def export():
     help='background color for images', show_default=True
 )
 @click.option(
-    '--display-mode-model', '-dmm', type=click.Choice(['shaded', 'surface',
-                                                       'surfacewithedges', 'wireframe', 'points'], case_sensitive=False),
+    '--display-mode-model', '-dmm',
+    type=click.Choice(['shaded', 'surface', 'surfacewithedges', 'wireframe', 'points'],
+                      case_sensitive=False),
     default='shaded', help='Set display mode for the model.', show_default=True
 )
 @click.option(
-    '--grid-options', '-go', type=click.Choice(['ignore', 'points', 'meshes'],
-                                               case_sensitive=False), default='ignore', help='Export sensor grids as either'
-    ' points or meshes.', show_default=True,
+    '--grid-options', '-go',
+    type=click.Choice(['ignore', 'points', 'meshes'], case_sensitive=False),
+    default='ignore', help='Export sensor grids as either points or meshes.',
+    show_default=True,
 )
 @click.option(
-    '--display-mode-grid', '-dmg', type=click.Choice(['shaded', 'surface',
-                                                      'surfacewithedges', 'wireframe', 'points'], case_sensitive=False),
+    '--display-mode-grid', '-dmg',
+    type=click.Choice(['shaded', 'surface', 'surfacewithedges',
+                       'wireframe', 'points'], case_sensitive=False),
     default='shaded', help='Set display mode for the Sensorgrids.', show_default=True
 )
 @click.option(
@@ -73,10 +76,14 @@ def export():
     type=click.Path(exists=True),
     default=None, show_default=True
 )
+@click.option(
+    '--debug', '-db', help='Show stack-trace for debugging.', is_flag=True,
+    default=False, show_default=True
+)
 def export(
         hbjson_file, name, folder, image_type, image_width, image_height,
         background_color, display_mode_model, grid_options, display_mode_grid, view,
-        data_config):
+        data_config, debug):
     """Export images from radiance views in a HBJSON file.
 
     \b
@@ -163,10 +170,11 @@ def export(
             image_width=image_width, image_height=image_height)
 
     except Exception as e:
-        # print(''.join(traceback.format_exception(
-        #     etype=type(e), value=e, tb=e.__traceback__)))
-        raise ClickException(f'Translation failed:\n{e}')
-
+        if not debug:
+            raise ClickException(f'Translation failed:\n{e}')
+        else:
+            print(''.join(traceback.format_exception(
+                etype=type(e), value=e, tb=e.__traceback__)))
     else:
         print(f'Success: {output}', file=sys.stderr)
         return sys.exit(0)
