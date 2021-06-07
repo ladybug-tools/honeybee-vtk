@@ -4,6 +4,7 @@ import pathlib
 import sys
 import click
 from click.exceptions import ClickException
+import traceback
 
 from honeybee_vtk.actor import Actor
 from honeybee_vtk.scene import Scene
@@ -162,7 +163,10 @@ def export(
             image_width=image_width, image_height=image_height)
 
     except Exception as e:
+        # print(''.join(traceback.format_exception(
+        #     etype=type(e), value=e, tb=e.__traceback__)))
         raise ClickException(f'Translation failed:\n{e}')
+
     else:
         print(f'Success: {output}', file=sys.stderr)
         return sys.exit(0)
