@@ -141,6 +141,9 @@ class Scene:
                 visible_legend_params = [
                     legend_param for legend_param in self.legend_parameters.values()
                     if legend_param.show_legend]
+            else:
+                visible_legend_params = []
+
             self._assistants = [
                 Assistant(background_color=self._background_color, camera=camera,
                           actors=self._actors, legend_parameters=visible_legend_params)
