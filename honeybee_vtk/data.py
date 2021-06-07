@@ -9,11 +9,14 @@ from .model import Model
 from .vtkjs.schema import SensorGridOptions
 
 
-class Data(BaseModel):
+class AcceptedValues(Enum):
 
-    acceptable_object_names = (
-        'walls', 'apertures', 'shades', 'doors', 'floors', 'roof_ceilings',
-        'air_boundaries', 'sensor_grids')
+    names = ('walls', 'apertures', 'shades', 'doors', 'floors', 'roof_ceilings',
+             'air_boundaries', 'sensor_grids')
+    delimiters = (',', ' ', '    ', ';', '|')
+
+
+class Data(BaseModel):
 
     name: str = Field(
         description='Name to be give to data. Example, "Daylight-Factor".'
@@ -35,28 +38,27 @@ class Data(BaseModel):
     )
 
     @validator('object_name')
-    def validate_object(cls, v):
-        if v in cls.acceptable_object_names:
+    def validate_object(cls, v: str) -> str:
+        if v in AcceptedValues.names.value:
             return v
         else:
             raise ValueError(
-                f'Object name should be from these {cls.acceptable_object_names}.'
+                f'Object name should be from these {AcceptedValues.names.value}.'
                 f' Instead got {v}.'
             )
 
     @validator('delimiter')
-    def validate_delimiter(cls, v):
-        accepted_delimiters = (',', ' ', '    ', ';', '|')
-        if v in accepted_delimiters:
+    def validate_delimiter(cls, v: str) -> str:
+        if v in AcceptedValues.delimiters.value:
             return v
         else:
             raise ValueError(
-                f'The delimiter must be from one of these {accepted_delimiters}.'
-                f' Instead got {v}.'
+                'The delimiter must be from one of these'
+                f' {AcceptedValues.delimiters.value}. Instead got {v}.'
             )
 
     @validator('file_paths')
-    def validate_paths(cls, v):
+    def validate_paths(cls, v: List[str]) -> List[str]:
         if all([Path(path).is_file() for path in v]):
             return v
         else:
@@ -64,7 +66,7 @@ class Data(BaseModel):
                 'File paths are not valid.'
             )
 
-    def cross_check_data(self, model):
+    def cross_check_data(self, model: Model) -> bool:
         class ModelData(Enum):
             walls = model.walls.data
             apertures = model.apertures.data
@@ -87,13 +89,13 @@ class Data(BaseModel):
 
         # if object_name is other than grid check that length of data matches the length
         # of data in the model for that object.
-        elif self.object_name in self.acceptable_object_names[:-1]:
+        elif self.object_name in AcceptedValues.names.value[:-1]:
 
             if len(self.file_paths) == 0:
                 raise ValueError(
                     'File path not found in the config file.'
                 )
-            elif len(self.file_paths) > 0:
+            elif len(self.file_paths) > 1:
                 raise ValueError(
                     'Only one file path needs to be provided in order to load data on'
                     f' {self.object_name}. Multiple files are provided in the config'
@@ -108,8 +110,8 @@ class Data(BaseModel):
 
             if nonempty_line_count != len(ModelData[self.object_name].value):
                 raise ValueError(
-                    'The length of data in the file does not match the number of faces'
-                    ' in the model.'
+                    'The length of data in the file does not match the number of'
+                    f' {self.object_name} objects in the model.'
                 )
             return True
 
@@ -121,12 +123,12 @@ class DataConfig(BaseModel):
         ' The key must be any text and the value must be DataConfig.'
     )
 
-    def check_data(self, hbjson):
+    def check_data(self, hbjson: str) -> bool:
         model = Model.from_hbjson(hbjson=hbjson, load_grids=SensorGridOptions.Mesh)
         return all([val.cross_check_data(model) for val in self.data.values()])
 
 
-def check_data_config(config_path, hbjson):
+def check_data_config(config_path: str, hbjson: str) -> Dict[str, DataConfig]:
 
     path = Path(config_path)
     assert path.exists(), 'Not a valid path'
