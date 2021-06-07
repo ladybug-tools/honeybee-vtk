@@ -63,13 +63,18 @@ def export():
     default='shaded', help='Set display mode for the Sensorgrids.', show_default=True
 )
 @click.option(
+    '--view', '-vf', help='File Path to the Radiance view file.',
+    type=click.Path(exists=True),
+    default=None, show_default=True, multiple=True
+)
+@click.option(
     '--data-config', '-dc', help='File Path to the data-config json file.',
     type=click.Path(exists=True),
     default=None, show_default=True
 )
 def export(
         hbjson_file, name, folder, image_type, image_width, image_height,
-        background_color, display_mode_model, grid_options, display_mode_grid,
+        background_color, display_mode_model, grid_options, display_mode_grid, view,
         data_config):
     """Export images from radiance views in a HBJSON file.
 
