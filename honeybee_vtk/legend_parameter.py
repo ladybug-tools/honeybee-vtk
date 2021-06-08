@@ -355,15 +355,13 @@ class LegendParameter:
             )
 
     @property
-    def label_foramt(self) -> LabelFormat:
+    def label_format(self) -> LabelFormat:
         """The format of legend labels."""
         return self._label_format
 
     @label_format.setter
     def label_format(self, val) -> None:
-        if not val:
-            self._label_format = LabelFormat.integer
-        elif isinstance(val, LabelFormat):
+        if isinstance(val, LabelFormat):
             self._label_format = val
         else:
             raise ValueError(
@@ -382,9 +380,7 @@ class LegendParameter:
 
     @label_position.setter
     def label_position(self, val):
-        if not val:
-            self._label_position = 0
-        elif isinstance(val, int) and val in [0, 1]:
+        if isinstance(val, int) and val in [0, 1]:
             self._label_position = val
         else:
             raise ValueError(
