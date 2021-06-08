@@ -20,7 +20,7 @@ from .vtkjs.schema import DataSetProperty, DataSet, DisplayMode, DataSetMapper
 
 
 class AcceptedValues(Enum):
-
+    """Collection of acceptable values."""
     names = ('wall', 'aperture', 'shade', 'door', 'floor', 'roofceiling',
              'airboundary', 'grid')
 

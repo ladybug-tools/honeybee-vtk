@@ -4,12 +4,12 @@ import json
 from pathlib import Path
 from typing import Dict, List
 from pydantic import BaseModel, validator, Field
-from enum import Enum
 from .model import Model
 from .types import AcceptedValues
 
 
 class Data(BaseModel):
+    """COnfig for data."""
 
     name: str = Field(
         description='Name to be give to data. Example, "Daylight-Factor".'
@@ -45,6 +45,19 @@ class Data(BaseModel):
             )
 
     def cross_check_data(self, model: Model) -> bool:
+        """Cross check data with model.
+
+        For grids, it will be checked if the number of data files and the names of the
+        data files match with the grid identifiers. For other than grid objects, it will
+        be checked that only one data file is provided and the length of the data file
+        matches the length of Polydata in the model.
+
+        Args:
+            model: A honeybee-vtk model object.
+
+        Returns:
+            A boolean value.
+        """
 
         # if object name is "grid" check that the name of files match the grid names
         if self.object_name == AcceptedValues.names.value[-1]:
@@ -98,6 +111,7 @@ class Data(BaseModel):
 
 
 class DataConfig(BaseModel):
+    """Config for the whole data config file."""
 
     data: Dict[str, Data] = Field(
         description='A dictionary to introduce data that you would like to mount.'
@@ -108,7 +122,16 @@ class DataConfig(BaseModel):
         return all([val.cross_check_data(model) for val in self.data.values()])
 
 
-def check_data_config(config_path: str, hbjson: str) -> Dict[str, DataConfig]:
+def check_data_config(config_path: str, model: Model) -> Dict[str, DataConfig]:
+    """Validate the data config file.
+
+    Args:
+        config_path: File path to the data config file.
+        model: A honeybee-vtk model object.
+
+    Returns:
+        Data config as a dictionary.
+    """
 
     path = Path(config_path)
     assert path.exists(), 'Not a valid path'
@@ -123,7 +146,7 @@ def check_data_config(config_path: str, hbjson: str) -> Dict[str, DataConfig]:
     else:
         # Parse config.json using config schema
         json_obj = DataConfig.parse_file(path)
-        if json_obj.check_data(hbjson):
+        if json_obj.check_data(model):
             return json_obj.dict(exclude_none=True)
         else:
             raise ValueError(
