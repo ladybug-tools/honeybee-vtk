@@ -20,11 +20,6 @@ class Data(BaseModel):
         ' data.'
     )
 
-    delimiter: str = Field(
-        description='The delimiter used in the file or files that you are trying to'
-        ' use as data.'
-    )
-
     file_paths: List[str] = Field(
         description='List of paths to the file or files that you are trying to use as'
         ' data.'
@@ -38,16 +33,6 @@ class Data(BaseModel):
             raise ValueError(
                 f'Object name should be from these {AcceptedValues.names.value}.'
                 f' Instead got {v}.'
-            )
-
-    @validator('delimiter')
-    def validate_delimiter(cls, v: str) -> str:
-        if v in AcceptedValues.delimiters.value:
-            return v
-        else:
-            raise ValueError(
-                'The delimiter must be from one of these'
-                f' {AcceptedValues.delimiters.value}. Instead got {v}.'
             )
 
     @validator('file_paths')

@@ -162,6 +162,7 @@ def export(
                 cameras = model.cameras
                 scene.add_cameras(cameras)
 
+        # load config if provided
         if data_config:
             config = check_data_config(data_config, model)
             model._load_data(config)
