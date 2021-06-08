@@ -77,7 +77,7 @@ def test_legend_parameter_errors():
     with pytest.raises(ValueError):
         lp.width = 0.96
     with pytest.raises(ValueError):
-        lp.height = 0.06
+        lp.height = 0.96
     with pytest.raises(ValueError):
         lp.number_of_labels = 25
     with pytest.raises(ValueError):
