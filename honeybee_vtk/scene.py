@@ -75,6 +75,23 @@ class Scene:
                 legends_dict[legend_param.name] = legend_param
         return legends_dict
 
+    def legend_parameter(self, name: str) -> LegendParameter:
+        """Get a legend parameter object by name.
+
+        Args:
+            name: A string for the name of the legend parameters you are looking for.
+
+        Returns:
+            A legend parameter object.
+        """
+        if name not in self.legend_parameters.keys():
+            raise ValueError(
+                'No legend parameter found by that name in this scene. The names of the'
+                ' legend parameters in this scene are'
+                f' {tuple(self.legend_parameters.keys())}.'
+            )
+        return self.legend_parameters[name]
+
     def add_cameras(self, val: Union[Camera, List[Camera]]) -> None:
         """Add a honeybee-vtk Camera objects to a Scene.
 
