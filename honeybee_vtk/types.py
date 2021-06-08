@@ -23,7 +23,6 @@ class AcceptedValues(Enum):
 
     names = ('wall', 'aperture', 'shade', 'door', 'floor', 'roofceiling',
              'airboundary', 'grid')
-    delimiters = (',', ' ', '    ', ';', '|')
 
 
 class VTKWriters(Enum):
