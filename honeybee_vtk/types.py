@@ -19,6 +19,13 @@ from .legend_parameter import LegendParameter, Colors
 from .vtkjs.schema import DataSetProperty, DataSet, DisplayMode, DataSetMapper
 
 
+class AcceptedValues(Enum):
+
+    names = ('wall', 'aperture', 'shade', 'door', 'floor', 'roofceiling',
+             'airboundary', 'grid')
+    delimiters = (',', ' ', '    ', ';', '|')
+
+
 class VTKWriters(Enum):
     """Vtk writers."""
     legacy = 'vtk'
