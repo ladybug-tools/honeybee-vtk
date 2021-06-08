@@ -6,14 +6,7 @@ from typing import Dict, List
 from pydantic import BaseModel, validator, Field
 from enum import Enum
 from .model import Model
-from .vtkjs.schema import SensorGridOptions
-
-
-class AcceptedValues(Enum):
-
-    names = ('walls', 'apertures', 'shades', 'doors', 'floors', 'roof_ceilings',
-             'air_boundaries', 'sensor_grids')
-    delimiters = (',', ' ', '    ', ';', '|')
+from .types import AcceptedValues
 
 
 class Data(BaseModel):
@@ -67,17 +60,13 @@ class Data(BaseModel):
             )
 
     def cross_check_data(self, model: Model) -> bool:
-        class ModelData(Enum):
-            walls = model.walls.data
-            apertures = model.apertures.data
-            shades = model.shades.data
-            doors = model.doors.data
-            floors = model.floors.data
-            roof_ceilings = model.roof_ceilings.data
-            air_boundaries = model.air_boundaries.data
 
         # if object name is "grid" check that the name of files match the grid names
-        if self.object_name == 'sensor_grids':
+        if self.object_name == AcceptedValues.names.value[-1]:
+
+            assert len(model.sensor_grids.data) > 0, 'Sensor grids are not loaded on'\
+                ' this model. Reload them using grid options.'
+
             grid_names = [grid.identifier for grid in model.sensor_grids.data]
             file_names = [Path(path).name.split('.')[0] for path in self.file_paths]
             if len(grid_names) != len(file_names) or grid_names != file_names:
@@ -108,12 +97,19 @@ class Data(BaseModel):
             )
             file.close()
 
-            if nonempty_line_count != len(ModelData[self.object_name].value):
+            if nonempty_line_count != len(
+                    model.get_modeldataset_from_string(self.object_name).data):
                 raise ValueError(
                     'The length of data in the file does not match the number of'
                     f' {self.object_name} objects in the model.'
                 )
             return True
+
+        else:
+            raise ValueError(
+                ' object_name must be from one of these'
+                f' {AcceptedValues.names.value}. Instead got {self.object_name}.'
+            )
 
 
 class DataConfig(BaseModel):
@@ -123,8 +119,7 @@ class DataConfig(BaseModel):
         ' The key must be any text and the value must be DataConfig.'
     )
 
-    def check_data(self, hbjson: str) -> bool:
-        model = Model.from_hbjson(hbjson=hbjson, load_grids=SensorGridOptions.Mesh)
+    def check_data(self, model: Model) -> bool:
         return all([val.cross_check_data(model) for val in self.data.values()])
 
 
@@ -145,3 +140,7 @@ def check_data_config(config_path: str, hbjson: str) -> Dict[str, DataConfig]:
         json_obj = DataConfig.parse_file(path)
         if json_obj.check_data(hbjson):
             return json_obj.dict(exclude_none=True)
+        else:
+            raise ValueError(
+                'Validation failed.'
+            )
