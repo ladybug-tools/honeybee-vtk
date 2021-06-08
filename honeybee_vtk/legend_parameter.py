@@ -313,11 +313,11 @@ class LegendParameter:
 
     @height.setter
     def height(self, val) -> None:
-        if val < 0.06:
+        if val < 0.96:
             self._height = val
         else:
             raise ValueError(
-                'Height accepts a decimal number up to 0.05.'
+                'Height accepts a decimal number up to 0.95.'
             )
 
     @property
