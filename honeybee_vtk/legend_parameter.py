@@ -7,7 +7,7 @@ from typing import Tuple
 from ._helper import _validate_input
 
 
-class LabelType (Enum):
+class LabelFormat (Enum):
     """Setting the type of the Label on a Legend.
 
     Types refers to two point decimal numbers, three point decimal numbers, and integers.
@@ -177,7 +177,7 @@ class LegendParameter:
                 Defaults to None.
             number_of_labels: An integer representing the number of text labels on a
                 legend. Default to None.
-            label_type: A LabelType object.
+            label_format: A LabelFormat object.
             label_position: 0 or 1. The value of 0 would mean that the labels and the
                 title would not precede the legend. The value of 1 would mean that the
                 labels and the title would precede the legend.. If not set, the labels
@@ -198,7 +198,7 @@ class LegendParameter:
             height: float = None,
             number_of_colors: int = None,
             number_of_labels: int = None,
-            label_type: LabelType = None,
+            label_format: LabelFormat = None,
             label_position: int = None,
             label_font=None,
             title_font=None) -> None:
@@ -213,7 +213,7 @@ class LegendParameter:
         self.height = height
         self.number_of_colors = number_of_colors
         self.number_of_labels = number_of_labels
-        self.label_type = label_type
+        self.label_format = label_format
         self.label_position = label_position
         self.label_font = label_font
         self.title_font = title_font
@@ -382,19 +382,19 @@ class LegendParameter:
             )
 
     @property
-    def label_type(self) -> LabelType:
+    def label_foramt(self) -> LabelFormat:
         """The format of legend labels."""
-        return self._label_type
+        return self._label_format
 
-    @label_type.setter
-    def label_type(self, val) -> None:
+    @label_format.setter
+    def label_format(self, val) -> None:
         if not val:
-            self._label_type = LabelType.integer
-        elif isinstance(val, LabelType):
-            self._label_type = val
+            self._label_format = LabelFormat.integer
+        elif isinstance(val, LabelFormat):
+            self._label_format = val
         else:
             raise ValueError(
-                f'A LabelType object expected. Instead got {type(val).__name__}'
+                f'A LabelFormat object expected. Instead got {type(val).__name__}'
             )
 
     @property
@@ -495,7 +495,7 @@ class LegendParameter:
             scalar_bar.SetNumberOfLabels(self._number_of_labels)
 
         # setting the type of labels. Such as integers, decimals, etc.
-        scalar_bar.SetLabelFormat(self._label_type.value)
+        scalar_bar.SetLabelFormat(self._label_format.value)
 
         # Setting whether the labels and title should precede the legend
         scalar_bar.SetTextPosition(self._label_position)
@@ -518,7 +518,7 @@ class LegendParameter:
             f' Legend height: {self._height} |'
             f' Number of colors in legend: {self._number_of_colors} |'
             f' Number of lables in legend: {self._number_of_labels} |'
-            f' Type of label: {self._label_type} |'
+            f' Type of label: {self._label_format} |'
             f' Position of label: {self._label_position} |'
             f' Font of label: {self._label_font} |'
             f' Font of title: {self._title_font}'
