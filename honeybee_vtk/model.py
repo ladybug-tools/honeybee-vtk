@@ -18,6 +18,7 @@ from .to_vtk import convert_aperture, convert_face, convert_room, convert_shade,
     convert_sensor_grid
 from .vtkjs.schema import IndexJSON, DisplayMode, SensorGridOptions
 from .vtkjs.helper import convert_directory_to_zip_file, add_data_to_viewer
+from .types import AcceptedValues
 
 
 _COLORSET = {
@@ -154,6 +155,15 @@ class Model(object):
         """List of Camera objects attached to this Model object."""
         return self._cameras
 
+    def get_modeldataset_from_string(self, text: str) -> ModelDataSet:
+        if text not in AcceptedValues.names.value:
+            raise ValueError(
+                f'Text must be one of the {AcceptedValues.names.value}.'
+                f' Instead got {text}.'
+            )
+        ds = {ds.name.lower(): ds for ds in self}
+        return ds[text]
+
     def __iter__(self):
         """This dunder method makes this class an iterator object.
 
@@ -189,15 +199,36 @@ class Model(object):
             )
 
     def _load_data(self, config: dict) -> None:
-        """Load data from json.
+        """Mount data on model from config json.
 
         This method is only used in cli.
 
         Args:
             config: A dictionary returned by check_data_config
         """
-        data = [val for val in config['data'].values()]
-        return data
+        # Here, data is a list of dictionaries
+        # Each dictionary is a data object defined in data module
+        data_config = [val for val in config['data'].values()]
+
+        for data in data_config:
+
+            # if data is for a ModelDataSet grid
+            if data['object_name'] == AcceptedValues.names.value[-1]:
+                result = []
+                for file_path in data['file_paths']:
+                    res_file = pathlib.Path(file_path)
+                    grid_res = [float(v) for v in res_file.read_text().splitlines()]
+                    result.append(grid_res)
+
+            # if data is for a ModelDataSet other than grid
+            elif data['object_name'] in AcceptedValues.names.value[:-1]:
+                res_file = pathlib.Path(data['file_paths'][0])
+                result = [[float(v)] for v in res_file.read_text().splitlines()]
+
+            ds = self.get_modeldataset_from_string(data['object_name'])
+            ds.add_data_fields(result, name=data['name'])
+            ds.color_by = data['name']
+            ds.display_mode = DisplayMode.SurfaceWithEdges
 
     def update_display_mode(self, value: DisplayMode) -> None:
         """Change display mode for all the object types in the model.
