@@ -59,15 +59,15 @@ class Font:
     """Fonts for the legend.
 
         Args:
-            color: A tuple of three integer values for R, G, and B. Defaults to None.
-            size: An integer representing the size of fonts in points. Defaults to None.
-            bold: A boolean to specify whether the fonts should be made bold. If not
-                set, the fonts will not be made bold. Defaults to None.
+            color: A tuple of three integer values for R, G, and B. Defaults (0, 0, 0).
+            size: An integer representing the size of fonts in points. Defaults to 30.
+            bold: A boolean to specify whether the fonts should be made bold.
+                Defaults to False.
         """
 
     def __init__(
-            self, color: Tuple[float, float, float] = None, size: int = None,
-            bold: bool = None) -> None:
+            self, color: Tuple[float, float, float] = (0, 0, 0), size: int = 30,
+            bold: bool = False) -> None:
 
         self.color = color
         self.size = size
@@ -80,10 +80,8 @@ class Font:
 
     @color.setter
     def color(self, val) -> None:
-        if not val:
-            self._color = (0, 0, 0)
-        elif isinstance(val, tuple) and _validate_input(val, int, 256):
-            self._color = (val[0]/255, val[1]/255, val[1]/255)
+        if isinstance(val, tuple) and _validate_input(val, int, 256):
+            self._color = (val[0] / 255, val[1] / 255, val[1] / 255)
         else:
             raise ValueError(
                 'Color accepts a tuple of three integers for R, G, and B values.'
@@ -97,9 +95,7 @@ class Font:
 
     @size.setter
     def size(self, val) -> None:
-        if not val:
-            self._size = 30
-        elif isinstance(val, int):
+        if isinstance(val, int):
             self._size = val
         else:
             raise ValueError(
@@ -113,9 +109,7 @@ class Font:
 
     @bold.setter
     def bold(self, val) -> None:
-        if not val:
-            self._bold = False
-        elif isinstance(val, bool):
+        if isinstance(val, bool):
             self._bold = val
         else:
             raise ValueError(
@@ -142,66 +136,61 @@ class Font:
 class LegendParameter:
     """Legend parameters for the vtk legend (scalarbar) object.
 
-    A vtk legend has a number of colors, labels, and a title. Here, labels mean the 
+    A vtk legend has a number of colors, labels, and a title. Here, labels mean the
     numbers you see on a legend such as 0, 1, 2, 3, 4, 5 on a legend with max value of 5.
 
         Args:
             name: A text string representing the name of the legend object and the
-                title of the legend. If not name is provided, "Legend" will be used.
-                Default to None.
-            colors: A Colors object. If colors is not specified, ecotect colorset from
-                Ladybug will be used. Defaults to None.
+                title of the legend. Default to "Legend".
+            colors: A Colors object. Defaults to Ecotect colorset.
             range: A tuple of integers representing the minimum and maximum values of a
                 legend. Defaults to (0, 100).
-            show_legend: A boolean to set the visibility of a legend in Scene. If not
-                set, it will be set to False. Defaults to None.
+            show_legend: A boolean to set the visibility of a legend in Scene.
+                Defaults to False.
             orientation: An Orientation object that sets the orientation of the legend in
-                the scene. If not set, the legend will be oriented vertically.
-                Defaults to None.
+                the scene. Defaults to horizontal orientation.
             position: A tuple of two decimal values. The values represent the percentage
                 of viewport width and the percentage of viewport height. These
                 percentages in decimal numbers will define the location of the start
                 point of the legend. For example, a value of (0.0, 0.5) will place the
-                start point of the legend at the left most side of the legend and at the
-                50% height of the viewport. If not specified (0.5, 0.0) will be used.
-                Default to None.
+                start point of the legend at the left most side of the viewport and at
+                the 50% height of the viewport. Default to (0.5, 0.0).
             width: A decimal number representing the percentage of viewport width that
                 will be used to define the width of the legend. A value of 0.45 will
-                make the width of legend equal to the 45% width of the viewport. If not
-                set, the value of 0.45 will be used. Defaults to None.
+                make the width of legend equal to the 45% width of the viewport.
+                Defaults to 0.45.
             height: A decimal number representing the percentage of viewport height that
                 will be used to define the height of the legend. A value of 0.05 will
-                make the height of legend equal to the 5% height of the viewport. If not
-                set, the value of 0.05 will be used. Defaults to None.
+                make the height of legend equal to the 5% height of the viewport.
+                Defaults to 0.05.
             number_of_colors: An integer representing the number of colors in a legend.
                 Defaults to None.
             number_of_labels: An integer representing the number of text labels on a
                 legend. Default to None.
-            label_format: A LabelFormat object.
+            label_format: A LabelFormat object. Defaults to integer format.
             label_position: 0 or 1. The value of 0 would mean that the labels and the
                 title would not precede the legend. The value of 1 would mean that the
-                labels and the title would precede the legend.. If not set, the labels
-                and the title will not precede the legend. Defaults to None.
-            label_font: A Font object. Defaults to None.
-            title_font: A font object. Defaults to None.
+                labels and the title would precede the legend. Defaults to 0.
+            label_font: A Font object. Defaults to size 30 black fonts.
+            title_font: A font object. Defaults to size 50 black bold fonts.
         """
 
     def __init__(
             self,
-            name: str = None,
-            colors: Colors = None,
-            range: Tuple[int, int] = None,
-            show_legend: bool = None,
-            orientation: Orientation = None,
-            position: Tuple[float, float] = None,
-            width: float = None,
-            height: float = None,
+            name: str = 'Legend',
+            colors: Colors = Colors.ecotect,
+            range: Tuple[int, int] = (0, 100),
+            show_legend: bool = False,
+            orientation: Orientation = Orientation.horizontal,
+            position: Tuple[float, float] = (0.5, 0.0),
+            width: float = 0.45,
+            height: float = 0.05,
             number_of_colors: int = None,
             number_of_labels: int = None,
-            label_format: LabelFormat = None,
-            label_position: int = None,
-            label_font=None,
-            title_font=None) -> None:
+            label_format: LabelFormat = LabelFormat.integer,
+            label_position: int = 0,
+            label_font: Font = Font(color=(0, 0, 0), size=30),
+            title_font: Font = Font(color=(0, 0, 0), size=50, bold=True)) -> None:
 
         self.name = name
         self.colors = colors
@@ -225,9 +214,7 @@ class LegendParameter:
 
     @name.setter
     def name(self, val) -> None:
-        if not val:
-            self._name = 'Legend'
-        elif isinstance(val, str):
+        if isinstance(val, str):
             self._name = val
         else:
             raise ValueError(
@@ -241,9 +228,7 @@ class LegendParameter:
 
     @colors.setter
     def colors(self, val) -> None:
-        if not val:
-            self._colors = Colors.ecotect
-        elif isinstance(val, Colors):
+        if isinstance(val, Colors):
             self._colors = val
         else:
             raise ValueError(
@@ -257,9 +242,7 @@ class LegendParameter:
 
     @range.setter
     def range(self, val) -> None:
-        if not val:
-            self._range = (0, 100)
-        elif isinstance(val, tuple) and len(val) == 2:
+        if isinstance(val, tuple) and len(val) == 2:
             self._range = val
         else:
             raise ValueError(
@@ -273,9 +256,7 @@ class LegendParameter:
 
     @show_legend.setter
     def show_legend(self, val) -> None:
-        if not val:
-            self._show_legend = False
-        elif isinstance(val, bool):
+        if isinstance(val, bool):
             self._show_legend = val
         else:
             raise ValueError(
@@ -289,9 +270,7 @@ class LegendParameter:
 
     @orientation.setter
     def orientation(self, val) -> None:
-        if not val:
-            self._orientation = Orientation.horizontal
-        elif isinstance(val, Orientation):
+        if isinstance(val, Orientation):
             self._orientation = val
         else:
             raise ValueError(
@@ -305,9 +284,7 @@ class LegendParameter:
 
     @position.setter
     def position(self, val) -> None:
-        if not val:
-            self._position = (0.5, 0.0)
-        elif isinstance(val, tuple) and _validate_input(val, float, 0.96):
+        if isinstance(val, tuple) and _validate_input(val, float, 0.96):
             self._position = val
         else:
             raise ValueError(
@@ -322,9 +299,7 @@ class LegendParameter:
 
     @width.setter
     def width(self, val) -> None:
-        if not val:
-            self._width = 0.45
-        elif val < 0.96:
+        if val < 0.96:
             self._width = val
         else:
             raise ValueError(
@@ -338,9 +313,7 @@ class LegendParameter:
 
     @height.setter
     def height(self, val) -> None:
-        if not val:
-            self._height = 0.05
-        elif val < 0.06:
+        if val < 0.06:
             self._height = val
         else:
             raise ValueError(
@@ -382,15 +355,13 @@ class LegendParameter:
             )
 
     @property
-    def label_foramt(self) -> LabelFormat:
+    def label_format(self) -> LabelFormat:
         """The format of legend labels."""
         return self._label_format
 
     @label_format.setter
     def label_format(self, val) -> None:
-        if not val:
-            self._label_format = LabelFormat.integer
-        elif isinstance(val, LabelFormat):
+        if isinstance(val, LabelFormat):
             self._label_format = val
         else:
             raise ValueError(
@@ -409,9 +380,7 @@ class LegendParameter:
 
     @label_position.setter
     def label_position(self, val):
-        if not val:
-            self._label_position = 0
-        elif isinstance(val, int) and val in [0, 1]:
+        if isinstance(val, int) and val in [0, 1]:
             self._label_position = val
         else:
             raise ValueError(
@@ -425,9 +394,7 @@ class LegendParameter:
 
     @label_font.setter
     def label_font(self, val) -> None:
-        if not val:
-            self._label_font = Font(color=(0, 0, 0), size=30)
-        elif isinstance(val, Font):
+        if isinstance(val, Font):
             self._label_font = val
         else:
             raise ValueError(
@@ -441,9 +408,7 @@ class LegendParameter:
 
     @title_font.setter
     def title_font(self, val) -> None:
-        if not val:
-            self._title_font = Font(color=(0, 0, 0), size=50, bold=True)
-        elif isinstance(val, Font):
+        if isinstance(val, Font):
             self._title_font = val
         else:
             raise ValueError(
