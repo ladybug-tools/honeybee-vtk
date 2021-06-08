@@ -355,19 +355,19 @@ class LegendParameter:
             )
 
     @property
-    def label_type(self) -> LabelType:
+    def label_foramt(self) -> LabelFormat:
         """The format of legend labels."""
-        return self._label_type
+        return self._label_format
 
-    @label_type.setter
-    def label_type(self, val) -> None:
+    @label_format.setter
+    def label_format(self, val) -> None:
         if not val:
-            self._label_type = LabelType.integer
-        elif isinstance(val, LabelType):
-            self._label_type = val
+            self._label_format = LabelFormat.integer
+        elif isinstance(val, LabelFormat):
+            self._label_format = val
         else:
             raise ValueError(
-                f'A LabelType object expected. Instead got {type(val).__name__}'
+                f'A LabelFormat object expected. Instead got {type(val).__name__}'
             )
 
     @property
