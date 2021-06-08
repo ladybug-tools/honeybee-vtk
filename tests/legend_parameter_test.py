@@ -2,7 +2,7 @@
 
 import pytest
 import vtk
-from honeybee_vtk.legend_parameter import Font, LabelType, LegendParameter
+from honeybee_vtk.legend_parameter import Font, LabelFormat, LegendParameter
 from honeybee_vtk.legend_parameter import Colors, Orientation
 from honeybee_vtk._helper import _validate_input
 
@@ -51,7 +51,7 @@ def test_legend_parameter_initialization():
     assert lp.height == 0.05
     assert not lp.number_of_colors
     assert not lp.number_of_labels
-    assert lp.label_type == LabelType.integer
+    assert lp.label_format == LabelFormat.integer
     assert lp.label_position == 0
     assert isinstance(lp.label_font, Font)
     assert isinstance(lp.title_font, Font)
@@ -83,7 +83,7 @@ def test_legend_parameter_errors():
     with pytest.raises(ValueError):
         lp.number_of_colors = 25
     with pytest.raises(ValueError):
-        lp.label_type = int
+        lp.label_format = int
     with pytest.raises(ValueError):
         lp.label_position = 4
     with pytest.raises(ValueError):
