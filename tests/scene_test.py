@@ -13,7 +13,7 @@ from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 from honeybee_vtk.camera import Camera
 from honeybee_vtk.actor import Actor
 from honeybee_vtk.types import ImageTypes, Colors
-from honeybee_vtk.legend_parameter import Orientation
+from honeybee_vtk.legend_parameter import LabelFormat, Orientation
 
 
 def test_class_initialization():
@@ -199,9 +199,13 @@ def test_adding_data():
 #     scene.legend_parameters['Daylight-factor'].show_legend = True
 #     scene.legend_parameters['Daylight-factor'].position = (0.0, 0.1)
 
-#     scene.legend_parameters['Radiation'].show_legend = True
-#     scene.legend_parameters['Radiation'].position = (0.5, 0.1)
-#     scene.legend_parameters['Radiation'].orientation = Orientation.horizontal
+#     rd = scene.legend_parameter('Radiation')
+#     rd.orientation = Orientation.vertical
+#     rd.height = 0.45
+#     rd.width = 0.05
+#     rd.label_format = LabelFormat.integer
+#     rd.show_legend = True
+#     rd.position = (0.90, 0.1)
 
 #     # A camera setup using the constructor
 #     camera = Camera(position=(-50.28, -30.32, 58.64), direction=(0.59, 0.44, -0.67),
