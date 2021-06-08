@@ -163,7 +163,8 @@ def export(
                 scene.add_cameras(cameras)
 
         if data_config:
-            print(check_data_config(data_config, hbjson_file))
+            config = check_data_config(data_config, model)
+            model._load_data(config)
 
         output = scene.export_images(
             folder=folder, name=name, image_type=image_type,
