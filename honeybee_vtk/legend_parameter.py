@@ -317,7 +317,7 @@ class LegendParameter:
             self._height = val
         else:
             raise ValueError(
-                'Height accepts a decimal number up to 0.05.'
+                'Height accepts a decimal number up to 0.95.'
             )
 
     @property
