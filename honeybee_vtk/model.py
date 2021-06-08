@@ -19,7 +19,7 @@ from .to_vtk import convert_aperture, convert_face, convert_room, convert_shade,
 from .vtkjs.schema import IndexJSON, DisplayMode, SensorGridOptions
 from .vtkjs.helper import convert_directory_to_zip_file, add_data_to_viewer
 from .types import AcceptedValues
-
+from ._helper import get_min_max
 
 _COLORSET = {
     'Wall': [0.901, 0.705, 0.235, 1],
@@ -226,7 +226,7 @@ class Model(object):
                 result = [[float(v)] for v in res_file.read_text().splitlines()]
 
             ds = self.get_modeldataset_from_string(data['object_name'])
-            ds.add_data_fields(result, name=data['name'])
+            ds.add_data_fields(result, name=data['name'], data_range=get_min_max(result))
             ds.color_by = data['name']
             ds.display_mode = DisplayMode.SurfaceWithEdges
 
