@@ -20,4 +20,18 @@ def _validate_input(val: Union[List, Tuple], val_type: Any, max_val: int = None)
         return all(list(map(lambda v: isinstance(v, val_type), val)))
     else:
         return all(list(map(lambda v: isinstance(v, val_type) and v < max_val, val)))
-        
+
+
+def get_min_max(val: List[List]) -> Tuple[float, float]:
+    """Get minimum and maximum values from a list of lists.
+
+    Args:
+        val: A list of lists
+
+    Returns:
+        A tuple of minimum and maximum values.
+    """
+    result = []
+    for item in val:
+        result += item
+    return (min(result), max(result))
