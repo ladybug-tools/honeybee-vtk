@@ -392,44 +392,6 @@ class LegendParameter:
         """Font for the legend labels."""
         return self._label_font
 
-    @property
-    def label_format(self) -> LabelFormat:
-        """The format of legend labels."""
-        return self._label_format
-
-    @label_format.setter
-    def label_format(self, val) -> None:
-        if isinstance(val, LabelFormat):
-            self._label_format = val
-        else:
-            raise ValueError(
-                f'A LabelFormat object expected. Instead got {type(val).__name__}'
-            )
-
-    @property
-    def label_position(self) -> int:
-        """The position of labels and the legend title on a legend.
-
-        The value of 0 would mean that the labels and the title would not preced the
-        legend. The value of 1 would mean that the labels and the title would precede
-        the legend.
-        """
-        return self._label_position
-
-    @label_position.setter
-    def label_position(self, val):
-        if isinstance(val, int) and val in [0, 1]:
-            self._label_position = val
-        else:
-            raise ValueError(
-                f'Label position only accepts 0 or 1 as a value. Instead got {val}.'
-            )
-
-    @property
-    def label_font(self) -> Font:
-        """Font for the legend labels."""
-        return self._label_font
-
     @label_font.setter
     def label_font(self, val) -> None:
         if isinstance(val, Font):
