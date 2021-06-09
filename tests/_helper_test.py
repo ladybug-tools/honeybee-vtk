@@ -1,7 +1,7 @@
 """Unit tests for the helper module."""
 
 import pytest
-from honeybee_vtk._helper import _validate_input
+from honeybee_vtk._helper import _validate_input, get_min_max
 
 
 def test_check_tuple():
@@ -18,3 +18,9 @@ def test_check_tuple():
 
     val = (1.2, 3.4, 5.4)
     assert not _validate_input(val, float, 1.0)
+
+
+def test_get_min_max():
+    """Test get_min_max function."""
+    result = [[10], [10, 11], [-23, 34], [44]]
+    assert get_min_max(result) == (-23, 44)
