@@ -5,14 +5,14 @@
             "name": "Daylight-Factor",
             "object_name": "grid",
             "delimiter": ",",
-            "file_paths": ["D:\\Github\\honeybee-vtk\\tests\\assets\\df_results\\TestRoom_1.res",
-            "D:\\Github\\honeybee-vtk\\tests\\assets\\df_results\\TestRoom_2.res"]
+            "file_paths": ["./tests/assets/df_results/TestRoom_1.res",
+            "./tests/assets/df_results/TestRoom_2.res"]
     },
     "radiation":{
         "name": "Radiation",
         "object_name": "shade",
         "delimiter": ",",
-        "file_paths": ["radiation.csv"]
+        "file_paths": ["./tests/assets/radiation.csv"]
     }
 }
 }
