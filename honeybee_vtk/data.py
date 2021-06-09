@@ -1,9 +1,11 @@
 """Data json schema and validation."""
 
 import json
+from json.decoder import JSONDecodeError
 from pathlib import Path
 from typing import Dict, List
 from pydantic import BaseModel, validator, Field
+from pydantic.errors import JsonError
 from .model import Model
 from .types import AcceptedValues
 
@@ -132,19 +134,24 @@ def check_data_config(config_path: str, model: Model) -> Dict[str, DataConfig]:
     Returns:
         Data config as a dictionary.
     """
-
+    # Check if path is valid
     path = Path(config_path)
-    assert path.exists(), 'Not a valid path'
+    if not path.exists():
+        raise FileExistsError(
+            f'{config_path} is not a valid path.'
+        )
 
+    # Check if json is valid
     try:
         with open(config_path) as fh:
             config = json.load(fh)
     except json.decoder.JSONDecodeError:
-        raise ValueError(
+        raise TypeError(
             'Not a valid json file.'
         )
+
+    # Check if schema is valid
     else:
-        # Parse config.json using config schema
         json_obj = DataConfig.parse_file(path)
         if json_obj.check_data(model):
             return json_obj.dict(exclude_none=True)
