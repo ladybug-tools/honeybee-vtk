@@ -162,6 +162,12 @@ def export(
                 cameras = model.cameras
                 scene.add_cameras(cameras)
 
+            # if view files are provided collect them
+            if view:
+                for vf in view:
+                    camera = Camera.from_view_file(file_path=vf)
+                    scene.add_cameras(camera)
+
         # load config if provided
         if data_config:
             config = check_data_config(data_config, model)
