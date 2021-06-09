@@ -10,7 +10,7 @@ from honeybee_vtk.actor import Actor
 
 
 def test_to_vtk():
-    "Test if default properties of the camera object coming out of to_vtk."
+    "Test if default properties of the camera object."
 
     # Initialize a camera object and assess all the default properties
     camera = Camera()
