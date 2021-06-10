@@ -7,7 +7,7 @@ from typing import Dict, List
 from pydantic import BaseModel, validator, Field
 from pydantic.errors import JsonError
 from .model import Model
-from .types import AcceptedValues
+from .types import model_dataset_names
 
 
 class Data(BaseModel):
@@ -17,7 +17,7 @@ class Data(BaseModel):
         description='Name to be give to data. Example, "Daylight-Factor".'
     )
 
-    object_name: str = Field(
+    object_type: str = Field(
         description='The name of the model object on which you would like to map this'
         ' data.'
     )
@@ -27,13 +27,13 @@ class Data(BaseModel):
         ' data.'
     )
 
-    @validator('object_name')
+    @validator('object_type')
     def validate_object(cls, v: str) -> str:
-        if v in AcceptedValues.names.value:
+        if v in model_dataset_names:
             return v
         else:
             raise ValueError(
-                f'Object name should be from these {AcceptedValues.names.value}.'
+                f'Object name should be from these {model_dataset_names}.'
                 f' Instead got {v}.'
             )
 
@@ -42,8 +42,9 @@ class Data(BaseModel):
         if all([Path(path).is_file() for path in v]):
             return v
         else:
+            paths = tuple([path for path in v if not Path(path).is_file()])
             raise ValueError(
-                'File paths are not valid.'
+                f'Following file paths are not valid {paths}.'
             )
 
     def cross_check_data(self, model: Model) -> bool:
@@ -62,23 +63,32 @@ class Data(BaseModel):
         """
 
         # if object name is "grid" check that the name of files match the grid names
-        if self.object_name == AcceptedValues.names.value[-1]:
+        if self.object_type == model_dataset_names[-1]:
 
             assert len(model.sensor_grids.data) > 0, 'Sensor grids are not loaded on'\
                 ' this model. Reload them using grid options.'
 
             grid_names = [grid.identifier for grid in model.sensor_grids.data]
-            file_names = [Path(path).name.split('.')[0] for path in self.file_paths]
-            if len(grid_names) != len(file_names) or grid_names != file_names:
+            file_names = [Path(path).stem for path in self.file_paths]
+            names_in_grids = all([name in grid_names for name in file_names])
+
+            if len(file_names) > len(grid_names):
                 raise ValueError(
-                    'The number of files and the file names must match the grid'
-                    ' identifiers in HBJSON.'
+                    f'There are only {len(grid_names)} grids in the model and the'
+                    f' identifiers of those grids are {tuple(grid_names)}.'
                 )
+
+            if not names_in_grids:
+                raise ValueError(
+                    'Make sure the file names match the grid identifiers. The'
+                    f' identifiers of the grids in the model are {tuple(grid_names)}.'
+                )
+
             return True
 
         # if object_name is other than grid check that length of data matches the length
         # of data in the model for that object.
-        elif self.object_name in AcceptedValues.names.value[:-1]:
+        elif self.object_type in model_dataset_names[:-1]:
 
             if len(self.file_paths) == 0:
                 raise ValueError(
@@ -87,7 +97,7 @@ class Data(BaseModel):
             elif len(self.file_paths) > 1:
                 raise ValueError(
                     'Only one file path needs to be provided in order to load data on'
-                    f' {self.object_name}. Multiple files are provided in the config'
+                    f' {self.object_type}. Multiple files are provided in the config'
                     ' file.'
                 )
 
@@ -98,17 +108,17 @@ class Data(BaseModel):
             file.close()
 
             if nonempty_line_count != len(
-                    model.get_modeldataset_from_string(self.object_name).data):
+                    model.get_modeldataset_from_string(self.object_type).data):
                 raise ValueError(
                     'The length of data in the file does not match the number of'
-                    f' {self.object_name} objects in the model.'
+                    f' {self.object_type} objects in the model.'
                 )
             return True
 
         else:
             raise ValueError(
                 ' object_name must be from one of these'
-                f' {AcceptedValues.names.value}. Instead got {self.object_name}.'
+                f' {model_dataset_names}. Instead got {self.object_type}.'
             )
 
 
