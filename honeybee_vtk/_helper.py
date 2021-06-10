@@ -1,4 +1,5 @@
 """Helper functions to be used in other modules."""
+from itertools import chain
 from typing import Any, Union, List, Tuple
 
 
@@ -31,7 +32,5 @@ def get_min_max(val: List[List]) -> Tuple[float, float]:
     Returns:
         A tuple of minimum and maximum values.
     """
-    result = []
-    for item in val:
-        result += item
+    result = list(chain(*val))
     return (min(result), max(result))
