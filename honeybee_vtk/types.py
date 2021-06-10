@@ -19,10 +19,8 @@ from .legend_parameter import LegendParameter, Colors
 from .vtkjs.schema import DataSetProperty, DataSet, DisplayMode, DataSetMapper
 
 
-class AcceptedValues(Enum):
-    """Collection of acceptable values."""
-    names = ('wall', 'aperture', 'shade', 'door', 'floor', 'roofceiling',
-             'airboundary', 'grid')
+model_dataset_names = ('wall', 'aperture', 'shade', 'door', 'floor', 'roofceiling',
+                       'airboundary', 'grid')
 
 
 class VTKWriters(Enum):
@@ -52,7 +50,7 @@ class DataFieldInfo:
     Args:
         name: A string representing the name of for data.
         range: A tuple of min, max values. Defaults to (0, 100).
-        colors: A Colors object that defines colors for the legend. 
+        colors: A Colors object that defines colors for the legend.
             Defaults to Ecotect colorset.
         per_face : A Boolean to indicate if the data is per face or per point. In
             most cases except for sensor points that are loaded as sensors the data
@@ -309,13 +307,38 @@ class ModelDataSet:
             data_range: A list with two values for minimum and maximum values for legend
                 parameters.
         """
+
         assert len(self.data) == len(data), \
-            f'Length of input data {len(data)} does not match the length of polydata ' \
-            f'in this dataset {len(self.data)}.'
+            f'Length of input data {len(data)} does not match the length of'\
+            f' polydata in this dataset {len(self.data)}.'
 
         for count, d in enumerate(data):
             self.data[count].add_data(
                 d, name=name, cell=per_face, colors=colors, data_range=data_range)
+
+    def add_data_fields_with_identifier(
+            self, data: List[List], name: str, identifier: str, per_face: bool = True,
+            colors=None, data_range=None):
+        """Add data fields to PolyData objects in this dataset using the identifier.
+
+        This method is especially useful to load data to selected grids using their
+        identifiers.
+
+        Args:
+            data: A list of list of values. There should be a list per data in DataSet.
+                The order of data should match the order of data in DataSet. You can
+                use data.identifier to match the orders before assigning them to DataSet.
+            name: Name of data (e.g. Useful Daylight Autonomy.)
+            identifier: identifier of the the Polydata.
+            per_face: A Boolean to indicate if the data is per face or per point. In
+                most cases except for sensor points that are loaded as sensors the data
+                are provided per face.
+            colors: A Colors object that defines colors for the legend.
+            data_range: A list with two values for minimum and maximum values for legend
+                parameters.
+        """
+
+        pass
 
     @property
     def is_empty(self):
