@@ -3,15 +3,13 @@
     "data": {
         "grid": {
             "name": "Daylight-Factor",
-            "object_name": "grid",
-            "delimiter": ",",
+            "object_type": "grid",
             "file_paths": ["./tests/assets/df_results/TestRoom_1.res",
             "./tests/assets/df_results/TestRoom_2.res"]
     },
     "radiation":{
         "name": "Radiation",
-        "object_name": "shade",
-        "delimiter": ",",
+        "object_type": "shade",
         "file_paths": ["./tests/assets/radiation.csv"]
     }
 }
