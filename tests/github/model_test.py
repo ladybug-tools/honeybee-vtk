@@ -12,10 +12,10 @@ from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 def test_write_html():
     """Test if an HTML file can be successfully written."""
 
-    file_path = './tests/assets/unnamed.hbjson'
+    file_path = r'tests/assets/unnamed.hbjson'
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
 
-    target_folder = './tests/assets/temp'
+    target_folder = r'tests/assets/temp'
     if os.path.isdir(target_folder):
         shutil.rmtree(target_folder)
     os.mkdir(target_folder)
@@ -28,10 +28,10 @@ def test_write_html():
 def test_write_vtkjs():
     """Test if a vtkjs file can be successfully written."""
 
-    file_path = './tests/assets/unnamed.hbjson'
+    file_path = r'tests/assets/unnamed.hbjson'
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
 
-    target_folder = './tests/assets/temp'
+    target_folder = r'tests/assets/temp'
     if os.path.isdir(target_folder):
         shutil.rmtree(target_folder)
     os.mkdir(target_folder)
@@ -44,7 +44,7 @@ def test_write_vtkjs():
 def test_properties():
     """Test properties of a model."""
 
-    file_path = './tests/assets/unnamed.hbjson'
+    file_path = r'tests/assets/unnamed.hbjson'
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
 
     # model is an iterator object. Hence, we're using a for loop to test properties
@@ -55,7 +55,7 @@ def test_properties():
 def test_load_grids():
     """Test loading of grids from hbjson."""
 
-    file_path = r'./tests/assets/revit_model/model.hbjson'
+    file_path = r'tests/assets/revit_model/model.hbjson'
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Ignore)
     assert model.sensor_grids.data == []
 
@@ -64,9 +64,9 @@ def test_load_grids():
 
 
 def test_displaymode():
-    """Test displaymode assignment of model and model objects."""   
+    """Test displaymode assignment of model and model objects."""
 
-    file_path = './tests/assets/unnamed.hbjson'
+    file_path = r'tests/assets/unnamed.hbjson'
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
 
     # set display mode for model
@@ -85,7 +85,7 @@ def test_displaymode():
 
 def test_hbjson_vtk_conversion():
     """Test is hbjson is being converted into vtk polydata correctly."""
-    file_path = r'./tests/assets/revit_model/model.hbjson'
+    file_path = r'tests/assets/revit_model/model.hbjson'
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
 
     assert len(model.shades.data) == 30
@@ -100,7 +100,7 @@ def test_hbjson_vtk_conversion():
 
 def test_default_colors():
     """Test default colors for the model objects."""
-    file_path = r'./tests/assets/revit_model/model.hbjson'
+    file_path = r'tests/assets/revit_model/model.hbjson'
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
 
     assert model.get_default_color('Aperture') == Color(63, 179, 255, 127)
@@ -115,7 +115,6 @@ def test_default_colors():
 
 def test_views():
     """Test if views are being read from hbjson."""
-    file_path = r'./tests/assets/viewbased.hbjson'
+    file_path = r'tests/assets/viewbased.hbjson'
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
     assert len(model.cameras) == 1
-    

@@ -9,33 +9,33 @@ from honeybee_vtk.vtkjs.schema import SensorGridOptions
 from honeybee_vtk.actor import Actor
 
 
-# def test_to_vtk():
-#     "Test if default properties of the camera object."
+def test_to_vtk():
+    "Test if default properties of the camera object."
 
-#     # Initialize a camera object and assess all the default properties
-#     camera = Camera()
-#     assert camera.identifier[0:6] == 'camera'
-#     assert camera.position.value == (0, 0, 100)
-#     assert camera.direction.value == (0, 0, -1)
-#     assert camera.up_vector.value == (0, 1, 0)
-#     assert camera.h_size.value == 60
-#     assert camera.v_size.value == 30
-#     assert camera.type.value == 'v'
-#     assert camera.flat_view_direction[(0, 0, -1)] == [2, '+']
-#     assert camera.flat_view_direction[(0, 0, 1)] == [2, '-']
-#     assert camera.flat_view_direction[(0, 1, 0)] == [1, '+']
-#     assert camera.flat_view_direction[(0, -1, 0)] == [1, '-']
-#     assert camera.flat_view_direction[(-1, 0, 0)] == [0, '-']
-#     assert camera.flat_view_direction[(1, 0, 0)] == [0, '+']
+    # Initialize a camera object and assess all the default properties
+    camera = Camera()
+    assert camera.identifier[0:6] == 'camera'
+    assert camera.position.value == (0, 0, 100)
+    assert camera.direction.value == (0, 0, -1)
+    assert camera.up_vector.value == (0, 1, 0)
+    assert camera.h_size.value == 60
+    assert camera.v_size.value == 30
+    assert camera.type.value == 'v'
+    assert camera.flat_view_direction[(0, 0, -1)] == [2, '+']
+    assert camera.flat_view_direction[(0, 0, 1)] == [2, '-']
+    assert camera.flat_view_direction[(0, 1, 0)] == [1, '+']
+    assert camera.flat_view_direction[(0, -1, 0)] == [1, '-']
+    assert camera.flat_view_direction[(-1, 0, 0)] == [0, '-']
+    assert camera.flat_view_direction[(1, 0, 0)] == [0, '+']
 
-#     # Assess type of the outcome of the to_vtk method
-#     camera = camera.to_vtk()
-#     assert isinstance(camera, vtk.vtkCamera)
+    # Assess type of the outcome of the to_vtk method
+    camera = camera.to_vtk()
+    assert isinstance(camera, vtk.vtkCamera)
 
 
 def test_no_view():
     """Test if views are being read from hbjson."""
-    file_path = r'./tests/assets/unnamed.hbjson'
+    file_path = r'tests/assets/unnamed.hbjson'
 
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
     # Checking if valueerror is raised when from_model is called on a model with no views
@@ -45,14 +45,14 @@ def test_no_view():
 
 def test_model_with_views():
     """Test if all the views in the model are being loaded as Camera objects."""
-    file_path = r'./tests/assets/gridbased.hbjson'
+    file_path = r'tests/assets/gridbased.hbjson'
     model = Model.from_hbjson(file_path)
     assert len(model.cameras) == 6
 
 
 def test_assign_bounds():
     """Test bounds assignment."""
-    file_path = r'./tests/assets/viewbased.hbjson'
+    file_path = r'tests/assets/viewbased.hbjson'
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
 
     actors = Actor.from_model(model)
@@ -76,6 +76,6 @@ def test_adjustable_postion():
 
 def test_from_view_file():
     """Test creation of a camera object from a Radiance view file."""
-    vf = r'./tests/assets/view.vf'
+    vf = r'tests/assets/view.vf'
     camera = Camera.from_view_file(vf)
     assert isinstance(camera, Camera)

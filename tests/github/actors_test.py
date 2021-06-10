@@ -6,14 +6,14 @@ from honeybee_vtk.actor import Actor
 from honeybee_vtk.model import Model
 from ladybug_geometry.geometry3d.pointvector import Point3D
 
+file_path = r'tests/assets/gridbased.hbjson'
+
 
 def test_class_initialization():
     """Test default properties of a Actors object."""
-
     with pytest.raises(TypeError):
         actors = Actor()
 
-    file_path = r'./tests/assets/gridbased.hbjson'
     model = Model.from_hbjson(file_path)
     actors = Actor.from_model(model)
     for actor in actors:
@@ -22,7 +22,6 @@ def test_class_initialization():
 
 def test_monochrome():
     """Test setting actors to monochrome colors."""
-    file_path = r'./tests/assets/gridbased.hbjson'
     model = Model.from_hbjson(file_path)
     actors = Actor.from_model(model)
     with pytest.raises(ValueError):
@@ -34,7 +33,6 @@ def test_monochrome():
 
 def test_to_vtk():
     """Test the to_vtk method."""
-    file_path = r'./tests/assets/gridbased.hbjson'
     model = Model.from_hbjson(file_path)
     actors = Actor.from_model(model)
     for actor in actors:
@@ -43,7 +41,6 @@ def test_to_vtk():
 
 def test_bounds():
     """Test bounds."""
-    file_path = r'./tests/assets/gridbased.hbjson'
     model = Model.from_hbjson(file_path)
     actors = Actor.from_model(model)
     bounds = Actor.get_bounds(actors)
