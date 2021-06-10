@@ -3,9 +3,9 @@
 import pathlib
 import sys
 import click
-from click.exceptions import ClickException
 import traceback
 
+from click.exceptions import ClickException
 from honeybee_vtk.actor import Actor
 from honeybee_vtk.scene import Scene
 from honeybee_vtk.camera import Camera
@@ -76,14 +76,10 @@ def export():
     type=click.Path(exists=True),
     default=None, show_default=True
 )
-@click.option(
-    '--debug', '-db', help='Show stack-trace for debugging.', is_flag=True,
-    default=False, show_default=True
-)
 def export(
         hbjson_file, name, folder, image_type, image_width, image_height,
         background_color, display_mode_model, grid_options, display_mode_grid, view,
-        data_config, debug):
+        data_config):
     """Export images from radiance views in a HBJSON file.
 
     \b
@@ -177,12 +173,9 @@ def export(
             folder=folder, name=name, image_type=image_type,
             image_width=image_width, image_height=image_height)
 
-    except Exception as e:
-        if not debug:
-            raise ClickException(f'Translation failed:\n{e}')
-        else:
-            print(''.join(traceback.format_exception(
-                etype=type(e), value=e, tb=e.__traceback__)))
+    except Exception:
+        traceback.print_exc()
+        sys.exit(1)
     else:
         print(f'Success: {output}', file=sys.stderr)
         return sys.exit(0)
