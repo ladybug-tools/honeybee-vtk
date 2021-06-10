@@ -10,8 +10,8 @@ from ladybug.futil import nukedir
 def test_translate_recipe():
     """Test cli command."""
     runner = CliRunner()
-    file_path = './tests/assets/unnamed.hbjson' 
-    target_folder = './tests/target'
+    file_path = r'tests/assets/unnamed.hbjson'
+    target_folder = r'tests/target'
 
     # Optional arguments are deliberately capitalized or uppercased for testing
     result = runner.invoke(translate, [

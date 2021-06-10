@@ -8,12 +8,11 @@ from honeybee_vtk.assistant import Assistant
 from honeybee_vtk.actor import Actor
 from honeybee_vtk.camera import Camera
 
+file_path = r'tests/assets/gridbased.hbjson'
+
 
 def test_initialization():
     """Test objct initialization."""
-
-    file_path = r'./tests/assets/gridbased.hbjson'
-
     model = Model.from_hbjson(hbjson=file_path)
     actors = Actor.from_model(model=model)
     camera = Camera()
