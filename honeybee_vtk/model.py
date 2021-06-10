@@ -18,7 +18,7 @@ from .to_vtk import convert_aperture, convert_face, convert_room, convert_shade,
     convert_sensor_grid
 from .vtkjs.schema import IndexJSON, DisplayMode, SensorGridOptions
 from .vtkjs.helper import convert_directory_to_zip_file, add_data_to_viewer
-from .types import AcceptedValues
+from .types import model_dataset_names
 from ._helper import get_min_max
 
 _COLORSET = {
@@ -156,9 +156,17 @@ class Model(object):
         return self._cameras
 
     def get_modeldataset_from_string(self, text: str) -> ModelDataSet:
-        if text not in AcceptedValues.names.value:
+        """Get a ModelDataSet object from a model using a text string.
+
+        Args:
+            text: A text string such as "walls", "shades"
+
+        Returns:
+            A ModelDataSet object.
+        """
+        if text not in model_dataset_names:
             raise ValueError(
-                f'Text must be one of the {AcceptedValues.names.value}.'
+                f'Text must be one of the {model_dataset_names}.'
                 f' Instead got {text}.'
             )
         ds = {ds.name.lower(): ds for ds in self}
@@ -198,22 +206,21 @@ class Model(object):
                 'views not found in HBJSON.'
             )
 
-    def _load_data(self, config: dict) -> None:
+    def load_data(self, config: dict) -> None:
         """Mount data on model from config json.
-
-        This method is only used in cli.
 
         Args:
             config: A dictionary returned by check_data_config
         """
-        # Here, data is a list of dictionaries
+        # Here, data_config is a list of dictionaries
         # Each dictionary is a data object defined in data module
-        data_config = [val for val in config['data'].values()]
+        data_config = [dict_ for dict_ in config['data'].values()]
 
         for data in data_config:
 
             # if data is for a ModelDataSet grid
-            if data['object_name'] == AcceptedValues.names.value[-1]:
+            if data['object_type'] == model_dataset_names[-1]:
+
                 result = []
                 for file_path in data['file_paths']:
                     res_file = pathlib.Path(file_path)
@@ -221,11 +228,11 @@ class Model(object):
                     result.append(grid_res)
 
             # if data is for a ModelDataSet other than grid
-            elif data['object_name'] in AcceptedValues.names.value[:-1]:
+            elif data['object_type'] in model_dataset_names[:-1]:
                 res_file = pathlib.Path(data['file_paths'][0])
                 result = [[float(v)] for v in res_file.read_text().splitlines()]
 
-            ds = self.get_modeldataset_from_string(data['object_name'])
+            ds = self.get_modeldataset_from_string(data['object_type'])
             ds.add_data_fields(result, name=data['name'], data_range=get_min_max(result))
             ds.color_by = data['name']
             ds.display_mode = DisplayMode.SurfaceWithEdges
