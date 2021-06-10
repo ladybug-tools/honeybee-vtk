@@ -167,7 +167,7 @@ def export(
         # load config if provided
         if data_config:
             config = check_data_config(data_config, model)
-            model._load_data(config)
+            model.load_data(config)
 
         output = scene.export_images(
             folder=folder, name=name, image_type=image_type,
