@@ -34,3 +34,17 @@ def get_min_max(val: List[List]) -> Tuple[float, float]:
     """
     result = list(chain(*val))
     return (min(result), max(result))
+
+
+def get_line_count(file_path: str) -> int:
+    """Get the number of non empty lines in a file.
+
+    Args:
+        file_path: File path.
+
+    Returns:
+        The number of non empty lines in the file.
+    """
+    with open(file_path) as fp:
+        nonempty_line_count = len([line.strip("\n") for line in fp if line != "\n"])
+    return nonempty_line_count

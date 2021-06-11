@@ -21,7 +21,7 @@ from .to_vtk import convert_aperture, convert_face, convert_room, convert_shade,
 from .vtkjs.schema import IndexJSON, DisplayMode, SensorGridOptions
 from .vtkjs.helper import convert_directory_to_zip_file, add_data_to_viewer
 from .types import model_dataset_names
-from ._helper import get_min_max
+from ._helper import get_min_max, get_line_count
 from .config import DataConfig
 
 
@@ -229,6 +229,7 @@ class Model(object):
         # if object name is "grid" check that the name of files match the grid names
         if data.object_type == model_dataset_names[-1]:
 
+            # make sure grids are loaded on the model if grid data is to be mounted
             assert len(self.sensor_grids.data) > 0, 'Sensor grids are not loaded on'\
                 ' this model. Reload them using grid options.'
 
@@ -236,17 +237,36 @@ class Model(object):
             file_names = [pathlib.Path(path).stem for path in data.file_paths]
             names_in_grids = all([name in grid_names for name in file_names])
 
+            # the number of data files must not exceed the number of grids
             if len(file_names) > len(grid_names):
                 raise ValueError(
                     f'There are only {len(grid_names)} grids in the model and the'
                     f' identifiers of those grids are {tuple(grid_names)}.'
                 )
 
+            # TODO: remove this check in the next iteration
+            # make sure there's one file for each grid in the model
             if not names_in_grids:
                 raise ValueError(
                     'Make sure the file names match the grid identifiers. The'
                     f' identifiers of the grids in the model are {tuple(grid_names)}.'
                 )
+
+            # make sure length of each file matches the number of sensors in grid
+            file_lengths = [get_line_count(file_path) for file_path in data.file_paths]
+            num_sensors = [polydata.GetNumberOfCells()
+                           for polydata in self.sensor_grids.data]
+
+            if file_lengths != num_sensors:
+                path_matches = {
+                    data.file_paths[i]: file_lengths[i] == num_sensors[i] for i in
+                    range(len(data.file_paths))
+                }
+                paths_to_report = [
+                    path for path in path_matches if path_matches[path] is False]
+                raise ValueError(
+                    'File lengths must match grid sizes. Lengths of'
+                    f' following files do not match grid size {tuple(paths_to_report)}.')
 
             return True
 
@@ -254,10 +274,13 @@ class Model(object):
         # of data in the model for that object.
         elif data.object_type in model_dataset_names[:-1]:
 
+            # make sure the list of files is not empty
             if len(data.file_paths) == 0:
                 raise ValueError(
                     'File path not found in the config file.'
                 )
+
+            # only one file is accepted
             elif len(data.file_paths) > 1:
                 raise ValueError(
                     'Only one file path needs to be provided in order to load data on'
@@ -265,11 +288,8 @@ class Model(object):
                     ' file.'
                 )
 
-            with open(data.file_paths[0]) as fp:
-                nonempty_line_count = len(
-                    [line.strip("\n") for line in fp if line != "\n"])
-
-            if nonempty_line_count != len(
+            # match length of file with the number of faces in the model
+            if get_line_count(data.file_paths[0]) != len(
                     self.get_modeldataset_from_string(data.object_type).data):
                 raise ValueError(
                     'The length of data in the file does not match the number of'
