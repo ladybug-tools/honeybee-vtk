@@ -277,7 +277,8 @@ class Model(object):
             # make sure the list of files is not empty
             if len(data.file_paths) == 0:
                 raise ValueError(
-                    'File path not found in the config file.'
+                    f'For object with name {data.name} There are not file paths'
+                    ' provided to load data from.'
                 )
 
             # only one file is accepted
