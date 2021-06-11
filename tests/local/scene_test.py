@@ -69,7 +69,7 @@ def test_export_images():
     file_path = r'tests/assets/gridbased.hbjson'
     results_folder = r'tests/assets/df_results'
     target_folder = r'tests/assets/temp'
-    csv_path = r'tests/assets/radiation.csv'
+    csv_path = r'tests/assets/radiation_results/radiation.csv'
 
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
     model.update_display_mode(DisplayMode.Wireframe)
