@@ -5,7 +5,9 @@
             "name": "Daylight-Factor",
             "object_type": "grid",
             "file_paths": ["./tests/assets/df_results/TestRoom_1.res",
-            "./tests/assets/df_results/TestRoom_2.res"]
+            "./tests/assets/df_results/TestRoom_2.res",
+            "./tests/assets/df_results/more_grids.res"
+        ]
     },
     "radiation":{
         "name": "Radiation",

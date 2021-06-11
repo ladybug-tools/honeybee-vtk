@@ -118,3 +118,36 @@ def test_views():
     file_path = r'tests/assets/viewbased.hbjson'
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
     assert len(model.cameras) == 1
+
+
+def test_config():
+    """Test loading config file."""
+    file_path = r'tests/assets/gridbased.hbjson'
+    valid_json_path = r'tests/assets/config/valid.json'
+    invalid_json_path = r'tests/assets/config/invalid.json'
+    more_grids = r'tests/assets/config/more_grids.json'
+    no_file = r'tests/assets/config/no_file.json'
+    more_files = r'tests/assets/config/more_files.json'
+
+    model = Model.from_hbjson(file_path)
+
+    # invalid json file
+    with pytest.raises(TypeError):
+        model.load_config(invalid_json_path)
+
+    # when grids are not loaded on a model and one is trying to mount data for grids
+    with pytest.raises(AssertionError):
+        model.load_config(valid_json_path)
+
+    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
+    # trying to load more grids than grids in the model
+    with pytest.raises(ValueError):
+        model.load_config(more_grids)
+
+    # Empty list if provided in file_paths
+    with pytest.raises(ValueError):
+        model.load_config(no_file)
+
+    # If more than one files are provided in file_path for non-grid object_type
+    with pytest.raises(ValueError):
+        model.load_config(more_files)
