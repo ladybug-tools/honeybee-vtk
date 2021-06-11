@@ -2,9 +2,14 @@
 
 
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel, validator, Field
 from .types import model_dataset_names
+
+
+class LegendConfig(BaseModel):
+    """Config for legend to be created from a dataset."""
+    pass
 
 
 class DataConfig(BaseModel):
@@ -22,6 +27,10 @@ class DataConfig(BaseModel):
     file_paths: List[str] = Field(
         description='List of paths to the file or files that you are trying to use as'
         ' data.'
+    )
+
+    legend_parameters: Optional[LegendConfig] = Field(
+        description='Legend parameters to create legend out of the this dataset.'
     )
 
     @validator('object_type')
