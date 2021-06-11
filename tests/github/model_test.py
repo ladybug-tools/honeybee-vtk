@@ -128,6 +128,7 @@ def test_config():
     more_grids = r'tests/assets/config/more_grids.json'
     no_file = r'tests/assets/config/no_file.json'
     more_files = r'tests/assets/config/more_files.json'
+    short_length = r'tests/assets/config/short_length.json'
 
     model = Model.from_hbjson(file_path)
 
@@ -151,3 +152,7 @@ def test_config():
     # If more than one files are provided in file_path for non-grid object_type
     with pytest.raises(ValueError):
         model.load_config(more_files)
+
+    # if file lengths do not match grid size
+    with pytest.raises(ValueError):
+        model.load_config(short_length)
