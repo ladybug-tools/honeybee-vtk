@@ -1,7 +1,7 @@
 
 { 
-    "data": {
-        "grid": {
+
+    "grid": {
             "name": "Daylight-Factor",
             "object_type": "grid",
             "file_paths": ["./tests/assets/df_results/TestRoom_1.res",
@@ -12,6 +12,6 @@
         "object_type": "shade",
         "file_paths": ["./tests/assets/radiation.csv"]
     }
-}
+
 }
 
