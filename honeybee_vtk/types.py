@@ -316,30 +316,6 @@ class ModelDataSet:
             self.data[count].add_data(
                 d, name=name, cell=per_face, colors=colors, data_range=data_range)
 
-    def add_data_fields_with_identifier(
-            self, data: List[List], name: str, identifier: str, per_face: bool = True,
-            colors=None, data_range=None):
-        """Add data fields to PolyData objects in this dataset using the identifier.
-
-        This method is especially useful to load data to selected grids using their
-        identifiers.
-
-        Args:
-            data: A list of list of values. There should be a list per data in DataSet.
-                The order of data should match the order of data in DataSet. You can
-                use data.identifier to match the orders before assigning them to DataSet.
-            name: Name of data (e.g. Useful Daylight Autonomy.)
-            identifier: identifier of the the Polydata.
-            per_face: A Boolean to indicate if the data is per face or per point. In
-                most cases except for sensor points that are loaded as sensors the data
-                are provided per face.
-            colors: A Colors object that defines colors for the legend.
-            data_range: A list with two values for minimum and maximum values for legend
-                parameters.
-        """
-
-        pass
-
     @property
     def is_empty(self):
         return len(self.data) == 0
