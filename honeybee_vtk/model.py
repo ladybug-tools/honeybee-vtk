@@ -265,11 +265,9 @@ class Model(object):
                     ' file.'
                 )
 
-            file = open(data.file_paths[0], "r")
-            nonempty_line_count = len(
-                [line.strip("\n") for line in file if line != "\n"]
-            )
-            file.close()
+            with open(data.file_paths[0]) as fp:
+                nonempty_line_count = len(
+                    [line.strip("\n") for line in fp if line != "\n"])
 
             if nonempty_line_count != len(
                     self.get_modeldataset_from_string(data.object_type).data):
