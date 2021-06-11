@@ -22,7 +22,7 @@ def test_export_image():
             'PNG', '--image-width', 200, '--image-height', 500,
             '--background-color', 255, 255, 255, '--grid-options', 'Meshes',
             '--display-mode-model', 'Shaded', '--display-mode-grid', 'SurfaceWithEdges',
-            '--view', view_file, '--view', view_file_1, '--data-config', config_path])
+            '--view', view_file, '--view', view_file_1, '--config', config_path])
 
     assert result.exit_code == 0
     images_path = os.listdir(target_folder)
