@@ -1,12 +1,14 @@
 """A VTK representation of HBModel."""
 
 from __future__ import annotations
+from json.decoder import JSONDecodeError
 import pathlib
 import shutil
 import webbrowser
 import tempfile
 import os
 import warnings
+import json
 from collections import defaultdict
 from typing import Dict, List
 from honeybee.facetype import face_types
@@ -20,6 +22,8 @@ from .vtkjs.schema import IndexJSON, DisplayMode, SensorGridOptions
 from .vtkjs.helper import convert_directory_to_zip_file, add_data_to_viewer
 from .types import model_dataset_names
 from ._helper import get_min_max
+from .config import DataConfig
+
 
 _COLORSET = {
     'Wall': [0.901, 0.705, 0.235, 1],
@@ -206,36 +210,129 @@ class Model(object):
                 'views not found in HBJSON.'
             )
 
-    def load_data(self, config: dict) -> None:
+    def _validate_data(self, data: DataConfig) -> bool:
+        """Cross check data with model.
+
+        For grids, it will be checked if the number of data files and the names of the
+        data files match with the grid identifiers. For other than grid objects, it will
+        be checked that only one data file is provided and the length of the data file
+        matches the length of Polydata in the model. This is a helper method to the
+        public load_config method.
+
+        Args:
+            data: A DataConfig object.
+
+        Returns:
+            A boolean value.
+        """
+
+        # if object name is "grid" check that the name of files match the grid names
+        if data.object_type == model_dataset_names[-1]:
+
+            assert len(self.sensor_grids.data) > 0, 'Sensor grids are not loaded on'\
+                ' this model. Reload them using grid options.'
+
+            grid_names = [grid.identifier for grid in self.sensor_grids.data]
+            file_names = [pathlib.Path(path).stem for path in data.file_paths]
+            names_in_grids = all([name in grid_names for name in file_names])
+
+            if len(file_names) > len(grid_names):
+                raise ValueError(
+                    f'There are only {len(grid_names)} grids in the model and the'
+                    f' identifiers of those grids are {tuple(grid_names)}.'
+                )
+
+            if not names_in_grids:
+                raise ValueError(
+                    'Make sure the file names match the grid identifiers. The'
+                    f' identifiers of the grids in the model are {tuple(grid_names)}.'
+                )
+
+            return True
+
+        # if object_name is other than grid check that length of data matches the length
+        # of data in the model for that object.
+        elif data.object_type in model_dataset_names[:-1]:
+
+            if len(data.file_paths) == 0:
+                raise ValueError(
+                    'File path not found in the config file.'
+                )
+            elif len(data.file_paths) > 1:
+                raise ValueError(
+                    'Only one file path needs to be provided in order to load data on'
+                    f' {data.object_type}. Multiple files are provided in the config'
+                    ' file.'
+                )
+
+            file = open(data.file_paths[0], "r")
+            nonempty_line_count = len(
+                [line.strip("\n") for line in file if line != "\n"]
+            )
+            file.close()
+
+            if nonempty_line_count != len(
+                    self.get_modeldataset_from_string(data.object_type).data):
+                raise ValueError(
+                    'The length of data in the file does not match the number of'
+                    f' {data.object_type} objects in the model.'
+                )
+            return True
+
+        else:
+            raise ValueError(
+                ' object_name must be from one of these'
+                f' {model_dataset_names}. Instead got {data.object_type}.'
+            )
+
+    def _load_data(self, data: DataConfig) -> None:
+        """Load validate data on a honeybee-vtk model.
+
+        This is a helper method to the public load_config method.
+
+        Args:
+            data: A DataConfig object.
+        """
+        # if data is for a ModelDataSet grid
+        if data.object_type == model_dataset_names[-1]:
+
+            result = []
+            for file_path in data.file_paths:
+                res_file = pathlib.Path(file_path)
+                grid_res = [float(v)
+                            for v in res_file.read_text().splitlines()]
+                result.append(grid_res)
+
+        # if data is for a ModelDataSet other than grid
+        elif data.object_type in model_dataset_names[:-1]:
+            res_file = pathlib.Path(data.file_paths[0])
+            result = [[float(v)] for v in res_file.read_text().splitlines()]
+
+        ds = self.get_modeldataset_from_string(data.object_type)
+        ds.add_data_fields(
+            result, name=data.name, data_range=get_min_max(result))
+        ds.color_by = data.name
+        ds.display_mode = DisplayMode.SurfaceWithEdges
+
+    def load_config(self, json_path: str) -> None:
         """Mount data on model from config json.
 
         Args:
             config: A dictionary returned by check_data_config
         """
-        # Here, data_config is a list of dictionaries
-        # Each dictionary is a data object defined in data module
-        data_config = [dict_ for dict_ in config['data'].values()]
-
-        for data in data_config:
-
-            # if data is for a ModelDataSet grid
-            if data['object_type'] == model_dataset_names[-1]:
-
-                result = []
-                for file_path in data['file_paths']:
-                    res_file = pathlib.Path(file_path)
-                    grid_res = [float(v) for v in res_file.read_text().splitlines()]
-                    result.append(grid_res)
-
-            # if data is for a ModelDataSet other than grid
-            elif data['object_type'] in model_dataset_names[:-1]:
-                res_file = pathlib.Path(data['file_paths'][0])
-                result = [[float(v)] for v in res_file.read_text().splitlines()]
-
-            ds = self.get_modeldataset_from_string(data['object_type'])
-            ds.add_data_fields(result, name=data['name'], data_range=get_min_max(result))
-            ds.color_by = data['name']
-            ds.display_mode = DisplayMode.SurfaceWithEdges
+        # Check if json is valid
+        try:
+            with open(json_path) as fh:
+                config = json.load(fh)
+        except json.decoder.JSONDecodeError:
+            raise TypeError(
+                'Not a valid json file.'
+            )
+        else:
+            for json_obj in config.values():
+                data = DataConfig.parse_obj(json_obj)
+                if self._validate_data(data):
+                    self._load_data(data)
 
     def update_display_mode(self, value: DisplayMode) -> None:
         """Change display mode for all the object types in the model.
