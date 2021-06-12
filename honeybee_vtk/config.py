@@ -5,11 +5,30 @@ from pathlib import Path
 from typing import List, Optional
 from pydantic import BaseModel, validator, Field
 from .types import model_dataset_names
+from .legend_parameter import Colors, Orientation
 
 
 class LegendConfig(BaseModel):
     """Config for legend to be created from a dataset."""
-    pass
+
+    name: Optional[str] = Field(
+        description='Name for the legend. This will also become the title of the legend.'
+    )
+
+    colors: Optional[Colors] = Field(
+        description='Color scheme for the legend.'
+    )
+
+    range: Optional[List[int, int]] = Field(
+        description='A list of minimum and maximum values for the legend.')
+
+    show_legend: Optional[bool] = Field(
+        description='A bool value to indicate whether to show legend in the exported'
+        ' images or not.'
+    )
+    orientation: Optional[Orientation] = Field(
+        description=''
+    )
 
 
 class DataConfig(BaseModel):
