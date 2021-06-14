@@ -6,12 +6,14 @@ import click
 import traceback
 
 from click.exceptions import ClickException
+from pydantic import schema
 from honeybee_vtk.actor import Actor
 from honeybee_vtk.scene import Scene
 from honeybee_vtk.camera import Camera
 from honeybee_vtk.model import Model
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 from honeybee_vtk.types import ImageTypes
+from honeybee_vtk.config import load_config
 
 
 @click.group()
@@ -165,7 +167,7 @@ def export(
 
         # load config if provided
         if config:
-            model.load_config(config)
+            load_config(config, model, scene)
 
         output = scene.export_images(
             folder=folder, name=name, image_type=image_type,
