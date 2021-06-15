@@ -218,11 +218,6 @@ def _validate_data(data: DataConfig, model: Model) -> bool:
     # if object name is "grid" check that the name of files match the grid names
     if data.object_type == model_dataset_names[-1]:
 
-        if not data.file_paths:
-            raise ValueError(
-                'No file paths provided.'
-            )
-
         # make sure grids are loaded on the model if grid data is to be mounted
         assert len(model.sensor_grids.data) > 0, 'Sensor grids are not loaded on'\
             ' this model. Reload them using grid options.'
