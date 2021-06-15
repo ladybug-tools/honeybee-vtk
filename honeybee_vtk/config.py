@@ -3,6 +3,7 @@
 from __future__ import annotations
 import json
 import pathlib
+import warnings
 
 from typing import List, Optional
 from pydantic import BaseModel, validator, Field
@@ -44,10 +45,6 @@ class FontConfig(BaseModel):
 
 class LegendConfig(BaseModel):
     """Config for the legend to be created from a dataset."""
-
-    name: Optional[str] = Field(
-        description='Name for the legend. This will also become the title of the legend.'
-    )
 
     colors: Optional[str] = Field(
         description='Color scheme for the legend.'
@@ -119,16 +116,6 @@ class LegendConfig(BaseModel):
                 f' {v}.'
             )
 
-    @validator('range')
-    def validate_range(cls, v) -> List[int]:
-        if len(v) == 2:
-            return v
-        else:
-            raise ValueError(
-                'Range is an array of two integer values representing minimum and'
-                f' maximum values for the legend. Instead got {v}.'
-            )
-
     @validator('orientation')
     def validate_orientation(cls, v: str) -> str:
         orientations = ('horizontal', 'vertical')
@@ -137,16 +124,6 @@ class LegendConfig(BaseModel):
         else:
             raise ValueError(
                 f'Orientation must be from {orientations}. Instead got {v}.'
-            )
-
-    @validator('position')
-    def validate_position(cls, v) -> List[float]:
-        if len(v) == 2:
-            return v
-        else:
-            raise ValueError(
-                'Position is an array of two decimal values representing the x and y'
-                f' coordinates of the start point of the legend. Instead got {v}.'
             )
 
     @validator('label_format')
@@ -175,6 +152,11 @@ class DataConfig(BaseModel):
     file_paths: List[str] = Field(
         description='List of paths to the file or files that you are trying to use as'
         ' data.'
+    )
+
+    color_by: Optional[bool] = Field(
+        description='Bool value to indicate if this data should be used to color the'
+        ' object type in the model.'
     )
 
     legend_parameters: Optional[LegendConfig] = Field(
@@ -325,7 +307,8 @@ def _load_data(data: DataConfig, model: Model) -> None:
     ds = model.get_modeldataset_from_string(data.object_type)
     ds.add_data_fields(
         result, name=data.name, data_range=get_min_max(result))
-    ds.color_by = data.name
+    if data.color_by:
+        ds.color_by = data.name
     ds.display_mode = DisplayMode.SurfaceWithEdges
 
 
@@ -337,41 +320,46 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
         model: A honeybee-vtk model object.
         scene: A honeyebee-vtk scene object.
     """
-    if data.legend_parameters and data.legend_parameters.show_legend:
+    if data.legend_parameters and data.color_by:
 
         legend_params = data.legend_parameters
-
         legend = scene.legend_parameter(data.name)
 
         if legend_params.colors:
             legend.colors = Colors[legend_params.colors]
-        if legend_params.range:
-            legend.range = legend_params.range
+
+        legend.range = legend_params.range
         legend.show_legend = legend_params.show_legend
+
         if legend_params.orientation:
             legend.orientation = Orientation[legend_params.orientation]
-        if legend_params.position:
-            legend.position = legend_params.position
-        if legend_params.width:
-            legend.width = legend_params.width
-        if legend_params.height:
-            legend.height = legend_params.height
-        if legend_params.number_of_colors:
-            legend.number_of_colors = legend_params.number_of_colors
-        if legend_params.number_of_labels:
-            legend.number_of_labels = legend_params.number_of_labels
+
+        legend.position = legend_params.position
+        legend.width = legend_params.width
+        legend.height = legend_params.height
+        legend.number_of_colors = legend_params.number_of_colors
+
+        legend.number_of_labels = legend_params.number_of_labels
         if legend_params.label_format:
             legend.label_format = LabelFormat[legend_params.label_format]
-        if legend_params.label_position:
-            legend.label_position = legend_params.label_position
+
+        legend.label_position = legend_params.label_position
+
         if legend_params.label_fonts:
             label_fonts = legend_params.label_fonts
             legend.label_font = Font(
                 label_fonts.color, label_fonts.size, label_fonts.bold)
+
         if legend_params.title_fonts:
             title_fonts = legend_params.title_fonts
             legend.title_font = Font(
                 title_fonts.color, title_fonts.size, title_fonts.bold)
+
+    elif data.legend_parameters and not data.color_by:
+        warnings.warn(
+            f'Since {data.object_type} is not going to be colored by {data.name},'
+            ' all legend parameters will be ignored.'
+        )
 
 
 def load_config(json_path: str, model: Model, scene: Scene) -> None:
