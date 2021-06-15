@@ -190,14 +190,15 @@ def _validate_data(data: DataConfig, model: Model) -> bool:
     Returns:
         A boolean value.
     """
+    # if file_paths is empty
+    if not data.file_paths:
+        raise ValueError(
+            f'For object with name {data.name} There are not file paths'
+            ' provided to load data from.'
+        )
 
     # if object name is "grid" check that the name of files match the grid names
     if data.object_type == model_dataset_names[-1]:
-
-        if not data.file_paths:
-            raise ValueError(
-                'No file paths provided.'
-            )
 
         # make sure grids are loaded on the model if grid data is to be mounted
         assert len(model.sensor_grids.data) > 0, 'Sensor grids are not loaded on'\
@@ -244,15 +245,8 @@ def _validate_data(data: DataConfig, model: Model) -> bool:
     # of data in the model for that object.
     elif data.object_type in model_dataset_names[:-1]:
 
-        # make sure the list of files is not empty
-        if len(data.file_paths) == 0:
-            raise ValueError(
-                f'For object with name {data.name} There are not file paths'
-                ' provided to load data from.'
-            )
-
         # only one file is accepted
-        elif len(data.file_paths) > 1:
+        if len(data.file_paths) > 1:
             raise ValueError(
                 'Only one file path needs to be provided in order to load data on'
                 f' {data.object_type}. Multiple files are provided in the config'
