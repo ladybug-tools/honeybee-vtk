@@ -122,16 +122,6 @@ class LegendConfig(BaseModel):
                 f' {v}.'
             )
 
-    @validator('range')
-    def validate_range(cls, v) -> List[int]:
-        if len(v) == 2:
-            return v
-        else:
-            raise ValueError(
-                'Range is an array of two integer values representing minimum and'
-                f' maximum values for the legend. Instead got {v}.'
-            )
-
     @validator('orientation')
     def validate_orientation(cls, v: str) -> str:
         orientations = ('horizontal', 'vertical')
@@ -140,16 +130,6 @@ class LegendConfig(BaseModel):
         else:
             raise ValueError(
                 f'Orientation must be from {orientations}. Instead got {v}.'
-            )
-
-    @validator('position')
-    def validate_position(cls, v) -> List[float]:
-        if len(v) == 2:
-            return v
-        else:
-            raise ValueError(
-                'Position is an array of two decimal values representing the x and y'
-                f' coordinates of the start point of the legend. Instead got {v}.'
             )
 
     @validator('label_format')
