@@ -80,7 +80,9 @@ class Font:
 
     @color.setter
     def color(self, val) -> None:
-        if isinstance(val, tuple) and _validate_input(val, int, 256):
+        if not val:
+            self._color = (0, 0, 0)
+        elif isinstance(val, tuple) and _validate_input(val, int, 256):
             self._color = (val[0] / 255, val[1] / 255, val[1] / 255)
         else:
             raise ValueError(
@@ -95,7 +97,9 @@ class Font:
 
     @size.setter
     def size(self, val) -> None:
-        if isinstance(val, int):
+        if not val:
+            self._size = 30
+        elif isinstance(val, int):
             self._size = val
         else:
             raise ValueError(
@@ -109,7 +113,9 @@ class Font:
 
     @bold.setter
     def bold(self, val) -> None:
-        if isinstance(val, bool):
+        if not val:
+            self._bold = False
+        elif isinstance(val, bool):
             self._bold = val
         else:
             raise ValueError(
@@ -154,7 +160,7 @@ class LegendParameter:
                 percentages in decimal numbers will define the location of the start
                 point of the legend. For example, a value of (0.0, 0.5) will place the
                 start point of the legend at the left most side of the viewport and at
-                the 50% height of the viewport. Default to (0.5, 0.0).
+                the 50% height of the viewport. Default to (0.5, 0.1).
             width: A decimal number representing the percentage of viewport width that
                 will be used to define the width of the legend. A value of 0.45 will
                 make the width of legend equal to the 45% width of the viewport.
@@ -182,7 +188,7 @@ class LegendParameter:
             range: Tuple[int, int] = (0, 100),
             show_legend: bool = False,
             orientation: Orientation = Orientation.horizontal,
-            position: Tuple[float, float] = (0.5, 0.0),
+            position: Tuple[float, float] = (0.5, 0.1),
             width: float = 0.45,
             height: float = 0.05,
             number_of_colors: int = None,
@@ -214,7 +220,9 @@ class LegendParameter:
 
     @name.setter
     def name(self, val) -> None:
-        if isinstance(val, str):
+        if not val:
+            self._name = 'Legend'
+        elif isinstance(val, str):
             self._name = val
         else:
             raise ValueError(
@@ -228,7 +236,9 @@ class LegendParameter:
 
     @colors.setter
     def colors(self, val) -> None:
-        if isinstance(val, Colors):
+        if not val:
+            self._colors = Colors.ecotect
+        elif isinstance(val, Colors):
             self._colors = val
         else:
             raise ValueError(
@@ -242,11 +252,14 @@ class LegendParameter:
 
     @range.setter
     def range(self, val) -> None:
-        if isinstance(val, tuple) and len(val) == 2:
+        if not val:
+            self._range = (0, 100)
+        elif isinstance(val, (tuple, list)) and len(val) == 2:
             self._range = val
         else:
             raise ValueError(
-                f'Range takes a tuple of integers. Instead got {type(val).__name__}.'
+                'Range takes a tuple or a list of integers.'
+                f' Instead got {type(val).__name__}.'
             )
 
     @property
@@ -256,7 +269,9 @@ class LegendParameter:
 
     @show_legend.setter
     def show_legend(self, val) -> None:
-        if isinstance(val, bool):
+        if not val:
+            self._show_legend = False
+        elif isinstance(val, bool):
             self._show_legend = val
         else:
             raise ValueError(
@@ -270,7 +285,9 @@ class LegendParameter:
 
     @orientation.setter
     def orientation(self, val) -> None:
-        if isinstance(val, Orientation):
+        if not val:
+            self._orientation = Orientation.horizontal
+        elif isinstance(val, Orientation):
             self._orientation = val
         else:
             raise ValueError(
@@ -284,48 +301,55 @@ class LegendParameter:
 
     @position.setter
     def position(self, val) -> None:
-        if isinstance(val, tuple) and _validate_input(val, float, 0.96):
+        if not val:
+            self._position = (0.5, 0.1)
+        elif isinstance(val, (tuple, list)) and _validate_input(val, float, 0.96) \
+                and len(val) == 2:
             self._position = val
         else:
             raise ValueError(
-                'Position accepts a tuple of decimal values up to 0.95 for both X'
-                ' and Y.'
+                'Position accepts a tuple or a list of two decimal values up to 0.95'
+                ' for both X and Y.'
             )
 
-    @property
+    @ property
     def width(self) -> float:
         """Width of the legend as a percentage of viewport width."""
         return self._width
 
-    @width.setter
+    @ width.setter
     def width(self, val) -> None:
-        if val < 0.96:
+        if not val:
+            self._width = 0.45
+        elif val < 0.96:
             self._width = val
         else:
             raise ValueError(
                 'Width accepts a decimal number up to 0.95.'
             )
 
-    @property
+    @ property
     def height(self) -> float:
         """height of the legend as a percentage of viewport height."""
         return self._height
 
-    @height.setter
+    @ height.setter
     def height(self, val) -> None:
-        if val < 0.96:
+        if not val:
+            self._height = 0.05
+        elif val < 0.96:
             self._height = val
         else:
             raise ValueError(
                 'Height accepts a decimal number up to 0.95.'
             )
 
-    @property
+    @ property
     def number_of_colors(self) -> int:
         """Number of colors in the legend."""
         return self._number_of_colors
 
-    @number_of_colors.setter
+    @ number_of_colors.setter
     def number_of_colors(self, val) -> None:
         if not val:
             self._number_of_colors = None
@@ -337,12 +361,12 @@ class LegendParameter:
                 f'colors in the colors property. instead got {val}.'
             )
 
-    @property
+    @ property
     def number_of_labels(self) -> int:
         """Number of text labels in the legend."""
         return self._number_of_labels
 
-    @number_of_labels.setter
+    @ number_of_labels.setter
     def number_of_labels(self, val) -> None:
         if not val:
             self._number_of_labels = None
@@ -354,21 +378,23 @@ class LegendParameter:
                 f'colors in the colors property. instead got {val}.'
             )
 
-    @property
+    @ property
     def label_format(self) -> LabelFormat:
         """The format of legend labels."""
         return self._label_format
 
-    @label_format.setter
+    @ label_format.setter
     def label_format(self, val) -> None:
-        if isinstance(val, LabelFormat):
+        if not val:
+            self._label_format = LabelFormat.integer
+        elif isinstance(val, LabelFormat):
             self._label_format = val
         else:
             raise ValueError(
                 f'A LabelFormat object expected. Instead got {type(val).__name__}'
             )
 
-    @property
+    @ property
     def label_position(self) -> int:
         """The position of labels and the legend title on a legend.
 
@@ -378,37 +404,43 @@ class LegendParameter:
         """
         return self._label_position
 
-    @label_position.setter
+    @ label_position.setter
     def label_position(self, val):
-        if isinstance(val, int) and val in [0, 1]:
+        if not val:
+            self._label_position = 0
+        elif isinstance(val, int) and val in [0, 1]:
             self._label_position = val
         else:
             raise ValueError(
                 f'Label position only accepts 0 or 1 as a value. Instead got {val}.'
             )
 
-    @property
+    @ property
     def label_font(self) -> Font:
         """Font for the legend labels."""
         return self._label_font
 
-    @label_font.setter
+    @ label_font.setter
     def label_font(self, val) -> None:
-        if isinstance(val, Font):
+        if not val:
+            self._label_font = Font(color=(0, 0, 0), size=30)
+        elif isinstance(val, Font):
             self._label_font = val
         else:
             raise ValueError(
                 f'Label font expects a Font object. Instead got {type(val).__name__}.'
             )
 
-    @property
+    @ property
     def title_font(self) -> Font:
         """Font for the legend title."""
         return self._title_font
 
-    @title_font.setter
+    @ title_font.setter
     def title_font(self, val) -> None:
-        if isinstance(val, Font):
+        if not val:
+            self._title_font = Font(color=(0, 0, 0), size=30, bold=True)
+        elif isinstance(val, Font):
             self._title_font = val
         else:
             raise ValueError(
