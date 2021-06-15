@@ -347,7 +347,7 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
     elif data.legend_parameters and not data.color_by:
         warnings.warn(
             f'Since {data.object_type} is not going to be colored by {data.name},'
-            ' all legend parameters will be ignored.'
+            ' legend parameters will be ignored.'
         )
 
 
