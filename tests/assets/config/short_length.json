@@ -5,8 +5,8 @@
     "grid": {
         "name": "UDI",
         "object_type": "grid",
-        "file_paths": ["./tests/assets/udi_results/Short_length_1.res",
-        "./tests/assets/udi_results/Short_length_2.res"]
+        "file_paths": ["./tests/assets/udi_results/TestRoom_1.res",
+        "./tests/assets/udi_results/TestRoom_2.res"]
 },
     "radiation":{
         "name": "Radiation",
