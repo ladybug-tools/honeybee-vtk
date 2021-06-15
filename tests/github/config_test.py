@@ -67,8 +67,9 @@ def test_legend_config():
     invalid_colors = r'tests/assets/config/invalid_colors.json'
     invalid_orientation = r'tests/assets/config/invalid_orientation.json'
     invalid_label_format = r'tests/assets/config/invalid_label_format.json'
+    color_by = r'tests/assets/config/color_by.json'
 
-    model = Model.from_hbjson(file_path)
+    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
     scene = Scene()
 
     # if invalid colors in legend parameters raises error
@@ -82,3 +83,8 @@ def test_legend_config():
     # if invalid Label_format in legend parameters raises error
     with pytest.raises(ValidationError):
         load_config(invalid_label_format, model, scene)
+
+    # if warning is raised in case legend parameters are provided for data that is
+    # not going to color the object_type
+    with pytest.warns(Warning):
+        load_config(color_by, model, scene)
