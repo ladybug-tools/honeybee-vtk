@@ -46,7 +46,7 @@ def test_legend_parameter_initialization():
     assert lp.range == (0, 100)
     assert not lp.show_legend
     assert lp.orientation == Orientation.horizontal
-    assert lp.position == (0.5, 0.0)
+    assert lp.position == (0.5, 0.1)
     assert lp.width == 0.45
     assert lp.height == 0.05
     assert not lp.number_of_colors
