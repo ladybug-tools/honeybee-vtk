@@ -82,12 +82,13 @@ class Font:
     def color(self, val) -> None:
         if not val:
             self._color = (0, 0, 0)
-        elif isinstance(val, tuple) and _validate_input(val, int, 256):
+        elif isinstance(val, (tuple, list)) and _validate_input(val, int, 256) \
+                and len(val) == 3:
             self._color = (val[0] / 255, val[1] / 255, val[1] / 255)
         else:
             raise ValueError(
-                'Color accepts a tuple of three integers for R, G, and B values.'
-                f' Instead got {val}.'
+                'Color accepts a tuple of a list of three integers for R, G, and B'
+                f' values. Instead got {val}.'
             )
 
     @property

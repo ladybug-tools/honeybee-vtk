@@ -11,7 +11,7 @@ from pydantic import BaseModel, validator, Field
 from .types import model_dataset_names
 from .legend_parameter import Colors, Font, LabelFormat, Orientation
 from .model import Model
-from ._helper import get_line_count, get_min_max, _validate_input
+from ._helper import get_line_count, get_min_max
 from .vtkjs.schema import DisplayMode
 from .scene import Scene
 
@@ -31,16 +31,6 @@ class FontConfig(BaseModel):
     bold: Optional[bool] = Field(
         description='Bool value to indicate whether to make the fonts bold or not.'
     )
-
-    @validator('color')
-    def validate_color(cls, v):
-        if len(v) == 3:
-            return v
-        else:
-            raise ValueError(
-                'Color is an array of three integer values representing R, G, and B'
-                f' values for the font color. Instead got {v}.'
-            )
 
 
 class LegendConfig(BaseModel):
