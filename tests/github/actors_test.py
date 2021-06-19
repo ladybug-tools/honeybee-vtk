@@ -37,13 +37,3 @@ def test_to_vtk():
     actors = Actor.from_model(model)
     for actor in actors:
         assert isinstance(actor.to_vtk(), vtk.vtkActor)
-
-
-def test_bounds():
-    """Test bounds."""
-    model = Model.from_hbjson(file_path)
-    actors = Actor.from_model(model)
-    bounds = Actor.get_bounds(actors)
-    assert isinstance(bounds, list)
-    check = [isinstance(point, Point3D) for point in bounds]
-    assert check.count(True) == len(bounds)
