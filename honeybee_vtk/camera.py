@@ -2,8 +2,7 @@
 from __future__ import annotations
 import vtk
 from pathlib import Path
-from typing import List, Tuple
-from ladybug_geometry.geometry3d.pointvector import Point3D
+from typing import Tuple
 from honeybee_radiance.view import View
 
 
@@ -67,42 +66,22 @@ class Camera(View):
         """
         return self._flat_view_directions
 
-    def to_vtk(self, bounds: List[Point3D] = None) -> vtk.vtkCamera:
+    def to_vtk(self) -> vtk.vtkCamera:
         """Get a vtk camera object."""
         camera = vtk.vtkCamera()
 
         # Parallel projection
         if self._type.value == 'l':
-
-            # If a flat view in Parallel projection is requested
-            if self._direction.value in self._flat_view_directions:
-                if not bounds:
-                    raise ValueError(
-                        'Bounds of actors are required to generate one of the flat'
-                        ' views. Use get_bounds method of the Actors object to get'
-                        ' these bounds.'
-                    )
-                # get adjusted camera position
-                position = self._adjusted_position(bounds)
-
-            # If only parallel projection is requested
-            else:
-                # use the same camera postion
-                position = self._position.value
-
             # The location of camera in a 3D space
-            camera.SetPosition(position)
+            camera.SetPosition(self._position.value)
             # get a focal_point on the same axis as the camera position. This is
             # necessary for flat views
-            fp = (position[0] + self._direction.value[0],
-                  position[1] + self._direction.value[1],
-                  position[2] + self._direction.value[2])
-
+            fp = (self._position[0] + self._direction.value[0],
+                  self._position[1] + self._direction.value[1],
+                  self._position[2] + self._direction.value[2])
             # The direction to the point where the camera is looking at
             camera.SetFocalPoint(fp)
             camera.SetParallelProjection(True)
-            # TODO: Need to find a better way to set parallel scale
-            camera.SetParallelScale(self._v_size.value)
             camera.ParallelProjectionOn()
 
         # Perspective projection
@@ -120,76 +99,6 @@ class Camera(View):
         camera.UseHorizontalViewAngleOn()
 
         return camera
-
-    def _adjusted_position(self, bounds: List[Point3D]) -> Tuple[float, float, float]:
-        """Get adjusted camera position.
-
-        This method helps bring camera close to the model within an offset distance.
-
-        Returns:
-            Adjusted camera position in the form of a tuple with three decimal values.
-        """
-        index = self._flat_view_directions[self._direction.value][0]
-        nearest_point = self._outermost_point(bounds)
-        cord = nearest_point[index]
-        min_camera_offset = 1
-
-        # If the cordinate we're looking for is negative the offset needs to be applied
-        # in negative as well
-        if cord <= 0:
-            offset = min_camera_offset * -1
-        else:
-            offset = min_camera_offset
-
-        # if the camera needs to move along x-axis
-        if index == 0:
-            adjusted_position = (cord + offset, self._position.value[1],
-                                 self._position.value[2])
-
-        # if the camera needs to move along y-axis
-        elif index == 1:
-            adjusted_position = (self._position.value[0], cord + offset,
-                                 self._position.value[2])
-
-        # if the camera needs to move along z-axis
-        elif index == 2:
-            adjusted_position = (self._position.value[0], self._position.value[1],
-                                 cord + offset)
-
-        return adjusted_position
-
-    def _outermost_point(self, bounds: List[Point3D]) -> Point3D:
-        """Find the outermost point in a Model.
-
-        This method looks at the bounds of the actors and finds the outermost point
-        in actors from a certain direction. For example, if you are looking at the model
-        from top and you wished to know the outermost point in +Z, this method helps you
-        find that point. This point is used in creating adjusted camera position when
-        parallel projection is requested.
-
-        Returns:
-            A Ladybug Point3D object.
-        """
-        # Check axis(index) and direction to find the nearest point
-        index, dir = self._flat_view_directions[self._direction.value]
-
-        # dictionary with cordinate(int):Point3D structure
-        cord_point = {point[index]: point for point in bounds}
-
-        # if z-axis
-        if index == 2:
-            if dir == '+':
-                outermost_point = cord_point[sorted(cord_point, reverse=True)[0]]
-            else:
-                outermost_point = cord_point[sorted(cord_point)[0]]
-        # if x-axis or y-axis
-        else:
-            if dir == '+':
-                outermost_point = cord_point[sorted(cord_point)[0]]
-            else:
-                outermost_point = cord_point[sorted(cord_point, reverse=True)[0]]
-
-        return outermost_point
 
     @classmethod
     def from_view(cls: Camera, view: View) -> Camera:
