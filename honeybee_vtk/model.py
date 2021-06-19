@@ -233,7 +233,9 @@ class Model(object):
             objects = convert_face(face)
             self._add_objects(self.separate_by_type(objects))
 
+        print(len(model.orphaned_shades))
         for face in model.orphaned_shades:
+
             self._shades.data.append(convert_shade(face))
 
         for face in model.orphaned_apertures:

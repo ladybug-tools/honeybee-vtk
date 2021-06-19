@@ -118,3 +118,12 @@ def test_views():
     file_path = r'tests/assets/viewbased.hbjson'
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
     assert len(model.cameras) == 1
+
+
+def test_polydata():
+    """Test length of Polydata in model."""
+
+    file_path = r'tests/assets/gridbased.hbjson'
+    model = Model.from_hbjson(file_path)
+    print(len(model.shades.data))
+    assert 1 == 2
