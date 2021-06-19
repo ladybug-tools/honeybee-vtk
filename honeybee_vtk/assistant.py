@@ -72,13 +72,8 @@ class Assistant:
         renderer.SetBackground(self._background_color)
         renderer.TwoSidedLightingOn()
 
-        # Assign camera to the renderer
-        if self._camera.type == 'v':
-            renderer.SetActiveCamera(self._camera.to_vtk())
-        else:
-            bounds = Actor.get_bounds(self._actors.values())
-            renderer.SetActiveCamera(self._camera.to_vtk(bounds=bounds))
-
+        renderer.SetActiveCamera(self._camera.to_vtk())
+        renderer.ResetCamera()
         # the order is from outside to inside
         self._interactor, self._window, self._renderer = (interactor, window, renderer)
 
