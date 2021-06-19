@@ -147,10 +147,8 @@ def export(
 
         # Set a default camera if there are not cameras in the model
         if not model.cameras and not view:
-            # Use the centroid of the model for the camera position
             actors = Actor.from_model(model=model)
-            position = Actor.get_centroid(actors)
-            camera = Camera(position=position, type='l')
+            camera = Camera(type='l')
             scene.add_cameras(camera)
 
         else:
