@@ -225,25 +225,33 @@ class Model(object):
     def _convert_model(self, model: HBModel) -> None:
         """An internal method to convert the objects on class initiation."""
 
-        for room in model.rooms:
-            objects = convert_room(room)
-            self._add_objects(self.separate_by_type(objects))
+        if hasattr(model, 'rooms'):
+            print("Rooms found", '\n')
+            for room in model.rooms:
+                objects = convert_room(room)
+                self._add_objects(self.separate_by_type(objects))
 
-        for face in model.faces:
-            objects = convert_face(face)
-            self._add_objects(self.separate_by_type(objects))
+        if hasattr(model, 'faces'):
+            print("Faces found", '\n')
+            for face in model.faces:
+                objects = convert_face(face)
+                self._add_objects(self.separate_by_type(objects))
 
-        print(len(model.orphaned_shades))
-        for face in model.orphaned_shades:
+        if hasattr(model, 'orphaned_shades'):
+            print("orphaned_shades found", '\n')
+            for face in model.orphaned_shades:
+                self._shades.data.append(convert_shade(face))
 
-            self._shades.data.append(convert_shade(face))
+        if hasattr(model, 'orphaned_apertures'):
+            print("Orphaned_apertures found", '\n')
+            for face in model.orphaned_apertures:
+                self._apertures.data.extend(convert_aperture(face))
 
-        for face in model.orphaned_apertures:
-            self._apertures.data.extend(convert_aperture(face))
-
-        for face in model.orphaned_faces:
-            objects = convert_face(face)
-            self._add_objects(self.separate_by_type(objects))
+        if hasattr(model, 'orphaned_faces'):
+            print("Orphaned_faces found", '\n')
+            for face in model.orphaned_faces:
+                objects = convert_face(face)
+                self._add_objects(self.separate_by_type(objects))
 
     def _add_objects(self, data: Dict) -> None:
         """Add object to different fields based on data type.
@@ -362,7 +370,7 @@ class Model(object):
             webbrowser.open(html_file)
         return html_file
 
-    @staticmethod
+    @ staticmethod
     def get_default_color(face_type: face_types) -> Color:
         """Get the default color based of face type.
 
@@ -373,7 +381,7 @@ class Model(object):
         color = _COLORSET.get(face_type, [1, 1, 1, 1])
         return Color(*(v * 255 for v in color))
 
-    @staticmethod
+    @ staticmethod
     def separate_by_type(data: List[PolyData]) -> Dict:
         """Separate PolyData objects by type."""
         data_dict = defaultdict(list)

@@ -126,6 +126,5 @@ def test_polydata():
     file_path = r'tests/assets/gridbased.hbjson'
     model = Model.from_hbjson(file_path)
     apertures = model.apertures.data
-    for aperture in apertures:
-        print(aperture.identifier, '\n')
+    print(f'Total number of aprertures are {len(apertures)}')
     assert 1 == 2
