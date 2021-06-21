@@ -231,24 +231,15 @@ class Model(object):
                 objects = convert_room(room)
                 self._add_objects(self.separate_by_type(objects))
 
-        if hasattr(model, 'faces'):
-            print("Faces found", '\n')
-            for face in model.faces:
-                objects = convert_face(face)
-                self._add_objects(self.separate_by_type(objects))
-
         if hasattr(model, 'orphaned_shades'):
-            print("orphaned_shades found", '\n')
             for face in model.orphaned_shades:
                 self._shades.data.append(convert_shade(face))
 
         if hasattr(model, 'orphaned_apertures'):
-            print("Orphaned_apertures found", '\n')
             for face in model.orphaned_apertures:
                 self._apertures.data.extend(convert_aperture(face))
 
         if hasattr(model, 'orphaned_faces'):
-            print("Orphaned_faces found", '\n')
             for face in model.orphaned_faces:
                 objects = convert_face(face)
                 self._add_objects(self.separate_by_type(objects))
