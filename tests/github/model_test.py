@@ -85,17 +85,17 @@ def test_displaymode():
 
 def test_hbjson_vtk_conversion():
     """Test is hbjson is being converted into vtk polydata correctly."""
-    file_path = r'tests/assets/revit_model/model.hbjson'
+    file_path = r'tests/assets/gridbased.hbjson'
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
 
-    assert len(model.shades.data) == 30
+    assert len(model.shades.data) == 40
     assert len(model.doors.data) == 0
-    assert len(model.apertures.data) == 132
-    assert len(model.walls.data) == 226
-    assert len(model.floors.data) == 30
-    assert len(model.roof_ceilings.data) == 42
+    assert len(model.apertures.data) == 7
+    assert len(model.walls.data) == 8
+    assert len(model.floors.data) == 2
+    assert len(model.roof_ceilings.data) == 2
     assert len(model.air_boundaries.data) == 0
-    assert len(model.sensor_grids.data) == 15
+    assert len(model.sensor_grids.data) == 2
 
 
 def test_default_colors():
@@ -127,4 +127,4 @@ def test_polydata():
     model = Model.from_hbjson(file_path)
     apertures = model.apertures.data
     print(f'Total number of aprertures are {len(apertures)}')
-    assert 1 == 2
+    print(f'Total number of shades are {len(model.shades.data)}')
