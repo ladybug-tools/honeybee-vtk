@@ -19,16 +19,19 @@ from .scene import Scene
 class FontConfig(BaseModel):
     """Config for the fonts to be used in a legend."""
 
-    color: Optional[List[int]] = Field(
+    color: List[int] = Field(
+        [0, 0, 0],
         description='An array of three integer values representing R, G, and B values'
         ' for the color of fonts.'
     )
 
-    size: Optional[int] = Field(
+    size: int = Field(
+        30,
         description='Size of fonts in points.'
     )
 
-    bold: Optional[bool] = Field(
+    bold: bool = Field(
+        False,
         description='Bool value to indicate whether to make the fonts bold or not.'
     )
 
@@ -36,61 +39,74 @@ class FontConfig(BaseModel):
 class LegendConfig(BaseModel):
     """Config for the legend to be created from a dataset."""
 
-    colors: Optional[str] = Field(
+    colors: str = Field(
+        'ecotect',
         description='Color scheme for the legend.'
     )
 
-    range: Optional[List[int]] = Field(
+    range: List[int] = Field(
+        [0, 100],
         description='A list of minimum and maximum values for the legend.'
     )
 
-    show_legend: Optional[bool] = Field(
+    show_legend: bool = Field(
+        False,
         description='A bool value to indicate whether to show legend in the exported'
         ' images or not.'
     )
 
-    orientation: Optional[str] = Field(
+    orientation: str = Field(
+        'horizontal',
         description='Choose between horizontal and vertical orientation.'
     )
 
-    position: Optional[List[float]] = Field(
+    position: List[float] = Field(
+        [0.5, 0.1],
         description='A tuple of two decimal values. The values represent the percentage'
         ' of viewport width and the percentage of viewport height.'
     )
 
-    width: Optional[float] = Field(
+    width: float = Field(
+        0.45,
         description=' A decimal number representing the percentage of viewport width'
         ' that will be used to define the width of the legend.'
     )
 
-    height: Optional[float] = Field(
+    height: float = Field(
+        0.05,
         description='A decimal number representing the percentage of viewport height'
         'that will be used to define the height of the legend.'
     )
 
-    number_of_colors: Optional[int] = Field(
+    number_of_colors: int = Field(
+        None,
         description='An integer representing the number of colors in a legend.'
     )
 
-    number_of_labels: Optional[int] = Field(
+    number_of_labels: int = Field(
+        None,
         description='An integer representing the number of text labels on a legend.'
     )
 
-    label_format: Optional[str] = Field(
+    label_format: str = Field(
+        'integer',
         description='Format of legend labels.'
     )
 
-    label_position: Optional[int] = Field(
+    label_position: int = Field(
+        0,
         description='0 or 1 to decide whether the legend title and the legend labels'
         ' will precede the legend or not.'
     )
 
-    label_fonts: Optional[FontConfig] = Field(
+    label_fonts: FontConfig = Field(
+        FontConfig(),
         description='Font parameters for the fonts to be used for the labels on the'
         ' legend.'
     )
 
-    title_fonts: Optional[FontConfig] = Field(
+    title_fonts: FontConfig = Field(
+        FontConfig(bold=True),
         description='Font parameters for the fonts to be used in the title of the'
         ' legend.'
     )
@@ -144,12 +160,14 @@ class DataConfig(BaseModel):
         ' data.'
     )
 
-    color_by: Optional[bool] = Field(
+    color_by: bool = Field(
+        False,
         description='Bool value to indicate if this data should be used to color the'
         ' object type in the model.'
     )
 
-    legend_parameters: Optional[LegendConfig] = Field(
+    legend_parameters: LegendConfig = Field(
+        LegendConfig(),
         description='Legend parameters to create legend out of the this dataset.'
     )
 
