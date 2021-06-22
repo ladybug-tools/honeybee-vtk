@@ -313,12 +313,12 @@ class LegendParameter:
                 ' for both X and Y.'
             )
 
-    @ property
+    @property
     def width(self) -> float:
         """Width of the legend as a percentage of viewport width."""
         return self._width
 
-    @ width.setter
+    @width.setter
     def width(self, val) -> None:
         if not val:
             self._width = 0.45
@@ -329,12 +329,12 @@ class LegendParameter:
                 'Width accepts a decimal number up to 0.95.'
             )
 
-    @ property
+    @property
     def height(self) -> float:
         """height of the legend as a percentage of viewport height."""
         return self._height
 
-    @ height.setter
+    @height.setter
     def height(self, val) -> None:
         if not val:
             self._height = 0.05
@@ -345,12 +345,12 @@ class LegendParameter:
                 'Height accepts a decimal number up to 0.95.'
             )
 
-    @ property
+    @property
     def number_of_colors(self) -> int:
         """Number of colors in the legend."""
         return self._number_of_colors
 
-    @ number_of_colors.setter
+    @number_of_colors.setter
     def number_of_colors(self, val) -> None:
         if not val:
             self._number_of_colors = None
@@ -362,12 +362,12 @@ class LegendParameter:
                 f'colors in the colors property. instead got {val}.'
             )
 
-    @ property
+    @property
     def number_of_labels(self) -> int:
         """Number of text labels in the legend."""
         return self._number_of_labels
 
-    @ number_of_labels.setter
+    @number_of_labels.setter
     def number_of_labels(self, val) -> None:
         if not val:
             self._number_of_labels = None
@@ -379,12 +379,12 @@ class LegendParameter:
                 f'colors in the colors property. instead got {val}.'
             )
 
-    @ property
+    @property
     def label_format(self) -> LabelFormat:
         """The format of legend labels."""
         return self._label_format
 
-    @ label_format.setter
+    @label_format.setter
     def label_format(self, val) -> None:
         if not val:
             self._label_format = LabelFormat.integer
@@ -395,7 +395,7 @@ class LegendParameter:
                 f'A LabelFormat object expected. Instead got {type(val).__name__}'
             )
 
-    @ property
+    @property
     def label_position(self) -> int:
         """The position of labels and the legend title on a legend.
 
@@ -405,7 +405,7 @@ class LegendParameter:
         """
         return self._label_position
 
-    @ label_position.setter
+    @label_position.setter
     def label_position(self, val):
         if not val:
             self._label_position = 0
@@ -416,12 +416,12 @@ class LegendParameter:
                 f'Label position only accepts 0 or 1 as a value. Instead got {val}.'
             )
 
-    @ property
+    @property
     def label_font(self) -> Font:
         """Font for the legend labels."""
         return self._label_font
 
-    @ label_font.setter
+    @label_font.setter
     def label_font(self, val) -> None:
         if not val:
             self._label_font = Font(color=(0, 0, 0), size=30)
@@ -432,12 +432,12 @@ class LegendParameter:
                 f'Label font expects a Font object. Instead got {type(val).__name__}.'
             )
 
-    @ property
+    @property
     def title_font(self) -> Font:
         """Font for the legend title."""
         return self._title_font
 
-    @ title_font.setter
+    @title_font.setter
     def title_font(self, val) -> None:
         if not val:
             self._title_font = Font(color=(0, 0, 0), size=30, bold=True)
