@@ -150,6 +150,10 @@ def export(
             actors = Actor.from_model(model=model)
             camera = Camera(type='l')
             scene.add_cameras(camera)
+            bounds = Actor.get_bounds(actors)
+            centroid = Actor.get_centroid(actors)
+            aerial_cameras = camera.aerial_cameras(bounds, centroid)
+            scene.add_cameras(aerial_cameras)
 
         else:
             # Collection cameras from model, if the model has it
