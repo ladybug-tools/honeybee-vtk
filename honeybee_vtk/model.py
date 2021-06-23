@@ -226,7 +226,6 @@ class Model(object):
         """An internal method to convert the objects on class initiation."""
 
         if hasattr(model, 'rooms'):
-            print("Rooms found", '\n')
             for room in model.rooms:
                 objects = convert_room(room)
                 self._add_objects(self.separate_by_type(objects))
