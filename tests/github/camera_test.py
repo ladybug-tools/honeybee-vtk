@@ -21,12 +21,6 @@ def test_to_vtk():
     assert camera.h_size == 60
     assert camera.v_size == 30
     assert camera.type == 'v'
-    assert camera.flat_view_direction[(0, 0, -1)] == [2, '+']
-    assert camera.flat_view_direction[(0, 0, 1)] == [2, '-']
-    assert camera.flat_view_direction[(0, 1, 0)] == [1, '+']
-    assert camera.flat_view_direction[(0, -1, 0)] == [1, '-']
-    assert camera.flat_view_direction[(-1, 0, 0)] == [0, '-']
-    assert camera.flat_view_direction[(1, 0, 0)] == [0, '+']
 
     # Assess type of the outcome of the to_vtk method
     camera = camera.to_vtk()
