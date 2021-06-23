@@ -1,9 +1,11 @@
 """A VTK camera object."""
 from __future__ import annotations
 import vtk
+import math
 from pathlib import Path
-from typing import Tuple
+from typing import Tuple, List
 from honeybee_radiance.view import View
+from ladybug_geometry.geometry3d import Point3D, LineSegment3D
 
 
 class Camera(View):
@@ -44,27 +46,6 @@ class Camera(View):
         super().__init__(
             identifier=identifier, position=position, direction=direction,
             up_vector=up_vector, h_size=h_size, v_size=v_size, type=type)
-
-        self._flat_view_directions = {
-            (0, 0, -1): [2, '+'],
-            (0, 0, 1): [2, '-'],
-            (0, 1, 0): [1, '+'],
-            (0, -1, 0): [1, '-'],
-            (1, 0, 0): [0, '+'],
-            (-1, 0, 0): [0, '-'],
-        }
-
-    @property
-    def flat_view_direction(self) -> dict:
-        """This dictionary with, direction of camera : [index, +/-] structure.
-
-        Here, index referers to the index of the camera position. For example, in case
-        of (0, 0, -1), the camera will move along the Z axis. This means the z cordinate
-        of camera position (index = 2) will be modified to move camera through space.
-        The + and - indicates the direction on a particular axis. For example, [2, '+']
-        means the camera will move along Z axis and in +Z direction.
-        """
-        return self._flat_view_directions
 
     def to_vtk(self) -> vtk.vtkCamera:
         """Get a vtk camera object."""
@@ -137,3 +118,67 @@ class Camera(View):
             raise FileNotFoundError(
                 'Radiance view file not found.'
             )
+
+    @classmethod
+    def aerial_cameras(cls: Camera, bounds: List[Point3D], centroid) -> List[Camera]:
+        """Get four aerial cameras.
+
+        Args:
+            bounds: A list of Point3D objects representing bounds of the actors in the
+                scene.
+            centroid: A Point3D object representing the centroid of the actors.
+
+        Returns:
+            A list of Camera objects.
+        """
+
+        # find the top most z-cordinate in the model
+        cord_point = {point.z: point for point in bounds}
+        topmost_z_cord = cord_point[sorted(cord_point, reverse=True)[0]].z
+
+        # move centroid to the level of top most z-cordinate
+        centroid_moved = Point3D(centroid.x, centroid.y,
+                                 topmost_z_cord)
+
+        # distance of four cameras from centroid
+        distances = [centroid.distance_to_point(pt) for pt in bounds]
+        farthest_distance = sorted(distances, reverse=True)
+        camera_distance = farthest_distance[0]
+
+        # generate four points at 45 degrees and -45 degrees on left and right side of
+        # the centroid
+        pt1 = Point3D(
+            centroid_moved.x + math.cos(math.radians(45))*camera_distance,
+            centroid_moved.y + math.sin(math.radians(45))*camera_distance,
+            centroid_moved.z)
+        pt2 = Point3D(
+            centroid_moved.x + math.cos(math.radians(-45))*camera_distance,
+            centroid_moved.y + math.sin(math.radians(-45))*camera_distance,
+            centroid_moved.z)
+        pt3 = Point3D(
+            centroid_moved.x + math.cos(math.radians(45))*camera_distance*-1,
+            centroid_moved.y + math.sin(math.radians(45))*camera_distance*-1,
+            centroid_moved.z)
+        pt4 = Point3D(
+            centroid_moved.x + math.cos(math.radians(-45))*camera_distance*-1,
+            centroid_moved.y + math.sin(math.radians(-45))*camera_distance*-1,
+            centroid_moved.z)
+        camera_points = [pt1, pt4, pt3, pt2]
+
+        # get directions from each point to the centroid
+        directions = [LineSegment3D.from_end_points(
+            pt, centroid).v for pt in camera_points]
+
+        # create cameras from four points. These cameras must look at the centroid.
+        default_cameras = []
+        for i in range(len(camera_points)):
+            point = camera_points[i]
+            direction = directions[i]
+            default_cameras.append(cls(position=(point.x, point.y, point.z),
+                                       direction=(direction.x, direction.y, direction.z),
+                                       up_vector=(0, 0, 1)))
+
+        print(directions)
+        print("Centroid", centroid, "Centroid moved", centroid_moved,
+              "Camera distance", camera_distance, "Camera points", camera_points, '\n')
+        return default_cameras
