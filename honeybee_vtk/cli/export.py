@@ -38,16 +38,16 @@ def export():
     help='choose the type of image file.', show_default=True
 )
 @click.option(
-    '--image-width', '-iw', type=int, default=2500, help='Width of image in pixels.',
+    '--image-width', '-iw', type=int, default=2500, help='Width of images in pixels.',
     show_default=True
 )
 @click.option(
-    '--image-height', '-ih', type=int, default=2000, help='Height of image in pixels.',
+    '--image-height', '-ih', type=int, default=2000, help='Height of images in pixels.',
     show_default=True
 )
 @click.option(
     '--background-color', '-bc', type=(int, int, int), default=(255, 255, 255),
-    help='background color for images', show_default=True
+    help='Set background color for images', show_default=True
 )
 @click.option(
     '--display-mode-model', '-dmm',
@@ -68,14 +68,14 @@ def export():
     default='shaded', help='Set display mode for the Sensorgrids.', show_default=True
 )
 @click.option(
-    '--view', '-vf', help='File Path to the Radiance view file.',
-    type=click.Path(exists=True),
-    default=None, show_default=True, multiple=True
+    '--view', '-vf', help='File Path to the Radiance view file. Multiple view files are'
+    ' accepted.', type=click.Path(exists=True), default=None,
+    show_default=True, multiple=True
 )
 @click.option(
-    '--config', '-cf', help='File Path to the config json file.',
-    type=click.Path(exists=True),
-    default=None, show_default=True
+    '--config', '-cf', help='File Path to the config json file which can be used to'
+    ' mount simulation data on HBJSON.', type=click.Path(exists=True), default=None,
+    show_default=True
 )
 def export(
         hbjson_file, name, folder, image_type, image_width, image_height,

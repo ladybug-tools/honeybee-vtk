@@ -7,7 +7,6 @@ import shutil
 import webbrowser
 import tempfile
 import os
-import warnings
 
 from collections import defaultdict
 from typing import Dict, List
@@ -203,10 +202,6 @@ class Model(object):
         if len(model.properties.radiance.views) > 0:
             for view in model.properties.radiance.views:
                 self._cameras.append(Camera.from_view(view))
-        else:
-            warnings.warn(
-                'views not found in HBJSON.'
-            )
 
     def update_display_mode(self, value: DisplayMode) -> None:
         """Change display mode for all the object types in the model.
