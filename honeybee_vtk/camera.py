@@ -165,7 +165,7 @@ class Camera(View):
             centroid_moved.z)
         camera_points = [pt1, pt4, pt3, pt2]
 
-        # get directions from each point to the centroid
+        # get directions (vectors) from each point to the centroid
         directions = [LineSegment3D.from_end_points(
             pt, centroid).v for pt in camera_points]
 
@@ -177,8 +177,11 @@ class Camera(View):
             default_cameras.append(cls(position=(point.x, point.y, point.z),
                                        direction=(direction.x, direction.y, direction.z),
                                        up_vector=(0, 0, 1)))
+        print(" ")
+        print("Directions", directions)
+        print("Centroid", centroid)
+        print("Centroid moved", centroid_moved)
+        print("Camera distance", camera_distance)
+        print("Camera points", camera_points, '\n')
 
-        print(directions)
-        print("Centroid", centroid, "Centroid moved", centroid_moved,
-              "Camera distance", camera_distance, "Camera points", camera_points, '\n')
         return default_cameras
