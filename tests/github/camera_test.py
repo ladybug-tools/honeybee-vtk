@@ -27,16 +27,6 @@ def test_to_vtk():
     assert isinstance(camera, vtk.vtkCamera)
 
 
-def test_no_view():
-    """Test if views are being read from hbjson."""
-    file_path = r'tests/assets/unnamed.hbjson'
-
-    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
-    # Checking if valueerror is raised when from_model is called on a model with no views
-    with pytest.warns(Warning):
-        model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
-
-
 def test_model_with_views():
     """Test if all the views in the model are being loaded as Camera objects."""
     file_path = r'tests/assets/gridbased.hbjson'

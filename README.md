@@ -55,11 +55,11 @@ Options:
   --help                          Show this message and exit.
 ```
 
-## Export images from the radiance views in a HBJSON file
+## Export images from an HBJSON file
 ```console
 Usage: honeybee-vtk export-images [OPTIONS] HBJSON_FILE
 
-  Export images from an radiance views in an HBJSON file.
+  Export images from radiance views in a HBJSON file.
 
   Args:
       hbjson-file: Path to an HBJSON file.
@@ -71,11 +71,11 @@ Options:
                                   choose the type of image file.  [default:
                                   jpg]
 
-  -iw, --image-width INTEGER      Width of image in pixels.  [default: 2000]
-  -ih, --image-height INTEGER     Height of image in pixels.  [default: 2000]
+  -iw, --image-width INTEGER      Width of images in pixels.  [default: 2500]
+  -ih, --image-height INTEGER     Height of images in pixels.  [default: 2000]
   -bc, --background-color <INTEGER INTEGER INTEGER>...
-                                  background color for images  [default: 255,
-                                  255, 255]
+                                  Set background color for images  [default:
+                                  255, 255, 255]
 
   -dmm, --display-mode-model [shaded|surface|surfacewithedges|wireframe|points]
                                   Set display mode for the model.  [default:
@@ -88,6 +88,12 @@ Options:
   -dmg, --display-mode-grid [shaded|surface|surfacewithedges|wireframe|points]
                                   Set display mode for the Sensorgrids.
                                   [default: shaded]
+
+  -vf, --view PATH                File Path to the Radiance view file.
+                                  Multiple view files are accepted.
+
+  -cf, --config PATH              File Path to the config json file which can
+                                  be used to mount simulation data on HBJSON.
 
   --help                          Show this message and exit.
 ```

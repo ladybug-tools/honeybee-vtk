@@ -177,11 +177,5 @@ class Camera(View):
             default_cameras.append(cls(position=(point.x, point.y, point.z),
                                        direction=(direction.x, direction.y, direction.z),
                                        up_vector=(0, 0, 1)))
-        print(" ")
-        print("Directions", directions)
-        print("Centroid", centroid)
-        print("Centroid moved", centroid_moved)
-        print("Camera distance", camera_distance)
-        print("Camera points", camera_points, '\n')
 
         return default_cameras
