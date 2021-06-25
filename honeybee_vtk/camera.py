@@ -53,24 +53,18 @@ class Camera(View):
 
         # Parallel projection
         if self._type.value == 'l':
+            camera.SetParallelProjection(True)
+            camera.ParallelProjectionOn()
+        # Perspective projection
+        else:
             # The location of camera in a 3D space
             camera.SetPosition(self._position.value)
-            # get a focal_point on the same axis as the camera position. This is
-            # necessary for flat views
+            # get a focal_point on the same axis as the camera position.
             fp = (self._position[0] + self._direction.value[0],
                   self._position[1] + self._direction.value[1],
                   self._position[2] + self._direction.value[2])
             # The direction to the point where the camera is looking at
             camera.SetFocalPoint(fp)
-            camera.SetParallelProjection(True)
-            camera.ParallelProjectionOn()
-
-        # Perspective projection
-        else:
-            # The location of camera in a 3D space
-            camera.SetPosition(self._position.value)
-            # The direction to the point where the camera is looking at
-            camera.SetFocalPoint(self._direction.value)
 
         # Where the top of the camera is
         camera.SetViewUp(self._up_vector.value)
@@ -147,23 +141,23 @@ class Camera(View):
 
         # generate four points at 45 degrees and -45 degrees on left and right side of
         # the centroid
-        pt1 = Point3D(
+        pt0 = Point3D(
             centroid_moved.x + math.cos(math.radians(45))*camera_distance,
             centroid_moved.y + math.sin(math.radians(45))*camera_distance,
             centroid_moved.z)
-        pt2 = Point3D(
+        pt1 = Point3D(
             centroid_moved.x + math.cos(math.radians(-45))*camera_distance,
             centroid_moved.y + math.sin(math.radians(-45))*camera_distance,
             centroid_moved.z)
-        pt3 = Point3D(
+        pt2 = Point3D(
             centroid_moved.x + math.cos(math.radians(45))*camera_distance*-1,
             centroid_moved.y + math.sin(math.radians(45))*camera_distance*-1,
             centroid_moved.z)
-        pt4 = Point3D(
+        pt3 = Point3D(
             centroid_moved.x + math.cos(math.radians(-45))*camera_distance*-1,
             centroid_moved.y + math.sin(math.radians(-45))*camera_distance*-1,
             centroid_moved.z)
-        camera_points = [pt1, pt4, pt3, pt2]
+        camera_points = [pt0, pt3, pt2, pt1]
 
         # get directions (vectors) from each point to the centroid
         directions = [LineSegment3D.from_end_points(
