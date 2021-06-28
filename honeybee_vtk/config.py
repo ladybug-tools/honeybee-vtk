@@ -146,13 +146,20 @@ class LegendConfig(BaseModel):
 class DataConfig(BaseModel):
     """Config for each dataset you'd like to load on a honeybee-vtk model."""
 
-    name: str = Field(
-        description='Name to be given to data. Example, "Daylight-Factor".'
+    identifier: str = Field(
+        description='identifier to be given to data. Example, "Daylight-Factor".'
+        ' This identifier needs to be unique in each of the DataConfig objects'
+        ' one introduces using a config file. Having multiple DataConfig objects with'
+        ' same modifier will raise an error.'
     )
 
     object_type: str = Field(
         description='The name of the model object on which you would like to map this'
         ' data.'
+    )
+
+    unit: str = Field(
+        description=' The unit of the data being loaded.'
     )
 
     file_paths: List[str] = Field(
@@ -313,9 +320,9 @@ def _load_data(data: DataConfig, model: Model) -> None:
 
     ds = model.get_modeldataset_from_string(data.object_type)
     ds.add_data_fields(
-        result, name=data.name, data_range=get_min_max(result))
+        result, name=data.identifier, data_range=get_min_max(result))
     if data.color_by:
-        ds.color_by = data.name
+        ds.color_by = data.identifier
     ds.display_mode = DisplayMode.SurfaceWithEdges
 
 
@@ -330,7 +337,7 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
     if data.legend_parameters and data.color_by:
 
         legend_params = data.legend_parameters
-        legend = scene.legend_parameter(data.name)
+        legend = scene.legend_parameter(data.identifier)
 
         if legend_params.colors:
             legend.colors = Colors[legend_params.colors]
@@ -364,7 +371,7 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
 
     elif data.legend_parameters and not data.color_by:
         warnings.warn(
-            f'Since {data.object_type} is not going to be colored by {data.name},'
+            f'Since {data.object_type} is not going to be colored by {data.identifier},'
             ' legend parameters will be ignored.'
         )
 
