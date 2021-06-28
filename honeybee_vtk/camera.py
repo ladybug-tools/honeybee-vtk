@@ -59,12 +59,13 @@ class Camera(View):
         else:
             # The location of camera in a 3D space
             camera.SetPosition(self._position.value)
-            # get a focal_point on the same axis as the camera position.
-            fp = (self._position[0] + self._direction.value[0],
-                  self._position[1] + self._direction.value[1],
-                  self._position[2] + self._direction.value[2])
-            # The direction to the point where the camera is looking at
-            camera.SetFocalPoint(fp)
+
+        # get a focal_point on the same axis as the camera position.
+        fp = (self._position[0] + self._direction.value[0],
+              self._position[1] + self._direction.value[1],
+              self._position[2] + self._direction.value[2])
+        # The direction to the point where the camera is looking at
+        camera.SetFocalPoint(fp)
 
         # Where the top of the camera is
         camera.SetViewUp(self._up_vector.value)
