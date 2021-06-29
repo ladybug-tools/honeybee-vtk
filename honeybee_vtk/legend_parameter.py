@@ -149,6 +149,8 @@ class LegendParameter:
         Args:
             name: A text string representing the name of the legend object and the
                 title of the legend. Default to "Legend".
+            unit: A text string representing the unit of the data that the legend
+                represents. Examples are 'celsius', 'kwn/m2', etc.
             colors: A Colors object. Defaults to Ecotect colorset.
             range: A tuple of integers representing the minimum and maximum values of a
                 legend. Defaults to (0, 100).
@@ -185,6 +187,7 @@ class LegendParameter:
     def __init__(
             self,
             name: str = 'Legend',
+            unit: str = '',
             colors: Colors = Colors.ecotect,
             range: Tuple[int, int] = (0, 100),
             show_legend: bool = False,
@@ -200,6 +203,7 @@ class LegendParameter:
             title_font: Font = Font(color=(0, 0, 0), size=50, bold=True)) -> None:
 
         self.name = name
+        self.unit = unit
         self.colors = colors
         self.range = range
         self.show_legend = show_legend
@@ -228,6 +232,22 @@ class LegendParameter:
         else:
             raise ValueError(
                 f'Name only accepts text. Instead got {type(val).__name__}.'
+            )
+
+    @property
+    def unit(self) -> str:
+        """Unit for the data that the legend represents."""
+        return self._unit
+
+    @unit.setter
+    def unit(self, val) -> None:
+        if not val:
+            self._unit = ''
+        elif isinstance(val, str):
+            self._unit = val
+        else:
+            raise ValueError(
+                f'Unit only accepts text. Instead got {type(val).__name__}.'
             )
 
     @property
@@ -475,7 +495,12 @@ class LegendParameter:
 
         scalar_bar = vtk.vtkScalarBarActor()
         scalar_bar.SetLookupTable(color_range)
-        scalar_bar.SetTitle(self._name)
+
+        if self._unit:
+            scalar_bar.SetTitle(f'{self._name} [{self._unit}]')
+        else:
+            scalar_bar.SetTitle(self._name)
+
         scalar_bar.SetPosition(self._position)
         scalar_bar.SetWidth(self._width)
         scalar_bar.SetHeight(self._height)
@@ -506,6 +531,7 @@ class LegendParameter:
     def __repr__(self) -> Tuple[str]:
         return (
             f'Legend name: {self._name} |'
+            f' Legend title: {self._unit} |'
             f' Legend visibility: {self._show_legend} |'
             f' Legend color scheme: {self._colors.name} |'
             f' Legend range: {self._range} |'
