@@ -6,8 +6,7 @@ import pathlib
 import warnings
 
 from typing import List, Optional
-from pydantic import BaseModel, validator, Field
-
+from pydantic import BaseModel, validator, Field, constr
 from .types import DataSetNames
 from .legend_parameter import Colors, Font, LabelFormat, Orientation
 from .model import Model
@@ -39,8 +38,8 @@ class FontConfig(BaseModel):
 class LegendConfig(BaseModel):
     """Config for the legend to be created from a dataset."""
 
-    color_set: Colors = Field(
-        Colors.ecotect,
+    color_set: str = Field(
+        'ecotect',
         description='Color set to be used on data and legend. Currently, this field'
         ' only uses Ladybug color sets.'
     )
@@ -80,12 +79,12 @@ class LegendConfig(BaseModel):
     )
 
     number_of_colors: int = Field(
-        None,
+        10,
         description='An integer representing the number of colors in a legend.'
     )
 
     number_of_labels: int = Field(
-        None,
+        3,
         description='An integer representing the number of text labels on a legend.'
     )
 
@@ -113,12 +112,12 @@ class LegendConfig(BaseModel):
     )
 
     @validator('color_set')
-    def validate_colors(cls, v: Colors) -> str:
-        if isinstance(v, Colors):
-            return v
-        else:
-            raise ValueError(
-                f'Colors must be a string from {tuple(dir(Colors)[4:])}. Instead got'
+    def validate_colors(cls, v: str) -> str:
+        try:
+            return Colors[v]
+        except KeyError:
+            raise KeyError(
+                f'color_set must be a string from {tuple(dir(Colors)[4:])}. Instead got'
                 f' {v}.'
             )
 
@@ -339,7 +338,6 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
         legend = scene.legend_parameter(data.identifier)
 
         if legend_params.color_set:
-            print('\n', legend_params.color_set, '\n')
             legend.colors = legend_params.color_set
 
         legend.unit = data.unit
