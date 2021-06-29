@@ -8,7 +8,7 @@ import warnings
 from typing import List, Optional
 from pydantic import BaseModel, validator, Field
 
-from .types import model_dataset_names
+from .types import DataSetNames
 from .legend_parameter import Colors, Font, LabelFormat, Orientation
 from .model import Model
 from ._helper import get_line_count, get_min_max
@@ -153,7 +153,7 @@ class DataConfig(BaseModel):
         ' same modifier will raise an error.'
     )
 
-    object_type: str = Field(
+    object_type: DataSetNames = Field(
         description='The name of the model object on which you would like to map this'
         ' data.'
     )
@@ -180,11 +180,11 @@ class DataConfig(BaseModel):
 
     @validator('object_type')
     def validate_object(cls, v: str) -> str:
-        if v in model_dataset_names:
+        if v in DataSetNames:
             return v
         else:
             raise ValueError(
-                f'Object name should be from these {model_dataset_names}.'
+                f'Object name should be from these {tuple(dir(DataSetNames)[4:])}.'
                 f' Instead got {v}.'
             )
 
@@ -215,6 +215,7 @@ def _validate_data(data: DataConfig, model: Model) -> bool:
     Returns:
         A boolean value.
     """
+    print(data, '\n')
     # if file_paths is empty
     if not data.file_paths:
         raise ValueError(
@@ -223,8 +224,7 @@ def _validate_data(data: DataConfig, model: Model) -> bool:
         )
 
     # if object name is "grid" check that the name of files match the grid names
-    if data.object_type == model_dataset_names[-1]:
-
+    if data.object_type == DataSetNames.grid:
         # make sure grids are loaded on the model if grid data is to be mounted
         assert len(model.sensor_grids.data) > 0, 'Sensor grids are not loaded on'\
             ' this model. Reload them using grid options.'
@@ -268,7 +268,7 @@ def _validate_data(data: DataConfig, model: Model) -> bool:
 
     # if object_name is other than grid check that length of data matches the length
     # of data in the model for that object.
-    elif data.object_type in model_dataset_names[:-1]:
+    elif isinstance(data.object_type, DataSetNames):
 
         # only one file is accepted
         if len(data.file_paths) > 1:
@@ -280,7 +280,7 @@ def _validate_data(data: DataConfig, model: Model) -> bool:
 
         # match length of file with the number of faces in the model
         if get_line_count(data.file_paths[0]) != len(
-                model.get_modeldataset_from_string(data.object_type).data):
+                model.get_modeldataset(data.object_type).data):
             raise ValueError(
                 'The length of data in the file does not match the number of'
                 f' {data.object_type} objects in the model.'
@@ -290,7 +290,7 @@ def _validate_data(data: DataConfig, model: Model) -> bool:
     else:
         raise ValueError(
             ' object_name must be from one of these'
-            f' {model_dataset_names}. Instead got {data.object_type}.'
+            f' {tuple(dir(DataSetNames)[4:])}. Instead got {data.object_type}.'
         )
 
 
@@ -304,7 +304,7 @@ def _load_data(data: DataConfig, model: Model) -> None:
         model: A honeybee-vtk model.
     """
     # if data is for a ModelDataSet grid
-    if data.object_type == model_dataset_names[-1]:
+    if data.object_type == DataSetNames.grid:
 
         result = []
         for file_path in data.file_paths:
@@ -314,11 +314,11 @@ def _load_data(data: DataConfig, model: Model) -> None:
             result.append(grid_res)
 
     # if data is for a ModelDataSet other than grid
-    elif data.object_type in model_dataset_names[:-1]:
+    elif isinstance(data.object_type, DataSetNames):
         res_file = pathlib.Path(data.file_paths[0])
         result = [[float(v)] for v in res_file.read_text().splitlines()]
 
-    ds = model.get_modeldataset_from_string(data.object_type)
+    ds = model.get_modeldataset(data.object_type)
     ds.add_data_fields(
         result, name=data.identifier, data_range=get_min_max(result))
     if data.color_by:
@@ -342,6 +342,7 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
         if legend_params.colors:
             legend.colors = Colors[legend_params.colors]
 
+        legend.unit = data.unit
         legend.range = legend_params.range
         legend.show_legend = legend_params.show_legend
 
