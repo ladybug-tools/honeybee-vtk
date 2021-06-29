@@ -39,9 +39,10 @@ class FontConfig(BaseModel):
 class LegendConfig(BaseModel):
     """Config for the legend to be created from a dataset."""
 
-    colors: str = Field(
-        'ecotect',
-        description='Color scheme for the legend.'
+    color_set: Colors = Field(
+        Colors.ecotect,
+        description='Color set to be used on data and legend. Currently, this field'
+        ' only uses Ladybug color sets.'
     )
 
     range: List[int] = Field(
@@ -111,14 +112,13 @@ class LegendConfig(BaseModel):
         ' legend.'
     )
 
-    @validator('colors')
-    def validate_colors(cls, v: str) -> str:
-        colors = dir(Colors)[4:]
-        if v.lower() in colors:
+    @validator('color_set')
+    def validate_colors(cls, v: Colors) -> str:
+        if isinstance(v, Colors):
             return v
         else:
             raise ValueError(
-                f'Colors must be a string from {tuple(colors)}. Instead got'
+                f'Colors must be a string from {tuple(dir(Colors)[4:])}. Instead got'
                 f' {v}.'
             )
 
@@ -215,7 +215,6 @@ def _validate_data(data: DataConfig, model: Model) -> bool:
     Returns:
         A boolean value.
     """
-    print(data, '\n')
     # if file_paths is empty
     if not data.file_paths:
         raise ValueError(
@@ -339,8 +338,9 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
         legend_params = data.legend_parameters
         legend = scene.legend_parameter(data.identifier)
 
-        if legend_params.colors:
-            legend.colors = Colors[legend_params.colors]
+        if legend_params.color_set:
+            print('\n', legend_params.color_set, '\n')
+            legend.colors = legend_params.color_set
 
         legend.unit = data.unit
         legend.range = legend_params.range
