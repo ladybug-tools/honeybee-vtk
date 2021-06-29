@@ -19,7 +19,7 @@ from .to_vtk import convert_aperture, convert_face, convert_room, convert_shade,
     convert_sensor_grid
 from .vtkjs.schema import IndexJSON, DisplayMode, SensorGridOptions
 from .vtkjs.helper import convert_directory_to_zip_file, add_data_to_viewer
-from .types import model_dataset_names
+from .types import DataSetNames
 
 
 _COLORSET = {
@@ -156,22 +156,17 @@ class Model(object):
         """List of Camera objects attached to this Model object."""
         return self._cameras
 
-    def get_modeldataset_from_string(self, text: str) -> ModelDataSet:
-        """Get a ModelDataSet object from a model using a text string.
+    def get_modeldataset(self, dataset: DataSetNames) -> ModelDataSet:
+        """Get a ModelDataSet object from a model.
 
         Args:
-            text: A text string such as "walls", "shades"
+            dataset: A DataSetNames object.
 
         Returns:
             A ModelDataSet object.
         """
-        if text not in model_dataset_names:
-            raise ValueError(
-                f'Text must be one of the {model_dataset_names}.'
-                f' Instead got {text}.'
-            )
         ds = {ds.name.lower(): ds for ds in self}
-        return ds[text]
+        return ds[dataset.value]
 
     def __iter__(self):
         """This dunder method makes this class an iterator object.
