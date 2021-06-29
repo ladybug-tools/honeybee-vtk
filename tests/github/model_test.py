@@ -5,7 +5,7 @@ import shutil
 import pytest
 from ladybug.color import Color
 from honeybee_vtk.model import Model
-from honeybee_vtk.types import ModelDataSet
+from honeybee_vtk.types import ModelDataSet, DataSetNames
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 
 
@@ -120,11 +120,9 @@ def test_views():
     assert len(model.cameras) == 1
 
 
-def test_polydata():
-    """Test length of Polydata in model."""
-
+def test_get_modeldataset():
+    """Test get_modeldataset method."""
     file_path = r'tests/assets/gridbased.hbjson'
-    model = Model.from_hbjson(file_path)
-    apertures = model.apertures.data
-    print(f'Total number of aprertures are {len(apertures)}')
-    print(f'Total number of shades are {len(model.shades.data)}')
+    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
+
+    assert model.get_modeldataset(DataSetNames.wall).name == 'Wall'
