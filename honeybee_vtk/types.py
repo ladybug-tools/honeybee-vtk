@@ -19,8 +19,16 @@ from .legend_parameter import LegendParameter, Colors
 from .vtkjs.schema import DataSetProperty, DataSet, DisplayMode, DataSetMapper
 
 
-model_dataset_names = ('wall', 'aperture', 'shade', 'door', 'floor', 'roofceiling',
-                       'airboundary', 'grid')
+class DataSetNames(Enum):
+    """Valid ModelDataset names."""
+    wall = 'wall'
+    aperture = 'aperture'
+    shade = 'shade'
+    door = 'door'
+    floor = 'floor'
+    roofceiling = 'roofceiling'
+    airboundary = 'airboundary'
+    grid = 'grid'
 
 
 class VTKWriters(Enum):
@@ -310,7 +318,7 @@ class ModelDataSet:
 
         assert len(self.data) == len(data), \
             f'Length of input data {len(data)} does not match the length of'\
-            f' polydata in this dataset {len(self.data)}.'
+            f' {name} in this dataset {len(self.data)}.'
 
         for count, d in enumerate(data):
             self.data[count].add_data(
