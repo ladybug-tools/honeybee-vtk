@@ -57,7 +57,9 @@ class DataFieldInfo:
 
     Args:
         name: A string representing the name of for data.
-        range: A tuple of min, max values. Defaults to (0, 100).
+        range: A tuple of min, max values as either integers or floats.
+            Defaults to None which will create a range of minimum and maximum
+            values in the data.
         colors: A Colors object that defines colors for the legend.
             Defaults to Ecotect colorset.
         per_face : A Boolean to indicate if the data is per face or per point. In
@@ -65,18 +67,28 @@ class DataFieldInfo:
             are provided per face.
     """
 
-    def __init__(self, name: str = 'default', range: Tuple[int, int] = (0, 100),
+    def __init__(self, name: str = 'default', range: Tuple[float, float] = None,
                  colors: Colors = Colors.ecotect, per_face: bool = True
                  ) -> None:
-
         self.name = name
         self.per_face = per_face
+        self._range = range
         self._legend_param = LegendParameter(name=name, colors=colors, range=range)
 
     @property
     def legend_parameter(self) -> LegendParameter:
         """Legend associated with the DataFieldInfo object."""
         return self._legend_param
+
+    @property
+    def range(self) -> Tuple[float, float]:
+        """Range is a tuple of minimum and maximum values.
+
+        If these minimum and maximum values are not provided, they are calculated
+        automatically. In such a case, the minimum and maximum values in the data are
+        used.
+        """
+        return self._range
 
 
 class PolyData(vtk.vtkPolyData):
