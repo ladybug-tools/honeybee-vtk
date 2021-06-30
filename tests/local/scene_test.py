@@ -12,7 +12,7 @@ from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 from honeybee_vtk.camera import Camera
 from honeybee_vtk.actor import Actor
 from honeybee_vtk.types import ImageTypes, Colors
-from honeybee_vtk.legend_parameter import LabelFormat, Orientation
+from honeybee_vtk.legend_parameter import DecimalCount, Orientation
 
 
 def test_export_images_from_view_file():
@@ -111,7 +111,7 @@ def test_export_images():
     rd.orientation = Orientation.vertical
     rd.height = 0.45
     rd.width = 0.05
-    rd.label_format = LabelFormat.integer
+    rd.decimal_count = DecimalCount.integer
     rd.show_legend = True
     rd.position = (0.90, 0.1)
 
