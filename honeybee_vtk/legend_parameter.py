@@ -7,11 +7,8 @@ from typing import Tuple
 from ._helper import _validate_input
 
 
-class LabelFormat (Enum):
-    """Setting the type of the Label on a Legend.
-
-    Types refers to two point decimal numbers, three point decimal numbers, and integers.
-    """
+class DecimalCount (Enum):
+    """Controlling the number of decimals on each label of the legend."""
     decimal_two = '%#6.2f'
     decimal_three = '%-#6.3f'
     default = '%-#6.3g'
@@ -55,8 +52,8 @@ class Colors(Enum):
     view_study = Colorset.view_study()
 
 
-class Font:
-    """Fonts for the legend.
+class Text:
+    """Text parameters for the legend.
 
         Args:
             color: A tuple of three integer values for R, G, and B. Defaults (0, 0, 0).
@@ -84,7 +81,7 @@ class Font:
             self._color = (0, 0, 0)
         elif isinstance(val, (tuple, list)) and _validate_input(val, [int], 256) \
                 and len(val) == 3:
-            self._color = (val[0] / 255, val[1] / 255, val[1] / 255)
+            self._color = (val[0] / 255, val[1] / 255, val[2] / 255)
         else:
             raise ValueError(
                 'Color accepts a tuple of a list of three integers for R, G, and B'
@@ -159,30 +156,32 @@ class LegendParameter:
                 Defaults to False.
             orientation: An Orientation object that sets the orientation of the legend in
                 the scene. Defaults to horizontal orientation.
-            position: A tuple of two decimal values. The values represent the percentage
-                of viewport width and the percentage of viewport height. These
-                percentages in decimal numbers will define the location of the start
+            position: A tuple of two decimal values. The values represent the fraction
+                of viewport width and the fraction of viewport height. These
+                fractions in decimal numbers will define the location of the start
                 point of the legend. For example, a value of (0.0, 0.5) will place the
                 start point of the legend at the left most side of the viewport and at
-                the 50% height of the viewport. Default to (0.5, 0.1).
-            width: A decimal number representing the percentage of viewport width that
+                the 50% height of the viewport. Defaults to (0.5, 0.1).
+            width: A decimal number representing the fraction of viewport width that
                 will be used to define the width of the legend. A value of 0.45 will
                 make the width of legend equal to the 45% width of the viewport.
                 Defaults to 0.45.
-            height: A decimal number representing the percentage of viewport height that
+            height: A decimal number representing the fraction of viewport height that
                 will be used to define the height of the legend. A value of 0.05 will
                 make the height of legend equal to the 5% height of the viewport.
                 Defaults to 0.05.
-            number_of_colors: An integer representing the number of colors in a legend.
-                Defaults to None.
-            number_of_labels: An integer representing the number of text labels on a
-                legend. Default to None.
-            label_format: A LabelFormat object. Defaults to integer format.
-            label_position: 0 or 1. The value of 0 would mean that the labels and the
-                title would not precede the legend. The value of 1 would mean that the
-                labels and the title would precede the legend. Defaults to 0.
-            label_font: A Font object. Defaults to size 30 black fonts.
-            title_font: A font object. Defaults to size 50 black bold fonts.
+            color_count: An integer representing the number of colors in a legend.
+                Defaults to None which will use all the colors in the colors property.
+            label_count: An integer representing the number of text labels on a
+                legend. Default to None which will use vtk legend's default setting.
+            decimal_count: A DecimalCount object that specifies the number of decimals
+                on each label of the legend. Defaults to the type of data. For data
+                with integer values this will default to integer. Similarly, for data
+                with decimal values, this will default to decimal point numbers. 
+            preceding_labels: A boolean value to indicate whether the title and the
+                labels should precede the legend or not. Defaults to False.
+            label_parameters: A Text object. Defaults to size 30 black text.
+            title_parameters: A Text object. Defaults to size 50 black bold text.
         """
 
     def __init__(
@@ -198,10 +197,10 @@ class LegendParameter:
             height: float = 0.05,
             color_count: int = None,
             label_count: int = None,
-            label_format: LabelFormat = LabelFormat.integer,
-            label_position: int = 0,
-            label_font: Font = Font(color=(0, 0, 0), size=30),
-            title_font: Font = Font(color=(0, 0, 0), size=50, bold=True)) -> None:
+            decimal_count: DecimalCount = DecimalCount.default,
+            preceding_labels: bool = False,
+            label_parameters: Text = Text(color=(0, 0, 0), size=30),
+            title_parameters: Text = Text(color=(0, 0, 0), size=50, bold=True)) -> None:
 
         self.name = name
         self.unit = unit
@@ -214,10 +213,10 @@ class LegendParameter:
         self.height = height
         self.color_count = color_count
         self.label_count = label_count
-        self.label_format = label_format
-        self.label_position = label_position
-        self.label_font = label_font
-        self.title_font = title_font
+        self.decimal_count = decimal_count
+        self.preceding_labels = preceding_labels
+        self.label_parameters = label_parameters
+        self.title_parameters = title_parameters
 
     @property
     def name(self) -> str:
@@ -335,7 +334,7 @@ class LegendParameter:
 
     @property
     def width(self) -> float:
-        """Width of the legend as a percentage of viewport width."""
+        """Width of the legend as a fraction of viewport width."""
         return self._width
 
     @width.setter
@@ -351,7 +350,7 @@ class LegendParameter:
 
     @property
     def height(self) -> float:
-        """height of the legend as a percentage of viewport height."""
+        """height of the legend as a fraction of viewport height."""
         return self._height
 
     @height.setter
@@ -378,7 +377,7 @@ class LegendParameter:
             self._color_count = val
         else:
             raise ValueError(
-                'Number of colors must be a number less than or equal to the number of'
+                'Color count must be a number less than or equal to the number of'
                 f' colors in the colors property, which is {len(self.colors.value)}.'
                 f' Instead got {val}.'
             )
@@ -396,75 +395,71 @@ class LegendParameter:
             self._label_count = val
         else:
             raise ValueError(
-                'Number of labels must be a number less than or equal to the number of'
-                f' colors in the colors property, which is {self._color_count}.'
+                'Label count must be a number less than or equal to'
+                f' color count, which is {self._color_count}.'
                 f' Instead got {val}.'
             )
 
     @property
-    def label_format(self) -> LabelFormat:
+    def decimal_count(self) -> DecimalCount:
         """The format of legend labels."""
-        return self._label_format
+        return self._decimal_count
 
-    @label_format.setter
-    def label_format(self, val) -> None:
+    @decimal_count.setter
+    def decimal_count(self, val) -> None:
         if not val:
-            self._label_format = LabelFormat.integer
-        elif isinstance(val, LabelFormat):
-            self._label_format = val
+            self._decimal_count = DecimalCount.default
+        elif isinstance(val, DecimalCount):
+            self._decimal_count = val
         else:
             raise ValueError(
-                f'A LabelFormat object expected. Instead got {type(val).__name__}'
+                f'A DecimalCount object expected. Instead got {type(val).__name__}'
             )
 
     @property
-    def label_position(self) -> int:
-        """The position of labels and the legend title on a legend.
+    def preceding_labels(self) -> int:
+        """Boolean to indicate whether the title and the labels should precede the legend
+        or not."""
+        return self._preceding_labels
 
-        The value of 0 would mean that the labels and the title would not preced the
-        legend. The value of 1 would mean that the labels and the title would precede
-        the legend.
-        """
-        return self._label_position
-
-    @label_position.setter
-    def label_position(self, val):
+    @preceding_labels.setter
+    def preceding_labels(self, val):
         if not val:
-            self._label_position = 0
-        elif isinstance(val, int) and val in [0, 1]:
-            self._label_position = val
+            self._preceding_labels = False
+        elif isinstance(val, bool):
+            self._preceding_labels = val
         else:
             raise ValueError(
-                f'Label position only accepts 0 or 1 as a value. Instead got {val}.'
+                f'Label position only accepts boolean values. Instead got {val}.'
             )
 
     @property
-    def label_font(self) -> Font:
+    def label_parameters(self) -> Text:
         """Font for the legend labels."""
-        return self._label_font
+        return self._label_parameters
 
-    @label_font.setter
-    def label_font(self, val) -> None:
+    @label_parameters.setter
+    def label_parameters(self, val) -> None:
         if not val:
-            self._label_font = Font(color=(0, 0, 0), size=30)
-        elif isinstance(val, Font):
-            self._label_font = val
+            self._label_parameters = Text(color=(0, 0, 0), size=30)
+        elif isinstance(val, Text):
+            self._label_parameters = val
         else:
             raise ValueError(
                 f'Label font expects a Font object. Instead got {type(val).__name__}.'
             )
 
     @property
-    def title_font(self) -> Font:
+    def title_parameters(self) -> Text:
         """Font for the legend title."""
-        return self._title_font
+        return self._title_parameters
 
-    @title_font.setter
-    def title_font(self, val) -> None:
+    @title_parameters.setter
+    def title_parameters(self, val) -> None:
         if not val:
-            self._title_font = Font(color=(0, 0, 0), size=30, bold=True)
-        elif isinstance(val, Font):
-            self._title_font = val
+            self._title_parameters = Text(color=(0, 0, 0), size=30, bold=True)
+        elif isinstance(val, Text):
+            self._title_parameters = val
         else:
             raise ValueError(
                 f'Title font expects a Font object. Instead got {type(val).__name__}.'
@@ -520,13 +515,13 @@ class LegendParameter:
             scalar_bar.SetNumberOfLabels(self._label_count)
 
         # setting the type of labels. Such as integers, decimals, etc.
-        scalar_bar.SetLabelFormat(self._label_format.value)
+        scalar_bar.SetLabelFormat(self._decimal_count.value)
 
         # Setting whether the labels and title should precede the legend
-        scalar_bar.SetTextPosition(self._label_position)
+        scalar_bar.SetTextPosition(self._preceding_labels)
 
-        scalar_bar.SetLabelTextProperty(self._label_font.to_vtk())
-        scalar_bar.SetTitleTextProperty(self._title_font.to_vtk())
+        scalar_bar.SetLabelTextProperty(self._label_parameters.to_vtk())
+        scalar_bar.SetTitleTextProperty(self._title_parameters.to_vtk())
 
         return scalar_bar
 
@@ -544,8 +539,8 @@ class LegendParameter:
             f' Legend height: {self._height} |'
             f' Number of colors in legend: {self._color_count} |'
             f' Number of lables in legend: {self._label_count} |'
-            f' Type of label: {self._label_format} |'
-            f' Position of label: {self._label_position} |'
-            f' Font of label: {self._label_font} |'
-            f' Font of title: {self._title_font}'
+            f' Type of label: {self._decimal_count} |'
+            f' Position of label: {self._preceding_labels} |'
+            f' Font of label: {self._label_parameters} |'
+            f' Font of title: {self._title_parameters}'
         )
