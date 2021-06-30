@@ -82,7 +82,7 @@ class Font:
     def color(self, val) -> None:
         if not val:
             self._color = (0, 0, 0)
-        elif isinstance(val, (tuple, list)) and _validate_input(val, int, 256) \
+        elif isinstance(val, (tuple, list)) and _validate_input(val, [int], 256) \
                 and len(val) == 3:
             self._color = (val[0] / 255, val[1] / 255, val[1] / 255)
         else:
@@ -152,8 +152,9 @@ class LegendParameter:
             unit: A text string representing the unit of the data that the legend
                 represents. Examples are 'celsius', 'kwn/m2', etc.
             colors: A Colors object. Defaults to Ecotect colorset.
-            range: A tuple of integers representing the minimum and maximum values of a
-                legend. Defaults to (0, 100).
+            range: A tuple of integers or floats representing the minimum and maximum
+                values of a legend. Defaults to None which will create a range of
+                minimum and maximum values in the data.
             show_legend: A boolean to set the visibility of a legend in Scene.
                 Defaults to False.
             orientation: An Orientation object that sets the orientation of the legend in
@@ -189,7 +190,7 @@ class LegendParameter:
             name: str = 'Legend',
             unit: str = '',
             colors: Colors = Colors.ecotect,
-            range: Tuple[int, int] = (0, 100),
+            range: Tuple[float, float] = None,
             show_legend: bool = False,
             orientation: Orientation = Orientation.horizontal,
             position: Tuple[float, float] = (0.5, 0.1),
@@ -273,14 +274,13 @@ class LegendParameter:
 
     @range.setter
     def range(self, val) -> None:
-        if not val:
-            self._range = (0, 100)
-        elif isinstance(val, (tuple, list)) and len(val) == 2:
+        if isinstance(val, (tuple, list)) and _validate_input(
+                val, [float, int], num_val=2):
             self._range = val
         else:
             raise ValueError(
                 'Range takes a tuple or a list of integers.'
-                f' Instead got {type(val).__name__}.'
+                f' Instead got {val}.'
             )
 
     @property
@@ -324,7 +324,7 @@ class LegendParameter:
     def position(self, val) -> None:
         if not val:
             self._position = (0.5, 0.1)
-        elif isinstance(val, (tuple, list)) and _validate_input(val, float, 0.96) \
+        elif isinstance(val, (tuple, list)) and _validate_input(val, [float], 0.96) \
                 and len(val) == 2:
             self._position = val
         else:
