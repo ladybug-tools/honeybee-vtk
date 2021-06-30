@@ -47,7 +47,7 @@ class Scene:
         if not val:
             colors = vtk.vtkNamedColors()
             self._background_color = colors.GetColor3d("SlateGray")
-        elif _validate_input(val, int):
+        elif _validate_input(val, [int]):
             self._background_color = val
         else:
             raise ValueError(
@@ -102,7 +102,7 @@ class Scene:
         Args:
             val: Either a list of Camera objects or a single Camera object.
         """
-        if isinstance(val, list) and _validate_input(val, Camera):
+        if isinstance(val, list) and _validate_input(val, [Camera]):
             self._cameras.extend(val)
         elif isinstance(val, Camera):
             self._cameras.append(val)
@@ -118,7 +118,7 @@ class Scene:
         Args:
             val: Either a list of Actors objects or a single Actor object.
         """
-        if isinstance(val, list) and _validate_input(val, Actor):
+        if isinstance(val, list) and _validate_input(val, [Actor]):
             for v in val:
                 self._actors[v.name] = v
         elif isinstance(val, Actor):
