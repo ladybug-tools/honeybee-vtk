@@ -196,8 +196,8 @@ class LegendParameter:
             position: Tuple[float, float] = (0.5, 0.1),
             width: float = 0.45,
             height: float = 0.05,
-            number_of_colors: int = None,
-            number_of_labels: int = None,
+            color_count: int = None,
+            label_count: int = None,
             label_format: LabelFormat = LabelFormat.integer,
             label_position: int = 0,
             label_font: Font = Font(color=(0, 0, 0), size=30),
@@ -212,8 +212,8 @@ class LegendParameter:
         self.position = position
         self.width = width
         self.height = height
-        self.number_of_colors = number_of_colors
-        self.number_of_labels = number_of_labels
+        self.color_count = color_count
+        self.label_count = label_count
         self.label_format = label_format
         self.label_position = label_position
         self.label_font = label_font
@@ -366,37 +366,39 @@ class LegendParameter:
             )
 
     @property
-    def number_of_colors(self) -> int:
+    def color_count(self) -> int:
         """Number of colors in the legend."""
-        return self._number_of_colors
+        return self._color_count
 
-    @number_of_colors.setter
-    def number_of_colors(self, val) -> None:
+    @color_count.setter
+    def color_count(self, val) -> None:
         if not val:
-            self._number_of_colors = None
+            self._color_count = None
         elif isinstance(val, int) and 0 <= val <= len(self.colors.value):
-            self._number_of_colors = val
+            self._color_count = val
         else:
             raise ValueError(
-                'Number of colors must be an integer less than or equal to the number of'
-                f'colors in the colors property. instead got {val}.'
+                'Number of colors must be a number less than or equal to the number of'
+                f' colors in the colors property, which is {len(self.colors.value)}.'
+                f' Instead got {val}.'
             )
 
     @property
-    def number_of_labels(self) -> int:
+    def label_count(self) -> int:
         """Number of text labels in the legend."""
-        return self._number_of_labels
+        return self._label_count
 
-    @number_of_labels.setter
-    def number_of_labels(self, val) -> None:
+    @label_count.setter
+    def label_count(self, val) -> None:
         if not val:
-            self._number_of_labels = None
-        elif isinstance(val, int) and 0 <= val <= len(self.colors.value):
-            self._number_of_labels = val
+            self._label_count = None
+        elif isinstance(val, int) and 0 <= val <= self._color_count:
+            self._label_count = val
         else:
             raise ValueError(
-                'Number of labels must be an integer less than or equal to the number of'
-                f'colors in the colors property. instead got {val}.'
+                'Number of labels must be a number less than or equal to the number of'
+                f' colors in the colors property, which is {self._color_count}.'
+                f' Instead got {val}.'
             )
 
     @property
@@ -512,10 +514,10 @@ class LegendParameter:
         else:
             scalar_bar.SetOrientationToVertical()
 
-        if self._number_of_colors:
-            scalar_bar.SetMaximumNumberOfColors(self._number_of_colors)
-        if self._number_of_labels:
-            scalar_bar.SetNumberOfLabels(self._number_of_labels)
+        if self._color_count:
+            scalar_bar.SetMaximumNumberOfColors(self._color_count)
+        if self._label_count:
+            scalar_bar.SetNumberOfLabels(self._label_count)
 
         # setting the type of labels. Such as integers, decimals, etc.
         scalar_bar.SetLabelFormat(self._label_format.value)
@@ -540,8 +542,8 @@ class LegendParameter:
             f' Legend position: {self._position} |'
             f' Legend width: {self._width} |'
             f' Legend height: {self._height} |'
-            f' Number of colors in legend: {self._number_of_colors} |'
-            f' Number of lables in legend: {self._number_of_labels} |'
+            f' Number of colors in legend: {self._color_count} |'
+            f' Number of lables in legend: {self._label_count} |'
             f' Type of label: {self._label_format} |'
             f' Position of label: {self._label_position} |'
             f' Font of label: {self._label_font} |'

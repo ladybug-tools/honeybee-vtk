@@ -48,14 +48,14 @@ class LegendConfig(BaseModel):
         0.0,
         description='Minimum value for the legend. Also known as the lower end of the'
         ' legend. If min and max values are not specified autocalculated min and max'
-        ' values will be used.'
+        ' values will be used from data..'
     )
 
     max: float = Field(
         0.0,
         description='Maximum value for the legend. Also known as the higher end of the'
         ' legend. If min and max values are not specified autocalculated min and max'
-        ' values will be used.'
+        ' values will be used from data.'
     )
 
     show_legend: bool = Field(
@@ -66,7 +66,7 @@ class LegendConfig(BaseModel):
 
     orientation: Orientation = Field(
         Orientation.horizontal,
-        description='Choose between horizontal and vertical orientation.'
+        description='Choose between horizontal and vertical orientation of legend.'
     )
 
     position: List[float] = Field(
@@ -87,12 +87,12 @@ class LegendConfig(BaseModel):
         'that will be used to define the height of the legend.'
     )
 
-    number_of_colors: int = Field(
+    color_count: int = Field(
         0,
         description='An integer representing the number of colors in a legend.'
     )
 
-    number_of_labels: int = Field(
+    label_count: int = Field(
         0,
         description='An integer representing the number of text labels on a legend.'
     )
@@ -147,6 +147,15 @@ class LegendConfig(BaseModel):
                 'Min value is not valid. It has to be either an integer or a float.'
             )
         return v
+
+    @validator('label_count')
+    def label_count_equals_color_count(cls, v: int, values) -> int:
+        num_colors = values['color_count']
+        if v <= num_colors:
+            return v
+        else:
+            raise ValueError(
+                f'Label count, {v} cannot be greater than color count {num_colors}.')
 
     @validator('label_format')
     def validate_label_format(cls, v: str) -> str:
@@ -375,13 +384,13 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
         legend.width = legend_params.width
         legend.height = legend_params.height
 
-        if legend_params.number_of_colors > 0:
-            legend.number_of_colors = legend_params.number_of_colors
+        if legend_params.color_count > 0:
+            legend.number_of_colors = legend_params.color_count
         else:
             legend.number_of_colors = None
 
-        if legend_params.number_of_labels > 0:
-            legend.number_of_labels = legend_params.number_of_labels
+        if legend_params.label_count > 0:
+            legend.number_of_labels = legend_params.label_count
         else:
             legend.number_of_labels = None
 
