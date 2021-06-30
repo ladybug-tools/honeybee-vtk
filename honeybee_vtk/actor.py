@@ -65,7 +65,7 @@ class Actor:
             monochrome_color: A color that you'd like to paint actors with. Color here
                 is a tuple of three decimal values representing R,G, and B.
         """
-        if _validate_input(monochrome_color, float, max_val=1.0):
+        if _validate_input(monochrome_color, [float], max_val=1.0):
             self._monochrome_color = monochrome_color
         else:
             raise ValueError(
@@ -95,7 +95,7 @@ class Actor:
             mapper.SetScalarModeToUsePointData()
             mapper.SetScalarVisibility(True)
 
-            range_min, range_max = field_info.legend_parameter.range
+            range_min, range_max = field_info.range
             mapper.SetScalarRange(range_min, range_max)
             mapper.SetLookupTable(field_info.legend_parameter.get_lookuptable())
             mapper.Update()
