@@ -2,7 +2,7 @@
 
 import pytest
 import vtk
-from honeybee_vtk.legend_parameter import Font, LabelFormat, LegendParameter
+from honeybee_vtk.legend_parameter import Text, DecimalCount, LegendParameter
 from honeybee_vtk.legend_parameter import Colors, Orientation
 from honeybee_vtk._helper import _validate_input
 
@@ -10,7 +10,7 @@ from honeybee_vtk._helper import _validate_input
 def test_font_initialization():
     """Testing initialization of a Font object."""
 
-    font = Font()
+    font = Text()
 
     assert font.color == (0, 0, 0)
     assert font.size == (30)
@@ -21,7 +21,7 @@ def test_font_initialization():
 def test_font_errors():
     """Testing if correct exceptions are raised."""
 
-    font = Font()
+    font = Text()
 
     with pytest.raises(ValueError):
         font.color = 0.1, 0.1, 0.1
@@ -51,10 +51,10 @@ def test_legend_parameter_initialization():
     assert lp.height == 0.05
     assert not lp.number_of_colors
     assert not lp.number_of_labels
-    assert lp.label_format == LabelFormat.integer
-    assert lp.label_position == 0
-    assert isinstance(lp.label_font, Font)
-    assert isinstance(lp.title_font, Font)
+    assert lp.decimal_count == DecimalCount.integer
+    assert lp.preceding_labels == 0
+    assert isinstance(lp.label_parameters, Text)
+    assert isinstance(lp.title_parameters, Text)
     assert isinstance(lp.get_lookuptable(), vtk.vtkLookupTable)
     assert isinstance(lp.get_scalarbar(), vtk.vtkScalarBarActor)
 
@@ -83,10 +83,10 @@ def test_legend_parameter_errors():
     with pytest.raises(ValueError):
         lp.number_of_colors = 25
     with pytest.raises(ValueError):
-        lp.label_format = int
+        lp.decimal_count = int
     with pytest.raises(ValueError):
-        lp.label_position = 4
+        lp.preceding_labels = 4
     with pytest.raises(ValueError):
-        lp.label_font = 'Arial'
+        lp.label_parameters = 'Arial'
     with pytest.raises(ValueError):
-        lp.title_font = 'Italic'
+        lp.title_parameters = 'Italic'
