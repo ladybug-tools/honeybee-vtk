@@ -47,6 +47,12 @@ class TextConfig(BaseModel):
         description='Boolean value to indicate whether to make the text bold or not.'
     )
 
+    @validator('size')
+    def negative_size_not_allowed(cls, v: int) -> int:
+        if v < 0:
+            raise ValueError('text size cannot be a negative number.')
+        return v
+
 
 class LegendConfig(BaseModel):
     """Config for the legend to be created from a dataset."""
