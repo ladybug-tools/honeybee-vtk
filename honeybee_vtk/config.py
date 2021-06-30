@@ -5,7 +5,7 @@ import json
 import pathlib
 import warnings
 
-from typing import List, Optional
+from typing import List, Union
 from pydantic import BaseModel, validator, Field, constr
 from .types import DataSetNames
 from .legend_parameter import Colors, Font, LabelFormat, Orientation
@@ -44,47 +44,56 @@ class LegendConfig(BaseModel):
         ' only uses Ladybug color sets.'
     )
 
-    range: List[int] = Field(
-        [0, 100],
-        description='A list of minimum and maximum values for the legend.'
+    min: float = Field(
+        0.0,
+        description='Minimum value for the legend. Also known as the lower end of the'
+        ' legend. If min and max values are not specified autocalculated min and max'
+        ' values will be used.'
+    )
+
+    max: float = Field(
+        0.0,
+        description='Maximum value for the legend. Also known as the higher end of the'
+        ' legend. If min and max values are not specified autocalculated min and max'
+        ' values will be used.'
     )
 
     show_legend: bool = Field(
-        False,
+        True,
         description='A bool value to indicate whether to show legend in the exported'
         ' images or not.'
     )
 
-    orientation: str = Field(
-        'horizontal',
+    orientation: Orientation = Field(
+        Orientation.horizontal,
         description='Choose between horizontal and vertical orientation.'
     )
 
     position: List[float] = Field(
         [0.5, 0.1],
-        description='A tuple of two decimal values. The values represent the percentage'
-        ' of viewport width and the percentage of viewport height.'
+        description='A tuple of two decimal values. The values represent the fraction'
+        ' of viewport width and the fraction of viewport height.'
     )
 
     width: float = Field(
         0.45,
-        description=' A decimal number representing the percentage of viewport width'
+        description=' A decimal number representing the fraction of viewport width'
         ' that will be used to define the width of the legend.'
     )
 
     height: float = Field(
         0.05,
-        description='A decimal number representing the percentage of viewport height'
+        description='A decimal number representing the fraction of viewport height'
         'that will be used to define the height of the legend.'
     )
 
     number_of_colors: int = Field(
-        10,
+        0,
         description='An integer representing the number of colors in a legend.'
     )
 
     number_of_labels: int = Field(
-        3,
+        0,
         description='An integer representing the number of text labels on a legend.'
     )
 
@@ -112,24 +121,32 @@ class LegendConfig(BaseModel):
     )
 
     @validator('color_set')
-    def validate_colors(cls, v: str) -> str:
+    def validate_color_set(cls, v: str) -> str:
         try:
             return Colors[v]
         except KeyError:
             raise KeyError(
-                f'color_set must be a string from {tuple(dir(Colors)[4:])}. Instead got'
-                f' {v}.'
+                f'color_set must be from {tuple(dir(Colors)[4:])}. Instead go {v}.'
             )
 
-    @validator('orientation')
-    def validate_orientation(cls, v: str) -> str:
-        orientations = ('horizontal', 'vertical')
-        if v.lower() in orientations:
-            return v
-        else:
+    @validator('min')
+    def validate_min(cls, v: float) -> float:
+        print("this is v", v)
+        if not isinstance(v, (float, int)):
+            raise ValueError('Min value has to be a float or an integer.')
+        return v
+
+    @validator('max')
+    def validate_max(cls, v: float, values) -> float:
+        print(values)
+        try:
+            if v < values['min']:
+                raise ValueError('Max value cannot be less than Min.')
+        except KeyError:
             raise ValueError(
-                f'Orientation must be from {orientations}. Instead got {v}.'
+                'Min value is not valid. It has to be either an integer or a float.'
             )
+        return v
 
     @validator('label_format')
     def validate_label_format(cls, v: str) -> str:
@@ -214,6 +231,8 @@ def _validate_data(data: DataConfig, model: Model) -> bool:
     Returns:
         A boolean value.
     """
+    print('\n', data, '\n')
+
     # if file_paths is empty
     if not data.file_paths:
         raise ValueError(
@@ -341,18 +360,31 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
             legend.colors = legend_params.color_set
 
         legend.unit = data.unit
-        legend.range = legend_params.range
+
+        # assign legend range
+        range = (legend_params.min, legend_params.max)
+        if range[0] != 0 and range[1] != 0:
+            legend.range = range
+        else:
+            print(f'For {data.identifier}, min and max values for the legend will be'
+                  ' calculated automatically based on data.')
+
         legend.show_legend = legend_params.show_legend
-
-        if legend_params.orientation:
-            legend.orientation = Orientation[legend_params.orientation]
-
+        legend.orientation = legend_params.orientation
         legend.position = legend_params.position
         legend.width = legend_params.width
         legend.height = legend_params.height
-        legend.number_of_colors = legend_params.number_of_colors
 
-        legend.number_of_labels = legend_params.number_of_labels
+        if legend_params.number_of_colors > 0:
+            legend.number_of_colors = legend_params.number_of_colors
+        else:
+            legend.number_of_colors = None
+
+        if legend_params.number_of_labels > 0:
+            legend.number_of_labels = legend_params.number_of_labels
+        else:
+            legend.number_of_labels = None
+
         if legend_params.label_format:
             legend.label_format = LabelFormat[legend_params.label_format]
 
