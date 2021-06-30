@@ -8,20 +8,24 @@ import warnings
 from typing import List, Union
 from pydantic import BaseModel, validator, Field, constr
 from .types import DataSetNames
-from .legend_parameter import Colors, Font, LabelFormat, Orientation
+from .legend_parameter import Colors, Text, DecimalCount, Orientation
 from .model import Model
 from ._helper import get_line_count, get_min_max
 from .vtkjs.schema import DisplayMode
 from .scene import Scene
 
 
-class FontConfig(BaseModel):
+class TextConfig(BaseModel):
     """Config for the fonts to be used in a legend."""
+
+    class Config:
+        validate_all = True
+        validate_assignment = True
 
     color: List[int] = Field(
         [0, 0, 0],
         description='An array of three integer values representing R, G, and B values'
-        ' for the color of fonts.'
+        ' for the color of text. Values from 0 to 255 are accepted.'
     )
 
     size: int = Field(
@@ -34,9 +38,18 @@ class FontConfig(BaseModel):
         description='Bool value to indicate whether to make the fonts bold or not.'
     )
 
+    @validator('size')
+    def negative_size_not_allowed(cls, v: int) -> int:
+        if v < 0:
+            raise ValueError('text size cannot be a negative number.')
+        return v
+
 
 class LegendConfig(BaseModel):
     """Config for the legend to be created from a dataset."""
+    class Config:
+        validate_all = True
+        validate_assignment = True
 
     color_set: str = Field(
         'ecotect',
@@ -97,31 +110,29 @@ class LegendConfig(BaseModel):
         description='An integer representing the number of text labels on a legend.'
     )
 
-    label_format: str = Field(
-        'integer',
-        description='Format of legend labels.'
+    decimal_count: str = Field(
+        'default',
+        description='Controlling the number of decimals on each label of the legend.'
     )
 
-    label_position: int = Field(
-        0,
-        description='0 or 1 to decide whether the legend title and the legend labels'
-        ' will precede the legend or not.'
+    preceding_labels: bool = Field(
+        False,
+        description='Boolean value to decide whether the legend title and the'
+        ' legend labels will precede the legend or not.'
     )
 
-    label_fonts: FontConfig = Field(
-        FontConfig(),
-        description='Font parameters for the fonts to be used for the labels on the'
-        ' legend.'
+    label_parameters: TextConfig = Field(
+        TextConfig(),
+        description='Text parameters for the labels on the legend.'
     )
 
-    title_fonts: FontConfig = Field(
-        FontConfig(bold=True),
-        description='Font parameters for the fonts to be used in the title of the'
-        ' legend.'
+    title_parameters: TextConfig = Field(
+        TextConfig(bold=True),
+        description='Text parameters for the title of the legend.'
     )
 
     @validator('color_set')
-    def validate_color_set(cls, v: str) -> str:
+    def validate_color_set(cls, v: str) -> Colors:
         try:
             return Colors[v]
         except KeyError:
@@ -131,14 +142,12 @@ class LegendConfig(BaseModel):
 
     @validator('min')
     def validate_min(cls, v: float) -> float:
-        print("this is v", v)
         if not isinstance(v, (float, int)):
             raise ValueError('Min value has to be a float or an integer.')
         return v
 
     @validator('max')
     def validate_max(cls, v: float, values) -> float:
-        print(values)
         try:
             if v < values['min']:
                 raise ValueError('Max value cannot be less than Min.')
@@ -157,19 +166,22 @@ class LegendConfig(BaseModel):
             raise ValueError(
                 f'Label count, {v} cannot be greater than color count {num_colors}.')
 
-    @validator('label_format')
-    def validate_label_format(cls, v: str) -> str:
-        label_formats = dir(LabelFormat)[4:]
-        if v in label_formats:
-            return v
-        else:
-            raise ValueError(
-                f'Label format must be from {label_formats}. Instead got {v}.'
+    @validator('decimal_count')
+    def validate_decimal_count(cls, v: str, values) -> DecimalCount:
+        try:
+            return DecimalCount[v]
+        except KeyError:
+            raise KeyError(
+                f'Decimal count must be from {tuple(dir(DecimalCount)[4:])}. Instead got {v}.'
             )
 
 
 class DataConfig(BaseModel):
     """Config for each dataset you'd like to load on a honeybee-vtk model."""
+
+    class Config:
+        validate_all = True
+        validate_assignment = True
 
     identifier: str = Field(
         description='identifier to be given to data. Example, "Daylight-Factor".'
@@ -192,9 +204,9 @@ class DataConfig(BaseModel):
         ' data.'
     )
 
-    color_by: bool = Field(
-        False,
-        description='Bool value to indicate if this data should be used to color the'
+    hide: bool = Field(
+        True,
+        description='Bool value to indicate if this data should be mapped on the'
         ' object type in the model.'
     )
 
@@ -240,8 +252,6 @@ def _validate_data(data: DataConfig, model: Model) -> bool:
     Returns:
         A boolean value.
     """
-    print('\n', data, '\n')
-
     # if file_paths is empty
     if not data.file_paths:
         raise ValueError(
@@ -347,7 +357,7 @@ def _load_data(data: DataConfig, model: Model) -> None:
     ds = model.get_modeldataset(data.object_type)
     ds.add_data_fields(
         result, name=data.identifier, data_range=get_min_max(result))
-    if data.color_by:
+    if data.hide:
         ds.color_by = data.identifier
     ds.display_mode = DisplayMode.SurfaceWithEdges
 
@@ -360,14 +370,12 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
         model: A honeybee-vtk model object.
         scene: A honeyebee-vtk scene object.
     """
-    if data.legend_parameters and data.color_by:
+    if data.legend_parameters and data.hide:
 
         legend_params = data.legend_parameters
         legend = scene.legend_parameter(data.identifier)
 
-        if legend_params.color_set:
-            legend.colors = legend_params.color_set
-
+        legend.colors = legend_params.color_set
         legend.unit = data.unit
 
         # assign legend range
@@ -385,34 +393,30 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
         legend.height = legend_params.height
 
         if legend_params.color_count > 0:
-            legend.number_of_colors = legend_params.color_count
+            legend.color_count = legend_params.color_count
         else:
-            legend.number_of_colors = None
+            legend.color_count = None
 
         if legend_params.label_count > 0:
-            legend.number_of_labels = legend_params.label_count
+            legend.label_count = legend_params.label_count
         else:
-            legend.number_of_labels = None
+            legend.label_count = None
 
-        if legend_params.label_format:
-            legend.label_format = LabelFormat[legend_params.label_format]
+        legend.decimal_count = legend_params.decimal_count
+        legend.preceding_labels = legend_params.preceding_labels
 
-        legend.label_position = legend_params.label_position
+        label_params = legend_params.label_parameters
+        legend.label_parameters = Text(
+            label_params.color, label_params.size, label_params.bold)
 
-        if legend_params.label_fonts:
-            label_fonts = legend_params.label_fonts
-            legend.label_font = Font(
-                label_fonts.color, label_fonts.size, label_fonts.bold)
+        title_params = legend_params.title_parameters
+        legend.title_parameters = Text(
+            title_params.color, title_params.size, title_params.bold)
 
-        if legend_params.title_fonts:
-            title_fonts = legend_params.title_fonts
-            legend.title_font = Font(
-                title_fonts.color, title_fonts.size, title_fonts.bold)
-
-    elif data.legend_parameters and not data.color_by:
+    elif data.legend_parameters and not data.hide:
         warnings.warn(
-            f'Since {data.object_type} is not going to be colored by {data.identifier},'
-            ' legend parameters will be ignored.'
+            f'Since {data.object_type.value.capitalize()} is not going to be'
+            f' colored by {data.identifier}, legend parameters will be ignored.'
         )
 
 
