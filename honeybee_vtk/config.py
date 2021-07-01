@@ -5,8 +5,8 @@ import json
 import pathlib
 import warnings
 
-from typing import List, Union
-from pydantic import BaseModel, validator, Field, constr
+from typing import List
+from pydantic import BaseModel, validator, Field
 from .types import DataSetNames
 from .legend_parameter import Colors, Text, DecimalCount, Orientation
 from .model import Model
@@ -16,7 +16,7 @@ from .scene import Scene
 
 
 class TextConfig(BaseModel):
-    """Config for the fonts to be used in a legend."""
+    """Config for the text to be used in a legend."""
 
     class Config:
         validate_all = True
@@ -41,7 +41,7 @@ class TextConfig(BaseModel):
     @validator('size')
     def negative_size_not_allowed(cls, v: int) -> int:
         if v < 0:
-            raise ValueError('text size cannot be a negative number.')
+            raise ValueError('Text size cannot be a negative number.')
         return v
 
 
@@ -82,12 +82,6 @@ class LegendConfig(BaseModel):
         description='Choose between horizontal and vertical orientation of legend.'
     )
 
-    position: List[float] = Field(
-        [0.5, 0.1],
-        description='A tuple of two decimal values. The values represent the fraction'
-        ' of viewport width and the fraction of viewport height.'
-    )
-
     width: float = Field(
         0.45,
         description=' A decimal number representing the fraction of viewport width'
@@ -98,6 +92,12 @@ class LegendConfig(BaseModel):
         0.05,
         description='A decimal number representing the fraction of viewport height'
         'that will be used to define the height of the legend.'
+    )
+
+    position: List[float] = Field(
+        [0.5, 0.1],
+        description='A tuple of two decimal values. The values represent the fraction'
+        ' of viewport width and the fraction of viewport height.'
     )
 
     color_count: int = Field(
@@ -177,7 +177,7 @@ class LegendConfig(BaseModel):
 
 
 class DataConfig(BaseModel):
-    """Config for each dataset you'd like to load on a honeybee-vtk model."""
+    """Config for simulation results you'd like to load on a honeybee-vtk model."""
 
     class Config:
         validate_all = True
@@ -199,51 +199,59 @@ class DataConfig(BaseModel):
         description=' The unit of the data being loaded.'
     )
 
-    file_paths: List[str] = Field(
-        description='List of paths to the file or files that you are trying to use as'
-        ' data.'
+    folder_path: str = Field(
+        description='Valid path to the folder with result files and the json file that'
+        ' catalogues the results.'
     )
 
     hide: bool = Field(
-        True,
-        description='Bool value to indicate if this data should be mapped on the'
-        ' object type in the model.'
+        False,
+        description='Boolean value to indicate if this data should be visible in the'
+        ' exported images or not.'
     )
 
     legend_parameters: LegendConfig = Field(
-        LegendConfig(),
+        LegendConfig(identifier=identifier),
         description='Legend parameters to create legend out of the this dataset.'
     )
 
-    @validator('object_type')
-    def validate_object(cls, v: str) -> str:
-        if v in DataSetNames:
+    @validator('folder_path')
+    def validate_folder_path(cls, v: str) -> str:
+        if pathlib.Path(v).is_dir():
             return v
         else:
             raise ValueError(
-                f'Object name should be from these {tuple(dir(DataSetNames)[4:])}.'
-                f' Instead got {v}.'
+                'Not a valid folder path.'
             )
 
-    @validator('file_paths')
-    def validate_paths(cls, v: List[str]) -> List[str]:
-        if all([pathlib.Path(path).is_file() for path in v]):
-            return v
-        else:
-            paths = tuple([path for path in v if not pathlib.Path(path).is_file()])
+    @validator('legend_parameters')
+    def check_pos_against_width_height(cls, v: LegendConfig, values) -> LegendConfig:
+        id = values['identifier']
+        if v.width >= 0.5 and v.position[0] >= 0.5 and v.width > v.position[0]:
             raise ValueError(
-                f'Following file paths are not valid {paths}.'
+                f'Width of legend {id}, {v.width}'
+                f' cannot be greater than the position of legend in X direction'
+                f' {v.position[0]}.'
+                ' Either update the position in X direction or update the'
+                ' width of the legend.'
             )
+        if v.height >= 0.5 and v.position[1] >= 0.5 and v.height > v.position[1]:
+            raise ValueError(
+                f'Height of legend {id}, {v.height}'
+                f' cannot be greater than the position of legend in Y direction'
+                f' {v.position[1]}.'
+                ' Either update the position in Y direction or update the'
+                ' height of the legend.'
+            )
+        return v
 
 
 def _validate_data(data: DataConfig, model: Model) -> bool:
-    """Cross check data with model.
+    """Match result data with the sensor grids in the model.
 
-    For grids, it will be checked if the number of data files and the names of the
-    data files match with the grid identifiers. For other than grid objects, it will
-    be checked that only one data file is provided and the length of the data file
-    matches the length of Polydata in the model. This is a helper method to the
-    public load_config method.
+    It will be checked if the number of data files and the names of the
+    data files match with the grid identifiers. This function does not support validating
+    result data for other than sensor grids as of now.
 
     Args:
         data: A DataConfig object.
@@ -252,86 +260,49 @@ def _validate_data(data: DataConfig, model: Model) -> bool:
     Returns:
         A boolean value.
     """
-    # if file_paths is empty
-    if not data.file_paths:
-        raise ValueError(
-            f'For object with name {data.name} There are not file paths'
-            ' provided to load data from.'
+    grids_info_json = pathlib.Path(data.folder_path).joinpath('grids_info.json')
+    # TODO: Confirm with Chris if this check for json is needed. I think it's not.
+    try:
+        with open(grids_info_json) as fh:
+            grids_info = json.load(fh)
+    except json.decoder.JSONDecodeError:
+        raise TypeError(
+            'grids_info is not a valid json file.'
         )
+    else:
+        # TODO: Make sure to remove this limitation. A user should not have to always
+        # TODO: load all the grids
+        assert len(model.sensor_grids.data) == len(grids_info), 'The number of result'\
+            ' files does not match the number of sensor grids in the model.'
 
-    # if object name is "grid" check that the name of files match the grid names
-    if data.object_type == DataSetNames.grid:
-        # make sure grids are loaded on the model if grid data is to be mounted
-        assert len(model.sensor_grids.data) > 0, 'Sensor grids are not loaded on'\
-            ' this model. Reload them using grid options.'
-
-        grid_names = [grid.identifier for grid in model.sensor_grids.data]
-        file_names = [pathlib.Path(path).stem for path in data.file_paths]
-        names_in_grids = all([name in grid_names for name in file_names])
-
-        # the number of data files must not exceed the number of grids
-        if len(file_names) > len(grid_names):
-            raise ValueError(
-                f'There are only {len(grid_names)} grids in the model and the'
-                f' identifiers of those grids are {tuple(grid_names)}.'
-            )
-
-        # TODO: remove this check in the next iteration
-        # make sure there's one file for each grid in the model
-        if not names_in_grids:
-            raise ValueError(
-                'Make sure the file names match the grid identifiers. The'
-                f' identifiers of the grids in the model are {tuple(grid_names)}.'
-            )
+        grids_model_identifiers = [grid.identifier for grid in model.sensor_grids.data]
+        grids_info_identifiers = [grid['identifier'] for grid in grids_info]
+        assert grids_model_identifiers == grids_info_identifiers, 'The identifiers of'\
+            ' the sensor grids in the model do not match the identifiers of the grids'\
+            ' in the grids_info.json.'
 
         # make sure length of each file matches the number of sensors in grid
-        file_lengths = [get_line_count(file_path) for file_path in data.file_paths]
+        file_lengths = [grid['count'] for grid in grids_info]
         num_sensors = [polydata.GetNumberOfCells()
                        for polydata in model.sensor_grids.data]
 
         if file_lengths != num_sensors:
-            path_matches = {
-                data.file_paths[i]: file_lengths[i] == num_sensors[i] for i in
-                range(len(data.file_paths))
+            length_matching = {
+                grids_info_identifiers[i]: file_lengths[i] == num_sensors[i] for i in
+                range(len(grids_model_identifiers))
             }
             paths_to_report = [
-                path for path in path_matches if path_matches[path] is False]
+                id for id in length_matching if length_matching[id] is False]
             raise ValueError(
-                'File lengths must match grid sizes. Lengths of'
-                f' following files do not match grid size {tuple(paths_to_report)}.')
+                'File lengths of result files must match the number of sensors on grids.'
+                ' Lengths of files with following names do not match'
+                f' {tuple(paths_to_report)}.')
 
         return True
-
-    # if object_name is other than grid check that length of data matches the length
-    # of data in the model for that object.
-    elif isinstance(data.object_type, DataSetNames):
-
-        # only one file is accepted
-        if len(data.file_paths) > 1:
-            raise ValueError(
-                'Only one file path needs to be provided in order to load data on'
-                f' {data.object_type}. Multiple files are provided in the config'
-                ' file.'
-            )
-
-        # match length of file with the number of faces in the model
-        if get_line_count(data.file_paths[0]) != len(
-                model.get_modeldataset(data.object_type).data):
-            raise ValueError(
-                'The length of data in the file does not match the number of'
-                f' {data.object_type} objects in the model.'
-            )
-        return True
-
-    else:
-        raise ValueError(
-            ' object_name must be from one of these'
-            f' {tuple(dir(DataSetNames)[4:])}. Instead got {data.object_type}.'
-        )
 
 
 def _load_data(data: DataConfig, model: Model) -> None:
-    """Load validate data on a honeybee-vtk model.
+    """Load validated data on a honeybee-vtk model.
 
     This is a helper method to the public load_config method.
 
@@ -339,25 +310,21 @@ def _load_data(data: DataConfig, model: Model) -> None:
         data: A DataConfig object.
         model: A honeybee-vtk model.
     """
-    # if data is for a ModelDataSet grid
-    if data.object_type == DataSetNames.grid:
+    # file paths to the result files
+    file_paths = [result for result in pathlib.Path(
+        data.folder_path).iterdir() if result.suffix != '.json']
 
-        result = []
-        for file_path in data.file_paths:
-            res_file = pathlib.Path(file_path)
-            grid_res = [float(v)
-                        for v in res_file.read_text().splitlines()]
-            result.append(grid_res)
-
-    # if data is for a ModelDataSet other than grid
-    elif isinstance(data.object_type, DataSetNames):
-        res_file = pathlib.Path(data.file_paths[0])
-        result = [[float(v)] for v in res_file.read_text().splitlines()]
+    result = []
+    for file_path in file_paths:
+        res_file = pathlib.Path(file_path)
+        grid_res = [float(v)
+                    for v in res_file.read_text().splitlines()]
+        result.append(grid_res)
 
     ds = model.get_modeldataset(data.object_type)
     ds.add_data_fields(
-        result, name=data.identifier, data_range=get_min_max(result))
-    if data.hide:
+        result, name=data.identifier)
+    if not data.hide:
         ds.color_by = data.identifier
     ds.display_mode = DisplayMode.SurfaceWithEdges
 
@@ -370,7 +337,7 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
         model: A honeybee-vtk model object.
         scene: A honeyebee-vtk scene object.
     """
-    if data.legend_parameters and data.hide:
+    if data.legend_parameters and not data.hide:
 
         legend_params = data.legend_parameters
         legend = scene.legend_parameter(data.identifier)
@@ -380,7 +347,7 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
 
         # assign legend range
         range = (legend_params.min, legend_params.max)
-        if range[0] != 0 and range[1] != 0:
+        if range[1] != 0:
             legend.range = range
         else:
             print(f'For {data.identifier}, min and max values for the legend will be'
@@ -413,7 +380,7 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
         legend.title_parameters = Text(
             title_params.color, title_params.size, title_params.bold)
 
-    elif data.legend_parameters and not data.hide:
+    elif data.legend_parameters and data.hide:
         warnings.warn(
             f'Since {data.object_type.value.capitalize()} is not going to be'
             f' colored by {data.identifier}, legend parameters will be ignored.'
