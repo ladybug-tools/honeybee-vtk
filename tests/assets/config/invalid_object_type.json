@@ -1,0 +1,12 @@
+
+{ 
+
+    "grid": {
+            "identifier": "Daylight-Factor",
+            "object_type": "terrace",
+            "folder_path": "./tests/assets/df_results"
+
+    }
+
+}
+
