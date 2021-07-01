@@ -175,7 +175,7 @@ class DataConfig(BaseModel):
     )
 
     legend_parameters: LegendConfig = Field(
-        LegendConfig(),
+        LegendConfig(identifier=identifier),
         description='Legend parameters to create legend out of the this dataset.'
     )
 
