@@ -39,7 +39,7 @@ def test_font_errors():
 def test_legend_parameter_initialization():
     """Testing initialization of a legend_parameter object."""
 
-    lp = LegendParameter()
+    lp = LegendParameter(range=(0, 100))
 
     assert lp.name == 'Legend'
     assert lp.colors == ColorSets.ecotect
@@ -66,7 +66,7 @@ def test_legend_parameter_initialization():
 def test_legend_parameter_errors():
     """Test if correct exceptions are raised."""
 
-    lp = LegendParameter()
+    lp = LegendParameter(range=(0, 100))
 
     with pytest.raises(ValueError):
         lp.name = 2
