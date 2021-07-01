@@ -16,6 +16,8 @@ def test_export_image():
     view_file_1 = r'tests/assets/view1.vf'
     config_path = r'tests/assets/config/valid.json'
 
+    nukedir(target_folder, True)
+
     result = runner.invoke(
         export, [
             file_path, '--folder', target_folder, '--name', 'Model', '--image-type',
