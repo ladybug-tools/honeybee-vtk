@@ -3,17 +3,11 @@
 
 
     "grid": {
-        "name": "UDI",
+        "identifier": "Daylight-Factor",
         "object_type": "grid",
-        "file_paths": ["./tests/assets/udi_results/TestRoom_1.res",
-        "./tests/assets/udi_results/TestRoom_2.res"]
-},
-    "radiation":{
-        "name": "Radiation",
-        "object_type": "shade",
-        "file_paths": ["./tests/assets/radiation_results/radiation.csv", 
-            "./tests/assets/radiation_results/test.csv"]
-    }
+        "folder_path": "./tests/assets/dummy_results/short_length"
+}
+
 
 }
 
