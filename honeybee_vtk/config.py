@@ -64,7 +64,7 @@ class LegendConfig(BaseModel):
         0.0,
         description='Minimum value for the legend. Also known as the lower end of the'
         ' legend. If min and max values are not specified autocalculated min and max'
-        ' values will be used from data..'
+        ' values will be used from data.'
     )
 
     max: float = Field(
