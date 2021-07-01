@@ -8,7 +8,16 @@
             "folder_path": "./tests/assets/df_results",
             "hide": false,
             "legend_parameters": {
-                "color_set": "red"
+                "show_legend": true,
+                "min": 0,
+                "max": 20,
+                "color_set": "original",
+                "position": [0.5, 0.05],
+                "label_parameters": {
+                    "color": [34, 247, 10],
+                    "size": 0,
+                    "bold": true
+                }
             }
     },
     "grid1": {

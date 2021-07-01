@@ -8,7 +8,7 @@
             "folder_path": "./tests/assets/df_results",
             "hide": false,
             "legend_parameters": {
-                "color_set": "red"
+                "decimal_count" : "float"
             }
     },
     "grid1": {
