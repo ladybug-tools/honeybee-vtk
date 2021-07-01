@@ -50,7 +50,7 @@ class TextConfig(BaseModel):
     @validator('size')
     def negative_size_not_allowed(cls, v: int) -> int:
         if v < 0:
-            raise ValueError('text size cannot be a negative number.')
+            raise ValueError('Text size cannot be a negative number.')
         return v
 
 
@@ -181,7 +181,7 @@ class DataConfig(BaseModel):
     )
 
     legend_parameters: LegendConfig = Field(
-        LegendConfig(),
+        LegendConfig(identifier=identifier),
         description='Legend parameters to create legend out of the this dataset.'
     )
 
