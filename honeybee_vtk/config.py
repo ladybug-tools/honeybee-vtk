@@ -16,7 +16,10 @@ from .scene import Scene
 
 
 class TextConfig(BaseModel):
-    """Config for the text to be used in a legend."""
+    """Config for the text to be used in a legend.
+
+    This object applies to text for legend title and legend labels as well.
+    """
 
     class Config:
         validate_all = True
@@ -270,16 +273,19 @@ def _validate_data(data: DataConfig, model: Model) -> bool:
             'grids_info is not a valid json file.'
         )
     else:
+        assert len(model.sensor_grids.data) > 0, 'Sensor grids are not loaded on'\
+            ' this model. Reload them using grid options.'
         # TODO: Make sure to remove this limitation. A user should not have to always
         # TODO: load all the grids
         assert len(model.sensor_grids.data) == len(grids_info), 'The number of result'\
-            ' files does not match the number of sensor grids in the model.'
+            f' files {len(grids_info)} does for {data.identifier} does not match'\
+            f' the number of sensor grids in the model {len(model.sensor_grids.data)}.'
 
         grids_model_identifiers = [grid.identifier for grid in model.sensor_grids.data]
         grids_info_identifiers = [grid['identifier'] for grid in grids_info]
         assert grids_model_identifiers == grids_info_identifiers, 'The identifiers of'\
             ' the sensor grids in the model do not match the identifiers of the grids'\
-            ' in the grids_info.json.'
+            f' in the grids_info.json for {data.identifier}.'
 
         # make sure length of each file matches the number of sensors in grid
         file_lengths = [grid['count'] for grid in grids_info]
@@ -291,12 +297,12 @@ def _validate_data(data: DataConfig, model: Model) -> bool:
                 grids_info_identifiers[i]: file_lengths[i] == num_sensors[i] for i in
                 range(len(grids_model_identifiers))
             }
-            paths_to_report = [
+            names_to_report = [
                 id for id in length_matching if length_matching[id] is False]
             raise ValueError(
                 'File lengths of result files must match the number of sensors on grids.'
                 ' Lengths of files with following names do not match'
-                f' {tuple(paths_to_report)}.')
+                f' {tuple(names_to_report)}.')
 
         return True
 
