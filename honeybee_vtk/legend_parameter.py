@@ -186,10 +186,10 @@ class LegendParameter:
 
     def __init__(
             self,
+            range: Tuple[float, float],
             name: str = 'Legend',
             unit: str = '',
             colors: Colors = Colors.ecotect,
-            range: Tuple[float, float] = None,
             show_legend: bool = False,
             orientation: Orientation = Orientation.horizontal,
             position: Tuple[float, float] = (0.5, 0.1),
@@ -217,6 +217,22 @@ class LegendParameter:
         self.preceding_labels = preceding_labels
         self.label_parameters = label_parameters
         self.title_parameters = title_parameters
+
+    @property
+    def range(self) -> Tuple[float, float]:
+        """A tuple with min and max values in the legend."""
+        return self._range
+
+    @range.setter
+    def range(self, val) -> None:
+        if isinstance(val, (tuple, list)) and _validate_input(
+                val, [float, int], num_val=2):
+            self._range = val
+        else:
+            raise ValueError(
+                'Range takes a tuple or a list of integers.'
+                f' Instead got {val}.'
+            )
 
     @property
     def name(self) -> str:
@@ -264,22 +280,6 @@ class LegendParameter:
         else:
             raise ValueError(
                 f'A Colors object expected. Instead got {val}.'
-            )
-
-    @property
-    def range(self) -> Tuple[float, float]:
-        """A tuple with min and max values in the legend."""
-        return self._range
-
-    @range.setter
-    def range(self, val) -> None:
-        if isinstance(val, (tuple, list)) and _validate_input(
-                val, [float, int], num_val=2):
-            self._range = val
-        else:
-            raise ValueError(
-                'Range takes a tuple or a list of integers.'
-                f' Instead got {val}.'
             )
 
     @property
@@ -391,14 +391,22 @@ class LegendParameter:
     def label_count(self, val) -> None:
         if not val:
             self._label_count = None
-        elif isinstance(val, int) and 0 <= val <= self._color_count:
-            self._label_count = val
-        else:
-            raise ValueError(
-                'Label count must be a number less than or equal to'
-                f' color count, which is {self._color_count}.'
-                f' Instead got {val}.'
-            )
+        elif not self._color_count:
+            if isinstance(val, int) and 0 <= val <= len(self.colors.value):
+                self._label_count = val
+            else:
+                raise ValueError(
+                    'Label count must be a number less than or equal to the number of'
+                    f' colors {len(self.colors.value)}. Instead got {val}.'
+                )
+        elif self._color_count:
+            if isinstance(val, int) and 0 <= val <= self._color_count:
+                self._label_count = val
+            else:
+                raise ValueError(
+                    'Label count must be a number less than or equal to'
+                    f' color count, which is {self._color_count}. Instead got {val}.'
+                )
 
     @property
     def decimal_count(self) -> DecimalCount:
