@@ -90,8 +90,8 @@ class Scene:
         """
         if name not in self.legend_parameters.keys():
             raise ValueError(
-                'No legend parameter found by that name in this scene. The names of the'
-                ' legend parameters in this scene are'
+                'No legend parameter found by that name in this scene. Make sure cameras'
+                ' and actors a added to the scene. Legends in the scene are'
                 f' {tuple(self.legend_parameters.keys())}.'
             )
         return self.legend_parameters[name]
