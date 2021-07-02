@@ -39,3 +39,35 @@ def test_from_view_file():
     vf = r'tests/assets/view.vf'
     camera = Camera.from_view_file(vf)
     assert isinstance(camera, Camera)
+
+
+def test_aerial_cameras():
+    """Test creation of default aerial cameras."""
+    file_path = r'tests/assets/revit_model/model.hbjson'
+    model = Model.from_hbjson(file_path)
+    actors = Actor.from_model(model)
+    bounds = Actor.get_bounds(actors)
+    centroid = Actor.get_centroid(actors)
+    cameras = Camera.aerial_cameras(bounds, centroid)
+
+    assert len(cameras) == 4
+
+    cam_01, cam_02, cam_03, cam_04 = cameras
+    assert cam_01.position == (124.35035099551129, 87.54659771487164, 56.45049285888672)
+    assert cam_01.direction == (-108.78812527224468, -
+                                108.78812527224468, -41.03615807294845)
+    assert cam_01.up_vector == (0.0, 0.0, 1.0)
+    assert cam_02.position == (-93.22589954897808, 87.54659771487164, 56.45049285888672)
+    assert cam_02.direction == (
+        108.78812527224468, -108.78812527224468, -41.03615807294845)
+    assert cam_02.up_vector == (0.0, 0.0, 1.0)
+    assert cam_03.position == (-93.22589954897808, -
+                               130.02965282961773, 56.45049285888672)
+    assert cam_03.direction == (
+        108.78812527224468, 108.78812527224468, -41.03615807294845)
+    assert cam_03.up_vector == (0.0, 0.0, 1.0)
+    assert cam_04.position == (
+        124.35035099551129, -130.02965282961773, 56.45049285888672)
+    assert cam_04.direction == (-108.78812527224468,
+                                108.78812527224468, -41.03615807294845)
+    assert cam_04.up_vector == (0.0, 0.0, 1.0)
