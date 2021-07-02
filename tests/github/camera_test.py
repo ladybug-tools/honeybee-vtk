@@ -52,22 +52,27 @@ def test_aerial_cameras():
 
     assert len(cameras) == 4
 
+    def rounded(tup):
+        return list(map(lambda x: round(x, 4), tup))
+
     cam_01, cam_02, cam_03, cam_04 = cameras
-    assert cam_01.position == (124.35035099551129, 87.54659771487164, 56.45049285888672)
-    assert cam_01.direction == (-108.78812527224468, -
-                                108.78812527224468, -41.03615807294845)
+    assert rounded((cam_01.position)) == rounded(
+        (124.35035099551129, 87.54659771487164, 56.45049285888672))
+    assert rounded((cam_01.direction)) == rounded((-108.78812527224468, -
+                                                   108.78812527224468, -41.03615807294845))
     assert cam_01.up_vector == (0.0, 0.0, 1.0)
-    assert cam_02.position == (-93.22589954897808, 87.54659771487164, 56.45049285888672)
-    assert cam_02.direction == (
-        108.78812527224468, -108.78812527224468, -41.03615807294845)
+    assert rounded((cam_02.position)) == rounded((-93.22589954897808,
+                                                  87.54659771487164, 56.45049285888672))
+    assert rounded((cam_02.direction)) == rounded((
+        108.78812527224468, -108.78812527224468, -41.03615807294845))
     assert cam_02.up_vector == (0.0, 0.0, 1.0)
-    assert cam_03.position == (-93.22589954897808, -
-                               130.02965282961773, 56.45049285888672)
-    assert cam_03.direction == (
-        108.78812527224468, 108.78812527224468, -41.03615807294845)
+    assert rounded((cam_03.position)) == rounded((-93.22589954897808, -
+                                                  130.02965282961773, 56.45049285888672))
+    assert rounded((cam_03.direction)) == rounded((
+        108.78812527224468, 108.78812527224468, -41.03615807294845))
     assert cam_03.up_vector == (0.0, 0.0, 1.0)
-    assert cam_04.position == (
-        124.35035099551129, -130.02965282961773, 56.45049285888672)
-    assert cam_04.direction == (-108.78812527224468,
-                                108.78812527224468, -41.03615807294845)
+    assert rounded((cam_04.position)) == rounded((
+        124.35035099551129, -130.02965282961773, 56.45049285888672))
+    assert rounded((cam_04.direction)) == rounded((-108.78812527224468,
+                                                   108.78812527224468, -41.03615807294845))
     assert cam_04.up_vector == (0.0, 0.0, 1.0)
