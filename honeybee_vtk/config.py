@@ -112,7 +112,8 @@ class LegendConfig(BaseModel):
     label_count: int = Field(
         0,
         description='An integer representing the number of text labels on a legend.'
-        ' Label count will have to be less than or equal to color count.'
+        ' Label count will have to be less than or equal to color count. It defaults'
+        ' to vtk scalarbar default setting.'
     )
 
     decimal_count: str = Field(
@@ -218,7 +219,7 @@ class DataConfig(BaseModel):
     )
 
     legend_parameters: LegendConfig = Field(
-        LegendConfig(identifier=identifier),
+        LegendConfig(),
         description='Legend parameters to create legend out of the this dataset.'
     )
 
