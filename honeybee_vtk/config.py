@@ -74,8 +74,8 @@ class LegendConfig(BaseModel):
         ' values will be used from data.'
     )
 
-    show_legend: bool = Field(
-        True,
+    hide_legend: bool = Field(
+        False,
         description='A bool value to indicate whether to show legend in the exported'
         ' images or not.'
     )
@@ -365,7 +365,7 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
             warnings.warn(f'For {data.identifier}, min and max values for the'
                           ' legend will be calculated automatically based on data.')
 
-        legend.show_legend = legend_params.show_legend
+        legend.show_legend = legend_params.hide_legend
         legend.orientation = legend_params.orientation
         legend.position = legend_params.position
         legend.width = legend_params.width
