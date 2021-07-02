@@ -1,0 +1,23 @@
+[
+  {
+    "name": "TestRoom_x",
+    "identifier": "TestRoom_x",
+    "count": 416,
+    "group": "",
+    "full_id": "TestRoom_x"
+  },
+  {
+    "name": "TestRoom_y",
+    "identifier": "TestRoom_y",
+    "count": 468,
+    "group": "",
+    "full_id": "TestRoom_y"
+  },
+  {
+    "name": "TestRoom_3",
+    "identifier": "TestRoom_3",
+    "count": 468,
+    "group": "",
+    "full_id": "TestRoom_3"
+  }
+]

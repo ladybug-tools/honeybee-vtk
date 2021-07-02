@@ -4,6 +4,7 @@
     "grid": {
             "identifier": "Daylight-Factor",
             "object_type": "grid",
+            "unit": "Percentage",
             "folder_path": "./tests/assets/dummy_results/more_grids"
     }
 }
