@@ -162,7 +162,8 @@ class DataConfig(BaseModel):
 
     object_type: DataSetNames = Field(
         description='The name of the model object on which you would like to map this'
-        ' data.'
+        ' data. Acceptable values are "wall", "aperture", "shade", "door", "floor",'
+        ' "roofceiling", "airboundary", "grid".'
     )
 
     unit: str = Field(
