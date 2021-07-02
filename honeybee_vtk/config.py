@@ -362,8 +362,8 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
         if range[1] != 0:
             legend.range = range
         else:
-            print(f'For {data.identifier}, min and max values for the legend will be'
-                  ' calculated automatically based on data.')
+            warnings.warn(f'For {data.identifier}, min and max values for the'
+                          ' legend will be calculated automatically based on data.')
 
         legend.show_legend = legend_params.show_legend
         legend.orientation = legend_params.orientation
