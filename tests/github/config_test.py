@@ -54,7 +54,7 @@ def test_legend_config_defaults():
     assert legend_config.color_set == Colors.ecotect
     assert legend_config.min == 0.0
     assert legend_config.max == 0.0
-    assert legend_config.show_legend
+    assert not legend_config.hide_legend
     assert legend_config.orientation == Orientation.horizontal
     assert legend_config.width == 0.45
     assert legend_config.height == 0.05
