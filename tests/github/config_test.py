@@ -1,91 +1,207 @@
 """Unit tests for the config module."""
 
-import pydantic
+
 import pytest
+
 from pydantic import ValidationError
+from honeybee_vtk.legend_parameter import Orientation, Colors
 from honeybee_vtk.model import Model
 from honeybee_vtk.scene import Scene
 from honeybee_vtk.camera import Camera
 from honeybee_vtk.actor import Actor
-from honeybee_vtk.config import load_config
+from honeybee_vtk.config import DataConfig, LegendConfig, _load_legend_parameters, load_config, TextConfig,\
+    DecimalCount
 from honeybee_vtk.vtkjs.schema import SensorGridOptions
 
 
-def test_data_config():
-    """Test loading config file."""
+def test_text_config_defaults():
+    text_config = TextConfig()
+    assert text_config.color == [0, 0, 0]
+    assert text_config.size == 30
+    assert text_config.bold == False
 
-    file_path = r'tests/assets/gridbased.hbjson'
-    valid_json_path = r'tests/assets/config/valid.json'
-    invalid_json_path = r'tests/assets/config/invalid.json'
-    more_grids = r'tests/assets/config/more_grids.json'
-    short_length = r'tests/assets/config/short_length.json'
-    invalid_object_type = r'tests/assets/config/invalid_object_type.json'
-    invalid_folder_path = r'tests/assets/config/invalid_folder_path.json'
 
-    model = Model.from_hbjson(file_path)
-    scene = Scene()
+def test_text_config_validators():
+    text_config = TextConfig()
 
-    # invalid json file
+    with pytest.raises(ValidationError):
+        text_config.size = -15
+
+    with pytest.raises(ValidationError):
+        text_config.color = 'Red'
+
+    with pytest.raises(ValidationError):
+        text_config.bold = "okay"
+
+    text_config.bold = 1
+    assert text_config.bold == True
+
+    text_config.bold = 'no'
+    assert text_config.bold == False
+
+
+def test_legend_config_defaults():
+    legend_config = LegendConfig()
+    assert legend_config.color_set == Colors.ecotect
+    assert legend_config.min == 0.0
+    assert legend_config.max == 0.0
+    assert legend_config.show_legend
+    assert legend_config.orientation == Orientation.horizontal
+    assert legend_config.width == 0.45
+    assert legend_config.height == 0.05
+    assert legend_config.position == [0.5, 0.1]
+    assert legend_config.color_count == 0
+    assert legend_config.label_count == 0
+    assert legend_config.decimal_count == DecimalCount.default
+    assert legend_config.preceding_labels == False
+    assert legend_config.label_parameters == TextConfig()
+    assert legend_config.title_parameters == TextConfig(bold=True)
+
+
+def text_legend_config_validators():
+    legend_config = LegendConfig()
+
+    with pytest.raises(ValidationError):
+        legend_config.colors = "red"
+
+    with pytest.raises(ValidationError):
+        legend_config.colors = 255
+
+    legend_config.min = -10
+    assert legend_config.min == -10
+
+    with pytest.raises(ValidationError):
+        legend_config.max = -20
+
+    with pytest.raises(ValidationError):
+        legend_config.min = 'less'
+
+    with pytest.raises(ValidationError):
+        legend_config.max = 'more'
+
+    with pytest.raises(ValidationError):
+        legend_config.orientation = 'up'
+
+    with pytest.raises(ValidationError):
+        legend_config.width = 200
+
+    with pytest.raises(ValidationError):
+        legend_config.height == 500
+
+    with pytest.raises(ValidationError):
+        legend_config.position = (0, 5, 4)
+
+    with pytest.raises(ValidationError):
+        legend_config.color_count = 25
+
+    with pytest.raises(ValidationError):
+        legend_config.label_count = 26
+
+    with pytest.raises(ValidationError):
+        legend_config.decimal_count = 2
+
+    with pytest.raises(ValidationError):
+        legend_config.preceding_labels = 'no'
+
+    with pytest.raises(ValidationError):
+        legend_config.label_parameters = {'color': [0, 0, 0]}
+
+    with pytest.raises(ValidationError):
+        legend_config.title_parameters = {'color': [0, 0, 0]}
+
+
+def test_data_config_defaults():
+
+    data_config = DataConfig(
+        identifier='Daylight-factor', object_type='grid', unit='Percentage',
+        folder_path='tests/assets/df_results')
+
+    assert not data_config.hide
+    assert data_config.legend_parameters == LegendConfig()
+
+
+def test_data_config_validators():
+    # all required fields missing
+    with pytest.raises(KeyError):
+        data_config = DataConfig()
+
+    # required fields missing
+    with pytest.raises(ValidationError):
+        data_config = DataConfig(identifier='Starlight')
+
+    # invalid folder path
+    with pytest.raises(ValidationError):
+        data_config = DataConfig(
+            identifier='Daylight-factor', object_type='grid', unit='Percentage',
+            folder_path='tests/assets/config/valid.json')
+
+    # invalid object type
+    with pytest.raises(ValidationError):
+        data_config = DataConfig(
+            identifier='Daylight-factor', object_type='ground', unit='Percentage',
+            folder_path='tests/assets/df_results')
+
+
+def test_data_config_legend_parameter_validator():
+    # width greater than position in X direction
+    legend_params = LegendConfig()
+    legend_params.position = [0.5, 0.5]
+    legend_params.width = 0.6
+    with pytest.raises(ValidationError):
+        data_config = DataConfig(
+            identifier='Daylight-factor', object_type='grid', unit='Percentage',
+            folder_path='tests/assets/df_results', legend_parameters=legend_params)
+
+    # height greater than position in Y direction
+    legend_params = LegendConfig()
+    legend_params.position = [0.5, 0.5]
+    legend_params.height = 0.6
+    with pytest.raises(ValidationError):
+        data_config = DataConfig(
+            identifier='Daylight-factor', object_type='grid', unit='Percentage',
+            folder_path='tests/assets/df_results', legend_parameters=legend_params)
+
+
+file_path = r'tests/assets/gridbased.hbjson'
+
+valid_json_path = r'tests/assets/config/valid.json'
+invalid_json_path = r'tests/assets/config/invalid.json'
+more_grids = r'tests/assets/config/more_grids.json'
+short_length = r'tests/assets/config/short_length.json'
+hide_data = r'tests/assets/config/hide_data.json'
+
+model = Model.from_hbjson(file_path)
+scene = Scene()
+
+
+def test_invalid_json():
     with pytest.raises(TypeError):
         load_config(invalid_json_path, model, scene)
 
-    # when grids are not loaded on a model and one is trying to mount data for grids
+
+def test_grids_not_loaded():
     with pytest.raises(AssertionError):
         load_config(valid_json_path, model, scene)
 
-    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
-    scene = Scene()
-    cameras = model.cameras
-    actors = Actor.from_model(model)
-    scene.add_cameras(cameras)
-    scene.add_actors(actors)
 
-    # trying to load more grids than grids in the model
+model_grids_loaded = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
+scene_grids_loaded = Scene()
+cameras = model_grids_loaded.cameras
+actors = Actor.from_model(model_grids_loaded)
+scene_grids_loaded.add_cameras(cameras)
+scene_grids_loaded.add_actors(actors)
+
+
+def test_loading_more_grids_than_model_grids_loaded():
     with pytest.raises(ValueError):
-        load_config(more_grids, model, scene)
+        load_config(more_grids, model_grids_loaded, scene_grids_loaded)
 
-    # if file lengths do not match grid size
+
+def test_file_lengths_dont_match():
     with pytest.raises(ValueError):
-        load_config(short_length, model, scene)
-
-    # invalid object_type value
-    with pytest.raises(ValidationError):
-        load_config(invalid_object_type, model, scene)
-
-    # invalid file paths
-    with pytest.raises(ValidationError):
-        load_config(invalid_folder_path, model, scene)
+        load_config(short_length, model_grids_loaded, scene_grids_loaded)
 
 
-def test_legend_config():
-    """Test adding legend parameters."""
-
-    file_path = r'tests/assets/gridbased.hbjson'
-    invalid_colors = r'tests/assets/config/invalid_colors.json'
-    invalid_orientation = r'tests/assets/config/invalid_orientation.json'
-    invalid_decimal_count = r'tests/assets/config/invalid_decimal_count.json'
-    hide_data = r'tests/assets/config/hide_data.json'
-
-    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
-    scene = Scene()
-    cameras = model.cameras
-    actors = Actor.from_model(model)
-    scene.add_cameras(cameras)
-    scene.add_actors(actors)
-
-    # if invalid colors in legend parameters raises error
-    with pytest.raises(KeyError):
-        load_config(invalid_colors, model, scene)
-
-    # if invalid orientation in legend parameters raises error
-    with pytest.raises(ValidationError):
-        load_config(invalid_orientation, model, scene)
-
-    # if invalid decimal count in legend parameters raises error
-    with pytest.raises(KeyError):
-        load_config(invalid_decimal_count, model, scene)
-
-    # if warning is raised in case legend parameters are provided for data that is
-    # not going to color the object_type
+def test_hide():
     with pytest.warns(Warning):
-        load_config(hide_data, model, scene)
+        load_config(hide_data, model_grids_loaded, scene_grids_loaded)
