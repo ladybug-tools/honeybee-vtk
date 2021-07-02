@@ -5,7 +5,11 @@
             "identifier": "Daylight-Factor",
             "object_type": "grid",
             "unit" : "Percentage",
+<<<<<<< update-config
             "path": "./tests/assets/dummy_results/identifier_mismatch"
+=======
+            "folder_path": "./tests/assets/dummy_results/identifier_mismatch"
+>>>>>>> chore(*): update assets
     }
 }
 
