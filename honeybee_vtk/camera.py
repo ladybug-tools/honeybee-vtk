@@ -140,8 +140,8 @@ class Camera(View):
         farthest_distance = sorted(distances, reverse=True)
         camera_distance = farthest_distance[0]
 
-        # generate four points at 45 degrees and -45 degrees on left and right side of
-        # the centroid
+        # generate total four points at 45 degrees and -45 degrees on left and right
+        # side of the centroid
         pt0 = Point3D(
             centroid_moved.x + math.cos(math.radians(45))*camera_distance,
             centroid_moved.y + math.sin(math.radians(45))*camera_distance,
