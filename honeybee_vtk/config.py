@@ -33,12 +33,12 @@ class TextConfig(BaseModel):
 
     size: int = Field(
         30,
-        description='Size of fonts in points.'
+        description='Text size in points.'
     )
 
     bold: bool = Field(
         False,
-        description='Bool value to indicate whether to make the fonts bold or not.'
+        description='Boolean value to indicate whether to make the text bold or not.'
     )
 
     @validator('size')
@@ -63,14 +63,14 @@ class LegendConfig(BaseModel):
     min: float = Field(
         0.0,
         description='Minimum value for the legend. Also known as the lower end of the'
-        ' legend. If min and max values are not specified autocalculated min and max'
+        ' legend. If min and max values are not specified, autocalculated min and max'
         ' values will be used from data.'
     )
 
     max: float = Field(
         0.0,
         description='Maximum value for the legend. Also known as the higher end of the'
-        ' legend. If min and max values are not specified autocalculated min and max'
+        ' legend. If min and max values are not specified, autocalculated min and max'
         ' values will be used from data.'
     )
 
@@ -105,17 +105,20 @@ class LegendConfig(BaseModel):
 
     color_count: int = Field(
         0,
-        description='An integer representing the number of colors in a legend.'
+        description='An integer representing the number of colors in a legend. If not'
+        ' specified, it defaults to the number of colors in a Ladybug color set.'
     )
 
     label_count: int = Field(
         0,
         description='An integer representing the number of text labels on a legend.'
+        ' Label count will have to be less than or equal to color count.'
     )
 
     decimal_count: str = Field(
         'default',
         description='Controlling the number of decimals on each label of the legend.'
+        'Accepted values are "default", "integer", "decimal_two", and "decimal_three".'
     )
 
     preceding_labels: bool = Field(
@@ -195,7 +198,8 @@ class DataConfig(BaseModel):
 
     object_type: DataSetNames = Field(
         description='The name of the model object on which you would like to map this'
-        ' data.'
+        ' data. Acceptable values are "wall", "aperture", "shade", "door", "floor",'
+        ' "roofceiling", "airboundary", "grid".'
     )
 
     unit: str = Field(
@@ -254,7 +258,8 @@ def _validate_data(data: DataConfig, model: Model) -> bool:
 
     It will be checked if the number of data files and the names of the
     data files match with the grid identifiers. This function does not support validating
-    result data for other than sensor grids as of now.
+    result data for other than sensor grids as of now. This is a helper method to the 
+    public load_config method.
 
     Args:
         data: A DataConfig object.
@@ -401,7 +406,6 @@ def load_config(json_path: str, model: Model, scene: Scene) -> None:
         model: A honeybee-vtk model object.
         scene: A honeybee-vtk scene object.
     """
-    # Check if json is valid
     try:
         with open(json_path) as fh:
             config = json.load(fh)
