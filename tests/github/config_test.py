@@ -1,17 +1,26 @@
 """Unit tests for the config module."""
 
 
+from _pytest.config import Config
 import pytest
 
 from pydantic import ValidationError
-from honeybee_vtk.legend_parameter import Orientation, Colors
+from honeybee_vtk.legend_parameter import LegendParameter, Orientation, Colors
 from honeybee_vtk.model import Model
 from honeybee_vtk.scene import Scene
 from honeybee_vtk.camera import Camera
 from honeybee_vtk.actor import Actor
-from honeybee_vtk.config import DataConfig, LegendConfig, _load_legend_parameters, load_config, TextConfig,\
-    DecimalCount
+from honeybee_vtk.config import DataConfig, LegendConfig, _load_legend_parameters,\
+    load_config, TextConfig, DecimalCount
 from honeybee_vtk.vtkjs.schema import SensorGridOptions
+
+file_path = r'tests/assets/gridbased.hbjson'
+valid_json_path = r'tests/assets/config/valid.json'
+range_json_path = r'tests/assets/config/range.json'
+invalid_json_path = r'tests/assets/config/invalid.json'
+more_grids = r'tests/assets/config/more_grids.json'
+identifier_mismatch = r'tests/assets/config/identifier_mismatch.json'
+short_length = r'tests/assets/config/short_length.json'
 
 
 def test_text_config_defaults():
@@ -162,24 +171,34 @@ def test_data_config_legend_parameter_validator():
             folder_path='tests/assets/df_results', legend_parameters=legend_params)
 
 
-file_path = r'tests/assets/gridbased.hbjson'
+def test_load_legend_parameter():
 
-valid_json_path = r'tests/assets/config/valid.json'
-invalid_json_path = r'tests/assets/config/invalid.json'
-more_grids = r'tests/assets/config/more_grids.json'
-short_length = r'tests/assets/config/short_length.json'
-hide_data = r'tests/assets/config/hide_data.json'
+    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
+    cameras = model.cameras
+    actors = Actor.from_model(model)
+    scene = Scene()
+    scene.add_cameras(cameras)
+    scene.add_actors(actors)
+
+    # warning when loading data that is requested to be kept hidden
+    with pytest.warns(Warning):
+        load_config(valid_json_path, model, scene)
+
+    # warning when loading data without min and max of legend specified
+    with pytest.warns(Warning):
+        load_config(range_json_path, model, scene)
+
 
 model = Model.from_hbjson(file_path)
 scene = Scene()
 
 
-def test_invalid_json():
+def test_validate_data_invalid_json():
     with pytest.raises(TypeError):
         load_config(invalid_json_path, model, scene)
 
 
-def test_grids_not_loaded():
+def test_validate_data_grids_not_loaded():
     with pytest.raises(AssertionError):
         load_config(valid_json_path, model, scene)
 
@@ -192,16 +211,16 @@ scene_grids_loaded.add_cameras(cameras)
 scene_grids_loaded.add_actors(actors)
 
 
-def test_loading_more_grids_than_model_grids_loaded():
-    with pytest.raises(ValueError):
+def test_validate_data_number_of_grids_mismatch():
+    with pytest.raises(AssertionError):
         load_config(more_grids, model_grids_loaded, scene_grids_loaded)
 
 
-def test_file_lengths_dont_match():
+def test_validate_data_identifier_mismatch():
+    with pytest.raises(AssertionError):
+        load_config(identifier_mismatch, model_grids_loaded, scene_grids_loaded)
+
+
+def test_validate_data_file_lengths_mismatch():
     with pytest.raises(ValueError):
         load_config(short_length, model_grids_loaded, scene_grids_loaded)
-
-
-def test_hide():
-    with pytest.warns(Warning):
-        load_config(hide_data, model_grids_loaded, scene_grids_loaded)
