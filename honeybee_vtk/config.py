@@ -8,7 +8,7 @@ import warnings
 from typing import List
 from pydantic import BaseModel, validator, Field
 from .types import DataSetNames
-from .legend_parameter import Colors, Text, DecimalCount, Orientation
+from .legend_parameter import ColorSet, Text, DecimalCount, Orientation
 from .model import Model
 from ._helper import get_line_count, get_min_max
 from .vtkjs.schema import DisplayMode
@@ -139,12 +139,12 @@ class LegendConfig(BaseModel):
     )
 
     @validator('color_set')
-    def validate_color_set(cls, v: str) -> Colors:
+    def validate_color_set(cls, v: str) -> ColorSet:
         try:
-            return Colors[v]
+            return ColorSet[v]
         except KeyError:
             raise KeyError(
-                f'color_set must be from {tuple(dir(Colors)[4:])}. Instead go {v}.'
+                f'color_set must be from {tuple(dir(ColorSet)[4:])}. Instead go {v}.'
             )
 
     @validator('min')

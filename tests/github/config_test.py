@@ -5,7 +5,7 @@ from _pytest.config import Config
 import pytest
 
 from pydantic import ValidationError
-from honeybee_vtk.legend_parameter import LegendParameter, Orientation, Colors
+from honeybee_vtk.legend_parameter import LegendParameter, Orientation, ColorSet
 from honeybee_vtk.model import Model
 from honeybee_vtk.scene import Scene
 from honeybee_vtk.camera import Camera
@@ -51,7 +51,7 @@ def test_text_config_validators():
 
 def test_legend_config_defaults():
     legend_config = LegendConfig()
-    assert legend_config.color_set == Colors.ecotect
+    assert legend_config.color_set == ColorSet.ecotect
     assert legend_config.min == 0.0
     assert legend_config.max == 0.0
     assert not legend_config.hide_legend
