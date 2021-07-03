@@ -10,7 +10,7 @@ from honeybee_vtk.model import Model
 from honeybee_vtk.scene import Scene
 from honeybee_vtk.camera import Camera
 from honeybee_vtk.actor import Actor
-from honeybee_vtk.config import DataConfig, LegendConfig, _load_legend_parameters,\
+from honeybee_vtk.config import Autocalculate, DataConfig, LegendConfig, _load_legend_parameters,\
     load_config, TextConfig, DecimalCount
 from honeybee_vtk.vtkjs.schema import SensorGridOptions
 
@@ -52,15 +52,15 @@ def test_text_config_validators():
 def test_legend_config_defaults():
     legend_config = LegendConfig()
     assert legend_config.color_set == ColorSet.ecotect
-    assert legend_config.min == 0.0
-    assert legend_config.max == 0.0
+    assert legend_config.min == Autocalculate()
+    assert legend_config.max == Autocalculate()
     assert not legend_config.hide_legend
     assert legend_config.orientation == Orientation.horizontal
     assert legend_config.width == 0.45
     assert legend_config.height == 0.05
     assert legend_config.position == [0.5, 0.1]
-    assert legend_config.color_count == 0
-    assert legend_config.label_count == 0
+    assert legend_config.color_count == Autocalculate()
+    assert legend_config.label_count == Autocalculate()
     assert legend_config.decimal_count == DecimalCount.default
     assert legend_config.preceding_labels == False
     assert legend_config.label_parameters == TextConfig()
