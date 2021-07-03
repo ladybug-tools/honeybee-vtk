@@ -21,7 +21,7 @@ class Orientation(Enum):
     horizontal = 'horizontal'
 
 
-class Colors(Enum):
+class ColorSet(Enum):
     """Colors for a legend."""
     annual_comfort = Colorset.annual_comfort()
     benefit = Colorset.benefit()
@@ -189,7 +189,7 @@ class LegendParameter:
             range: Tuple[float, float],
             name: str = 'Legend',
             unit: str = '',
-            colors: Colors = Colors.ecotect,
+            colors: ColorSet = ColorSet.ecotect,
             show_legend: bool = False,
             orientation: Orientation = Orientation.horizontal,
             position: Tuple[float, float] = (0.5, 0.1),
@@ -267,15 +267,15 @@ class LegendParameter:
             )
 
     @property
-    def colors(self) -> Colors:
+    def colors(self) -> ColorSet:
         """Colors to be used in the legend."""
         return self._colors
 
     @colors.setter
     def colors(self, val) -> None:
         if not val:
-            self._colors = Colors.ecotect
-        elif isinstance(val, Colors):
+            self._colors = ColorSet.ecotect
+        elif isinstance(val, ColorSet):
             self._colors = val
         else:
             raise ValueError(

@@ -3,7 +3,7 @@
 import pytest
 import vtk
 from honeybee_vtk.legend_parameter import Text, DecimalCount, LegendParameter
-from honeybee_vtk.legend_parameter import Colors, Orientation
+from honeybee_vtk.legend_parameter import ColorSet, Orientation
 from honeybee_vtk._helper import _validate_input
 
 
@@ -42,7 +42,7 @@ def test_legend_parameter_initialization():
     lp = LegendParameter(range=(0, 100))
 
     assert lp.name == 'Legend'
-    assert lp.colors == Colors.ecotect
+    assert lp.colors == ColorSet.ecotect
     assert lp.range == (0, 100)
     assert not lp.show_legend
     assert lp.orientation == Orientation.horizontal
