@@ -123,7 +123,7 @@ def test_data_config_defaults():
 
     data_config = DataConfig(
         identifier='Daylight-factor', object_type='grid', unit='Percentage',
-        folder_path='tests/assets/df_results')
+        path='tests/assets/df_results')
 
     assert not data_config.hide
     assert data_config.legend_parameters == LegendConfig()

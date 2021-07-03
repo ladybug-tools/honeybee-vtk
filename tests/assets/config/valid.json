@@ -5,7 +5,7 @@
         "identifier": "Daylight-Factor",
         "object_type": "grid",
         "unit": "Percentage",
-        "folder_path": "./tests/assets/df_results",
+        "path": "./tests/assets/df_results",
         "hide": false,
         "legend_parameters": {
             "hide_legend": false,
@@ -24,7 +24,7 @@
     "identifier": "UDI",
     "object_type": "grid",
     "unit": "Percentage",
-    "folder_path": "./tests/assets/udi_results",
+    "path": "./tests/assets/udi_results",
     "hide": true,
     "legend_parameters": {
         "hide_legend": false,

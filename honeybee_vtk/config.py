@@ -207,7 +207,7 @@ class DataConfig(BaseModel):
         description=' The unit of the data being loaded.'
     )
 
-    folder_path: str = Field(
+    path: str = Field(
         description='Valid path to the folder with result files and the json file that'
         ' catalogues the results.'
     )
@@ -223,7 +223,7 @@ class DataConfig(BaseModel):
         description='Legend parameters to create legend out of the this dataset.'
     )
 
-    @validator('folder_path')
+    @validator('path')
     def validate_folder_path(cls, v: str) -> str:
         if pathlib.Path(v).is_dir():
             return v
@@ -269,7 +269,7 @@ def _validate_data(data: DataConfig, model: Model) -> bool:
     Returns:
         A boolean value.
     """
-    grids_info_json = pathlib.Path(data.folder_path).joinpath('grids_info.json')
+    grids_info_json = pathlib.Path(data.path).joinpath('grids_info.json')
     # TODO: Confirm with Chris if this check for json is needed. I think it's not.
     try:
         with open(grids_info_json) as fh:
@@ -324,7 +324,7 @@ def _load_data(data: DataConfig, model: Model) -> None:
     """
     # file paths to the result files
     file_paths = [result for result in pathlib.Path(
-        data.folder_path).iterdir() if result.suffix != '.json']
+        data.path).iterdir() if result.suffix != '.json']
 
     result = []
     for file_path in file_paths:

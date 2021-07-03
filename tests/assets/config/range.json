@@ -5,7 +5,7 @@
         "identifier": "Daylight-factor",
         "object_type": "grid",
         "unit": "Percentage",
-        "folder_path": "./tests/assets/df_results",
+        "path": "./tests/assets/df_results",
         "hide": false,
         "legend_parameters": {
             "hide_legend": false,
