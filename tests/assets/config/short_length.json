@@ -5,7 +5,7 @@
     "grid": {
         "identifier": "Daylight-Factor",
         "object_type": "grid",
-        "folder_path": "./tests/assets/dummy_results/short_length"
+        "path": "./tests/assets/dummy_results/short_length"
 }
 
 
