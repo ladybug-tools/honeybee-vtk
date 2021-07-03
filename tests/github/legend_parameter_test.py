@@ -39,12 +39,15 @@ def test_font_errors():
 def test_legend_parameter_initialization():
     """Testing initialization of a legend_parameter object."""
 
-    lp = LegendParameter(range=(0, 100))
+    lp = LegendParameter()
 
     assert lp.name == 'Legend'
     assert lp.colors == ColorSet.ecotect
-    assert lp.range == (0, 100)
+    assert not lp.auto_range
+    assert not lp.min
+    assert not lp.max
     assert not lp.show_legend
+    assert not lp.range
     assert lp.orientation == Orientation.horizontal
     assert lp.position == (0.5, 0.1)
     assert lp.width == 0.45
@@ -55,6 +58,7 @@ def test_legend_parameter_initialization():
     assert lp.preceding_labels == 0
     assert isinstance(lp.label_parameters, Text)
     assert isinstance(lp.title_parameters, Text)
+    lp.auto_range = (0, 100)
     assert isinstance(lp.get_lookuptable(), vtk.vtkLookupTable)
     assert isinstance(lp.get_scalarbar(), vtk.vtkScalarBarActor)
 
@@ -62,12 +66,10 @@ def test_legend_parameter_initialization():
 def test_legend_parameter_errors():
     """Test if correct exceptions are raised."""
 
-    lp = LegendParameter(range=(0, 100))
+    lp = LegendParameter()
 
     with pytest.raises(ValueError):
         lp.name = 2
-    with pytest.raises(AssertionError):
-        lp.range = (0.1, 0.5, 3)
     with pytest.raises(ValueError):
         lp.show_legend = 3
     with pytest.raises(ValueError):
@@ -90,3 +92,37 @@ def test_legend_parameter_errors():
         lp.label_parameters = 'Arial'
     with pytest.raises(ValueError):
         lp.title_parameters = 'Italic'
+    with pytest.raises(AssertionError):
+        lp.auto_range = (0.1, 0.5, 3)
+    with pytest.raises(ValueError):
+        lp.min = "min"
+    with pytest.raises(ValueError):
+        lp.max = "max"
+
+
+def test_range():
+    """Test setting range through min and max."""
+
+    with pytest.raises(ValueError):
+        lp = LegendParameter()
+        lp.min = 50
+        lp.max = 45
+        lp.range
+
+    with pytest.raises(ValueError):
+        lp = LegendParameter()
+        lp.auto_range = (10, 20)
+        lp.min = 30
+        lp.range
+
+    with pytest.raises(ValueError):
+        lp = LegendParameter()
+        lp.auto_range = (10, 20)
+        lp.max = 5
+        lp.range
+
+    with pytest.raises(ValueError):
+        lp = LegendParameter()
+        lp.min = 10
+        lp.max = 5
+        lp.range
