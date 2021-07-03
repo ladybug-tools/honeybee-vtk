@@ -226,7 +226,6 @@ class LegendParameter:
 
     def __init__(
             self,
-            range: Tuple[float, float],
             name: str = 'Legend',
             unit: str = '',
             colors: ColorSets = ColorSets.ecotect,
@@ -263,22 +262,6 @@ class LegendParameter:
         self.max = max
         self.auto_range = auto_range
         self._range = None
-
-    @property
-    def range(self) -> Tuple[float, float]:
-        """A tuple with min and max values in the legend."""
-        return self._range
-
-    @range.setter
-    def range(self, val) -> None:
-        if isinstance(val, (tuple, list)) and _validate_input(
-                val, [float, int], num_val=2):
-            self._range = val
-        else:
-            raise ValueError(
-                'Range takes a tuple or a list of integers.'
-                f' Instead got {val}.'
-            )
 
     @property
     def name(self) -> str:
