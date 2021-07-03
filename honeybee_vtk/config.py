@@ -5,14 +5,19 @@ import json
 import pathlib
 import warnings
 
-from typing import List
-from pydantic import BaseModel, validator, Field
+from typing import List, Union
+from pydantic import BaseModel, validator, Field, constr
 from .types import DataSetNames
 from .legend_parameter import ColorSet, Text, DecimalCount, Orientation
 from .model import Model
 from ._helper import get_line_count, get_min_max
 from .vtkjs.schema import DisplayMode
 from .scene import Scene
+
+
+class Autocalculate(BaseModel):
+
+    type: constr(regex='^Autocalculate$') = 'Autocalculate'
 
 
 class TextConfig(BaseModel):
@@ -60,15 +65,15 @@ class LegendConfig(BaseModel):
         ' only uses Ladybug color sets.'
     )
 
-    min: float = Field(
-        0.0,
+    min: Union[Autocalculate, float] = Field(
+        Autocalculate(),
         description='Minimum value for the legend. Also known as the lower end of the'
         ' legend. If min and max values are not specified, autocalculated min and max'
         ' values will be used from data.'
     )
 
-    max: float = Field(
-        0.0,
+    max: Union[Autocalculate, float] = Field(
+        Autocalculate(),
         description='Maximum value for the legend. Also known as the higher end of the'
         ' legend. If min and max values are not specified, autocalculated min and max'
         ' values will be used from data.'
@@ -103,14 +108,14 @@ class LegendConfig(BaseModel):
         ' of viewport width and the fraction of viewport height.'
     )
 
-    color_count: int = Field(
-        0,
+    color_count: Union[Autocalculate, int] = Field(
+        Autocalculate(),
         description='An integer representing the number of colors in a legend. If not'
         ' specified, it defaults to the number of colors in a Ladybug color set.'
     )
 
-    label_count: int = Field(
-        0,
+    label_count: Union[Autocalculate, int] = Field(
+        Autocalculate(),
         description='An integer representing the number of text labels on a legend.'
         ' Label count will have to be less than or equal to color count. It defaults'
         ' to vtk scalarbar default setting.'
@@ -146,32 +151,6 @@ class LegendConfig(BaseModel):
             raise KeyError(
                 f'color_set must be from {tuple(dir(ColorSet)[4:])}. Instead go {v}.'
             )
-
-    @validator('min')
-    def validate_min(cls, v: float) -> float:
-        if not isinstance(v, (float, int)):
-            raise ValueError('Min value has to be a float or an integer.')
-        return v
-
-    @validator('max')
-    def validate_max(cls, v: float, values) -> float:
-        try:
-            if v < values['min']:
-                raise ValueError('Max value cannot be less than Min.')
-        except KeyError:
-            raise ValueError(
-                'Min value is not valid. It has to be either an integer or a float.'
-            )
-        return v
-
-    @validator('label_count')
-    def label_count_equals_color_count(cls, v: int, values) -> int:
-        num_colors = values['color_count']
-        if v <= num_colors:
-            return v
-        else:
-            raise ValueError(
-                f'Label count, {v} cannot be greater than color count {num_colors}.')
 
     @validator('decimal_count')
     def validate_decimal_count(cls, v: str, values) -> DecimalCount:
@@ -357,13 +336,22 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
         legend.colors = legend_params.color_set
         legend.unit = data.unit
 
-        # assign legend range
-        range = (legend_params.min, legend_params.max)
-        if range[1] != 0:
-            legend.range = range
+        if isinstance(legend_params.min, Autocalculate):
+            legend.min = None
         else:
-            warnings.warn(f'For {data.identifier}, min and max values for the'
-                          ' legend will be calculated automatically based on data.')
+            legend.min = legend_params.min
+
+        if isinstance(legend_params.max, Autocalculate):
+            legend.max = None
+        else:
+            legend.max = legend_params.max
+
+        if not legend.min and not legend.max:
+            warnings.warn(
+                f'For legend{data.object_type.value.capitalize()}, since min and max'
+                ' values are not provided, those values will be auto calculated based'
+                ' on data.'
+            )
 
         legend.show_legend = legend_params.hide_legend
         legend.orientation = legend_params.orientation
@@ -371,12 +359,12 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
         legend.width = legend_params.width
         legend.height = legend_params.height
 
-        if legend_params.color_count > 0:
+        if isinstance(legend_params.color_count, int):
             legend.color_count = legend_params.color_count
         else:
             legend.color_count = None
 
-        if legend_params.label_count > 0:
+        if isinstance(legend_params.label_count, int):
             legend.label_count = legend_params.label_count
         else:
             legend.label_count = None
