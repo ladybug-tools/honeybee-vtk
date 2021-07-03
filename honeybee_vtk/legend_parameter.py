@@ -1,9 +1,10 @@
 """Vtk legend parameters."""
 
+from _pytest.python_api import raises
 import vtk
 from ladybug.color import Colorset
-from enum import Enum
-from typing import Tuple
+from enum import Enum, auto
+from typing import Tuple, Union
 from ._helper import _validate_input
 
 
@@ -149,9 +150,6 @@ class LegendParameter:
             unit: A text string representing the unit of the data that the legend
                 represents. Examples are 'celsius', 'kwn/m2', etc.
             colors: A Colors object. Defaults to Ecotect colorset.
-            range: A tuple of integers or floats representing the minimum and maximum
-                values of a legend. Defaults to None which will create a range of
-                minimum and maximum values in the data.
             show_legend: A boolean to set the visibility of a legend in Scene.
                 Defaults to False.
             orientation: An Orientation object that sets the orientation of the legend in
@@ -182,11 +180,17 @@ class LegendParameter:
                 labels should precede the legend or not. Defaults to False.
             label_parameters: A Text object. Defaults to size 30 black text.
             title_parameters: A Text object. Defaults to size 50 black bold text.
+            min: A number that will be set as the lower bound of the legend.
+                Defaults to None.
+            min: A number that will be set as the upper bound of the legend.
+                Defaults to None.
+            auto_range: A tuple of minimum and maximum values for legend. This is 
+                auto set when Data is loaded on a model. Use min and max arguments to
+                customize this auto calculated range.
         """
 
     def __init__(
             self,
-            range: Tuple[float, float],
             name: str = 'Legend',
             unit: str = '',
             colors: ColorSet = ColorSet.ecotect,
@@ -200,12 +204,14 @@ class LegendParameter:
             decimal_count: DecimalCount = DecimalCount.default,
             preceding_labels: bool = False,
             label_parameters: Text = Text(color=(0, 0, 0), size=30),
-            title_parameters: Text = Text(color=(0, 0, 0), size=50, bold=True)) -> None:
+            title_parameters: Text = Text(color=(0, 0, 0), size=50, bold=True),
+            min: Union[float, int] = None,
+            max: Union[float, int] = None,
+            auto_range: Tuple[float, float] = None) -> None:
 
         self.name = name
         self.unit = unit
         self.colors = colors
-        self.range = range
         self.show_legend = show_legend
         self.orientation = orientation
         self.position = position
@@ -217,22 +223,10 @@ class LegendParameter:
         self.preceding_labels = preceding_labels
         self.label_parameters = label_parameters
         self.title_parameters = title_parameters
-
-    @property
-    def range(self) -> Tuple[float, float]:
-        """A tuple with min and max values in the legend."""
-        return self._range
-
-    @range.setter
-    def range(self, val) -> None:
-        if isinstance(val, (tuple, list)) and _validate_input(
-                val, [float, int], num_val=2):
-            self._range = val
-        else:
-            raise ValueError(
-                'Range takes a tuple or a list of integers.'
-                f' Instead got {val}.'
-            )
+        self.min = min
+        self.max = max
+        self.auto_range = auto_range
+        self._range = None
 
     @property
     def name(self) -> str:
@@ -473,9 +467,94 @@ class LegendParameter:
                 f'Title font expects a Font object. Instead got {type(val).__name__}.'
             )
 
+    @property
+    def min(self):
+        return self._min
+
+    @min.setter
+    def min(self, val):
+        if not val:
+            self._min = None
+        elif isinstance(val, (int, float)):
+            self._min = val
+        else:
+            raise ValueError(
+                f'Min must be a number. Instead got {val}.'
+            )
+
+    @property
+    def max(self):
+        return self._max
+
+    @max.setter
+    def max(self, val):
+        if not val:
+            self._max = None
+        elif isinstance(val, (int, float)):
+            self._max = val
+        else:
+            raise ValueError(
+                f'Max must be a number. Instead got {val}.'
+            )
+
+    @property
+    def auto_range(self) -> Tuple[float, float]:
+        """A tuple with min and max values in the legend."""
+        return self._auto_range
+
+    @auto_range.setter
+    def auto_range(self, val) -> None:
+        if not val:
+            self._auto_range = None
+        elif isinstance(val, (tuple, list)) and _validate_input(
+                val, [float, int], num_val=2):
+            self._auto_range = val
+        else:
+            raise ValueError(
+                'Range takes a tuple or a list of integers.'
+                f' Instead got {val}.'
+            )
+
+    @property
+    def range(self):
+        if not self._min and not self._max:
+            return self._auto_range
+
+        elif self._min and not self._max:
+            if self._min < self._auto_range[1]:
+                return (self._min, self._auto_range[1])
+            else:
+                raise ValueError(
+                    f'In {self._name},'
+                    f' min value {self._min} must be less than auto-calculated'
+                    f' max value {self._auto_range[1]}. Either update min value or'
+                    ' provide a max value.'
+                )
+
+        elif not self._min and self._max:
+            if self._max > self._auto_range[0]:
+                return (self._auto_range[0], self._max)
+            else:
+                raise ValueError(
+                    f'In {self._name},'
+                    f' max value {self._max} must be greater than auto-calculated'
+                    f' max value {self._auto_range[1]}. Either update max value or'
+                    ' provide a min value.'
+                )
+
+        elif self._min and self._max:
+            if self._min < self._max:
+                return (self._min, self._max)
+            else:
+                raise ValueError(
+                    f'In {self._name},'
+                    f' make sure max value {self._max} is greater than the min'
+                    f' value {self._min}.'
+                )
+
     def get_lookuptable(self) -> vtk.vtkLookupTable:
         """Get a vtk lookuptable."""
-        minimum, maximum = self._range
+        minimum, maximum = self.range
         color_values = self._colors.value
         lut = vtk.vtkLookupTable()
         lut.SetRange(minimum, maximum)
@@ -483,7 +562,6 @@ class LegendParameter:
         lut.SetValueRange(minimum, maximum)
         lut.SetHueRange(0, 0)
         lut.SetSaturationRange(0, 0)
-
         lut.SetNumberOfTableValues(len(color_values))
         for count, color in enumerate(color_values):
             lut.SetTableValue(
@@ -539,7 +617,7 @@ class LegendParameter:
             f' Legend title: {self._unit} |'
             f' Legend visibility: {self._show_legend} |'
             f' Legend color scheme: {self._colors.name} |'
-            f' Legend range: {self._range} |'
+            f' Legend range: {self._auto_range} |'
             f' Legend visibility: {self._show_legend} |'
             f' Legend orientation: {self._orientation} |'
             f' Legend position: {self._position} |'
