@@ -71,9 +71,9 @@ class DataFieldInfo:
                  colors: ColorSet = ColorSet.ecotect, per_face: bool = True
                  ) -> None:
         self.name = name
-        self.per_face = per_face
         self._range = range
-        self._legend_param = LegendParameter(name=name, colors=colors, range=range)
+        self.per_face = per_face
+        self._legend_param = LegendParameter(name=name, colors=colors, auto_range=range)
 
     @property
     def legend_parameter(self) -> LegendParameter:
