@@ -46,7 +46,7 @@ def test_legend_parameter_initialization():
     assert not lp.auto_range
     assert not lp.min
     assert not lp.max
-    assert not lp.show_legend
+    assert not lp.hide_legend
     assert not lp.range
     assert lp.orientation == Orientation.horizontal
     assert lp.position == (0.5, 0.1)
@@ -71,7 +71,7 @@ def test_legend_parameter_errors():
     with pytest.raises(ValueError):
         lp.name = 2
     with pytest.raises(ValueError):
-        lp.show_legend = 3
+        lp.hide_legend = 3
     with pytest.raises(ValueError):
         lp.orientation = 90
     with pytest.raises(ValueError):

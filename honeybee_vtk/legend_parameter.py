@@ -150,7 +150,7 @@ class LegendParameter:
             unit: A text string representing the unit of the data that the legend
                 represents. Examples are 'celsius', 'kwn/m2', etc.
             colors: A Colors object. Defaults to Ecotect colorset.
-            show_legend: A boolean to set the visibility of a legend in Scene.
+            hide_legend: A boolean to set the visibility of a legend in Scene.
                 Defaults to False.
             orientation: An Orientation object that sets the orientation of the legend in
                 the scene. Defaults to horizontal orientation.
@@ -194,7 +194,7 @@ class LegendParameter:
             name: str = 'Legend',
             unit: str = '',
             colors: ColorSet = ColorSet.ecotect,
-            show_legend: bool = False,
+            hide_legend: bool = False,
             orientation: Orientation = Orientation.horizontal,
             position: Tuple[float, float] = (0.5, 0.1),
             width: float = 0.45,
@@ -212,7 +212,7 @@ class LegendParameter:
         self.name = name
         self.unit = unit
         self.colors = colors
-        self.show_legend = show_legend
+        self.hide_legend = hide_legend
         self.orientation = orientation
         self.position = position
         self.width = width
@@ -277,16 +277,16 @@ class LegendParameter:
             )
 
     @property
-    def show_legend(self) -> bool:
+    def hide_legend(self) -> bool:
         """Visibility of legend in the scene."""
-        return self._show_legend
+        return self._hide_legend
 
-    @show_legend.setter
-    def show_legend(self, val) -> None:
+    @hide_legend.setter
+    def hide_legend(self, val) -> None:
         if not val:
-            self._show_legend = False
+            self._hide_legend = False
         elif isinstance(val, bool):
-            self._show_legend = val
+            self._hide_legend = val
         else:
             raise ValueError(
                 'Only a True or False value is accepted.'
@@ -615,10 +615,9 @@ class LegendParameter:
         return (
             f'Legend name: {self._name} |'
             f' Legend title: {self._unit} |'
-            f' Legend visibility: {self._show_legend} |'
+            f' Legend visibility: {self._hide_legend} |'
             f' Legend color scheme: {self._colors.name} |'
-            f' Legend range: {self._auto_range} |'
-            f' Legend visibility: {self._show_legend} |'
+            f' Legend visibility: {self._hide_legend} |'
             f' Legend orientation: {self._orientation} |'
             f' Legend position: {self._position} |'
             f' Legend width: {self._width} |'
@@ -628,5 +627,9 @@ class LegendParameter:
             f' Type of label: {self._decimal_count} |'
             f' Position of label: {self._preceding_labels} |'
             f' Font of label: {self._label_parameters} |'
-            f' Font of title: {self._title_parameters}'
+            f' Font of title: {self._title_parameters} |'
+            f' Legend auto-range: {self._auto_range} |'
+            f' Legend min: {self._min} |'
+            f' Legend max: {self._max} |'
+            f' Legend range: {self.range} |'
         )

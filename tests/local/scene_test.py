@@ -104,7 +104,7 @@ def test_export_images():
     scene.add_actors(actors)
 
     scene.legend_parameters['Daylight-factor'].orientation = Orientation.horizontal
-    scene.legend_parameters['Daylight-factor'].show_legend = True
+    scene.legend_parameters['Daylight-factor'].hide_legend = True
     scene.legend_parameters['Daylight-factor'].position = (0.0, 0.1)
 
     rd = scene.legend_parameter('Radiation')
@@ -112,7 +112,7 @@ def test_export_images():
     rd.height = 0.45
     rd.width = 0.05
     rd.decimal_count = DecimalCount.integer
-    rd.show_legend = True
+    rd.hide_legend = True
     rd.position = (0.90, 0.1)
 
     # A camera setup using the constructor

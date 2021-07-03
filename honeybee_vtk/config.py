@@ -353,7 +353,7 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
                 ' on data.'
             )
 
-        legend.show_legend = legend_params.hide_legend
+        legend.hide_legend = legend_params.hide_legend
         legend.orientation = legend_params.orientation
         legend.position = legend_params.position
         legend.width = legend_params.width
