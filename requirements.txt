@@ -1,2 +1,2 @@
 honeybee-radiance>=1.38.13
-vtk==9.0.1
+vtk==9.0.3
