@@ -2,7 +2,7 @@
 
 from _pytest.python_api import raises
 import vtk
-from ladybug.color import Colorset
+from ladybug.color import Colorset, Color
 from enum import Enum, auto
 from typing import Tuple, Union
 from ._helper import _validate_input
@@ -10,10 +10,10 @@ from ._helper import _validate_input
 
 class DecimalCount (Enum):
     """Controlling the number of decimals on each label of the legend."""
-    decimal_two = '%#6.2f'
-    decimal_three = '%-#6.3f'
-    default = '%-#6.3g'
-    integer = '%4.3g'
+    decimal_two = 'decimal_two'
+    decimal_three = 'decimal_three'
+    default = 'default'
+    integer = 'integer'
 
 
 decimal_count = {'decimal_two': '%#6.2f', 'decimal_three': '%-#6.3f',
@@ -28,33 +28,33 @@ class Orientation(Enum):
 
 class ColorSet(Enum):
     """Colors for a legend."""
-    annual_comfort = Colorset.annual_comfort()
-    benefit = Colorset.benefit()
-    benefit_harm = Colorset.benefit_harm()
-    black_to_white = Colorset.black_to_white()
-    blue_green_red = Colorset.blue_green_red()
-    cloud_cover = Colorset.cloud_cover()
-    cold_sensation = Colorset.cold_sensation()
-    ecotect = Colorset.ecotect()
-    energy_balance = Colorset.energy_balance()
-    energy_balance_storage = Colorset.energy_balance_storage()
-    glare_study = Colorset.glare_study()
-    harm = Colorset.harm()
-    heat_sensation = Colorset.heat_sensation()
-    multi_colored = Colorset.multi_colored()
-    multicolored_2 = Colorset.multicolored_2()
-    multicolored_3 = Colorset.multicolored_3()
-    nuanced = Colorset.nuanced()
-    openstudio_palette = Colorset.openstudio_palette()
-    original = Colorset.original()
-    peak_load_balance = Colorset.peak_load_balance()
-    shade_benefit = Colorset.shade_benefit()
-    shade_benefit_harm = Colorset.shade_benefit_harm()
-    shade_harm = Colorset.shade_harm()
-    shadow_study = Colorset.shadow_study()
-    therm = Colorset.therm()
-    thermal_comfort = Colorset.thermal_comfort()
-    view_study = Colorset.view_study()
+    annual_comfort = 'annual_comfort'
+    benefit = 'benefit'
+    benefit_harm = 'benefit_harm'
+    black_to_white = 'black_to_white'
+    blue_green_red = 'blue_green_red'
+    cloud_cover = 'cloud_cover'
+    cold_sensation = 'cloud_sensation'
+    ecotect = 'ecotect'
+    energy_balance = 'energy_balance'
+    energy_balance_storage = 'energy_balance_storag'
+    glare_study = 'glare_study'
+    harm = 'harm'
+    heat_sensation = 'heat_sensation'
+    multi_colored = 'multi_colored'
+    multicolored_2 = 'multicolored_2'
+    multicolored_3 = 'multicolored_3'
+    nuanced = 'nuanced'
+    openstudio_palette = 'openstudio_palette'
+    original = 'original'
+    peak_load_balance = 'peak_load_balance'
+    shade_benefit = 'shade_benefit'
+    shade_benefit_harm = 'shade_benefit_harm'
+    shade_harm = 'shade_harm'
+    shadow_study = 'shadow_study'
+    therm = 'therm'
+    thermal_comfort = 'thermal_comfort'
+    view_study = 'view_study'
 
 
 color_set = {
@@ -308,7 +308,7 @@ class LegendParameter:
             self._colors = val
         else:
             raise ValueError(
-                f'A Colors object expected. Instead got {val}.'
+                f'A ColorSet objects expected. Instead got {val}.'
             )
 
     @property
@@ -590,7 +590,7 @@ class LegendParameter:
     def get_lookuptable(self) -> vtk.vtkLookupTable:
         """Get a vtk lookuptable."""
         minimum, maximum = self.range
-        color_values = self._colors.value
+        color_values = color_set[self._colors.value]
         lut = vtk.vtkLookupTable()
         lut.SetRange(minimum, maximum)
         lut.SetRampToLinear()
