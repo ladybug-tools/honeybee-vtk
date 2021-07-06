@@ -368,13 +368,16 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
         )
 
 
-def load_config(json_path: str, model: Model, scene: Scene) -> None:
+def load_config(json_path: str, model: Model, scene: Scene) -> Model:
     """Mount data on model from config json.
 
     Args:
         json_path: File path to the config json file.
         model: A honeybee-vtk model object.
         scene: A honeybee-vtk scene object.
+
+    Returns:
+        A honeybee-vtk model with data loaded on it.
     """
     try:
         with open(json_path) as fh:
@@ -389,3 +392,4 @@ def load_config(json_path: str, model: Model, scene: Scene) -> None:
             if _validate_data(data, model):
                 _load_data(data, model)
                 _load_legend_parameters(data, model, scene)
+        return model
