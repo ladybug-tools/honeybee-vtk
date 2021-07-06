@@ -59,10 +59,10 @@ class LegendConfig(BaseModel):
         validate_all = True
         validate_assignment = True
 
-    color_set: str = Field(
-        'ecotect',
+    color_set: ColorSet = Field(
+        ColorSet.ecotect,
         description='Color set to be used on data and legend. Currently, this field'
-        ' only uses Ladybug color sets.'
+        ' only uses Ladybug color sets. Defaults to using ecotect colorset.'
     )
 
     min: Union[Autocalculate, float] = Field(
@@ -121,10 +121,11 @@ class LegendConfig(BaseModel):
         ' to vtk scalarbar default setting.'
     )
 
-    decimal_count: str = Field(
-        'default',
+    decimal_count: DecimalCount = Field(
+        DecimalCount.default,
         description='Controlling the number of decimals on each label of the legend.'
         'Accepted values are "default", "integer", "decimal_two", and "decimal_three".'
+        'Defaults to VTKs default settings.'
     )
 
     preceding_labels: bool = Field(
@@ -142,24 +143,6 @@ class LegendConfig(BaseModel):
         TextConfig(bold=True),
         description='Text parameters for the title of the legend.'
     )
-
-    @validator('color_set')
-    def validate_color_set(cls, v: str) -> ColorSet:
-        try:
-            return ColorSet[v]
-        except KeyError:
-            raise KeyError(
-                f'color_set must be from {tuple(dir(ColorSet)[4:])}. Instead go {v}.'
-            )
-
-    @validator('decimal_count')
-    def validate_decimal_count(cls, v: str, values) -> DecimalCount:
-        try:
-            return DecimalCount[v]
-        except KeyError:
-            raise KeyError(
-                f'Decimal count must be from {tuple(dir(DecimalCount)[4:])}. Instead got {v}.'
-            )
 
 
 class DataConfig(BaseModel):
