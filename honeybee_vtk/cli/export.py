@@ -50,7 +50,7 @@ def export():
     help='Set background color for images', show_default=True
 )
 @click.option(
-    '--display-mode-model', '-dmm',
+    '--model-display-mode', '-mdm',
     type=click.Choice(['shaded', 'surface', 'surfacewithedges', 'wireframe', 'points'],
                       case_sensitive=False),
     default='shaded', help='Set display mode for the model.', show_default=True
@@ -62,7 +62,7 @@ def export():
     show_default=True,
 )
 @click.option(
-    '--display-mode-grid', '-dmg',
+    '--grid-display-mode', '-gdm',
     type=click.Choice(['shaded', 'surface', 'surfacewithedges',
                        'wireframe', 'points'], case_sensitive=False),
     default='shaded', help='Set display mode for the Sensorgrids.', show_default=True
@@ -79,7 +79,7 @@ def export():
 )
 def export(
         hbjson_file, name, folder, image_type, image_width, image_height,
-        background_color, display_mode_model, grid_options, display_mode_grid, view,
+        background_color, model_display_mode, grid_options, grid_display_mode, view,
         config):
     """Export images from radiance views in a HBJSON file.
 
@@ -117,27 +117,27 @@ def export(
         model = Model.from_hbjson(hbjson=hbjson_file, load_grids=grid_options)
 
         # Set model's display mode
-        if display_mode_model == 'shaded':
+        if model_display_mode == 'shaded':
             model.update_display_mode(DisplayMode.Shaded)
-        elif display_mode_model == 'surface':
+        elif model_display_mode == 'surface':
             model.update_display_mode(DisplayMode.Surface)
-        elif display_mode_model == 'surfacewithedges':
+        elif model_display_mode == 'surfacewithedges':
             model.update_display_mode(DisplayMode.SurfaceWithEdges)
-        elif display_mode_model == 'wireframe':
+        elif model_display_mode == 'wireframe':
             model.update_display_mode(DisplayMode.Wireframe)
-        elif display_mode_model == 'points':
+        elif model_display_mode == 'points':
             model.update_display_mode(DisplayMode.Points)
 
         # Set model's grid's display mode
-        if display_mode_grid == 'shaded':
+        if grid_display_mode == 'shaded':
             model.sensor_grids.display_mode = DisplayMode.Shaded
-        elif display_mode_model == 'surface':
+        elif model_display_mode == 'surface':
             model.sensor_grids.display_mode = DisplayMode.Surface
-        elif display_mode_model == 'surfacewithedges':
+        elif model_display_mode == 'surfacewithedges':
             model.sensor_grids.display_mode = DisplayMode.SurfaceWithEdges
-        elif display_mode_model == 'wireframe':
+        elif model_display_mode == 'wireframe':
             model.sensor_grids.display_mode = DisplayMode.Wireframe
-        elif display_mode_model == 'points':
+        elif model_display_mode == 'points':
             model.sensor_grids.display_mode = DisplayMode.Points
 
         actors = Actor.from_model(model)

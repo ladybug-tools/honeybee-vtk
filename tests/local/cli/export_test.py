@@ -23,7 +23,7 @@ def test_export_image():
             file_path, '--folder', target_folder, '--name', 'Model', '--image-type',
             'PNG', '--image-width', 200, '--image-height', 500,
             '--background-color', 255, 255, 255, '--grid-options', 'Meshes',
-            '--display-mode-model', 'Shaded', '--display-mode-grid', 'SurfaceWithEdges',
+            '--model-display-mode', 'Shaded', '--grid-display-mode', 'SurfaceWithEdges',
             '--view', view_file, '--view', view_file_1, '--config', config_path])
 
     assert result.exit_code == 0
