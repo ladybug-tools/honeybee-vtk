@@ -636,8 +636,8 @@ class LegendParameter:
             scalar_bar.SetNumberOfLabels(self._label_count)
 
         # setting the type of labels. Such as integers, decimals, etc.
-        scalar_bar.SetLabelFormat(self._decimal_count.value)
-
+        scalar_bar.SetLabelFormat(decimal_count[self._decimal_count.value])
+        
         # Setting whether the labels and title should precede the legend
         scalar_bar.SetTextPosition(self._preceding_labels)
 
