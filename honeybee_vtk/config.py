@@ -261,7 +261,7 @@ def _validate_data(data: DataConfig, model: Model) -> bool:
         # check if the grid data is meshes or points
         # if grid is sensors
         if model.sensor_grids.data[0].GetNumberOfCells() == 1 and \
-                model.sensor_grids.data[0].GetNumberOfPoint() == file_lengths[0]:
+                model.sensor_grids.data[0].GetNumberOfPoints() == file_lengths[0]:
             num_sensors = [polydata.GetNumberOfPoints()
                            for polydata in model.sensor_grids.data]
         # if grid is meshes
