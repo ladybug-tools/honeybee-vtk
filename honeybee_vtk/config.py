@@ -210,7 +210,7 @@ class DataConfig(BaseModel):
         return v
 
 
-def _validate_data(data: DataConfig, model: Model) -> bool:
+def _validate_data(data: DataConfig, model: Model) -> str:
     """Match result data with the sensor grids in the model.
 
     It will be checked if the number of data files and the names of the
@@ -223,7 +223,7 @@ def _validate_data(data: DataConfig, model: Model) -> bool:
         model: A honeybee-vtk model.
 
     Returns:
-        A boolean value.
+        A text representing grid type. 'points' or 'meshes'
     """
     grids_info_json = pathlib.Path(data.path).joinpath('grids_info.json')
 
@@ -281,6 +281,8 @@ def _load_data(data: DataConfig, model: Model) -> None:
     Args:
         data: A DataConfig object.
         model: A honeybee-vtk model.
+        grid_type: A string indicating whether the sensor grid in the model is made of 
+            points or meshes.
     """
     # file paths to the result files
     file_paths = [result for result in pathlib.Path(
@@ -294,11 +296,18 @@ def _load_data(data: DataConfig, model: Model) -> None:
         result.append(grid_res)
 
     ds = model.get_modeldataset(data.object_type)
-    ds.add_data_fields(
-        result, name=data.identifier)
-    if not data.hide:
-        ds.color_by = data.identifier
-    ds.display_mode = DisplayMode.SurfaceWithEdges
+    if grid_type == 'meshes':
+        ds.add_data_fields(
+            result, name=data.identifier, per_face=True)
+        if not data.hide:
+            ds.color_by = data.identifier
+        ds.display_mode = DisplayMode.SurfaceWithEdges
+    else:
+        ds.add_data_fields(
+            result, name=data.identifier, per_face=False)
+        if not data.hide:
+            ds.color_by = data.identifier
+        ds.display_mode = DisplayMode.Points
 
 
 def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> None:
@@ -389,7 +398,7 @@ def load_config(json_path: str, model: Model, scene: Scene) -> Model:
     else:
         for json_obj in config.values():
             data = DataConfig.parse_obj(json_obj)
-            if _validate_data(data, model):
-                _load_data(data, model)
-                _load_legend_parameters(data, model, scene)
+            grid_type = _validate_data(data, model)
+            _load_data(data, model, grid_type)
+            _load_legend_parameters(data, model, scene)
         return model
