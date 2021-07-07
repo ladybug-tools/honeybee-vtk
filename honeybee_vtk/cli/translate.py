@@ -2,6 +2,7 @@
 
 import sys
 import pathlib
+import traceback
 
 import click
 from click.exceptions import ClickException
@@ -93,9 +94,6 @@ def translate(
         if config:
             scene = Scene()
             actors = Actor.from_model(model)
-            if display_mode == 'wireframe':
-                actors = [actor.get_monochrome((0.0, 0.0, 0.0)) for actor in actors]
-                print(actors)
             bounds = Actor.get_bounds(actors)
             centroid = Actor.get_centroid(actors)
             cameras = Camera.aerial_cameras(bounds=bounds, centroid=centroid)
@@ -110,7 +108,8 @@ def translate(
             output = model.to_vtkjs(folder=folder, name=name)
 
     except Exception as e:
-        raise ClickException(f'Translation failed:\n{e}')
+        traceback.print_exc()
+        sys.exit(1)
     else:
         print(f'Success: {output}', file=sys.stderr)
         return sys.exit(0)
