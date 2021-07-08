@@ -184,6 +184,7 @@ class PolyData(vtk.vtkPolyData):
             self.GetCellData().SetActiveScalars(name)
         else:
             self.GetPointData().SetActiveScalars(name)
+
         self.Modified()
 
     def to_vtk(self, target_folder, name, ascii=False):
@@ -471,7 +472,7 @@ class ModelDataSet:
 
     def __repr__(self) -> str:
         return f'ModelDataSet: {self.name}' \
-            '\n  DataSets: {len(self.data)}\n  Color:{self.color}'
+            f'\n  DataSets: {len(self.data)}\n  Color:{self.color}'
 
 
 def _write_to_file(
