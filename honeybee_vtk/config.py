@@ -400,5 +400,6 @@ def load_config(json_path: str, model: Model, scene: Scene) -> Model:
             data = DataConfig.parse_obj(json_obj)
             grid_type = _validate_data(data, model)
             _load_data(data, model, grid_type)
+            scene.update_scene()
             _load_legend_parameters(data, model, scene)
         return model
