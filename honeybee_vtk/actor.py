@@ -95,8 +95,6 @@ class Actor:
             mapper.SetScalarModeToUsePointData()
             mapper.SetScalarVisibility(True)
 
-            range_min, range_max = field_info.range
-            mapper.SetScalarRange(range_min, range_max)
             mapper.SetLookupTable(field_info.legend_parameter.get_lookuptable())
             mapper.SetScalarRange(field_info.legend_parameter.range)
             mapper.Update()
