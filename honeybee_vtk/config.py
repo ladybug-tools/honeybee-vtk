@@ -284,9 +284,22 @@ def _load_data(data: DataConfig, model: Model) -> None:
         grid_type: A string indicating whether the sensor grid in the model is made of 
             points or meshes.
     """
+    grids_info_json = pathlib.Path(data.path).joinpath('grids_info.json')
+    with open(grids_info_json) as fh:
+        grids_info = json.load(fh)
+
+    # grid identifier from grids_info.json
+    file_names = [grid['identifier'] for grid in grids_info]
+
+    # finding file extension for grid results
+    for path in pathlib.Path(data.path).iterdir():
+        if path.stem == file_names[0]:
+            extension = path.suffix
+            break
+
     # file paths to the result files
-    file_paths = [result for result in pathlib.Path(
-        data.path).iterdir() if result.suffix != '.json']
+    file_paths = [pathlib.Path(data.path).joinpath(name+extension)
+                  for name in file_names]
 
     result = []
     for file_path in file_paths:
@@ -400,6 +413,5 @@ def load_config(json_path: str, model: Model, scene: Scene) -> Model:
             data = DataConfig.parse_obj(json_obj)
             grid_type = _validate_data(data, model)
             _load_data(data, model, grid_type)
-            scene.update_scene()
             _load_legend_parameters(data, model, scene)
         return model
