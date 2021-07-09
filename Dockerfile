@@ -1,4 +1,4 @@
-FROM python:3.7-slim
+FROM python:3.7-slim as main
 
 LABEL maintainer="Ladybug Tools" email="info@ladybug.tools"
 
@@ -39,3 +39,12 @@ USER ladybugbot
 # Set workdir
 RUN mkdir -p ${RUNDIR}
 WORKDIR ${RUNDIR}
+
+FROM main as dev
+
+USER root
+
+COPY dev-requirements.txt ${RUNDIR}
+COPY tests ${RUNDIR}/tests
+
+RUN pip3 install --no-cache-dir -r  dev-requirements.txt

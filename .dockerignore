@@ -1,6 +1,5 @@
 .github/
 docs/
-tests/
 images/
 .coveragerc
 .gitignore
