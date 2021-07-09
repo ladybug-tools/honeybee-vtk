@@ -351,7 +351,7 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
 
         if not legend.min and not legend.max:
             warnings.warn(
-                f'For legend{data.object_type.value.capitalize()}, since min and max'
+                f'For legend {data.object_type.value.capitalize()}, since min and max'
                 ' values are not provided, those values will be auto calculated based'
                 ' on data.'
             )
