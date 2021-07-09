@@ -113,6 +113,9 @@ class Actor:
 
         if self._modeldataset.display_mode == DisplayMode.Wireframe:
             actor.GetProperty().SetRepresentationToWireframe()
+        # This is import for grids with sensor points instead of meshes
+        elif self._modeldataset.display_mode == DisplayMode.Points:
+            actor.GetProperty().SetPointSize(15)
 
         return actor
 
