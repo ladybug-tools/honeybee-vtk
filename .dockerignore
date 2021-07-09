@@ -1,0 +1,8 @@
+.github/
+docs/
+images/
+.coveragerc
+.gitignore
+.releaserc.json
+deploy.sh
+Dockerfile

@@ -31,6 +31,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  test-docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: docker build
+        run: |
+          docker build -t hbvtk:latest --target dev .
+
+      - name: docker test
+        run:
+          docker run hbvtk:latest python -m pytest tests/
+
   deploy:
     name: Deploy to GitHub and PyPI
     runs-on: ubuntu-latest
@@ -59,6 +72,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
           PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
 
   docs:
     name: Generate docs
