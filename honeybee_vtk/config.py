@@ -197,7 +197,7 @@ class DataConfig(BaseModel):
                 f' cannot be greater than the position of legend in X direction'
                 f' {v.position[0]}.'
                 ' Either update the position in X direction or update the'
-                ' width of the legend.'
+                ' width of the legend. \n'
             )
         if v.height >= 0.5 and v.position[1] >= 0.5 and v.height > v.position[1]:
             raise ValueError(
@@ -205,7 +205,7 @@ class DataConfig(BaseModel):
                 f' cannot be greater than the position of legend in Y direction'
                 f' {v.position[1]}.'
                 ' Either update the position in Y direction or update the'
-                ' height of the legend.'
+                ' height of the legend. \n'
             )
         return v
 
@@ -351,9 +351,9 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
 
         if not legend.min and not legend.max:
             warnings.warn(
-                f'For legend {data.object_type.value.capitalize()}, since min and max'
+                f'In data {data.identifier.capitalize()}, since min and max'
                 ' values are not provided, those values will be auto calculated based'
-                ' on data.'
+                ' on data. \n'
             )
 
         legend.hide_legend = legend_params.hide_legend
@@ -386,7 +386,7 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
     elif data.legend_parameters and data.hide:
         warnings.warn(
             f'Since {data.object_type.value.capitalize()} is not going to be'
-            f' colored by {data.identifier}, legend parameters will be ignored.'
+            f' colored by {data.identifier}, legend parameters will be ignored. \n'
         )
 
 
