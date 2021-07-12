@@ -26,7 +26,7 @@ class Orientation(Enum):
     horizontal = 'horizontal'
 
 
-class ColorSet(Enum):
+class ColorSets(Enum):
     """Colors for a legend."""
     annual_comfort = 'annual_comfort'
     benefit = 'benefit'
@@ -228,7 +228,7 @@ class LegendParameter:
             self,
             name: str = 'Legend',
             unit: str = '',
-            colors: ColorSet = ColorSet.ecotect,
+            colors: ColorSets = ColorSets.ecotect,
             hide_legend: bool = False,
             orientation: Orientation = Orientation.horizontal,
             position: Tuple[float, float] = (0.5, 0.1),
@@ -296,15 +296,15 @@ class LegendParameter:
             )
 
     @property
-    def colors(self) -> ColorSet:
+    def colors(self) -> ColorSets:
         """Colors to be used in the legend."""
         return self._colors
 
     @colors.setter
     def colors(self, val) -> None:
         if not val:
-            self._colors = ColorSet.ecotect
-        elif isinstance(val, ColorSet):
+            self._colors = ColorSets.ecotect
+        elif isinstance(val, ColorSets):
             self._colors = val
         else:
             raise ValueError(
@@ -637,7 +637,7 @@ class LegendParameter:
 
         # setting the type of labels. Such as integers, decimals, etc.
         scalar_bar.SetLabelFormat(decimal_count[self._decimal_count.value])
-        
+
         # Setting whether the labels and title should precede the legend
         scalar_bar.SetTextPosition(self._preceding_labels)
 
