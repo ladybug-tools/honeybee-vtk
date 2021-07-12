@@ -8,7 +8,7 @@ ENV LIBRARYDIR="${WORKDIR}/honeybee-vtk"
 ENV PATH="${WORKDIR}/.local/bin:${PATH}"
 
 RUN apt-get update \
-    && apt-get -y install ffmpeg libsm6 libxext6 --no-install-recommends git \
+    && apt-get -y install ffmpeg libsm6 libxext6 xvfb --no-install-recommends git \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
