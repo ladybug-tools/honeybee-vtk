@@ -6,9 +6,10 @@ import pathlib
 import warnings
 
 from typing import List, Union
-from pydantic import BaseModel, validator, Field, constr
+from pydantic import BaseModel, validator, Field, constr, conint
+from pydantic.types import confloat, conlist
 from .types import DataSetNames
-from .legend_parameter import ColorSet, Text, DecimalCount, Orientation
+from .legend_parameter import ColorSets, Text, DecimalCount, Orientation
 from .model import Model
 from ._helper import get_line_count, get_min_max
 from .vtkjs.schema import DisplayMode
@@ -30,13 +31,13 @@ class TextConfig(BaseModel):
         validate_all = True
         validate_assignment = True
 
-    color: List[int] = Field(
+    color: List[conint(ge=0, le=255)] = Field(
         [0, 0, 0],
         description='An array of three integer values representing R, G, and B values'
         ' for the color of text. Values from 0 to 255 are accepted.'
     )
 
-    size: int = Field(
+    size: conint(ge=0) = Field(
         30,
         description='Text size in points.'
     )
@@ -46,12 +47,6 @@ class TextConfig(BaseModel):
         description='Boolean value to indicate whether to make the text bold or not.'
     )
 
-    @validator('size')
-    def negative_size_not_allowed(cls, v: int) -> int:
-        if v < 0:
-            raise ValueError('Text size cannot be a negative number.')
-        return v
-
 
 class LegendConfig(BaseModel):
     """Config for the legend to be created from a dataset."""
@@ -59,8 +54,8 @@ class LegendConfig(BaseModel):
         validate_all = True
         validate_assignment = True
 
-    color_set: ColorSet = Field(
-        ColorSet.ecotect,
+    color_set: ColorSets = Field(
+        ColorSets.ecotect,
         description='Color set to be used on data and legend. Currently, this field'
         ' only uses Ladybug color sets. Defaults to using ecotect colorset.'
     )
@@ -90,19 +85,19 @@ class LegendConfig(BaseModel):
         description='Choose between horizontal and vertical orientation of legend.'
     )
 
-    width: float = Field(
+    width: confloat(ge=0.05, le=0.95) = Field(
         0.45,
         description=' A decimal number representing the fraction of viewport width'
         ' that will be used to define the width of the legend.'
     )
 
-    height: float = Field(
+    height: confloat(ge=0.05, le=0.95) = Field(
         0.05,
         description='A decimal number representing the fraction of viewport height'
         'that will be used to define the height of the legend.'
     )
 
-    position: List[float] = Field(
+    position: conlist(confloat(ge=0.05, le=0.95), min_items=2, max_items=2) = Field(
         [0.5, 0.1],
         description='A tuple of two decimal values. The values represent the fraction'
         ' of viewport width and the fraction of viewport height.'
@@ -161,8 +156,7 @@ class DataConfig(BaseModel):
 
     object_type: DataSetNames = Field(
         description='The name of the model object on which you would like to map this'
-        ' data. Acceptable values are "wall", "aperture", "shade", "door", "floor",'
-        ' "roofceiling", "airboundary", "grid".'
+        ' data.'
     )
 
     unit: str = Field(
@@ -221,7 +215,7 @@ def _validate_data(data: DataConfig, model: Model) -> bool:
 
     It will be checked if the number of data files and the names of the
     data files match with the grid identifiers. This function does not support validating
-    result data for other than sensor grids as of now. This is a helper method to the 
+    result data for other than sensor grids as of now. This is a helper method to the
     public load_config method.
 
     Args:
@@ -232,56 +226,51 @@ def _validate_data(data: DataConfig, model: Model) -> bool:
         A boolean value.
     """
     grids_info_json = pathlib.Path(data.path).joinpath('grids_info.json')
-    # TODO: Confirm with Chris if this check for json is needed. I think it's not.
-    try:
-        with open(grids_info_json) as fh:
-            grids_info = json.load(fh)
-    except json.decoder.JSONDecodeError:
-        raise TypeError(
-            'grids_info is not a valid json file.'
-        )
+
+    with open(grids_info_json) as fh:
+        grids_info = json.load(fh)
+
+    assert len(model.sensor_grids.data) > 0, 'Sensor grids are not loaded on'\
+        ' this model. Reload them using grid options.'
+    # TODO: Make sure to remove this limitation. A user should not have to always
+    # TODO: load all the grids
+    assert len(model.sensor_grids.data) == len(grids_info), 'The number of result'\
+        f' files {len(grids_info)} does for {data.identifier} does not match'\
+        f' the number of sensor grids in the model {len(model.sensor_grids.data)}.'
+
+    grids_model_identifiers = [grid.identifier for grid in model.sensor_grids.data]
+    grids_info_identifiers = [grid['full_id'] for grid in grids_info]
+    assert grids_model_identifiers == grids_info_identifiers, 'The identifiers of'\
+        ' the sensor grids in the model do not match the identifiers of the grids'\
+        f' in the grids_info.json for {data.identifier}.'
+
+    # make sure length of each file matches the number of sensors in grid
+    file_lengths = [grid['count'] for grid in grids_info]
+
+    # check if the grid data is meshes or points
+    # if grid is sensors
+    if model.sensor_grids.data[0].GetNumberOfCells() == 1 and \
+            model.sensor_grids.data[0].GetNumberOfPoints() == file_lengths[0]:
+        num_sensors = [polydata.GetNumberOfPoints()
+                       for polydata in model.sensor_grids.data]
+    # if grid is meshes
     else:
-        assert len(model.sensor_grids.data) > 0, 'Sensor grids are not loaded on'\
-            ' this model. Reload them using grid options.'
-        # TODO: Make sure to remove this limitation. A user should not have to always
-        # TODO: load all the grids
-        assert len(model.sensor_grids.data) == len(grids_info), 'The number of result'\
-            f' files {len(grids_info)} does for {data.identifier} does not match'\
-            f' the number of sensor grids in the model {len(model.sensor_grids.data)}.'
+        num_sensors = [polydata.GetNumberOfCells()
+                       for polydata in model.sensor_grids.data]
 
-        grids_model_identifiers = [grid.identifier for grid in model.sensor_grids.data]
-        grids_info_identifiers = [grid['identifier'] for grid in grids_info]
-        assert grids_model_identifiers == grids_info_identifiers, 'The identifiers of'\
-            ' the sensor grids in the model do not match the identifiers of the grids'\
-            f' in the grids_info.json for {data.identifier}.'
+    if file_lengths != num_sensors:
+        length_matching = {
+            grids_info_identifiers[i]: file_lengths[i] == num_sensors[i] for i in
+            range(len(grids_model_identifiers))
+        }
+        names_to_report = [
+            id for id in length_matching if length_matching[id] is False]
+        raise ValueError(
+            'File lengths of result files must match the number of sensors on grids.'
+            ' Lengths of files with following names do not match'
+            f' {tuple(names_to_report)}.')
 
-        # make sure length of each file matches the number of sensors in grid
-        file_lengths = [grid['count'] for grid in grids_info]
-
-        # check if the grid data is meshes or points
-        # if grid is sensors
-        if model.sensor_grids.data[0].GetNumberOfCells() == 1 and \
-                model.sensor_grids.data[0].GetNumberOfPoints() == file_lengths[0]:
-            num_sensors = [polydata.GetNumberOfPoints()
-                           for polydata in model.sensor_grids.data]
-        # if grid is meshes
-        else:
-            num_sensors = [polydata.GetNumberOfCells()
-                           for polydata in model.sensor_grids.data]
-
-        if file_lengths != num_sensors:
-            length_matching = {
-                grids_info_identifiers[i]: file_lengths[i] == num_sensors[i] for i in
-                range(len(grids_model_identifiers))
-            }
-            names_to_report = [
-                id for id in length_matching if length_matching[id] is False]
-            raise ValueError(
-                'File lengths of result files must match the number of sensors on grids.'
-                ' Lengths of files with following names do not match'
-                f' {tuple(names_to_report)}.')
-
-        return True
+    return True
 
 
 def _load_data(data: DataConfig, model: Model) -> None:
