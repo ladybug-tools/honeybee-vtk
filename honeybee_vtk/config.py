@@ -47,12 +47,6 @@ class TextConfig(BaseModel):
         description='Boolean value to indicate whether to make the text bold or not.'
     )
 
-    @validator('size')
-    def negative_size_not_allowed(cls, v: int) -> int:
-        if v < 0:
-            raise ValueError('Text size cannot be a negative number.')
-        return v
-
 
 class LegendConfig(BaseModel):
     """Config for the legend to be created from a dataset."""
@@ -162,8 +156,7 @@ class DataConfig(BaseModel):
 
     object_type: DataSetNames = Field(
         description='The name of the model object on which you would like to map this'
-        ' data. Acceptable values are "wall", "aperture", "shade", "door", "floor",'
-        ' "roofceiling", "airboundary", "grid".'
+        ' data.'
     )
 
     unit: str = Field(
