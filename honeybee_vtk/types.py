@@ -15,7 +15,7 @@ import vtk
 from enum import Enum
 from typing import Dict, Union, List, Tuple
 from ladybug.color import Color
-from .legend_parameter import LegendParameter, ColorSet
+from .legend_parameter import LegendParameter, ColorSets
 from .vtkjs.schema import DataSetProperty, DataSet, DisplayMode, DataSetMapper
 
 
@@ -68,7 +68,7 @@ class DataFieldInfo:
     """
 
     def __init__(self, name: str = 'default', range: Tuple[float, float] = None,
-                 colors: ColorSet = ColorSet.ecotect, per_face: bool = True
+                 colors: ColorSets = ColorSets.ecotect, per_face: bool = True
                  ) -> None:
         self.name = name
         self._range = range
@@ -170,7 +170,7 @@ class PolyData(vtk.vtkPolyData):
         if not data_range:
             data_range = tuple(values.GetRange())
         if not colors:
-            colors = ColorSet.ecotect
+            colors = ColorSets.ecotect
 
         self._fields[name] = DataFieldInfo(name, data_range, colors, cell)
 

@@ -11,7 +11,7 @@ from honeybee_vtk.scene import Scene
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 from honeybee_vtk.camera import Camera
 from honeybee_vtk.actor import Actor
-from honeybee_vtk.types import ImageTypes, ColorSet
+from honeybee_vtk.types import ImageTypes, ColorSets
 from honeybee_vtk.legend_parameter import DecimalCount, Orientation
 
 
@@ -92,7 +92,7 @@ def test_export_images():
             radiation.append([float(data[0])])
 
     model.shades.add_data_fields(radiation, name='Radiation', data_range=(0, 2000),
-                                 colors=ColorSet.original)
+                                 colors=ColorSets.original)
     model.shades.color_by = 'Radiation'
     model.shades.display_mode = DisplayMode.SurfaceWithEdges
 
