@@ -28,7 +28,7 @@ COPY LICENSE ${LIBRARYDIR}
 
 # Switch user back to modify packages
 USER root
-RUN pip3 install --no-cache-dir setuptools wheel \
+RUN pip3 install --no-cache-dir setuptools wheel xvfbwrapper \
     && pip3 install --no-cache-dir ./honeybee-vtk \
     && apt-get -y --purge remove git \
     && apt-get -y clean \
@@ -47,4 +47,4 @@ USER root
 COPY dev-requirements.txt ${RUNDIR}
 COPY tests ${RUNDIR}/tests
 
-RUN pip3 install --no-cache-dir -r  dev-requirements.txt
+RUN pip3 install --no-cache-dir -r dev-requirements.txt
