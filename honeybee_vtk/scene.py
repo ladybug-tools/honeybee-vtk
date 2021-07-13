@@ -1,14 +1,18 @@
 """A VTK scene."""
 
 from __future__ import annotations
+
+from typing import Dict, List, Tuple, Union
+
 import vtk
-from typing import List, Tuple, Union, Dict
+
 from ._helper import _validate_input
-from .camera import Camera
 from .actor import Actor
 from .assistant import Assistant
-from .types import ImageTypes
+from .camera import Camera
+from .headless import try_headless
 from .legend_parameter import LegendParameter
+from .types import ImageTypes
 
 
 class Scene:
@@ -170,6 +174,7 @@ class Scene:
                 'Add cameras and actors to the scene first.'
             )
 
+    @try_headless
     def export_images(
             self, folder: str, name: str = 'Camera',
             image_type: ImageTypes = ImageTypes.png, *,
