@@ -34,7 +34,6 @@ class DataSetNames(Enum):
 class VTKWriters(Enum):
     """Vtk writers."""
     legacy = 'vtk'
-    ascii = 'vtp'
     binary = 'vtp'
 
 
@@ -187,13 +186,12 @@ class PolyData(vtk.vtkPolyData):
 
         self.Modified()
 
-    def to_vtk(self, target_folder, name, ascii=False):
+    def to_vtk(self, target_folder, name, writer):
         """Write to a VTK file.
 
         The file extension will be set to vtk for ASCII format and vtp for binary format.
         """
-        writer = VTKWriters.ascii if ascii else VTKWriters.binary
-        return _write_to_file(self, target_folder, name, writer=writer)
+        return _write_to_file(self, target_folder, name, writer)
 
     def to_folder(self, target_folder='.'):
         """Write data to a folder with a JSON meta file.
@@ -247,13 +245,12 @@ class JoinedPolyData(vtk.vtkAppendPolyData):
             self.AddInputData(data)
         self.Update()
 
-    def to_vtk(self, target_folder, name, ascii=False):
+    def to_vtk(self, target_folder, name, writer):
         """Write to a VTK file.
 
         The file extension will be set to vtk for ASCII format and vtp for binary format.
         """
-        writer = VTKWriters.ascii if ascii else VTKWriters.binary
-        return _write_to_file(self, target_folder, name, writer=writer)
+        return _write_to_file(self, target_folder, name, writer)
 
     def to_folder(self, target_folder='.'):
         """Write data to a folder with a JSON meta file.
@@ -480,8 +477,9 @@ def _write_to_file(
     writer: VTKWriters = VTKWriters.binary
 ):
     """Write vtkPolyData to a file."""
-    # Write as a vtk file
+
     extension = writer.value
+
     if writer.name == 'legacy':
         _writer = vtk.vtkPolyDataWriter()
     else:
