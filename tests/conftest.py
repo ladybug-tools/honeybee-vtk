@@ -6,7 +6,7 @@ import pytest
 @pytest.fixture(scope='session', autouse=True)
 def virtual_framebuffer():
     class Display:
-        def stop():
+        def stop(self):
             pass
 
     display = Display()
