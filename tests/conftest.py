@@ -11,11 +11,12 @@ def virtual_framebuffer():
 
     display = Display()
 
-    is_linux = sys.platform.startswith('linux')
-
-    if is_linux:
+    try:
         from xvfbwrapper import Xvfb as X
         display = X()
         display.start()
+    except ImportError:
+        pass
+
     yield
     display.stop()
