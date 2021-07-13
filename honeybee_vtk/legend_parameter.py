@@ -687,7 +687,6 @@ class LegendParameter:
             f' Legend title: {self._unit} |'
             f' Legend visibility: {self._hide_legend} |'
             f' Legend color scheme: {self._colors.name} |'
-            f' Legend visibility: {self._hide_legend} |'
             f' Legend orientation: {self._orientation} |'
             f' Legend position: {self._position} |'
             f' Legend width: {self._width} |'

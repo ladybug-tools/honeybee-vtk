@@ -286,43 +286,44 @@ def _load_data(data: DataConfig, model: Model, grid_type: str) -> None:
         grid_type: A string indicating whether the sensor grid in the model is made of 
             points or meshes.
     """
-    grids_info_json = pathlib.Path(data.path).joinpath('grids_info.json')
-    with open(grids_info_json) as fh:
-        grids_info = json.load(fh)
+    if not data.hide:
+        grids_info_json = pathlib.Path(data.path).joinpath('grids_info.json')
+        with open(grids_info_json) as fh:
+            grids_info = json.load(fh)
 
-    # grid identifier from grids_info.json
-    file_names = [grid['identifier'] for grid in grids_info]
+        # grid identifier from grids_info.json
+        file_names = [grid['identifier'] for grid in grids_info]
 
-    # finding file extension for grid results
-    for path in pathlib.Path(data.path).iterdir():
-        if path.stem == file_names[0]:
-            extension = path.suffix
-            break
+        # finding file extension for grid results
+        for path in pathlib.Path(data.path).iterdir():
+            if path.stem == file_names[0]:
+                extension = path.suffix
+                break
 
-    # file paths to the result files
-    file_paths = [pathlib.Path(data.path).joinpath(name+extension)
-                  for name in file_names]
+        # file paths to the result files
+        file_paths = [pathlib.Path(data.path).joinpath(name+extension)
+                      for name in file_names]
 
-    result = []
-    for file_path in file_paths:
-        res_file = pathlib.Path(file_path)
-        grid_res = [float(v)
-                    for v in res_file.read_text().splitlines()]
-        result.append(grid_res)
+        result = []
+        for file_path in file_paths:
+            res_file = pathlib.Path(file_path)
+            grid_res = [float(v)
+                        for v in res_file.read_text().splitlines()]
+            result.append(grid_res)
 
-    ds = model.get_modeldataset(data.object_type)
-    if grid_type == 'meshes':
-        ds.add_data_fields(
-            result, name=data.identifier, per_face=True)
-        if not data.hide:
-            ds.color_by = data.identifier
-        ds.display_mode = DisplayMode.SurfaceWithEdges
-    else:
-        ds.add_data_fields(
-            result, name=data.identifier, per_face=False)
-        if not data.hide:
-            ds.color_by = data.identifier
-        ds.display_mode = DisplayMode.Points
+        ds = model.get_modeldataset(data.object_type)
+        if grid_type == 'meshes':
+            ds.add_data_fields(
+                result, name=data.identifier, per_face=True)
+            if not data.hide:
+                ds.color_by = data.identifier
+            ds.display_mode = DisplayMode.SurfaceWithEdges
+        else:
+            ds.add_data_fields(
+                result, name=data.identifier, per_face=False)
+            if not data.hide:
+                ds.color_by = data.identifier
+            ds.display_mode = DisplayMode.Points
 
 
 def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> None:

@@ -58,7 +58,8 @@ class Assistant:
         # Add legends to the window
         if self._legend_params:
             for legend_param in self._legend_params:
-                renderer.AddActor(legend_param.get_scalarbar())
+                if not legend_param.hide_legend:
+                    renderer.AddActor(legend_param.get_scalarbar())
 
         # add renderer to rendering window
         window = vtk.vtkRenderWindow()
