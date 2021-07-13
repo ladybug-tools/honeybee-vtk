@@ -13,6 +13,7 @@ from honeybee_vtk.config import load_config
 from honeybee_vtk.scene import Scene
 from honeybee_vtk.camera import Camera
 from honeybee_vtk.actor import Actor
+from honeybee_vtk.types import VTKWriters
 
 
 @click.group()
@@ -32,8 +33,9 @@ def translate():
                     dir_okay='True'), default='.', show_default=True
 )
 @click.option(
-    '--file-type', '-ft', type=click.Choice(['html', 'vtkjs'], case_sensitive=False),
-    default='html', help='Switch between html and vtkjs formats', show_default=True
+    '--file-type', '-ft', type=click.Choice(['html', 'vtkjs', 'vtp', 'vtk'],
+                                            case_sensitive=False), default='html',
+    help='Switch between html and vtkjs formats', show_default=True
 )
 @click.option(
     '--display-mode', '-dm', type=click.Choice(['shaded', 'surface',
@@ -102,10 +104,17 @@ def translate(
             model = load_config(config, model, scene)
 
         # Set file type
-        if file_type == 'html':
+
+        if file_type.lower() == 'html':
             output = model.to_html(folder=folder, name=name, show=show_html)
-        else:
+        elif file_type.lower() == 'vtkjs':
             output = model.to_vtkjs(folder=folder, name=name)
+        elif file_type.lower() == 'vtk':
+            output = model.to_files(folder=folder, name=name,
+                                    writer=VTKWriters.legacy)
+        elif file_type.lower() == 'vtp':
+            output = model.to_files(folder=folder, name=name,
+                                    writer=VTKWriters.binary)
 
     except Exception as e:
         traceback.print_exc()
