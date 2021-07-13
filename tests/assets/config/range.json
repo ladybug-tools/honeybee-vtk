@@ -1,0 +1,27 @@
+
+{ 
+
+"grid": {
+        "identifier": "Daylight-factor",
+        "object_type": "grid",
+        "unit": "Percentage",
+        "path": "./tests/assets/df_results",
+        "hide": false,
+        "legend_parameters": {
+            "hide_legend": false,
+            "color_set": "original",
+            "position": [0.5, 0.05],
+            "label_parameters": {
+                "color": [34, 247, 10],
+                "size": 0,
+                "bold": true
+            }
+        }
+}
+
+
+
+
+
+}
+
