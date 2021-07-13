@@ -10,11 +10,13 @@ from honeybee_vtk.model import Model
 from honeybee_vtk.scene import Scene
 from honeybee_vtk.camera import Camera
 from honeybee_vtk.actor import Actor
-from honeybee_vtk.config import Autocalculate, DataConfig, LegendConfig, _load_legend_parameters,\
-    load_config, TextConfig, DecimalCount
-from honeybee_vtk.vtkjs.schema import SensorGridOptions
+from honeybee_vtk.config import Autocalculate, DataConfig, LegendConfig,\
+    _load_legend_parameters, load_config, TextConfig, DecimalCount, _validate_data,\
+    _load_data
+from honeybee_vtk.vtkjs.schema import DisplayMode, SensorGridOptions
 
-file_path = r'tests/assets/gridbased.hbjson'
+model_grid_mesh = r'tests/assets/gridbased.hbjson'
+
 valid_json_path = r'tests/assets/config/valid.json'
 range_json_path = r'tests/assets/config/range.json'
 invalid_json_path = r'tests/assets/config/invalid.json'
@@ -24,6 +26,7 @@ short_length = r'tests/assets/config/short_length.json'
 
 
 def test_text_config_defaults():
+    """Testting default settings of the TextConfig object."""
     text_config = TextConfig()
     assert text_config.color == [0, 0, 0]
     assert text_config.size == 30
@@ -31,7 +34,14 @@ def test_text_config_defaults():
 
 
 def test_text_config_validators():
+    """Testting validators of TextConfig object."""
     text_config = TextConfig()
+
+    with pytest.raises(ValidationError):
+        text_config.color = [0, 0, 266]
+
+    with pytest.raises(ValidationError):
+        text_config.color = [-1, 0, 255]
 
     with pytest.raises(ValidationError):
         text_config.size = -15
@@ -50,6 +60,7 @@ def test_text_config_validators():
 
 
 def test_legend_config_defaults():
+    """Testting default settings of the LegendConfig object."""
     legend_config = LegendConfig()
     assert legend_config.color_set == ColorSets.ecotect
     assert legend_config.min == Autocalculate()
@@ -68,6 +79,7 @@ def test_legend_config_defaults():
 
 
 def text_legend_config_validators():
+    """Testting validators of LegendConfig object."""
     legend_config = LegendConfig()
 
     with pytest.raises(ValidationError):
@@ -120,7 +132,7 @@ def text_legend_config_validators():
 
 
 def test_data_config_defaults():
-
+    """Testing default settings of the DataConfig object."""
     data_config = DataConfig(
         identifier='Daylight-factor', object_type='grid', unit='Percentage',
         path='tests/assets/df_results')
@@ -130,6 +142,8 @@ def test_data_config_defaults():
 
 
 def test_data_config_validators():
+    """Testing if correct errors are being raised."""
+
     # all required fields missing
     with pytest.raises(KeyError):
         data_config = DataConfig()
@@ -152,6 +166,8 @@ def test_data_config_validators():
 
 
 def test_data_config_legend_parameter_validator():
+    """Testing the legend parameter validator in DataConfig object."""
+
     # width greater than position in X direction
     legend_params = LegendConfig()
     legend_params.position = [0.5, 0.5]
@@ -172,8 +188,9 @@ def test_data_config_legend_parameter_validator():
 
 
 def test_load_legend_parameter():
+    """Testing load_legend_parameters function."""
 
-    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
+    model = Model.from_hbjson(model_grid_mesh, load_grids=SensorGridOptions.Mesh)
     cameras = model.cameras
     actors = Actor.from_model(model)
     scene = Scene()
@@ -189,7 +206,7 @@ def test_load_legend_parameter():
         load_config(range_json_path, model, scene)
 
 
-model = Model.from_hbjson(file_path)
+model = Model.from_hbjson(model_grid_mesh)
 scene = Scene()
 
 
@@ -203,7 +220,11 @@ def test_validate_data_grids_not_loaded():
         load_config(valid_json_path, model, scene)
 
 
-model_grids_loaded = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
+model_grids_loaded = Model.from_hbjson(
+    model_grid_mesh, load_grids=SensorGridOptions.Mesh)
+model_sensors_loaded = Model.from_hbjson(
+    model_grid_mesh, load_grids=SensorGridOptions.Sensors)
+
 scene_grids_loaded = Scene()
 cameras = model_grids_loaded.cameras
 actors = Actor.from_model(model_grids_loaded)
@@ -224,3 +245,24 @@ def test_validate_data_identifier_mismatch():
 def test_validate_data_file_lengths_mismatch():
     with pytest.raises(ValueError):
         load_config(short_length, model_grids_loaded, scene_grids_loaded)
+
+
+def test_grid_display_mode():
+    """Test if correct dosplay mode is being selected for grids based on the type of
+    grids in the model."""
+    model = load_config(valid_json_path, model_grids_loaded, scene_grids_loaded)
+    assert model.sensor_grids.display_mode == DisplayMode.SurfaceWithEdges
+
+    model = load_config(valid_json_path, model_sensors_loaded, scene_grids_loaded)
+    assert model.sensor_grids.display_mode == DisplayMode.Points
+
+
+def grid_type():
+    """Test if validate_data returns correct grid type."""
+
+    data = DataConfig()
+    assert _validate_data(data, model_grids_loaded) == 'meshes'
+
+    model_with_sensors_only = Model.from_hbjson(model_sensors_loaded,
+                                                load_grids=SensorGridOptions.Mesh)
+    assert _validate_data(data, model_with_sensors_only) == 'points'
