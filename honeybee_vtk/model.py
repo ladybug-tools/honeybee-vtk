@@ -7,6 +7,7 @@ import shutil
 import webbrowser
 import tempfile
 import os
+import tempfile
 
 from collections import defaultdict
 from typing import Dict, List
@@ -19,7 +20,7 @@ from .to_vtk import convert_aperture, convert_face, convert_room, convert_shade,
     convert_sensor_grid
 from .vtkjs.schema import IndexJSON, DisplayMode, SensorGridOptions
 from .vtkjs.helper import convert_directory_to_zip_file, add_data_to_viewer
-from .types import DataSetNames
+from .types import DataSetNames, VTKWriters, JoinedPolyData
 
 
 _COLORSET = {
@@ -314,6 +315,11 @@ class Model(object):
         # Move the generated vtkjs to target folder
         shutil.move(temp_vtkjs_file, target_vtkjs_file)
 
+        try:
+            shutil.rmtree(temp_folder)
+        except Exception:
+            pass
+
         return target_vtkjs_file
 
     def to_html(self, folder: str = '.', name: str = None, show: bool = False) -> str:
@@ -335,7 +341,7 @@ class Model(object):
         file_name = name or 'model'
         # Set the target folder
         target_folder = os.path.abspath(folder)
-        # Set a file path to move the .zip file to the target folder
+        # Set a file path to move the .html file to the target folder
         html_file = os.path.join(target_folder, file_name + '.html')
         # Set temp folder to do the operation
         temp_folder = tempfile.mkdtemp()
@@ -349,6 +355,56 @@ class Model(object):
         if show:
             webbrowser.open(html_file)
         return html_file
+
+    def to_files(self, folder: str, name: str, writer: VTKWriters) -> str:
+        """
+        Write a .zip of VTK/VTP files.
+
+        Args:
+            name: A text string for the name of the .zip file to be written. If no
+                text string is provided, the name of the HBJSON file will be used as a
+                file name for the .zip file.
+            folder: File path to the output folder. The file
+                will be written to the current folder if not provided.
+            writer: A VTkWriters object.
+
+        Returns:
+            A text string containing the path to the .zip file with VTK/VTP files.
+        """
+        # Name of the html file
+        file_name = name or 'model'
+        # Set the target folder
+        target_folder = os.path.abspath(folder)
+        # Set a file path to move the .zip file to the target folder
+        target_zip_file = os.path.join(target_folder, file_name + '.zip')
+        # Set temp folder to do the operation
+        temp_folder = tempfile.mkdtemp()
+        # Write datasets to vtk/vtp files
+        for ds in self:
+            if len(ds.data) == 0:
+                continue
+
+            elif len(ds.data) > 1:
+                jp = JoinedPolyData()
+                jp.extend(ds.data)
+                jp.to_vtk(temp_folder, ds.name, writer)
+
+            elif len(ds.data) == 1:
+                polydata = ds.data[0]
+                polydata.to_vtk(temp_folder, ds.name, writer)
+
+        # collect files in a zip
+        temp_zip_file = convert_directory_to_zip_file(temp_folder, extension='zip',
+                                                      move=False)
+        # Move the generated zip file to the target folder
+        shutil.move(temp_zip_file, target_zip_file)
+
+        try:
+            shutil.rmtree(temp_folder)
+        except Exception:
+            pass
+
+        return target_zip_file
 
     @ staticmethod
     def get_default_color(face_type: face_types) -> Color:
