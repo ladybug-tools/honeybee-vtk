@@ -32,3 +32,23 @@ def test_translate_recipe():
     vtkjs_path = os.path.join(target_folder, 'Model.vtkjs')
     assert os.path.isfile(vtkjs_path)
     nukedir(target_folder, True)
+
+    # Optional arguments are deliberately capitalized or uppercased for testing
+    result = runner.invoke(translate, [
+        file_path, '--name', 'Model', '--folder', target_folder, '--file-type',
+        'VTK', '--display-mode', 'Shaded', '--grid-options', 'Points'])
+
+    assert result.exit_code == 0
+    vtkjs_path = os.path.join(target_folder, 'Model.zip')
+    assert os.path.isfile(vtkjs_path)
+    nukedir(target_folder, True)
+
+    # Optional arguments are deliberately capitalized or uppercased for testing
+    result = runner.invoke(translate, [
+        file_path, '--name', 'Model', '--folder', target_folder, '--file-type',
+        'VTP', '--display-mode', 'Shaded', '--grid-options', 'Meshes'])
+
+    assert result.exit_code == 0
+    vtkjs_path = os.path.join(target_folder, 'Model.zip')
+    assert os.path.isfile(vtkjs_path)
+    nukedir(target_folder, True)
