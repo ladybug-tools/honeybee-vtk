@@ -17,10 +17,8 @@ twine upload dist/* -u $PYPI_USERNAME -p $PYPI_PASSWORD
 
 echo "Docker Deployment..."
 echo "Login to Docker"
-echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-
-docker build -t $CONTAINER_NAME:$NEXT_RELEASE_VERSION --target main .
-docker tag $CONTAINER_NAME:$NEXT_RELEASE_VERSION $CONTAINER_NAME:latest
-
-docker push $CONTAINER_NAME:latest
-docker push $CONTAINER_NAME:$NEXT_RELEASE_VERSION
+echo "${DOCKER_PASSWORD:?}" | docker login -u "${DOCKER_USERNAME:?}" --password-stdin \
+  && docker build -t $CONTAINER_NAME:$NEXT_RELEASE_VERSION --target main . \
+  && docker tag $CONTAINER_NAME:$NEXT_RELEASE_VERSION $CONTAINER_NAME:latest \
+  && docker push $CONTAINER_NAME:latest \
+  && docker push $CONTAINER_NAME:$NEXT_RELEASE_VERSION
