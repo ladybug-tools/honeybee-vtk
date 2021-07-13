@@ -253,10 +253,12 @@ def _validate_data(data: DataConfig, model: Model) -> str:
             model.sensor_grids.data[0].GetNumberOfPoints() == file_lengths[0]:
         num_sensors = [polydata.GetNumberOfPoints()
                        for polydata in model.sensor_grids.data]
+        grid_type = 'points'
     # if grid is meshes
     else:
         num_sensors = [polydata.GetNumberOfCells()
                        for polydata in model.sensor_grids.data]
+        grid_type = 'meshes'
 
     if file_lengths != num_sensors:
         length_matching = {
@@ -270,10 +272,10 @@ def _validate_data(data: DataConfig, model: Model) -> str:
             ' Lengths of files with following names do not match'
             f' {tuple(names_to_report)}.')
 
-    return True
+    return grid_type
 
 
-def _load_data(data: DataConfig, model: Model) -> None:
+def _load_data(data: DataConfig, model: Model, grid_type: str) -> None:
     """Load validated data on a honeybee-vtk model.
 
     This is a helper method to the public load_config method.
