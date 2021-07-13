@@ -161,7 +161,7 @@ class Scene:
             if self.legend_parameters:
                 visible_legend_params = [
                     legend_param for legend_param in self.legend_parameters.values()
-                    if legend_param.hide_legend]
+                    if not legend_param.hide_legend]
             else:
                 visible_legend_params = []
 
