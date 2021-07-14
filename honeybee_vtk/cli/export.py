@@ -38,12 +38,12 @@ def export():
     help='choose the type of image file.', show_default=True
 )
 @click.option(
-    '--image-width', '-iw', type=int, default=2500, help='Width of images in pixels.',
-    show_default=True
+    '--image-width', '-iw', type=int, default=None, help='Width of images in pixels.'
+    ' If not set, Radiance default x dimension of view will be used.', show_default=True
 )
 @click.option(
-    '--image-height', '-ih', type=int, default=2000, help='Height of images in pixels.',
-    show_default=True
+    '--image-height', '-ih', type=int, default=None, help='Height of images in pixels.'
+    'If not set, Radiance default y dimension of view will be used.', show_default=True
 )
 @click.option(
     '--background-color', '-bc', type=(int, int, int), default=(255, 255, 255),
