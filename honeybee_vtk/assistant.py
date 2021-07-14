@@ -124,7 +124,7 @@ class Assistant:
 
     def _export_image(
             self, folder: str, name: str, image_type: ImageTypes = ImageTypes.png, *,
-            image_scale: int = 1, image_width: int = 2000, image_height: int = 2000,
+            image_scale: int = 1, image_width=None, image_height=None,
             color_range: vtk.vtkLookupTable = None, rgba: bool = False,
             show: bool = False) -> str:
         """Export the window as an image.
@@ -139,9 +139,9 @@ class Assistant:
             image_type: An ImageType object.
             image_scale: An integer value as a scale factor. Defaults to 1.
             image_width: An integer value that sets the width of image in pixels.
-                Defaults to 2000.
+                Defaults to None.
             image_height: An integer value that sets the height of image in pixels.
-                Defaults to 2000.
+                Defaults to None.
             color_range: A vtk lookup table object which can be obtained
                 from the color_range mehtod of the DataFieldInfo object.
                 Defaults to None.
@@ -155,6 +155,12 @@ class Assistant:
         Returns:
             A text string representing the path to the image.
         """
+        # Using view's x and y dimension as image width and height
+        dim_x, dim_y = self._camera.dimension_x_y()
+        if not image_width:
+            image_width = dim_x
+        if not image_height:
+            image_height = dim_y
 
         # render window
         if not show:
