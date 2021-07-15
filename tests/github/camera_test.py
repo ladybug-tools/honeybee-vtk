@@ -19,7 +19,7 @@ def test_to_vtk():
     assert camera.direction == (0, 0, -1)
     assert camera.up_vector == (0, 1, 0)
     assert camera.h_size == 60
-    assert camera.v_size == 30
+    assert camera.v_size == 60
     assert camera.type == 'v'
 
     # Assess type of the outcome of the to_vtk method

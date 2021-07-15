@@ -29,7 +29,7 @@ def test_text_config_defaults():
     """Testting default settings of the TextConfig object."""
     text_config = TextConfig()
     assert text_config.color == [0, 0, 0]
-    assert text_config.size == 30
+    assert text_config.size == 0
     assert text_config.bold == False
 
 
