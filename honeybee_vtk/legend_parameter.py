@@ -1,6 +1,5 @@
 """Vtk legend parameters."""
 
-from _pytest.python_api import raises
 import vtk
 from ladybug.color import Colorset, Color
 from enum import Enum, auto
