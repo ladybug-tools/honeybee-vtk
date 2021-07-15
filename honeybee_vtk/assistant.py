@@ -59,6 +59,16 @@ class Assistant:
         if self._legend_params:
             for legend_param in self._legend_params:
                 if not legend_param.hide_legend:
+                    # If text size is not specified, use average of camera dimension to
+                    # arrive at a number. 2.5% of this number is used.
+                    text_size = round((
+                        (self._camera.dimension_x_y()[0] +
+                         self._camera.dimension_x_y()[1]) / 2) * 0.025)
+                    if legend_param.label_parameters.size == 0:
+                        legend_param.label_parameters.size = text_size
+                    if legend_param.title_parameters.size == 0:
+                        legend_param.title_parameters.size = text_size
+                    # Add legends to renderer
                     renderer.AddActor(legend_param.get_scalarbar())
 
         # add renderer to rendering window
