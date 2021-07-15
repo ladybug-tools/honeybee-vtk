@@ -38,7 +38,7 @@ class TextConfig(BaseModel):
     )
 
     size: conint(ge=0) = Field(
-        30,
+        0,
         description='Text size in points.'
     )
 

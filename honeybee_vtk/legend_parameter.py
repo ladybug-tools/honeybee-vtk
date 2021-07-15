@@ -166,7 +166,7 @@ class Text:
     @size.setter
     def size(self, val) -> None:
         if not val:
-            self._size = 30
+            self._size = 0
         elif isinstance(val, int):
             self._size = val
         else:
@@ -272,8 +272,8 @@ class LegendParameter:
             label_count: int = None,
             decimal_count: DecimalCount = DecimalCount.default,
             preceding_labels: bool = False,
-            label_parameters: Text = Text(color=(0, 0, 0), size=30),
-            title_parameters: Text = Text(color=(0, 0, 0), size=50, bold=True),
+            label_parameters: Text = Text(color=(0, 0, 0), size=0),
+            title_parameters: Text = Text(color=(0, 0, 0), size=0, bold=True),
             min: Union[float, int] = None,
             max: Union[float, int] = None,
             auto_range: Tuple[float, float] = None) -> None:
@@ -512,7 +512,7 @@ class LegendParameter:
     @label_parameters.setter
     def label_parameters(self, val) -> None:
         if not val:
-            self._label_parameters = Text(color=(0, 0, 0), size=30)
+            self._label_parameters = Text()
         elif isinstance(val, Text):
             self._label_parameters = val
         else:
@@ -528,7 +528,7 @@ class LegendParameter:
     @title_parameters.setter
     def title_parameters(self, val) -> None:
         if not val:
-            self._title_parameters = Text(color=(0, 0, 0), size=30, bold=True)
+            self._title_parameters = Text(bold=True)
         elif isinstance(val, Text):
             self._title_parameters = val
         else:
