@@ -1,22 +1,21 @@
 version: 2
 updates:
-- package-ecosystem: pip
-  directory: "/"
-  schedule:
-    interval: daily
-    time: "11:00"
-  open-pull-requests-limit: 10
-  ignore:
-  - dependency-name: coveralls
-    versions:
-    - 3.0.0
-  - dependency-name: Sphinx
-    versions:
-    - 3.5.4
-  - dependency-name: Sphinx-click
-    versions:
-    - 3.0.0
-  commit-message:
-    prefix: fix
-    prefix-development: chore
-    include: scope
+  - package-ecosystem: pip
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "11:00"
+    open-pull-requests-limit: 10
+    ignore:
+      - dependency-name: coveralls
+        versions:
+          - 3.0.0
+      - dependency-name: Sphinx
+        versions: ["3.5.x"]
+      - dependency-name: Sphinx-click
+        versions:
+          - 3.0.0
+    commit-message:
+      prefix: fix
+      prefix-development: chore
+      include: scope
