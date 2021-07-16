@@ -176,8 +176,7 @@ class Scene:
 
     @try_headless
     def export_images(
-            self, folder: str, name: str = 'Camera',
-            image_type: ImageTypes = ImageTypes.png, *,
+            self, folder: str, image_type: ImageTypes = ImageTypes.png, *,
             image_scale: int = 1, image_width: int = 2000, image_height: int = 2000,
             color_range: vtk.vtkLookupTable = None, rgba: bool = False,
             show: bool = False) -> List[str]:
@@ -189,7 +188,6 @@ class Scene:
 
         Args:
             folder: A valid path to where you'd like to write the images.
-            name: Name of the image as a text string.
             image_type: An ImageType object.
             image_scale: An integer value as a scale factor. Defaults to 1.
             image_width: An integer value that sets the width of image in pixels.
@@ -211,10 +209,10 @@ class Scene:
         self.update_scene()
 
         return [assistant._export_image(
-            folder=folder, name=name + '_' + str(count), image_type=image_type,
-            image_scale=image_scale, image_width=image_width, image_height=image_height,
+            folder=folder, image_type=image_type, image_scale=image_scale,
+            image_width=image_width, image_height=image_height,
             color_range=color_range, rgba=rgba, show=show)
-            for count, assistant in enumerate(self._assistants)]
+            for assistant in self._assistants]
 
     def export_gltf(self, folder: str, name: str = 'Camera') -> str:
         """Export a scene to a glTF file.
