@@ -35,11 +35,11 @@ def export():
     help='choose the type of image file.', show_default=True
 )
 @click.option(
-    '--image-width', '-iw', type=int, default=None, help='Width of images in pixels.'
+    '--image-width', '-iw', type=int, default=0, help='Width of images in pixels.'
     ' If not set, Radiance default x dimension of view will be used.', show_default=True
 )
 @click.option(
-    '--image-height', '-ih', type=int, default=None, help='Height of images in pixels.'
+    '--image-height', '-ih', type=int, default=0, help='Height of images in pixels.'
     'If not set, Radiance default y dimension of view will be used.', show_default=True
 )
 @click.option(

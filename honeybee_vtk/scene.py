@@ -177,7 +177,7 @@ class Scene:
     @try_headless
     def export_images(
             self, folder: str, image_type: ImageTypes = ImageTypes.png, *,
-            image_scale: int = 1, image_width: int = 2000, image_height: int = 2000,
+            image_scale: int = 1, image_width: int = 0, image_height: int = 0,
             color_range: vtk.vtkLookupTable = None, rgba: bool = False,
             show: bool = False) -> List[str]:
         """Export all the cameras in the scene as images.
@@ -191,9 +191,9 @@ class Scene:
             image_type: An ImageType object.
             image_scale: An integer value as a scale factor. Defaults to 1.
             image_width: An integer value that sets the width of image in pixels.
-                Defaults to 2000.
+                Defaults to 0, which will use view's x dimension.
             image_height: An integer value that sets the height of image in pixels.
-                Defaults to 2000.
+                Defaults to 0, which will use view's y dimension.
             color_range: A vtk lookup table object which can be obtained
                 from the color_range mehtod of the DataFieldInfo object.
                 Defaults to None.
