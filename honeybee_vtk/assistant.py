@@ -132,7 +132,7 @@ class Assistant:
             raise ValueError(f'Invalid image type: {image_type}')
         return writer
 
-    def auto_image_dimension(self, image_width=None, image_height=None) -> Tuple[int]:
+    def auto_image_dimension(self, image_width: int = 0, image_height: int = 0) -> Tuple[int]:
         """Calculate image dimension.
 
         If image width and image height are not specified by the user, Camera's x and y
@@ -140,8 +140,10 @@ class Assistant:
         its parent Radiance View object.
 
         Args:
-            image_width: Image width in pixels set by the user. Defaults to None.
-            image_height: Image height in pixels set by the user. Defaults to None.
+            image_width: Image width in pixels set by the user. Defaults to 0, which
+                will use view's x dimension.
+            image_height: Image height in pixels set by the user. Defaults to 0, which
+                will use view's y dimension.
 
         Returns:
             A tuple with two elements
@@ -179,7 +181,7 @@ class Assistant:
 
     def _export_image(
             self, folder: str, image_type: ImageTypes = ImageTypes.png, *,
-            image_scale: int = 1, image_width=None, image_height=None,
+            image_scale: int = 1, image_width: int = 0, image_height: int = 0,
             color_range: vtk.vtkLookupTable = None, rgba: bool = False,
             show: bool = False) -> str:
         """Export the window as an image.
@@ -193,9 +195,9 @@ class Assistant:
             image_type: An ImageType object.
             image_scale: An integer value as a scale factor. Defaults to 1.
             image_width: An integer value that sets the width of image in pixels.
-                Defaults to None.
+                Defaults to 0, which will use view's x dimension.
             image_height: An integer value that sets the height of image in pixels.
-                Defaults to None.
+                Defaults to 0, which will use view's y dimension.
             color_range: A vtk lookup table object which can be obtained
                 from the color_range mehtod of the DataFieldInfo object.
                 Defaults to None.
