@@ -126,7 +126,7 @@ class Assistant:
             raise ValueError(f'Invalid image type: {image_type}')
         return writer
 
-    def auto_image_dimension(self, image_width, image_height) -> Tuple[int]:
+    def auto_image_dimension(self, image_width=None, image_height=None) -> Tuple[int]:
         """Calculate image dimension.
 
         If image width and image height are not specified by the user, Camera's x and y
@@ -134,8 +134,8 @@ class Assistant:
         its parent Radiance View object.
 
         Args:
-            image_width: Image width in pixels set by the user.
-            image_height: Image height in pixels set by the user.
+            image_width: Image width in pixels set by the user. Defaults to None.
+            image_height: Image height in pixels set by the user. Defaults to None.
 
         Returns:
             A tuple with two elements
