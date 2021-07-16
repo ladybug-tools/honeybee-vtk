@@ -30,6 +30,6 @@ def test_export_image():
     exported_file_names = os.listdir(target_folder)
     file_names = ['Back.png', 'Bottom.png', 'Front.png',
                   'Left.png', 'Right.png', 'Top.png', 'view.png', 'view1.png']
-    assert exported_file_names == file_names
+    assert all([name in file_names for name in exported_file_names])
 
     nukedir(target_folder, True)
