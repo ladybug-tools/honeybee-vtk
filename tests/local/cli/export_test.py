@@ -20,13 +20,16 @@ def test_export_image():
 
     result = runner.invoke(
         export, [
-            file_path, '--folder', target_folder, '--name', 'Model', '--image-type',
-            'PNG', '--image-width', 200, '--image-height', 500,
+            file_path, '--folder', target_folder, '--image-type', 'PNG',
+            '--image-width', 500, '--image-height', 500,
             '--background-color', 255, 255, 255, '--grid-options', 'Meshes',
             '--model-display-mode', 'Shaded', '--grid-display-mode', 'SurfaceWithEdges',
             '--view', view_file, '--view', view_file_1, '--config', config_path])
 
     assert result.exit_code == 0
-    images_path = os.listdir(target_folder)
-    assert all([item[:5] == 'Model' and item[-4:] == '.png' for item in images_path])
+    exported_file_names = os.listdir(target_folder)
+    file_names = ['Back.png', 'Bottom.png', 'Front.png',
+                  'Left.png', 'Right.png', 'Top.png', 'view.png', 'view1.png']
+    assert exported_file_names == file_names
+
     nukedir(target_folder, True)
