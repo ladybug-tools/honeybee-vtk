@@ -145,7 +145,7 @@ def export(
         # Set a default camera if there are no cameras in the model
         if not model.cameras and not view:
             actors = Actor.from_model(model=model)
-            camera = Camera(identifier='plan_view', type='l')
+            camera = Camera(identifier='plan', type='l')
             scene.add_cameras(camera)
             bounds = Actor.get_bounds(actors)
             centroid = Actor.get_centroid(actors)
