@@ -25,9 +25,6 @@ def export():
 @export.command('export-images')
 @click.argument('hbjson-file')
 @click.option(
-    '--name', '-n', help='Name of image files.', default="Camera", show_default=True
-)
-@click.option(
     '--folder', '-f', help='Path to target folder.',
     type=click.Path(exists=False, file_okay=False, resolve_path=True,
                     dir_okay=True), default='.', show_default=True
@@ -78,7 +75,7 @@ def export():
     show_default=True
 )
 def export(
-        hbjson_file, name, folder, image_type, image_width, image_height,
+        hbjson_file, folder, image_type, image_width, image_height,
         background_color, model_display_mode, grid_options, grid_display_mode, view,
         config):
     """Export images from radiance views in a HBJSON file.
@@ -145,10 +142,10 @@ def export(
         scene = Scene(background_color=background_color)
         scene.add_actors(actors)
 
-        # Set a default camera if there are not cameras in the model
+        # Set a default camera if there are no cameras in the model
         if not model.cameras and not view:
             actors = Actor.from_model(model=model)
-            camera = Camera(type='l')
+            camera = Camera(identifier='plan_view', type='l')
             scene.add_cameras(camera)
             bounds = Actor.get_bounds(actors)
             centroid = Actor.get_centroid(actors)
@@ -172,7 +169,7 @@ def export(
             load_config(config, model, scene)
 
         output = scene.export_images(
-            folder=folder, name=name, image_type=image_type,
+            folder=folder, image_type=image_type,
             image_width=image_width, image_height=image_height)
 
     except Exception:
