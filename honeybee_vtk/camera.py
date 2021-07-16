@@ -169,7 +169,7 @@ class Camera(View):
             pt, centroid).v for pt in camera_points]
 
         # default camera identifiers
-        names = ['45_degrees', '225_degrees', '180_degrees', '135_degrees']
+        names = ['45_degrees', '315_degrees', '225_degrees', '135_degrees']
 
         # create cameras from four points. These cameras look at the centroid.
         default_cameras = []
