@@ -29,11 +29,11 @@ class Assistant:
         self._background_color = background_color
         self._actors = actors
         self._camera = camera
-        self._interactor = None
-        self._window = None
-        self._renderer = None
+        # interactor = None
+        # window = None
+        # renderer = None
         self._legend_params = legend_parameters
-        self._create_window()
+        # self._create_window()
 
     def _create_window(self) -> None:
         """Create a rendering window with a single renderer and an interactor.
@@ -77,7 +77,8 @@ class Assistant:
         renderer.SetActiveCamera(self._camera.to_vtk())
         renderer.ResetCamera()
         # the order is from outside to inside
-        self._interactor, self._window, self._renderer = (interactor, window, renderer)
+        # interactor, window, renderer = (interactor, window, renderer)
+        return interactor, window, renderer
 
     def _export_gltf(self, folder: str, name: str) -> str:
         """Export a scene to a glTF file.
@@ -93,13 +94,15 @@ class Assistant:
         # TODO: Find out if the axis should be rotated to work with gltf viewers
         # TODO: Find a viewer for gltf files. The up axis of f3d viewer is Y axis.
 
+        window, renderer = self._create_window()[1:]
+
         gltf_file_path = pathlib.Path(folder, f'{name}.gltf')
         exporter = vtk.vtkGLTFExporter()
         exporter.SaveNormalOn()
         exporter.InlineDataOn()
         exporter.SetFileName(gltf_file_path.as_posix())
-        exporter.SetActiveRenderer(self._renderer)
-        exporter.SetRenderWindow(self._window)
+        exporter.SetActiveRenderer(renderer)
+        exporter.SetRenderWindow(window)
         exporter.Modified()
         exporter.Write()
         return gltf_file_path.as_posix()
@@ -161,7 +164,7 @@ class Assistant:
             image_height: Image height in pixels set by the user.
         """
         text_size = round(((image_width + image_height) / 2) * 0.025)
-        print(text_size)
+
         for legend_param in self._legend_params:
             if legend_param.label_parameters.size == 0:
                 legend_param.label_parameters.size = text_size
@@ -207,16 +210,19 @@ class Assistant:
         # Set text height for the labels and the title of the legend
         self.auto_text_height(image_width, image_height)
 
+        # Create a render window
+        interactor, window = self._create_window()[:2]
+
         # render window
         if not show:
-            self._window.OffScreenRenderingOn()
-            self._window.SetSize(image_width, image_height)
-            self._window.Render()
+            window.OffScreenRenderingOn()
+            window.SetSize(image_width, image_height)
+            window.Render()
         else:
-            self._window.SetSize(image_width, image_height)
-            self._window.Render()
-            self._interactor.Initialize()
-            self._interactor.Start()
+            window.SetSize(image_width, image_height)
+            window.Render()
+            interactor.Initialize()
+            interactor.Start()
 
         image_path = pathlib.Path(folder, f'{name}.{image_type.value}')
         writer = self._get_image_writer(image_type)
@@ -224,7 +230,7 @@ class Assistant:
             writer.SetQuality(100)  # image quality
 
         window_to_image_filter = vtk.vtkWindowToImageFilter()
-        window_to_image_filter.SetInput(self._window)
+        window_to_image_filter.SetInput(window)
         window_to_image_filter.SetScale(image_scale)
 
         # rgba is not supported for postscript image type
