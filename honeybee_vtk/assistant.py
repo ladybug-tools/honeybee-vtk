@@ -38,6 +38,16 @@ class Assistant:
         A render is added to a window and then the window is set inside the interactor.
         This method returns a tuple of a window_interactor, a render_window, and a
         renderer.
+
+        Returns:
+            A tuple with three elements
+
+            -   interactor: A vtkRenderWindowInteractor object.
+
+            -   window: A vtkRenderWindow object.
+
+            -   renderer: A vtkRenderer object.
+
         """
         if not self._camera:
             raise ValueError(
@@ -72,8 +82,8 @@ class Assistant:
 
         renderer.SetActiveCamera(self._camera.to_vtk())
         renderer.ResetCamera()
+
         # the order is from outside to inside
-        # interactor, window, renderer = (interactor, window, renderer)
         return interactor, window, renderer
 
     def _export_gltf(self, folder: str, name: str) -> str:
@@ -168,7 +178,7 @@ class Assistant:
                 legend_param.title_parameters.size = text_size
 
     def _export_image(
-            self, folder: str, name: str, image_type: ImageTypes = ImageTypes.png, *,
+            self, folder: str, image_type: ImageTypes = ImageTypes.png, *,
             image_scale: int = 1, image_width=None, image_height=None,
             color_range: vtk.vtkLookupTable = None, rgba: bool = False,
             show: bool = False) -> str:
@@ -180,7 +190,6 @@ class Assistant:
 
         Args:
             folder: A valid path to where you'd like to write the image.
-            name: Name of the image as a text string.
             image_type: An ImageType object.
             image_scale: An integer value as a scale factor. Defaults to 1.
             image_width: An integer value that sets the width of image in pixels.
@@ -220,7 +229,8 @@ class Assistant:
             interactor.Initialize()
             interactor.Start()
 
-        image_path = pathlib.Path(folder, f'{name}.{image_type.value}')
+        image_path = pathlib.Path(
+            folder, f'{self._camera.identifier}.{image_type.value}')
         writer = self._get_image_writer(image_type)
         if image_type == ImageTypes.jpg:
             writer.SetQuality(100)  # image quality
