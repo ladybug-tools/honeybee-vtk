@@ -59,15 +59,6 @@ class Assistant:
         if self._legend_params:
             for legend_param in self._legend_params:
                 if not legend_param.hide_legend:
-                    # If text size is not specified, use average of camera dimension to
-                    # arrive at a number. 2.5% of this number is used.
-                    text_size = round((
-                        (self._camera.dimension_x_y()[0] +
-                         self._camera.dimension_x_y()[1]) / 2) * 0.025)
-                    if legend_param.label_parameters.size == 0:
-                        legend_param.label_parameters.size = text_size
-                    if legend_param.title_parameters.size == 0:
-                        legend_param.title_parameters.size = text_size
                     # Add legends to renderer
                     renderer.AddActor(legend_param.get_scalarbar())
 
@@ -132,6 +123,51 @@ class Assistant:
             raise ValueError(f'Invalid image type: {image_type}')
         return writer
 
+    def auto_image_dimension(self, image_width, image_height) -> Tuple[int]:
+        """Calculate image dimension.
+
+        If image width and image height are not specified by the user, Camera's x and y
+        dimension are used instead. Note that a Camera object gets x and y dimension from
+        its parent Radiance View object.
+
+        Args:
+            image_width: Image width in pixels set by the user.
+            image_height: Image height in pixels set by the user.
+
+        Returns:
+            A tuple with two elements
+
+            -   image_width: Image width in pixels.
+
+            -   image_height: Image height in pixels.
+        """
+        dim_x, dim_y = self._camera.dimension_x_y()
+        if not image_width:
+            image_width = dim_x
+        if not image_height:
+            image_height = dim_y
+
+        return image_width, image_height
+
+    def auto_text_height(self, image_width, image_height) -> None:
+        """Calculate text height based on image dimension.
+
+        If a user has not specified the text height in legend parameters, it will be
+        calculated based on the average of image width and image height. 2.5% of this
+        average is used as the text height.
+
+        Args:
+            image_width: Image width in pixels set by the user.
+            image_height: Image height in pixels set by the user.
+        """
+        text_size = round(((image_width + image_height) / 2) * 0.025)
+        print(text_size)
+        for legend_param in self._legend_params:
+            if legend_param.label_parameters.size == 0:
+                legend_param.label_parameters.size = text_size
+            if legend_param.title_parameters.size == 0:
+                legend_param.title_parameters.size = text_size
+
     def _export_image(
             self, folder: str, name: str, image_type: ImageTypes = ImageTypes.png, *,
             image_scale: int = 1, image_width=None, image_height=None,
@@ -165,12 +201,11 @@ class Assistant:
         Returns:
             A text string representing the path to the image.
         """
-        # Using view's x and y dimension as image width and height
-        dim_x, dim_y = self._camera.dimension_x_y()
-        if not image_width:
-            image_width = dim_x
-        if not image_height:
-            image_height = dim_y
+        # Set image width and height
+        image_width, image_height = self.auto_image_dimension(image_width, image_height)
+
+        # Set text height for the labels and the title of the legend
+        self.auto_text_height(image_width, image_height)
 
         # render window
         if not show:
