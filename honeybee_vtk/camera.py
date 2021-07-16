@@ -55,11 +55,9 @@ class Camera(View):
         if self._type.value == 'l':
             camera.SetParallelProjection(True)
             camera.ParallelProjectionOn()
-        # Perspective projection
-        else:
-            # The location of camera in a 3D space
-            camera.SetPosition(self._position.value)
 
+        # The location of camera in a 3D space
+        camera.SetPosition(self._position.value)
         # get a focal_point on the same axis as the camera position.
         fp = (self._position[0] + self._direction.value[0],
               self._position[1] + self._direction.value[1],
@@ -67,8 +65,13 @@ class Camera(View):
         # The direction to the point where the camera is looking at
         camera.SetFocalPoint(fp)
 
+        # calculate view normal to the camera
+        camera.ComputeViewPlaneNormal()
         # Where the top of the camera is
         camera.SetViewUp(self._up_vector.value)
+        # Make sure that view up is 90 degrees to the view normal
+        camera.OrthogonalizeViewUp()
+
         # Horizontal view angle
         camera.SetViewAngle(self._h_size.value)
         camera.SetUseHorizontalViewAngle(True)
@@ -87,6 +90,7 @@ class Camera(View):
             A Camera object.
         """
         return cls(
+            identifier=view.identifier,
             position=view.position,
             direction=view.direction,
             up_vector=view.up_vector,
@@ -164,12 +168,15 @@ class Camera(View):
         directions = [LineSegment3D.from_end_points(
             pt, centroid).v for pt in camera_points]
 
-        # create cameras from four points. These cameras must look at the centroid.
+        # default camera identifiers
+        names = ['45_degree', '225_degree', '180_degree', '135_degree']
+
+        # create cameras from four points. These cameras look at the centroid.
         default_cameras = []
         for i in range(len(camera_points)):
             point = camera_points[i]
             direction = directions[i]
-            default_cameras.append(cls(position=(point.x, point.y, point.z),
+            default_cameras.append(cls(identifier=names[i], position=(point.x, point.y, point.z),
                                        direction=(direction.x, direction.y, direction.z),
                                        up_vector=(0, 0, 1)))
 
