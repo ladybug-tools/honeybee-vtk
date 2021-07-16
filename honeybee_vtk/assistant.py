@@ -18,8 +18,8 @@ class Assistant:
     Args:
         background_color: A tuple of three integers that represent RGB values of the
             color that you'd like to set as the background color.
-        camera: A Camera object.
         actors: A dictionary of actors from a Scene object
+        camera: A Camera object.
         legend_parameters: A list of legend parameter objects to be added to the scene
     """
 
@@ -29,11 +29,7 @@ class Assistant:
         self._background_color = background_color
         self._actors = actors
         self._camera = camera
-        # interactor = None
-        # window = None
-        # renderer = None
         self._legend_params = legend_parameters
-        # self._create_window()
 
     def _create_window(self) -> None:
         """Create a rendering window with a single renderer and an interactor.
