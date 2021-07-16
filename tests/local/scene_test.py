@@ -55,8 +55,7 @@ def test_export_images_from_view_file():
     os.mkdir(target_folder)
 
     # Export images for all the cameras
-    images_path = scene.export_images(folder=target_folder, image_type=ImageTypes.png,
-                                      name='camera')
+    images_path = scene.export_images(folder=target_folder, image_type=ImageTypes.png)
 
     for path in images_path:
         assert os.path.isfile(path)
@@ -134,8 +133,7 @@ def test_export_images():
     os.mkdir(target_folder)
 
     # Export images for all the cameras
-    images_path = scene.export_images(folder=target_folder, image_type=ImageTypes.png,
-                                      name='camera')
+    images_path = scene.export_images(folder=target_folder, image_type=ImageTypes.png)
 
     for path in images_path:
         assert os.path.isfile(path)
