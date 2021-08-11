@@ -124,15 +124,15 @@ def _add_metadata_to_cells(polydata, hb_object, hb_type: str = None) -> PolyData
     polydata.construction_display_name = hb_object.properties.energy.construction.display_name
     polydata.modifier_display_name = hb_object.properties.radiance.modifier.display_name
 
-    # extracting string metadata
+    # number of cells in the polydata
+    num_of_cells = polydata.GetNumberOfCells()
 
+    # Applying string metdata to the cells
     # is hb objects is a shade avoid boundary condition
     if hb_type == 'Shade':
-        display_name = [polydata.display_name]*polydata.GetNumberOfCells()
-        construction_display_name = [
-            polydata.construction_display_name] * polydata.GetNumberOfCells()
-        modifier_display_name = [
-            polydata.modifier_display_name] * polydata.GetNumberOfCells()
+        display_name = [polydata.display_name] * num_of_cells
+        construction_display_name = [polydata.construction_display_name] * num_of_cells
+        modifier_display_name = [polydata.modifier_display_name] * num_of_cells
 
         metadata = {
             "Display Name": display_name,
@@ -140,13 +140,10 @@ def _add_metadata_to_cells(polydata, hb_object, hb_type: str = None) -> PolyData
             "Modifier Display Name": modifier_display_name
         }
     else:
-        display_name = [polydata.display_name]*polydata.GetNumberOfCells()
-        boundary_condition = [polydata.boundary_condition] * \
-            polydata.GetNumberOfCells()
-        construction_display_name = [
-            polydata.construction_display_name] * polydata.GetNumberOfCells()
-        modifier_display_name = [
-            polydata.modifier_display_name] * polydata.GetNumberOfCells()
+        display_name = [polydata.display_name] * num_of_cells
+        boundary_condition = [polydata.boundary_condition] * num_of_cells
+        construction_display_name = [polydata.construction_display_name] * num_of_cells
+        modifier_display_name = [polydata.modifier_display_name] * num_of_cells
 
         metadata = {
             "Display Name": display_name,
