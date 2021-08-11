@@ -187,6 +187,7 @@ def convert_face(face: Face) -> List[PolyData]:
     """Convert a HBFace to a PolyData."""
 
     polydata = convert_face_3d(face.punched_geometry)
+    print(face)
     polydata = _add_metadata_to_cells(polydata, face)
 
     data = [polydata]
