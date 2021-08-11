@@ -79,7 +79,7 @@ def convert_mesh(mesh: Mesh3D) -> PolyData:
 
 def convert_sensor_grid(
     sensor_grid: SensorGrid, load_option: SensorGridOptions = SensorGridOptions.Mesh
-        ) -> PolyData:
+) -> PolyData:
     """Convert a honeybee-radiance sensor grid to a vtkPolyData."""
     if load_option == SensorGridOptions.Sensors:
         # load sensors
@@ -91,7 +91,7 @@ def convert_sensor_grid(
             raise ValueError(
                 f'{sensor_grid.display_name} does not include mesh information. '
                 'Try again with SensorGridOptions.Sensors'
-                )
+            )
         grid_data = convert_mesh(sensor_grid.mesh)
 
     grid_data.identifier = sensor_grid.identifier
@@ -100,32 +100,95 @@ def convert_sensor_grid(
     return grid_data
 
 
+def _add_metadata_to_cells(polydata, hb_object, hb_type: str = None) -> PolyData:
+    """This is an internal method to add metadata from the Polydata to its cells.
+
+    Args:
+        polydata: A honeybee-vtk Polydata object.
+        hb_object: A honeybee object. A Face, Aperture or Shade.
+        hb_type: A string representing the face type. Acceptable values are 'Aperture',
+            'Shade'.
+
+    Returns:
+        A honeybee-vtk Polydata object with the metadata.
+    """
+    # setting polydata properties
+    if not hb_type:
+        polydata.type = hb_object.type.name
+    else:
+        polydata.type = hb_type
+    polydata.identifier = hb_object.identifier
+    polydata.display_name = hb_object.display_name
+    if hb_type != 'Shade':
+        polydata.boundary_condition = hb_object.boundary_condition.ToString()
+    polydata.construction_display_name = hb_object.properties.energy.construction.display_name
+    polydata.modifier_display_name = hb_object.properties.radiance.modifier.display_name
+
+    # extracting string metadata
+    if hb_type == 'Shade':
+        display_name = [hb_object.display_name]*polydata.GetNumberOfCells()
+        if hb_type != 'Shade':
+            boundary_condition = [hb_object.boundary_condition.ToString()] * \
+                polydata.GetNumberOfCells()
+        construction_display_name = [
+            hb_object.properties.energy.construction.display_name
+        ]*polydata.GetNumberOfCells()
+        modifier_display_name = [
+            hb_object.properties.radiance.modifier.display_name
+        ]*polydata.GetNumberOfCells()
+
+        metadata = {
+            "Display Name": display_name,
+            "Construction Display Name": construction_display_name,
+            "Modifier Display Name": modifier_display_name
+        }
+    else:
+        display_name = [hb_object.display_name]*polydata.GetNumberOfCells()
+        boundary_condition = [hb_object.boundary_condition.ToString()] * \
+            polydata.GetNumberOfCells()
+        construction_display_name = [
+            hb_object.properties.energy.construction.display_name
+        ]*polydata.GetNumberOfCells()
+        modifier_display_name = [
+            hb_object.properties.radiance.modifier.display_name
+        ]*polydata.GetNumberOfCells()
+
+        metadata = {
+            "Display Name": display_name,
+            "Boundary Condition": boundary_condition,
+            "Construction Display Name": construction_display_name,
+            "Modifier Display Name": modifier_display_name
+        }
+
+    # adding string metadata
+    for key, value in metadata.items():
+        polydata.add_data(value, key, data_range=[0, 0])
+
+    return polydata
+
+
 def convert_shade(shade: Shade) -> PolyData:
-    shade_data = convert_face_3d(shade.geometry)
-    shade_data.identifier = shade.identifier
-    shade_data.display_name = shade.display_name
-    shade_data.type = 'Shade'
-    return shade_data
+    polydata = convert_face_3d(shade.geometry)
+    polydata = _add_metadata_to_cells(polydata, shade, 'Shade')
+    return polydata
 
 
 def convert_aperture(aperture: Aperture) -> List[PolyData]:
-    aperture_data = convert_face_3d(aperture.geometry)
-    aperture_data.type = 'Aperture'
-    aperture_data.identifier = aperture.identifier
-    aperture_data.display_name = aperture.display_name
-    data = [aperture_data]
+    polydata = convert_face_3d(aperture.geometry)
+    polydata = _add_metadata_to_cells(polydata, aperture, 'Aperture')
+    data = [polydata]
     for shade in aperture.outdoor_shades:
-        shade_data = convert_shade(shade)
-        data.append(shade_data)
+        polydata = convert_shade(shade)
+        data.append(polydata)
     return data
 
 
 def convert_face(face: Face) -> List[PolyData]:
     """Convert a HBFace to a PolyData."""
+
     polydata = convert_face_3d(face.punched_geometry)
-    polydata.type = face.type.name
-    polydata.identifier = face.identifier
-    polydata.display_name = face.display_name
+    polydata = _add_metadata_to_cells(polydata, face)
+
     data = [polydata]
     for aperture in face.apertures:
         data.extend(convert_aperture(aperture))
@@ -145,7 +208,7 @@ def convert_points(points: List[Point3D]) -> PolyData:
     """Export a list of points to VTK.
 
     Args:
-        points : A list of Point3D.
+        points: A list of Point3D.
 
     Returns:
         A vtk object with multiple VTK point objects.
@@ -198,7 +261,7 @@ def _create_lines(
 def _create_cone(
     center: Point3D, vector: Vector3D, radius: float = 0.1, height: float = 0.3,
     resolution: int = 2
-        ) -> PolyData:
+) -> PolyData:
     cone_poly = vtk.vtkPolyData()
 
     # Parameters for the cone
