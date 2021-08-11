@@ -101,6 +101,9 @@ class PolyData(vtk.vtkPolyData):
         self.identifier = None
         self.display_name = None
         self.type = None
+        self.boundary_condition = None
+        self.construction_display_name = None
+        self.modifier_display_name = None
         self._fields = {}  # keep track of information for each data field.
 
     @staticmethod
@@ -109,6 +112,8 @@ class PolyData(vtk.vtkPolyData):
             return vtk.vtkFloatArray()
         elif isinstance(data, int):
             return vtk.vtkIntArray()
+        elif isinstance(data, str):
+            return vtk.vtkStringArray()
         else:
             raise ValueError(f'Unsupported input data type: {type(data)}')
 
@@ -173,6 +178,10 @@ class PolyData(vtk.vtkPolyData):
 
         self._fields[name] = DataFieldInfo(name, data_range, colors, cell)
 
+        # if it's a string array don't publish the legend
+        if isinstance(values, vtk.vtkStringArray):
+            self._fields[name].legend_parameter.hide_legend = True
+
     def color_by(self, name: str, cell=True) -> None:
         """Set the name for active data that should be used to color PolyData."""
         assert name in self._fields, \
@@ -207,6 +216,14 @@ class PolyData(vtk.vtkPolyData):
 
         """
         return _write_to_folder(self, target_folder)
+
+    def __repr__(self) -> Tuple[str]:
+        return (
+            f'Diplay name: {self.display_name} |'
+            f' Boundary condition: {self.boundary_condition} |'
+            f' Construction display name: {self.construction_display_name} |'
+            f' Modifier display name: {self.modifier_display_name}'
+        )
 
 
 class JoinedPolyData(vtk.vtkAppendPolyData):
