@@ -121,6 +121,7 @@ def _add_metadata_to_cells(polydata, hb_object, hb_type: str = None) -> PolyData
     polydata.display_name = hb_object.display_name
     if hb_type != 'Shade':
         polydata.boundary_condition = hb_object.boundary_condition.ToString()
+    print(hb_object.type, hb_object.properties)
     polydata.construction_display_name = hb_object.properties.energy.construction.display_name
     polydata.modifier_display_name = hb_object.properties.radiance.modifier.display_name
 
