@@ -121,22 +121,18 @@ def _add_metadata_to_cells(polydata, hb_object, hb_type: str = None) -> PolyData
     polydata.display_name = hb_object.display_name
     if hb_type != 'Shade':
         polydata.boundary_condition = hb_object.boundary_condition.ToString()
-    print(hb_object.type, hb_object.properties)
     polydata.construction_display_name = hb_object.properties.energy.construction.display_name
     polydata.modifier_display_name = hb_object.properties.radiance.modifier.display_name
 
     # extracting string metadata
+
+    # is hb objects is a shade avoid boundary condition
     if hb_type == 'Shade':
-        display_name = [hb_object.display_name]*polydata.GetNumberOfCells()
-        if hb_type != 'Shade':
-            boundary_condition = [hb_object.boundary_condition.ToString()] * \
-                polydata.GetNumberOfCells()
+        display_name = [polydata.display_name]*polydata.GetNumberOfCells()
         construction_display_name = [
-            hb_object.properties.energy.construction.display_name
-        ]*polydata.GetNumberOfCells()
+            polydata.construction_display_name] * polydata.GetNumberOfCells()
         modifier_display_name = [
-            hb_object.properties.radiance.modifier.display_name
-        ]*polydata.GetNumberOfCells()
+            polydata.modifier_display_name] * polydata.GetNumberOfCells()
 
         metadata = {
             "Display Name": display_name,
@@ -144,15 +140,13 @@ def _add_metadata_to_cells(polydata, hb_object, hb_type: str = None) -> PolyData
             "Modifier Display Name": modifier_display_name
         }
     else:
-        display_name = [hb_object.display_name]*polydata.GetNumberOfCells()
-        boundary_condition = [hb_object.boundary_condition.ToString()] * \
+        display_name = [polydata.display_name]*polydata.GetNumberOfCells()
+        boundary_condition = [polydata.boundary_condition] * \
             polydata.GetNumberOfCells()
         construction_display_name = [
-            hb_object.properties.energy.construction.display_name
-        ]*polydata.GetNumberOfCells()
+            polydata.construction_display_name] * polydata.GetNumberOfCells()
         modifier_display_name = [
-            hb_object.properties.radiance.modifier.display_name
-        ]*polydata.GetNumberOfCells()
+            polydata.modifier_display_name] * polydata.GetNumberOfCells()
 
         metadata = {
             "Display Name": display_name,
