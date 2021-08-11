@@ -1,2 +1,2 @@
-honeybee-radiance>=1.38.13
+lbt-honeybee>=0.5.23
 vtk==9.0.3
