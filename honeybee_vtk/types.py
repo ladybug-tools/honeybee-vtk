@@ -220,16 +220,17 @@ class PolyData(vtk.vtkPolyData):
         """
         return _write_to_folder(self, target_folder)
 
-    def _add_metadata(self, hb_object: Union[Face, Aperture, Shade]) -> None:
-        """Add metadata to a Polydata object.
+    def _get_metadata(self, hb_object: Union[Face, Aperture, Shade]) -> Dict[str, list]:
+        """Extract metadata from a honeybee object and get it as a dictionary.
 
         This private method will extract properties such as display name,
         boundary condition, construction display name, and modifier display name from
-        a honeybee object.
-
-        Args:
-            hb_object: A Honeybee object from Face, Shade or Aperture.
+        a honeybee object and will return a dictionary that has property name as keys
+        and a list of property names as values. The length of the list will be
+        equal to the number of cells in the Polydata object.
         """
+
+        # extracting metadata and setting attributes
         if isinstance(hb_object, Face):
             self.type = hb_object.type.name
         elif isinstance(hb_object, Aperture):
@@ -243,17 +244,10 @@ class PolyData(vtk.vtkPolyData):
         self.construction = hb_object.properties.energy.construction.display_name
         self.modifier = hb_object.properties.radiance.modifier.display_name
 
-    def _get_metadata(self) -> Dict[str, list]:
-        """Get metadata as a dictionary.
-
-        The dictionary has property name as keys and a list of
-        property names as values. The length of the list will be equal to the number
-        of cells in the Polydata object.
-        """
+        # number of cells in polydata
         num_of_cells = self.GetNumberOfCells()
 
-        # Applying string metdata to the cells
-        # is hb objects is a shade avoid boundary condition
+        # creating a dictionary with metadata name : List[metadata value] structure
         if self.type == 'Shade':
             name = [self.name] * num_of_cells
             construction = [self.construction] * num_of_cells
