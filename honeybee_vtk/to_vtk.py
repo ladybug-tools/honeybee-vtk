@@ -102,8 +102,7 @@ def convert_sensor_grid(
 
 def convert_shade(shade: Shade) -> PolyData:
     polydata = convert_face_3d(shade.geometry)
-    polydata._add_metadata(shade)
-    metadata = polydata._get_metadata()
+    metadata = polydata._get_metadata(shade)
     for key, value in metadata.items():
         polydata.add_data(value, key, data_range=[0, 0])
     return polydata
@@ -111,8 +110,7 @@ def convert_shade(shade: Shade) -> PolyData:
 
 def convert_aperture(aperture: Aperture) -> List[PolyData]:
     polydata = convert_face_3d(aperture.geometry)
-    polydata._add_metadata(aperture)
-    metadata = polydata._get_metadata()
+    metadata = polydata._get_metadata(aperture)
     for key, value in metadata.items():
         polydata.add_data(value, key, data_range=[0, 0])
     data = [polydata]
@@ -126,8 +124,7 @@ def convert_face(face: Face) -> List[PolyData]:
     """Convert a HBFace to a PolyData."""
 
     polydata = convert_face_3d(face.punched_geometry)
-    polydata._add_metadata(face)
-    metadata = polydata._get_metadata()
+    metadata = polydata._get_metadata(face)
     for key, value in metadata.items():
         polydata.add_data(value, key, data_range=[0, 0])
     data = [polydata]
