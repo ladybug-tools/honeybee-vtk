@@ -14,10 +14,10 @@ def test_polydata_initialization():
     polydata = PolyData()
     assert not polydata.identifier
     assert not polydata.type
-    assert not polydata.display_name
-    assert not polydata.boundary_condition
-    assert not polydata.construction_display_name
-    assert not polydata.modifier_display_name
+    assert not polydata.name
+    assert not polydata.boundary
+    assert not polydata.construction
+    assert not polydata.modifier
     assert not polydata._fields
 
 
@@ -26,15 +26,15 @@ def test_metadata():
 
     for ds in model:
         for polydata in ds.data:
-            assert polydata.display_name == polydata.GetCellData(
+            assert polydata.name == polydata.GetCellData(
             ).GetAbstractArray('Name').GetValue(0)
 
             if ds.name != 'Shade':
-                assert polydata.boundary_condition == polydata.GetCellData(
+                assert polydata.boundary == polydata.GetCellData(
                 ).GetAbstractArray('Boundary Condition').GetValue(0)
 
-            assert polydata.construction_display_name == polydata.GetCellData(
+            assert polydata.construction == polydata.GetCellData(
             ).GetAbstractArray('Construction').GetValue(0)
 
-            assert polydata.modifier_display_name == polydata.GetCellData(
+            assert polydata.modifier == polydata.GetCellData(
             ).GetAbstractArray('Modifier').GetValue(0)
