@@ -135,9 +135,9 @@ def _add_metadata_to_cells(polydata, hb_object, hb_type: str = None) -> PolyData
         modifier_display_name = [polydata.modifier_display_name] * num_of_cells
 
         metadata = {
-            "Display Name": display_name,
-            "Construction Display Name": construction_display_name,
-            "Modifier Display Name": modifier_display_name
+            "Name": display_name,
+            "Construction": construction_display_name,
+            "Modifier": modifier_display_name
         }
     else:
         display_name = [polydata.display_name] * num_of_cells
@@ -146,10 +146,10 @@ def _add_metadata_to_cells(polydata, hb_object, hb_type: str = None) -> PolyData
         modifier_display_name = [polydata.modifier_display_name] * num_of_cells
 
         metadata = {
-            "Display Name": display_name,
+            "Name": display_name,
             "Boundary Condition": boundary_condition,
-            "Construction Display Name": construction_display_name,
-            "Modifier Display Name": modifier_display_name
+            "Construction": construction_display_name,
+            "Modifier": modifier_display_name
         }
 
     # adding string metadata
