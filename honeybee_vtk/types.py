@@ -272,7 +272,7 @@ class PolyData(vtk.vtkPolyData):
 
             metadata = {
                 "Name": name,
-                "Boundary Condition": boundary,
+                "Boundary": boundary,
                 "Construction": construction,
                 "Modifier": modifier
             }
