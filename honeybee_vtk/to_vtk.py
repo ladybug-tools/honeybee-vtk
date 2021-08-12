@@ -95,79 +95,26 @@ def convert_sensor_grid(
         grid_data = convert_mesh(sensor_grid.mesh)
 
     grid_data.identifier = sensor_grid.identifier
-    grid_data.display_name = sensor_grid.display_name
+    grid_data.name = sensor_grid.display_name
     grid_data.type = 'Grid'
     return grid_data
 
 
-def _add_metadata_to_cells(polydata, hb_object, hb_type: str = None) -> PolyData:
-    """This is an internal method to add metadata from the Polydata to its cells.
-
-    Args:
-        polydata: A honeybee-vtk Polydata object.
-        hb_object: A honeybee object. A Face, Aperture or Shade.
-        hb_type: A string representing the face type. Acceptable values are 'Aperture',
-            'Shade'.
-
-    Returns:
-        A honeybee-vtk Polydata object with the metadata.
-    """
-    # setting polydata properties
-    if not hb_type:
-        polydata.type = hb_object.type.name
-    else:
-        polydata.type = hb_type
-    polydata.identifier = hb_object.identifier
-    polydata.display_name = hb_object.display_name
-    if hb_type != 'Shade':
-        polydata.boundary_condition = hb_object.boundary_condition.ToString()
-    polydata.construction_display_name = hb_object.properties.energy.construction.display_name
-    polydata.modifier_display_name = hb_object.properties.radiance.modifier.display_name
-
-    # number of cells in the polydata
-    num_of_cells = polydata.GetNumberOfCells()
-
-    # Applying string metdata to the cells
-    # is hb objects is a shade avoid boundary condition
-    if hb_type == 'Shade':
-        display_name = [polydata.display_name] * num_of_cells
-        construction_display_name = [polydata.construction_display_name] * num_of_cells
-        modifier_display_name = [polydata.modifier_display_name] * num_of_cells
-
-        metadata = {
-            "Name": display_name,
-            "Construction": construction_display_name,
-            "Modifier": modifier_display_name
-        }
-    else:
-        display_name = [polydata.display_name] * num_of_cells
-        boundary_condition = [polydata.boundary_condition] * num_of_cells
-        construction_display_name = [polydata.construction_display_name] * num_of_cells
-        modifier_display_name = [polydata.modifier_display_name] * num_of_cells
-
-        metadata = {
-            "Name": display_name,
-            "Boundary Condition": boundary_condition,
-            "Construction": construction_display_name,
-            "Modifier": modifier_display_name
-        }
-
-    # adding string metadata
-    for key, value in metadata.items():
-        polydata.add_data(value, key, data_range=[0, 0])
-
-    return polydata
-
-
 def convert_shade(shade: Shade) -> PolyData:
     polydata = convert_face_3d(shade.geometry)
-    polydata = _add_metadata_to_cells(polydata, shade, 'Shade')
+    polydata._add_metadata(shade)
+    metadata = polydata._get_metadata()
+    for key, value in metadata.items():
+        polydata.add_data(value, key, data_range=[0, 0])
     return polydata
 
 
 def convert_aperture(aperture: Aperture) -> List[PolyData]:
     polydata = convert_face_3d(aperture.geometry)
-    polydata = _add_metadata_to_cells(polydata, aperture, 'Aperture')
+    polydata._add_metadata(aperture)
+    metadata = polydata._get_metadata()
+    for key, value in metadata.items():
+        polydata.add_data(value, key, data_range=[0, 0])
     data = [polydata]
     for shade in aperture.outdoor_shades:
         polydata = convert_shade(shade)
@@ -179,8 +126,10 @@ def convert_face(face: Face) -> List[PolyData]:
     """Convert a HBFace to a PolyData."""
 
     polydata = convert_face_3d(face.punched_geometry)
-    polydata = _add_metadata_to_cells(polydata, face)
-
+    polydata._add_metadata(face)
+    metadata = polydata._get_metadata()
+    for key, value in metadata.items():
+        polydata.add_data(value, key, data_range=[0, 0])
     data = [polydata]
     for aperture in face.apertures:
         data.extend(convert_aperture(aperture))
