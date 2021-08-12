@@ -27,14 +27,14 @@ def test_metadata():
     for ds in model:
         for polydata in ds.data:
             assert polydata.display_name == polydata.GetCellData(
-            ).GetAbstractArray('Display Name').GetValue(0)
+            ).GetAbstractArray('Name').GetValue(0)
 
             if ds.name != 'Shade':
                 assert polydata.boundary_condition == polydata.GetCellData(
                 ).GetAbstractArray('Boundary Condition').GetValue(0)
 
             assert polydata.construction_display_name == polydata.GetCellData(
-            ).GetAbstractArray('Construction Display Name').GetValue(0)
+            ).GetAbstractArray('Construction').GetValue(0)
 
             assert polydata.modifier_display_name == polydata.GetCellData(
-            ).GetAbstractArray('Modifier Display Name').GetValue(0)
+            ).GetAbstractArray('Modifier').GetValue(0)
