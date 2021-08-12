@@ -17,6 +17,9 @@ from typing import Dict, Union, List, Tuple
 from ladybug.color import Color
 from .legend_parameter import LegendParameter, ColorSets
 from .vtkjs.schema import DataSetProperty, DataSet, DisplayMode, DataSetMapper
+from honeybee.face import Face
+from honeybee.aperture import Aperture
+from honeybee.shade import Shade
 
 
 class DataSetNames(Enum):
@@ -99,11 +102,11 @@ class PolyData(vtk.vtkPolyData):
     def __init__(self) -> None:
         super().__init__()
         self.identifier = None
-        self.display_name = None
+        self.name = None
         self.type = None
-        self.boundary_condition = None
-        self.construction_display_name = None
-        self.modifier_display_name = None
+        self.boundary = None
+        self.construction = None
+        self.modifier = None
         self._fields = {}  # keep track of information for each data field.
 
     @staticmethod
@@ -217,12 +220,71 @@ class PolyData(vtk.vtkPolyData):
         """
         return _write_to_folder(self, target_folder)
 
+    def _add_metadata(self, hb_object: Union[Face, Aperture, Shade]) -> None:
+        """Add metadata to a Polydata object.
+
+        This private method will extract properties such as display name,
+        boundary condition, construction display name, and modifier display name from
+        a honeybee object.
+
+        Args:
+            hb_object: A Honeybee object from Face, Shade or Aperture.
+        """
+        if isinstance(hb_object, Face):
+            self.type = hb_object.type.name
+        elif isinstance(hb_object, Aperture):
+            self.type = 'Aperture'
+        elif isinstance(hb_object, Shade):
+            self.type = 'Shade'
+        self.identifier = hb_object.identifier
+        self.name = hb_object.display_name
+        if self.type != 'Shade':
+            self.boundary = hb_object.boundary_condition.ToString()
+        self.construction = hb_object.properties.energy.construction.display_name
+        self.modifier = hb_object.properties.radiance.modifier.display_name
+
+    def _get_metadata(self) -> Dict[str, list]:
+        """Get metadata as a dictionary.
+
+        The dictionary has property name as keys and a list of
+        property names as values. The length of the list will be equal to the number
+        of cells in the Polydata object.
+        """
+        num_of_cells = self.GetNumberOfCells()
+
+        # Applying string metdata to the cells
+        # is hb objects is a shade avoid boundary condition
+        if self.type == 'Shade':
+            name = [self.name] * num_of_cells
+            construction = [self.construction] * num_of_cells
+            modifier = [self.modifier] * num_of_cells
+
+            metadata = {
+                "Name": name,
+                "Construction": construction,
+                "Modifier": modifier
+            }
+        else:
+            name = [self.name] * num_of_cells
+            boundary = [self.boundary] * num_of_cells
+            construction = [self.construction] * num_of_cells
+            modifier = [self.modifier] * num_of_cells
+
+            metadata = {
+                "Name": name,
+                "Boundary Condition": boundary,
+                "Construction": construction,
+                "Modifier": modifier
+            }
+
+        return metadata
+
     def __repr__(self) -> Tuple[str]:
         return (
-            f'Diplay name: {self.display_name} |'
-            f' Boundary condition: {self.boundary_condition} |'
-            f' Construction display name: {self.construction_display_name} |'
-            f' Modifier display name: {self.modifier_display_name}'
+            f'Name: {self.name} |'
+            f' Boundary: {self.boundary} |'
+            f' Construction: {self.construction} |'
+            f' Modifier: {self.modifier}'
         )
 
 
