@@ -2,7 +2,7 @@
 Welcome to Honeybee-vtk's documentation!
 =============================================
 
-.. image:: https://github.com/ladybug-tools/honeybee-vtk/blob/master/images/vtk.png
+.. image:: https://raw.githubusercontent.com/ladybug-tools/honeybee-vtk/blob/master/images/vtk.png
 
 Honeybee extension for translating HBJSON to VTK files.
 
