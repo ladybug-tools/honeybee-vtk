@@ -103,16 +103,14 @@ def convert_sensor_grid(
 def convert_shade(shade: Shade) -> PolyData:
     polydata = convert_face_3d(shade.geometry)
     metadata = polydata._get_metadata(shade)
-    for key, value in metadata.items():
-        polydata.add_data(value, key, data_range=[0, 0])
+    polydata._add_metadata(metadata)
     return polydata
 
 
 def convert_aperture(aperture: Aperture) -> List[PolyData]:
     polydata = convert_face_3d(aperture.geometry)
     metadata = polydata._get_metadata(aperture)
-    for key, value in metadata.items():
-        polydata.add_data(value, key, data_range=[0, 0])
+    polydata._add_metadata(metadata)
     data = [polydata]
     for shade in aperture.outdoor_shades:
         polydata = convert_shade(shade)
@@ -125,8 +123,7 @@ def convert_face(face: Face) -> List[PolyData]:
 
     polydata = convert_face_3d(face.punched_geometry)
     metadata = polydata._get_metadata(face)
-    for key, value in metadata.items():
-        polydata.add_data(value, key, data_range=[0, 0])
+    polydata._add_metadata(metadata)
     data = [polydata]
     for aperture in face.apertures:
         data.extend(convert_aperture(aperture))
