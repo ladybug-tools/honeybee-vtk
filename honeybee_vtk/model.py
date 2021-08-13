@@ -260,31 +260,11 @@ class Model(object):
             except AttributeError:
                 raise AttributeError(f'Invalid attribute: {attr}')
 
-    def to_vtkjs(self, folder: str = '.', name: str = None) -> str:
-        """Write a vtkjs file.
+    def _to_folder(self) -> str:
+        """Write datasets to a temp folder and get a path to that temp folder."""
 
-        Write your honeybee-vtk model to a vtkjs file that you can open in
-        Paraview-Glance.
-
-        Args:
-            folder: A valid text string representing the location of folder where
-                you'd want to write the vtkjs file. Defaults to current working
-                directory.
-            name : Name for the vtkjs file. File name will be Model.vtkjs if not
-                provided.
-
-        Returns:
-            A text string representing the file path to the vtkjs file.
-        """
-
-        # name of the vtkjs file
-        file_name = name or 'model'
         # create a temp folder
         temp_folder = tempfile.mkdtemp()
-        # The folder set by the user is the target folder
-        target_folder = os.path.abspath(folder)
-        # Set a file path to move the .zip file to the target folder
-        target_vtkjs_file = os.path.join(target_folder, file_name + '.vtkjs')
 
         # write every dataset
         scene = []
@@ -308,6 +288,34 @@ class Model(object):
         index_json.scene = scene
         index_json.to_json(temp_folder)
 
+        return temp_folder
+
+    def to_vtkjs(self, folder: str = '.', name: str = None) -> str:
+        """Write a vtkjs file.
+
+        Write your honeybee-vtk model to a vtkjs file that you can open in
+        Paraview-Glance.
+
+        Args:
+            folder: A valid text string representing the location of folder where
+                you'd want to write the vtkjs file. Defaults to current working
+                directory.
+            name : Name for the vtkjs file. File name will be Model.vtkjs if not
+                provided.
+
+        Returns:
+            A text string representing the file path to the vtkjs file.
+        """
+
+        # name of the vtkjs file
+        file_name = name or 'model'
+        # The folder set by the user is the target folder
+        target_folder = os.path.abspath(folder)
+        # Set a file path to move the .zip file to the target folder
+        target_vtkjs_file = os.path.join(target_folder, file_name + '.vtkjs')
+
+        # folder with datasets
+        temp_folder = self._to_folder()
         # zip as vtkjs
         temp_vtkjs_file = convert_directory_to_zip_file(temp_folder, extension='vtkjs',
                                                         move=False)
