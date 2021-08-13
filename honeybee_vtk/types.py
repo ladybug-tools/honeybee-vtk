@@ -273,6 +273,15 @@ class PolyData(vtk.vtkPolyData):
 
         return metadata
 
+    def _add_metadata(self, metadata: Dict[str, list]) -> None:
+        """Add metadata to Polydata.
+
+        Args:
+            metadata: A dictionary generated from _get_metadata method.
+        """
+        for key, value in metadata.items():
+            self.add_data(value, key, data_range=[0, 0])
+
     def __repr__(self) -> Tuple[str]:
         return (
             f'Name: {self.name} |'
