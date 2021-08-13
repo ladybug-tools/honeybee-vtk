@@ -26,7 +26,7 @@ For command line interface documentation and API documentation see the pages bel
    cli/index
 
 
-honeybee_radiance
+honeybee_vtk
 =================
 
 .. toctree::
