@@ -136,7 +136,7 @@ def test_data_config_validators():
     """Testing if correct errors are being raised."""
 
     # all required fields missing
-    with pytest.raises(KeyError):
+    with pytest.raises(ValidationError):
         data_config = DataConfig()
 
     # required fields missing
@@ -147,13 +147,13 @@ def test_data_config_validators():
     with pytest.raises(ValidationError):
         data_config = DataConfig(
             identifier='Daylight-factor', object_type='grid', unit='Percentage',
-            folder_path='tests/assets/config/valid.json')
+            path='tests/assets/config/valid.json')
 
     # invalid object type
     with pytest.raises(ValidationError):
         data_config = DataConfig(
             identifier='Daylight-factor', object_type='ground', unit='Percentage',
-            folder_path='tests/assets/df_results')
+            path='tests/assets/df_results')
 
 
 def test_data_config_legend_parameter_validator():
@@ -166,7 +166,7 @@ def test_data_config_legend_parameter_validator():
     with pytest.raises(ValidationError):
         data_config = DataConfig(
             identifier='Daylight-factor', object_type='grid', unit='Percentage',
-            folder_path='tests/assets/df_results', legend_parameters=legend_params)
+            path='tests/assets/df_results', legend_parameters=legend_params)
 
     # height greater than position in Y direction
     legend_params = LegendConfig()
@@ -175,7 +175,7 @@ def test_data_config_legend_parameter_validator():
     with pytest.raises(ValidationError):
         data_config = DataConfig(
             identifier='Daylight-factor', object_type='grid', unit='Percentage',
-            folder_path='tests/assets/df_results', legend_parameters=legend_params)
+            path='tests/assets/df_results', legend_parameters=legend_params)
 
 
 def test_load_legend_parameter():
