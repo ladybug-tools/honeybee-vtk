@@ -515,9 +515,6 @@ class ModelDataSet:
             data = JoinedPolyData.from_polydata(self.data)
         return _write_to_folder(data, target_folder.as_posix())
 
-    # TODO: export color-range information for each dataset
-    # each dataset has its own information. If we can only have one then we should use
-    # the information for color_by field.
     def as_data_set(self, url=None) -> DataSet:
         """Convert to a vtkjs DataSet object.
 
@@ -540,11 +537,18 @@ class ModelDataSet:
         if self.color_by is not None:
             mapper.colorByArrayName = self.color_by
 
+        # Getting range of each data added to the ModelDataSet object.
+        ranges = {}
+        if self.name == 'Grid' and self.fields_info:
+            for name, value in self.fields_info.items():
+                ranges[name] = value.range
+
         data = {
             'name': self.name,
             'httpDataSetReader': {'url': url if url is not None else self.name},
             'property': ds_prop.dict(),
-            'mapper': mapper.dict()
+            'mapper': mapper.dict(),
+            'data_ranges': ranges
         }
 
         return DataSet.parse_obj(data)
