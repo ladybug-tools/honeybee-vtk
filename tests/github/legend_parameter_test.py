@@ -126,3 +126,17 @@ def test_range():
         lp.min = 10
         lp.max = 5
         lp.range
+
+
+def test_legend_min_max():
+    """Testing how the LegendParameter object treats min and max values."""
+    lp = LegendParameter()
+    lp.min = 0
+    lp.max = 0
+    assert lp.min == 0
+    assert lp.max == 0
+
+    lp.min = None
+    lp.max = None
+    assert lp.min is None
+    assert lp.max is None
