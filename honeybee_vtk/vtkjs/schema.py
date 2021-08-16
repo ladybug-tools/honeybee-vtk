@@ -1,7 +1,7 @@
 """Schema for VTKJS objects."""
 import json
 import pathlib
-from typing import Dict, List
+from typing import Dict, List, Tuple
 import enum
 
 from pydantic import BaseModel, Field, validator
@@ -82,6 +82,10 @@ class DataSet(BaseModel):
     )
     mapper: DataSetMapper = Field(DataSetMapper())
     property: DataSetProperty = Field(DataSetProperty())
+    data_ranges: Dict[str, Tuple[float, float]] = Field(
+        {},
+        description='range of data for all the data added to the Dataset object.'
+    )
 
 
 class IndexJSON(BaseModel):
