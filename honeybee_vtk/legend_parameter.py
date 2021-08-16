@@ -542,7 +542,7 @@ class LegendParameter:
 
     @min.setter
     def min(self, val):
-        if not val:
+        if val == None:
             self._min = None
         elif isinstance(val, (int, float)):
             self._min = val
@@ -557,7 +557,7 @@ class LegendParameter:
 
     @max.setter
     def max(self, val):
-        if not val:
+        if val == None:
             self._max = None
         elif isinstance(val, (int, float)):
             self._max = val
@@ -585,11 +585,11 @@ class LegendParameter:
             )
 
     @property
-    def range(self):
-        if not self._min and not self._max:
+    def range(self) -> Tuple[float, float]:
+        if self._min == None and self._max == None:
             return self._auto_range
 
-        elif self._min and not self._max:
+        elif self._min and self._max == None:
             if self._min < self._auto_range[1]:
                 return (self._min, self._auto_range[1])
             else:
@@ -600,7 +600,7 @@ class LegendParameter:
                     ' provide a max value.'
                 )
 
-        elif not self._min and self._max:
+        elif self._min == None and self._max:
             if self._max > self._auto_range[0]:
                 return (self._auto_range[0], self._max)
             else:
@@ -611,7 +611,7 @@ class LegendParameter:
                     ' provide a min value.'
                 )
 
-        elif self._min and self._max:
+        elif isinstance(self._min, (int, float)) and isinstance(self._max, (int, float)):
             if self._min < self._max:
                 return (self._min, self._max)
             else:
