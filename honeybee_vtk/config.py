@@ -5,11 +5,11 @@ import json
 import pathlib
 import warnings
 
-from typing import List, Union
+from typing import List, Union, Tuple
 from pydantic import BaseModel, validator, Field, constr, conint
 from pydantic.types import confloat, conlist
 from .types import DataSetNames
-from .legend_parameter import ColorSets, Text, DecimalCount, Orientation
+from .legend_parameter import ColorSets, Text, DecimalCount, Orientation, LegendParameter
 from .model import Model
 from ._helper import get_line_count, get_min_max
 from .vtkjs.schema import DisplayMode
@@ -142,10 +142,6 @@ class LegendConfig(BaseModel):
 
 class DataConfig(BaseModel):
     """Config for simulation results you'd like to load on a honeybee-vtk model."""
-
-    class Config:
-        validate_all = True
-        validate_assignment = True
 
     identifier: str = Field(
         description='identifier to be given to data. Example, "Daylight-Factor".'
@@ -300,6 +296,7 @@ def _load_data(folder_path: pathlib.Path, identifier: str, model: Model,
         model: A honeybee-vtk model.
         grid_type: A string indicating whether the sensor grid in the model is made of
             points or meshes.
+        legend_range: A tuple of min and max values of the legend parameters.
     """
 
     grids_info_json = folder_path.joinpath('grids_info.json')
