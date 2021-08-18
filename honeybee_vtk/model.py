@@ -261,7 +261,7 @@ class Model(object):
                 raise AttributeError(f'Invalid attribute: {attr}')
 
     def _to_folder(self) -> str:
-        """Write datasets to a temp folder and get a path to that temp folder."""
+        """Create a folder ready to be zipped as .vtkjs."""
 
         # create a temp folder
         temp_folder = tempfile.mkdtemp()
