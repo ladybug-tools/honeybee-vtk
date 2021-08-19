@@ -52,3 +52,22 @@ def test_translate_recipe():
     vtkjs_path = os.path.join(target_folder, 'Model.zip')
     assert os.path.isfile(vtkjs_path)
     nukedir(target_folder, True)
+
+
+def test_translate_with_config():
+    """Test translating to vtkjs with config."""
+    runner = CliRunner()
+    file_path = r'tests/assets/gridbased.hbjson'
+    json_path = r'tests/assets/config/valid.json'
+    target_folder = r'tests/target'
+
+    # Optional arguments are deliberately capitalized or uppercased for testing
+    result = runner.invoke(translate, [
+        file_path, '--name', 'Model', '--folder', target_folder, '--file-type',
+        'vtkjs', '--display-mode', 'Shaded', '--grid-options', 'MESHES', '--config',
+        json_path])
+
+    assert result.exit_code == 0
+    html_path = os.path.join(target_folder, 'Model.vtkjs')
+    assert os.path.isfile(html_path)
+    nukedir(target_folder, True)
