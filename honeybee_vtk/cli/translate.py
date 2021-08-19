@@ -6,6 +6,7 @@ import traceback
 
 import click
 from click.exceptions import ClickException
+from pydantic.class_validators import validator
 
 from honeybee_vtk.model import Model
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
@@ -38,14 +39,16 @@ def translate():
     help='Switch between html and vtkjs formats', show_default=True
 )
 @click.option(
-    '--display-mode', '-dm', type=click.Choice(['shaded', 'surface',
-                                                'surfacewithedges', 'wireframe', 'points'], case_sensitive=False),
+    '--display-mode', '-dm',
+    type=click.Choice(['shaded', 'surface', 'surfacewithedges', 'wireframe', 'points'],
+                      case_sensitive=False),
     default='shaded', help='Set display mode for the model.', show_default=True
 )
 @click.option(
-    '--grid-options', '-go', type=click.Choice(['ignore', 'points', 'meshes'],
-                                               case_sensitive=False), default='ignore', help='Export sensor grids as either'
-    ' points or meshes.', show_default=True,
+    '--grid-options', '-go',
+    type=click.Choice(['ignore', 'points', 'meshes'], case_sensitive=False),
+    default='ignore', help='Export sensor grids as either points or meshes.',
+    show_default=True,
 )
 @click.option(
     '--show-html', '--show', '-sh', is_flag=True, default=False,
@@ -56,9 +59,14 @@ def translate():
     ' mount simulation data on HBJSON.', type=click.Path(exists=True), default=None,
     show_default=True
 )
+@click.option(
+    '--validate-data', '-vd', is_flag=True, default=False,
+    help='Validate simulation data before loading on the model. This is recommended'
+    ' when using this command locally.', show_default=True
+)
 def translate(
         hbjson_file, name, folder, file_type, display_mode, grid_options, show_html,
-        config):
+        config, validate_data):
     """Translate a HBJSON file to an HTML or a vtkjs file.
 
     \b
@@ -101,7 +109,10 @@ def translate(
             cameras = Camera.aerial_cameras(bounds=bounds, centroid=centroid)
             scene.add_actors(actors)
             scene.add_cameras(cameras)
-            model = load_config(config, model, scene)
+            if validate_data:
+                model = load_config(config, model, scene, validation=True)
+            else:
+                model = load_config(config, model, scene)
 
         # Set file type
 
