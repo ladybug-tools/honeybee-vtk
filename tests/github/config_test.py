@@ -1,18 +1,15 @@
 """Unit tests for the config module."""
 
-
-from _pytest.config import Config
 import pytest
 
 from pydantic import ValidationError
-from honeybee_vtk.legend_parameter import LegendParameter, Orientation, ColorSets
+from honeybee_vtk.legend_parameter import Orientation, ColorSets
 from honeybee_vtk.model import Model
 from honeybee_vtk.scene import Scene
-from honeybee_vtk.camera import Camera
 from honeybee_vtk.actor import Actor
-from honeybee_vtk.config import Autocalculate, DataConfig, LegendConfig,\
-    _load_legend_parameters, load_config, TextConfig, DecimalCount, \
-    _validate_simulation_data, _load_data, _get_grid_type
+from honeybee_vtk.config import Autocalculate, DataConfig, LegendConfig, TextConfig, \
+    DecimalCount
+from honeybee_vtk.load_config import load_config, _get_grid_type
 from honeybee_vtk.vtkjs.schema import DisplayMode, SensorGridOptions
 
 

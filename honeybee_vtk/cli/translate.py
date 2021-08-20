@@ -10,7 +10,7 @@ from pydantic.class_validators import validator
 
 from honeybee_vtk.model import Model
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
-from honeybee_vtk.config import load_config
+from honeybee_vtk.load_config import load_config
 from honeybee_vtk.scene import Scene
 from honeybee_vtk.camera import Camera
 from honeybee_vtk.actor import Actor
