@@ -287,8 +287,8 @@ def _validate_simulation_data(data: DataConfig, model: Model, grid_type: str) ->
             f' {tuple(names_to_report)}.')
 
 
-def _load_data(folder_path: pathlib.Path, identifier: str, model: Model,
-               grid_type: str) -> None:
+def _load_data(folder_path: pathlib.Path, identifier: str, object_type: DataSetNames,
+               model: Model, grid_type: str) -> None:
     """Load validated data on a honeybee-vtk model.
 
     This is a helper method to the public load_config method.
@@ -297,6 +297,8 @@ def _load_data(folder_path: pathlib.Path, identifier: str, model: Model,
         folder_path: A valid pathlib path to the folder with grid_info.json and data.
         identifier: A text string representing the identifier of the data in the config
             file.
+        object_type: A DatasetNames object indicating the type of object on which data
+            will be mounted.
         model: A honeybee-vtk model.
         grid_type: A string indicating whether the sensor grid in the model is made of
             points or meshes.
@@ -326,7 +328,7 @@ def _load_data(folder_path: pathlib.Path, identifier: str, model: Model,
                     for v in res_file.read_text().splitlines()]
         result.append(grid_res)
 
-    ds = model.get_modeldataset(DataSetNames.grid)
+    ds = model.get_modeldataset(object_type)
 
     if grid_type == 'meshes':
         ds.add_data_fields(
@@ -431,12 +433,13 @@ def load_config(json_path: str, model: Model, scene: Scene,
             if not data.hide:
                 folder_path = pathlib.Path(data.path)
                 identifier = data.identifier
+                object_type = data.object_type
                 grid_type = _get_grid_type(model)
                 # Validate data if asked for
                 if validation:
                     _validate_simulation_data(data, model, grid_type)
                 # Load data
-                _load_data(folder_path, identifier, model, grid_type)
+                _load_data(folder_path, identifier, object_type, model, grid_type)
                 # If legend is requested and legend parameters are provided
                 # Legend will only be used in export-images command
                 if legend and data.legend_parameters:
