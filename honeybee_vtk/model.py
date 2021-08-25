@@ -8,6 +8,7 @@ import webbrowser
 import tempfile
 import os
 import tempfile
+import random
 
 from collections import defaultdict
 from typing import Dict, List
@@ -260,11 +261,23 @@ class Model(object):
             except AttributeError:
                 raise AttributeError(f'Invalid attribute: {attr}')
 
-    def _to_folder(self) -> str:
-        """Create a folder ready to be zipped as .vtkjs."""
+    def to_point_in_time_folder(self, target: pathlib.Path = None) -> pathlib.Path:
+        """Create a point in time folder ready to be zipped as .vtkjs.
 
+        Args:   
+            target: Path to the location where you'd like to write this folder.
+                Defaults to None.
+
+        Returns:
+            A Pathlib path to the written folder.
+
+        """
         # create a temp folder
-        temp_folder = tempfile.mkdtemp()
+        if not target:
+            temp_folder = pathlib.Path(tempfile.mkdtemp())
+        else:
+            temp_folder = target.mkdir()
+            temp_folder = target
 
         # write every dataset
         scene = []
@@ -290,13 +303,15 @@ class Model(object):
 
         return temp_folder
 
-    def to_vtkjs(self, folder: str = '.', name: str = None) -> str:
+    @staticmethod
+    def to_vtkjs(temp_folder: pathlib.Path, folder: str = '.', name: str = None) -> str:
         """Write a vtkjs file.
 
         Write your honeybee-vtk model to a vtkjs file that you can open in
-        Paraview-Glance.
+        Paraview-Glance. This method uses 
 
         Args:
+            temp_folder: Path to the temp folder where datasets are written to be zipped.    
             folder: A valid text string representing the location of folder where
                 you'd want to write the vtkjs file. Defaults to current working
                 directory.
@@ -313,9 +328,6 @@ class Model(object):
         target_folder = os.path.abspath(folder)
         # Set a file path to move the .zip file to the target folder
         target_vtkjs_file = os.path.join(target_folder, file_name + '.vtkjs')
-
-        # folder with datasets
-        temp_folder = self._to_folder()
         # zip as vtkjs
         temp_vtkjs_file = convert_directory_to_zip_file(temp_folder, extension='vtkjs',
                                                         move=False)
@@ -353,7 +365,9 @@ class Model(object):
         html_file = os.path.join(target_folder, file_name + '.html')
         # Set temp folder to do the operation
         temp_folder = tempfile.mkdtemp()
-        vtkjs_file = self.to_vtkjs(temp_folder)
+        temp_vtkjs_folder = self.to_point_in_time_folder()
+        vtkjs_file = self.to_vtkjs(temp_folder=temp_vtkjs_folder, folder=temp_folder,
+                                   name=file_name)
         temp_html_file = add_data_to_viewer(vtkjs_file)
         shutil.copy(temp_html_file, html_file)
         try:
