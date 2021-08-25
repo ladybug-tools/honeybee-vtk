@@ -1,10 +1,10 @@
 """Schema for VTKJS objects."""
 import json
 import pathlib
-from typing import Dict, List
+from typing import Dict, List, Optional
 import enum
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, validator, constr
 
 
 class DisplayMode(enum.Enum):
@@ -125,3 +125,42 @@ class IndexJSON(BaseModel):
         index_file = pathlib.Path(target_folder, 'index.json')
         index_file.write_text(json.dumps(data))
         return index_file.as_posix()
+
+
+class TimeStep(BaseModel):
+    """Config for a timeStep object to be used in the timeSeries config."""
+    url: constr(regex='[0-9]') = Field(
+        description='The url of the time step. This is the name of the time step'
+        ' folder in the Grid folder. This is an integer represented as a string.')
+
+    timeStep: int = Field(
+        description='The time step number.')
+
+
+class TimeSeries(BaseModel):
+    """Config for index.json that ties all the time steps together."""
+    series: List[TimeStep] = Field(
+        description='A list of timeSteps objects.'
+    )
+
+
+class AnimationTimeStep(IndexJSON):
+    """Config for the time step objects to be added to the Animation object."""
+
+    time: int = Field(
+        description='The time step as an integer number.')
+    Grid: dict = Field(
+        description='The edited grid object copied from the scene object in the'
+        ' master index.json.')
+
+    class Config:
+        exclude = {'scene', 'version'}
+
+
+class Animation(BaseModel):
+    """Config for adding the animation object to the master index.json."""
+    type: str = Field("timeStepBasedAnimationHandler",
+                      description='Type of the object. Only use the default value.')
+    timeSteps: List[AnimationTimeStep] = Field(
+        description='A list of time step objects.'
+    )
