@@ -1,16 +1,17 @@
 """Functions to validate and load data and legend parameters from a config file."""
 
 from __future__ import annotations
+
 import json
 import pathlib
 import warnings
 
-from .types import DataSetNames
+
 from .legend_parameter import Text
 from .model import Model
-from .vtkjs.schema import DisplayMode
 from .scene import Scene
 from .config import DataConfig, Autocalculate
+from .time_series import to_time_series_folder, _load_point_in_time_data
 
 
 def _get_grid_type(model: Model) -> str:
@@ -90,61 +91,6 @@ def _validate_simulation_data(data: DataConfig, model: Model, grid_type: str) ->
             f' {tuple(names_to_report)}.')
 
 
-def _load_data(folder_path: pathlib.Path, identifier: str, object_type: DataSetNames,
-               model: Model, grid_type: str) -> None:
-    """Load validated data on a honeybee-vtk model.
-
-    This is a helper method to the public load_config method.
-
-    Args:
-        folder_path: A valid pathlib path to the folder with grid_info.json and data.
-        identifier: A text string representing the identifier of the data in the config
-            file.
-        object_type: A DatasetNames object indicating the type of object on which data
-            will be mounted.
-        model: A honeybee-vtk model.
-        grid_type: A string indicating whether the sensor grid in the model is made of
-            points or meshes.
-    """
-
-    grids_info_json = folder_path.joinpath('grids_info.json')
-    with open(grids_info_json) as fh:
-        grids_info = json.load(fh)
-
-    # grid identifier from grids_info.json
-    file_names = [grid['identifier'] for grid in grids_info]
-
-    # finding file extension for grid results
-    for path in folder_path.iterdir():
-        if path.stem == file_names[0]:
-            extension = path.suffix
-            break
-
-    # file paths to the result files
-    file_paths = [folder_path.joinpath(name+extension)
-                  for name in file_names]
-
-    result = []
-    for file_path in file_paths:
-        res_file = pathlib.Path(file_path)
-        grid_res = [float(v)
-                    for v in res_file.read_text().splitlines()]
-        result.append(grid_res)
-
-    ds = model.get_modeldataset(object_type)
-
-    if grid_type == 'meshes':
-        ds.add_data_fields(
-            result, name=identifier, per_face=True)
-        ds.color_by = identifier
-        ds.display_mode = DisplayMode.SurfaceWithEdges
-    else:
-        ds.add_data_fields(
-            result, name=identifier, per_face=False)
-        ds.color_by = identifier
-        ds.display_mode = DisplayMode.Points
-
-
 def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> None:
     """Load legend_parameters.
 
@@ -205,7 +151,8 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
 
 
 def load_config(json_path: str, model: Model, scene: Scene,
-                validation: bool = False, legend: bool = False) -> Model:
+                validation: bool = False, legend: bool = False,
+                time_series: bool = False, hbjson: str = None) -> Model:
     """Mount data on model from config json.
 
     Args:
@@ -213,7 +160,13 @@ def load_config(json_path: str, model: Model, scene: Scene,
         model: A honeybee-vtk model object.
         scene: A honeybee-vtk scene object.
         validation: A boolean indicating whether to validate the data before loading.
+            Defaults to False.
         legend: A boolean indicating whether to load legend parameters.
+            Defaults to False.
+        time_series: A boolean indicating whether to load time series data.
+            Defaults to False.
+        hbjson: File path to HBJSON. This is only used in the case of time series data.
+            Defaults to None.
 
     Returns:
         A honeybee-vtk model with data loaded on it.
@@ -230,26 +183,29 @@ def load_config(json_path: str, model: Model, scene: Scene,
             # check if model has grids loaded
             assert len(model.sensor_grids.data) > 0, 'Sensor grids are not loaded on'\
                 ' this model. Reload them using grid options.'
-            # validate config
+
             data = DataConfig.parse_obj(json_obj)
-            # if data is requested
+
             if not data.hide:
                 folder_path = pathlib.Path(data.path)
                 identifier = data.identifier
                 object_type = data.object_type
                 grid_type = _get_grid_type(model)
-                # Validate data if asked for
-                if validation:
-                    _validate_simulation_data(data, model, grid_type)
-                # Load data
-                _load_data(folder_path, identifier, object_type, model, grid_type)
-                # If legend is requested and legend parameters are provided
-                # Legend will only be used in export-images command
-                if legend and data.legend_parameters:
-                    _load_legend_parameters(data, model, scene)
+
+                if not time_series:
+                    if validation:
+                        _validate_simulation_data(data, model, grid_type)
+                    model = _load_point_in_time_data(
+                        folder_path, identifier, object_type, model, grid_type)
+                    # Legend will only be used in export-images command
+                    if legend and data.legend_parameters:
+                        _load_legend_parameters(data, model, scene)
+                    time_series_folder = None
+                else:
+                    time_series_folder = to_time_series_folder(folder_path, identifier,
+                                                               object_type, model, grid_type, hbjson)
             else:
                 warnings.warn(
                     f'Data for {data.identifier} is not loaded.'
                 )
-
-    return model
+    return model, time_series_folder
