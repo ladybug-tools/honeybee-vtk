@@ -60,13 +60,17 @@ def translate():
     show_default=True
 )
 @click.option(
-    '--validate-data', '-vd', is_flag=True, default=False,
+    '--validation', '-vd', is_flag=True, default=False,
     help='Validate simulation data before loading on the model. This is recommended'
     ' when using this command locally.', show_default=True
 )
+@click.option(
+    '--time-series', '-ts', is_flag=True, default=False,
+    help='Load time series data on a honeybee-vtk moodel.', show_default=True
+)
 def translate(
         hbjson_file, name, folder, file_type, display_mode, grid_options, show_html,
-        config, validate_data):
+        config, validation, time_series):
     """Translate a HBJSON file to an HTML or a vtkjs file.
 
     \b
@@ -109,23 +113,38 @@ def translate(
             cameras = Camera.aerial_cameras(bounds=bounds, centroid=centroid)
             scene.add_actors(actors)
             scene.add_cameras(cameras)
-            if validate_data:
-                model = load_config(config, model, scene, validation=True)
-            else:
-                model = load_config(config, model, scene)
+
+            try:
+                if time_series:
+                    model, time_series_folder = load_config(config, model, scene,
+                                                            time_series=True, hbjson=hbjson_file)
+                elif validation:
+                    model, time_series_folder = load_config(
+                        config, model, scene, validation=True)
+                else:
+                    model, time_series_folder = load_config(config, model, scene)
+            except FileNotFoundError:
+                raise FileNotFoundError('Use time-series flag if you wish to load'
+                                        ' time-series data.')
+        else:
+            time_series_folder = None
 
         # Set file type
-
-        if file_type.lower() == 'html':
-            output = model.to_html(folder=folder, name=name, show=show_html)
-        elif file_type.lower() == 'vtkjs':
-            output = model.to_vtkjs(folder=folder, name=name)
-        elif file_type.lower() == 'vtk':
-            output = model.to_files(folder=folder, name=name,
-                                    writer=VTKWriters.legacy)
-        elif file_type.lower() == 'vtp':
-            output = model.to_files(folder=folder, name=name,
-                                    writer=VTKWriters.binary)
+        if not time_series_folder:
+            if file_type.lower() == 'html':
+                output = model.to_html(folder=folder, name=name, show=show_html)
+            elif file_type.lower() == 'vtkjs':
+                temp_folder = model.to_point_in_time_folder()
+                output = model.to_vtkjs(temp_folder, folder=folder, name=name)
+            elif file_type.lower() == 'vtk':
+                output = model.to_files(folder=folder, name=name,
+                                        writer=VTKWriters.legacy)
+            elif file_type.lower() == 'vtp':
+                output = model.to_files(folder=folder, name=name,
+                                        writer=VTKWriters.binary)
+        else:
+            output = Model.to_vtkjs(temp_folder=time_series_folder,
+                                    folder=folder, name=name)
 
     except Exception as e:
         traceback.print_exc()
