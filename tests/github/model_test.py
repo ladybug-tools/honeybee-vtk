@@ -35,7 +35,8 @@ def test_write_vtkjs():
     if os.path.isdir(target_folder):
         shutil.rmtree(target_folder)
     os.mkdir(target_folder)
-    model.to_vtkjs(folder=target_folder, name='Model')
+    temp_folder = model.to_point_in_time_folder()
+    model.to_vtkjs(temp_folder, folder=target_folder, name='Model')
     html_path = os.path.join(target_folder, 'Model.vtkjs')
     assert os.path.isfile(html_path)
     shutil.rmtree(target_folder)
