@@ -129,6 +129,7 @@ class IndexJSON(BaseModel):
 
 class TimeStep(BaseModel):
     """Config for a timeStep object to be used in the timeSeries config."""
+
     url: constr(regex='[0-9]') = Field(
         description='The url of the time step. This is the name of the time step'
         ' folder in the Grid folder. This is an integer represented as a string.')
@@ -139,8 +140,9 @@ class TimeStep(BaseModel):
 
 class TimeSeries(BaseModel):
     """Config for index.json that ties all the time steps together."""
+
     series: List[TimeStep] = Field(
-        description='A list of timeSteps objects.'
+        description='A list of TimeStep objects.'
     )
 
 
@@ -148,10 +150,10 @@ class AnimationTimeStep(IndexJSON):
     """Config for the time step objects to be added to the Animation object."""
 
     time: int = Field(
-        description='The time step as an integer number.')
+        description='The time step as an number.')
     Grid: dict = Field(
         description='The edited grid object copied from the scene object in the'
-        ' master index.json.')
+        ' master index.json. This is internally created and added by honeybee-vtk.')
 
     class Config:
         exclude = {'scene', 'version'}
@@ -159,8 +161,19 @@ class AnimationTimeStep(IndexJSON):
 
 class Animation(BaseModel):
     """Config for adding the animation object to the master index.json."""
-    type: str = Field("timeStepBasedAnimationHandler",
-                      description='Type of the object. Only use the default value.')
+
+    type: str = Field(
+        "timeStepBasedAnimationHandler",
+        description='Type of the animation handler. This field does not accept any value'
+        ' other than the default value.')
     timeSteps: List[AnimationTimeStep] = Field(
         description='A list of time step objects.'
     )
+
+    @validator('type')
+    def no_other_value(cls, v):
+        if v != 'timeStepBasedAnimationHandler':
+            raise ValueError(
+                f'{v} is not a valid value for the "type" field. '
+                'Only the default value is accepted.'
+            )
