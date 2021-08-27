@@ -146,7 +146,7 @@ class TimeSeries(BaseModel):
     )
 
 
-class AnimationTimeStep(IndexJSON):
+class AnimationTimeStep(BaseModel):
     """Config for the time step objects to be added to the Animation object."""
 
     time: int = Field(
@@ -154,11 +154,6 @@ class AnimationTimeStep(IndexJSON):
     Grid: dict = Field(
         description='The edited grid object copied from the scene object in the'
         ' master index.json. This is internally created and added by honeybee-vtk.')
-
-    class Config:
-        # NOTE: This will work in Pydantic version 1.9
-        # Currently, it doesn't but it's not a problem.
-        exclude = {'scene', 'version'}
 
 
 class Animation(BaseModel):
