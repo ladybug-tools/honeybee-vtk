@@ -274,13 +274,13 @@ def test_grid_display_mode():
     scene_grids_loaded.add_cameras(cameras)
     scene_grids_loaded.add_actors(actors)
 
-    model = load_config(valid_json_path, model_grids_loaded, scene_grids_loaded)[0]
+    model = load_config(valid_json_path, model_grids_loaded, scene_grids_loaded)
     assert model.sensor_grids.display_mode == DisplayMode.SurfaceWithEdges
 
     model_sensors_loaded = Model.from_hbjson(
         model_grid_mesh, load_grids=SensorGridOptions.Sensors)
 
-    model = load_config(valid_json_path, model_sensors_loaded, scene_grids_loaded)[0]
+    model = load_config(valid_json_path, model_sensors_loaded, scene_grids_loaded)
     assert model.sensor_grids.display_mode == DisplayMode.Points
 
 
