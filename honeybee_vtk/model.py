@@ -274,16 +274,16 @@ class Model(object):
         """
         # create a temp folder
         if not target:
-            temp_folder = pathlib.Path(tempfile.mkdtemp())
+            point_in_time_folder = pathlib.Path(tempfile.mkdtemp())
         else:
-            temp_folder = target.mkdir()
-            temp_folder = target
+            point_in_time_folder = target.mkdir()
+            point_in_time_folder = target
 
         # write every dataset
         scene = []
         for data_set in DATA_SETS.values():
             data = getattr(self, data_set)
-            path = data.to_folder(temp_folder)
+            path = data.to_folder(point_in_time_folder)
             if not path:
                 # empty dataset
                 continue
@@ -292,23 +292,22 @@ class Model(object):
         # add sensor grids
         # it is separate from other DATA_SETS mainly for data visualization
         data = self.sensor_grids
-        path = data.to_folder(temp_folder)
+        path = data.to_folder(point_in_time_folder)
         if path:
             scene.append(data.as_data_set())
 
         # write index.json
         index_json = IndexJSON()
         index_json.scene = scene
-        index_json.to_json(temp_folder)
+        index_json.to_json(point_in_time_folder)
 
-        return temp_folder
+        return point_in_time_folder
 
     @staticmethod
     def to_vtkjs(temp_folder: pathlib.Path, folder: str = '.', name: str = None) -> str:
-        """Write a vtkjs file.
+        """Write a .vtkjs file.
 
-        Write your honeybee-vtk model to a vtkjs file that you can open in
-        Paraview-Glance. This method uses 
+        Zip either a point in time folder or a time step folder to a .vtkjs file.
 
         Args:
             temp_folder: Path to the temp folder where datasets are written to be zipped.    
@@ -345,7 +344,8 @@ class Model(object):
     def to_html(self, folder: str = '.', name: str = None, show: bool = False) -> str:
         """Write an HTML file.
 
-        Write your honeybee-vtk model to an HTML file.
+        Write your honeybee-vtk model to an HTML file. This only works for model with
+        only point-in-time data.
 
         Args:
             folder: A valid text string representing the location of folder where
@@ -365,9 +365,12 @@ class Model(object):
         html_file = os.path.join(target_folder, file_name + '.html')
         # Set temp folder to do the operation
         temp_folder = tempfile.mkdtemp()
+        # create a temp folder for the point in time data & model
         temp_vtkjs_folder = self.to_point_in_time_folder()
+        # zip the temp folder in a .vtkjs file
         vtkjs_file = self.to_vtkjs(temp_folder=temp_vtkjs_folder, folder=temp_folder,
                                    name=file_name)
+        # add .vtkjs file to the html file
         temp_html_file = add_data_to_viewer(vtkjs_file)
         shutil.copy(temp_html_file, html_file)
         try:
