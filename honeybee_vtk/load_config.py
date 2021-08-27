@@ -150,10 +150,43 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> Non
         title_params.color, title_params.size, title_params.bold)
 
 
+def _get_model_with_point_in_time_data(
+        validation: bool, data: DataConfig, model: Model, grid_type: str, scene: Scene,
+        legend: bool) -> Model:
+    """Get a model with point_in_time data loaded.
+
+    Args:
+        validation: If True, the data will be validated.
+        data: A DataConfig object from the config file.
+        model: A honeybee-vtk model.
+        grid_type: A string indicating whether the model has points and meshes.
+        scene: A honeybee-vtk scene.
+        legend: A boolean to indicate whether the legend should be loaded.
+
+    Returns:
+        A honeybee-vtk model with point_in_time data loaded.
+    """
+    folder_path = pathlib.Path(data.path)
+    identifier = data.identifier
+    object_type = data.object_type
+
+    if validation:
+        _validate_simulation_data(data, model, grid_type)
+    model = _load_point_in_time_data(
+        folder_path, identifier, object_type, model, grid_type)
+    # Legend will only be used in export-images command
+    if legend and data.legend_parameters:
+        _load_legend_parameters(data, model, scene)
+    return model
+
+
 def load_config(json_path: str, model: Model, scene: Scene,
                 validation: bool = False, legend: bool = False,
                 time_series: bool = False, hbjson: str = None) -> Model:
     """Mount data on model from config json.
+
+    This functions outputs a model or a time series folder based on whether the time
+    series flag is used.
 
     Args:
         json_path: File path to the config json file.
@@ -169,7 +202,7 @@ def load_config(json_path: str, model: Model, scene: Scene,
             Defaults to None.
 
     Returns:
-        A honeybee-vtk model with data loaded on it.
+        Either a honeybee-vtk model with data loaded on it or a time series folder.
     """
     try:
         with open(json_path) as fh:
@@ -179,33 +212,25 @@ def load_config(json_path: str, model: Model, scene: Scene,
             'Not a valid json file.'
         )
     else:
+        result = ''
+
         for json_obj in config.values():
             # check if model has grids loaded
             assert len(model.sensor_grids.data) > 0, 'Sensor grids are not loaded on'\
                 ' this model. Reload them using grid options.'
 
             data = DataConfig.parse_obj(json_obj)
+            grid_type = _get_grid_type(model)
 
             if not data.hide:
-                folder_path = pathlib.Path(data.path)
-                identifier = data.identifier
-                object_type = data.object_type
-                grid_type = _get_grid_type(model)
-
                 if not time_series:
-                    if validation:
-                        _validate_simulation_data(data, model, grid_type)
-                    model = _load_point_in_time_data(
-                        folder_path, identifier, object_type, model, grid_type)
-                    # Legend will only be used in export-images command
-                    if legend and data.legend_parameters:
-                        _load_legend_parameters(data, model, scene)
-                    time_series_folder = None
+                    result = _get_model_with_point_in_time_data(
+                        validation, data, model, grid_type, scene, legend)
                 else:
-                    time_series_folder = to_time_series_folder(folder_path, identifier,
-                                                               object_type, model, grid_type, hbjson)
+                    result = to_time_series_folder(data, model, grid_type, hbjson)
             else:
                 warnings.warn(
-                    f'Data for {data.identifier} is not loaded.'
+                    f'Data for {data.identifier} is not loaded since it is requested to.'
+                    ' be hidden.'
                 )
-    return model, time_series_folder
+    return result
