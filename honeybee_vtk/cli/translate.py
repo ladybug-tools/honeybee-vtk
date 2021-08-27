@@ -78,6 +78,11 @@ def translate(
         hbjson-file: Path to an HBJSON file.
 
     """
+    if time_series and file_type != 'vtkjs':
+        raise ClickException(
+            'Time series data can only be exported to vtkjs. Use the file-type options'
+            ' to set "vtkjs" as the output file type.')
+
     folder = pathlib.Path(folder)
     folder.mkdir(exist_ok=True)
 
@@ -116,21 +121,20 @@ def translate(
 
             try:
                 if time_series:
-                    model, time_series_folder = load_config(config, model, scene,
-                                                            time_series=True, hbjson=hbjson_file)
+                    result = load_config(config, model, scene,
+                                         time_series=True, hbjson=hbjson_file)
                 elif validation:
-                    model, time_series_folder = load_config(
-                        config, model, scene, validation=True)
+                    result = load_config(config, model, scene, validation=True)
                 else:
-                    model, time_series_folder = load_config(config, model, scene)
+                    result = load_config(config, model, scene)
             except FileNotFoundError:
                 raise FileNotFoundError('Use time-series flag if you wish to load'
                                         ' time-series data.')
         else:
-            time_series_folder = None
+            result = model
 
         # Set file type
-        if not time_series_folder:
+        if isinstance(result, Model):
             if file_type.lower() == 'html':
                 output = model.to_html(folder=folder, name=name, show=show_html)
             elif file_type.lower() == 'vtkjs':
@@ -143,8 +147,7 @@ def translate(
                 output = model.to_files(folder=folder, name=name,
                                         writer=VTKWriters.binary)
         else:
-            output = Model.to_vtkjs(temp_folder=time_series_folder,
-                                    folder=folder, name=name)
+            output = Model.to_vtkjs(temp_folder=result, folder=folder, name=name)
 
     except Exception as e:
         traceback.print_exc()
