@@ -156,6 +156,8 @@ class AnimationTimeStep(IndexJSON):
         ' master index.json. This is internally created and added by honeybee-vtk.')
 
     class Config:
+        # NOTE: This will work in Pydantic version 1.9
+        # Currently, it doesn't but it's not a problem.
         exclude = {'scene', 'version'}
 
 
