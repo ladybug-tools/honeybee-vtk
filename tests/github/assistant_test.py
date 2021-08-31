@@ -9,7 +9,7 @@ from honeybee_vtk.actor import Actor
 from honeybee_vtk.camera import Camera
 from honeybee_vtk.scene import Scene
 from honeybee_vtk.vtkjs.schema import SensorGridOptions
-from honeybee_vtk.config import load_config
+from honeybee_vtk.load_config import load_config
 
 file_path = r'tests/assets/gridbased.hbjson'
 valid_json_path = r'tests/assets/config/valid.json'

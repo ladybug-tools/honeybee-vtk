@@ -8,6 +8,7 @@ import webbrowser
 import tempfile
 import os
 import tempfile
+import random
 
 from collections import defaultdict
 from typing import Dict, List
@@ -260,13 +261,56 @@ class Model(object):
             except AttributeError:
                 raise AttributeError(f'Invalid attribute: {attr}')
 
-    def to_vtkjs(self, folder: str = '.', name: str = None) -> str:
-        """Write a vtkjs file.
+    def to_point_in_time_folder(self, target: pathlib.Path = None) -> pathlib.Path:
+        """Create a point in time folder ready to be zipped as .vtkjs.
 
-        Write your honeybee-vtk model to a vtkjs file that you can open in
-        Paraview-Glance.
+        Args:   
+            target: Path to the location where you'd like to write this folder.
+                Defaults to None.
+
+        Returns:
+            A Pathlib path to the written folder.
+
+        """
+        # create a temp folder
+        if not target:
+            point_in_time_folder = pathlib.Path(tempfile.mkdtemp())
+        else:
+            point_in_time_folder = target.mkdir()
+            point_in_time_folder = target
+
+        # write every dataset
+        scene = []
+        for data_set in DATA_SETS.values():
+            data = getattr(self, data_set)
+            path = data.to_folder(point_in_time_folder)
+            if not path:
+                # empty dataset
+                continue
+            scene.append(data.as_data_set())
+
+        # add sensor grids
+        # it is separate from other DATA_SETS mainly for data visualization
+        data = self.sensor_grids
+        path = data.to_folder(point_in_time_folder)
+        if path:
+            scene.append(data.as_data_set())
+
+        # write index.json
+        index_json = IndexJSON()
+        index_json.scene = scene
+        index_json.to_json(point_in_time_folder)
+
+        return point_in_time_folder
+
+    @staticmethod
+    def to_vtkjs(temp_folder: pathlib.Path, folder: str = '.', name: str = None) -> str:
+        """Write a .vtkjs file.
+
+        Zip either a point in time folder or a time step folder to a .vtkjs file.
 
         Args:
+            temp_folder: Path to the temp folder where datasets are written to be zipped.    
             folder: A valid text string representing the location of folder where
                 you'd want to write the vtkjs file. Defaults to current working
                 directory.
@@ -279,35 +323,10 @@ class Model(object):
 
         # name of the vtkjs file
         file_name = name or 'model'
-        # create a temp folder
-        temp_folder = tempfile.mkdtemp()
         # The folder set by the user is the target folder
         target_folder = os.path.abspath(folder)
         # Set a file path to move the .zip file to the target folder
         target_vtkjs_file = os.path.join(target_folder, file_name + '.vtkjs')
-
-        # write every dataset
-        scene = []
-        for data_set in DATA_SETS.values():
-            data = getattr(self, data_set)
-            path = data.to_folder(temp_folder)
-            if not path:
-                # empty dataset
-                continue
-            scene.append(data.as_data_set())
-
-        # add sensor grids
-        # it is separate from other DATA_SETS mainly for data visualization
-        data = self.sensor_grids
-        path = data.to_folder(temp_folder)
-        if path:
-            scene.append(data.as_data_set())
-
-        # write index.json
-        index_json = IndexJSON()
-        index_json.scene = scene
-        index_json.to_json(temp_folder)
-
         # zip as vtkjs
         temp_vtkjs_file = convert_directory_to_zip_file(temp_folder, extension='vtkjs',
                                                         move=False)
@@ -325,7 +344,8 @@ class Model(object):
     def to_html(self, folder: str = '.', name: str = None, show: bool = False) -> str:
         """Write an HTML file.
 
-        Write your honeybee-vtk model to an HTML file.
+        Write your honeybee-vtk model to an HTML file. This only works for model with
+        only point-in-time data.
 
         Args:
             folder: A valid text string representing the location of folder where
@@ -345,7 +365,12 @@ class Model(object):
         html_file = os.path.join(target_folder, file_name + '.html')
         # Set temp folder to do the operation
         temp_folder = tempfile.mkdtemp()
-        vtkjs_file = self.to_vtkjs(temp_folder)
+        # create a temp folder for the point in time data & model
+        temp_vtkjs_folder = self.to_point_in_time_folder()
+        # zip the temp folder in a .vtkjs file
+        vtkjs_file = self.to_vtkjs(temp_folder=temp_vtkjs_folder, folder=temp_folder,
+                                   name=file_name)
+        # add .vtkjs file to the html file
         temp_html_file = add_data_to_viewer(vtkjs_file)
         shutil.copy(temp_html_file, html_file)
         try:

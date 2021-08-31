@@ -13,7 +13,7 @@ from honeybee_vtk.camera import Camera
 from honeybee_vtk.model import Model
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 from honeybee_vtk.types import ImageTypes
-from honeybee_vtk.config import load_config
+from honeybee_vtk.load_config import load_config
 
 
 @click.group()
