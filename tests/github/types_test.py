@@ -1,7 +1,10 @@
 """Unit test for the types module."""
 
+import warnings
+import pytest
+import vtk
 from honeybee.model import Model as HBModel
-from honeybee_vtk.types import PolyData
+from honeybee_vtk.types import PolyData, _get_data_range
 from honeybee_vtk.model import Model
 
 file_path = r'tests/assets/gridbased.hbjson'
@@ -105,3 +108,46 @@ def test_metadata_assignment():
 
             assert polydata.modifier == polydata.GetCellData(
             ).GetAbstractArray('Modifier').GetValue(0)
+
+
+def test_get_data_range():
+    """Test that _get_data_range responds with expected values."""
+    values = vtk.vtkFloatArray()
+    for i in range(11, 20):
+        values.InsertNextValue(i)
+
+    # make sure auto_calculated range is returned it data_range is not provided
+    assert _get_data_range('test', None, values) == (11, 19)
+    with pytest.warns(Warning):
+        _get_data_range('test', None, values)
+
+    # make sure auto_calculated range is returned if min and max in data_range is None
+    assert _get_data_range('test', [None, None], values) == (11, 19)
+    with pytest.warns(Warning):
+        _get_data_range('test', [None, None], values)
+
+    # make sure auto_calculated min is used if data_range min is None
+    assert _get_data_range('test', [None, 18], values) == (11, 18)
+    with pytest.warns(Warning):
+        _get_data_range('test', [None, 18], values)
+
+    # make sure auto_calculated max is used if data_range max is None
+    assert _get_data_range('test', [11, None], values) == (11, 19)
+    with pytest.warns(Warning):
+        _get_data_range('test', [11, None], values)
+
+    # make sure exception is raised if min and max are 0
+    with pytest.raises(ValueError):
+        _get_data_range('test', [0, 0], values)
+
+    # make sure exception is raised if min is greater than max
+    with pytest.raises(ValueError):
+        _get_data_range('test', [10, 9], values)
+
+    # make sure exception is raised if min and max are the same
+    with pytest.raises(ValueError):
+        _get_data_range('test', [10, 10], values)
+
+    # make sure when string array is used, simply data_range is returned
+    values = vtk.vtkStringArray()
+    assert _get_data_range('test', [0, 100], values) == (0, 100)
