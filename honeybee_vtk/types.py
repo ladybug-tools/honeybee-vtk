@@ -93,6 +93,45 @@ class DataFieldInfo:
         return self._range
 
 
+def _get_data_range(
+        data_range: List[Union[float, int]],
+        array: Union[vtk.vtkFloatArray, vtk.vtkIntArray]) -> List[Union[float, int]]:
+    """Calculate data range for data based on data array and user provided legend range.
+
+    Args:
+        data_range: A list of numbers.
+        array: A vtk float array or a vtk int array.
+
+    Returns:
+        A list of min and max values to be used as a range for the data.
+    """
+
+    # calculate range based on the data
+    if not isinstance(array, vtk.vtkStringArray):
+        auto_range = array.GetRange()
+
+        # if data range is None
+        if not data_range:
+            return tuple(auto_range)
+
+        # if min and max in data range is None
+        elif data_range[0] == None and data_range[1] == None:
+            return tuple(auto_range)
+
+        # if min is None
+        elif data_range[0] == None and data_range[1]:
+            return (auto_range[0], data_range[1])
+
+        # if max is None
+        elif data_range[0] and data_range[1] == None:
+            return (data_range[0], auto_range[1])
+
+        else:
+            return tuple(data_range)
+    else:
+        return data_range
+
+
 class PolyData(vtk.vtkPolyData):
     """A thin wrapper around vtk.vtkPolyData.
 
@@ -173,9 +212,10 @@ class PolyData(vtk.vtkPolyData):
 
         self.Modified()
 
-        # store information
-        if not data_range:
-            data_range = tuple(values.GetRange())
+        # set data range
+        data_range = _get_data_range(data_range, values)
+
+        # set colors
         if not colors:
             colors = ColorSets.ecotect
 
@@ -548,9 +588,10 @@ class ModelDataSet:
             'httpDataSetReader': {'url': url if url is not None else self.name},
             'property': ds_prop.dict(),
             'mapper': mapper.dict(),
-            'data_ranges': ranges
+            'legend_ranges': ranges
         }
-
+        if self.name == 'Grid':
+            print(data)
         return DataSet.parse_obj(data)
 
     def __repr__(self) -> str:
