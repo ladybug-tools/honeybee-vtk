@@ -1,6 +1,7 @@
 """Unit tests for the config module."""
 
 
+from honeybee_vtk.types import DataSetNames
 from _pytest.config import Config
 import pytest
 
@@ -12,7 +13,7 @@ from honeybee_vtk.camera import Camera
 from honeybee_vtk.actor import Actor
 from honeybee_vtk.config import Autocalculate, DataConfig, LegendConfig,\
     _load_legend_parameters, load_config, TextConfig, DecimalCount, \
-    _validate_simulation_data, _load_data, _get_grid_type
+    _validate_simulation_data, _load_data, _get_grid_type, _get_legend_range
 from honeybee_vtk.vtkjs.schema import DisplayMode, SensorGridOptions
 
 
@@ -182,7 +183,6 @@ def test_load_legend_parameter():
     """Testing load_legend_parameters function."""
     model_grid_mesh = r'tests/assets/gridbased.hbjson'
     valid_json_path = r'tests/assets/config/valid.json'
-    range_json_path = r'tests/assets/config/range.json'
 
     model = Model.from_hbjson(model_grid_mesh, load_grids=SensorGridOptions.Mesh)
     cameras = model.cameras
@@ -194,10 +194,6 @@ def test_load_legend_parameter():
     # warning when loading data that is requested to be kept hidden
     with pytest.warns(Warning):
         load_config(valid_json_path, model, scene, validation=True, legend=True)
-
-    # warning when loading data without min and max of legend specified
-    with pytest.warns(Warning):
-        load_config(range_json_path, model, scene, validation=True, legend=True)
 
 
 def test_validate_data_invalid_json():
@@ -297,3 +293,34 @@ def test_get_grid_type():
     model_sensors_loaded = Model.from_hbjson(
         model_grid_mesh, load_grids=SensorGridOptions.Sensors)
     assert _get_grid_type(model_sensors_loaded) == 'points'
+
+
+def test_get_legend_range():
+    """Test if the _get_legend_range supplies correct range."""
+    # if neither min nor max is set
+    lc = LegendConfig()
+    dc = DataConfig(identifier='test', object_type=DataSetNames.grid,
+                    unit='sample', path='.', legend_parameters=lc)
+    legend_range = _get_legend_range(dc)
+    assert legend_range == [None, None]
+
+    # if both min and max are set
+    lc = LegendConfig(min=0, max=0)
+    dc = DataConfig(identifier='test', object_type=DataSetNames.grid,
+                    unit='sample', path='.', legend_parameters=lc)
+    legend_range = _get_legend_range(dc)
+    assert legend_range == [0.0, 0.0]
+
+    # if only min is set
+    lc = LegendConfig(min=0)
+    dc = DataConfig(identifier='test', object_type=DataSetNames.grid,
+                    unit='sample', path='.', legend_parameters=lc)
+    legend_range = _get_legend_range(dc)
+    assert legend_range == [0.0, None]
+
+    # if only max is set
+    lc = LegendConfig(max=0)
+    dc = DataConfig(identifier='test', object_type=DataSetNames.grid,
+                    unit='sample', path='.', legend_parameters=lc)
+    legend_range = _get_legend_range(dc)
+    assert legend_range == [None, 0.0]
