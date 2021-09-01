@@ -11,6 +11,7 @@ https://lorensen.github.io/VTKExamples/site/Cxx/PolyData/FieldData/
 
 import pathlib
 import vtk
+import warnings
 
 from enum import Enum
 from typing import Dict, Union, List, Tuple
@@ -94,11 +95,13 @@ class DataFieldInfo:
 
 
 def _get_data_range(
+        name: str,
         data_range: List[Union[float, int]],
         array: Union[vtk.vtkFloatArray, vtk.vtkIntArray]) -> List[Union[float, int]]:
     """Calculate data range for data based on data array and user provided legend range.
 
     Args:
+        name: Name of data (e.g. Useful Daylight Autonomy.)
         data_range: A list of numbers.
         array: A vtk float array or a vtk int array.
 
@@ -108,28 +111,62 @@ def _get_data_range(
 
     # calculate range based on the data
     if not isinstance(array, vtk.vtkStringArray):
+
         auto_range = array.GetRange()
 
-        # if data range is None
         if not data_range:
+            warnings.warn(
+                f'In data {name.capitalize()}, since min and max'
+                ' values of legend are not provided, those values will be auto'
+                ' calculated based on data. \n'
+            )
             return tuple(auto_range)
 
-        # if min and max in data range is None
-        elif data_range[0] == None and data_range[1] == None:
+        min, max = data_range
+        if min == None and max == None:
+            warnings.warn(
+                f'In data {name.capitalize()}, since min and max'
+                ' values of legend are not provided, those values will be auto'
+                ' calculated based on data. \n'
+            )
             return tuple(auto_range)
 
-        # if min is None
-        elif data_range[0] == None and data_range[1]:
-            return (auto_range[0], data_range[1])
+        elif min == None and max:
+            warnings.warn(
+                f'In data {name.capitalize()}, since min'
+                ' value of the legend is not provided, that value will be auto'
+                ' calculated based on data. \n'
+            )
+            return (auto_range[0], max)
 
-        # if max is None
-        elif data_range[0] and data_range[1] == None:
-            return (data_range[0], auto_range[1])
+        elif min and max == None:
+            warnings.warn(
+                f'In data {name.capitalize()}, since max'
+                ' value of the legend is not provided, that value will be auto'
+                ' calculated based on data. \n'
+            )
+            return (min, auto_range[1])
 
-        else:
-            return tuple(data_range)
+        elif min == 0 and max == 0:
+            raise ValueError(
+                f'In data {name.capitalize()}, min and max values'
+                ' of legend cannot be both 0. \n'
+            )
+
+        elif isinstance(min, (float, int)) and isinstance(max, (float, int)):
+            if min >= max:
+                raise ValueError(
+                    f'In data {name.capitalize()} Min value cannot be greater'
+                    ' than the max value.')
+            if min == max:
+                raise ValueError(
+                    f'In data {name.capitalize()} Min and max values cannot'
+                    ' be the same.')
+            else:
+                return (min, max)
+
     else:
-        return data_range
+        return tuple(data_range)
 
 
 class PolyData(vtk.vtkPolyData):
@@ -148,7 +185,7 @@ class PolyData(vtk.vtkPolyData):
         self.modifier = None
         self._fields = {}  # keep track of information for each data field.
 
-    @staticmethod
+    @ staticmethod
     def _resolve_array_type(data):
         if isinstance(data, float):
             return vtk.vtkFloatArray()
@@ -159,7 +196,7 @@ class PolyData(vtk.vtkPolyData):
         else:
             raise ValueError(f'Unsupported input data type: {type(data)}')
 
-    @property
+    @ property
     def data_fields(self) -> Dict[str, DataFieldInfo]:
         """Get data fields for this Polydata."""
         return self._fields
@@ -213,7 +250,7 @@ class PolyData(vtk.vtkPolyData):
         self.Modified()
 
         # set data range
-        data_range = _get_data_range(data_range, values)
+        data_range = _get_data_range(name, data_range, values)
 
         # set colors
         if not colors:
@@ -337,7 +374,7 @@ class JoinedPolyData(vtk.vtkAppendPolyData):
     def __init__(self) -> None:
         super().__init__()
 
-    @classmethod
+    @ classmethod
     def from_polydata(cls, polydata: List[PolyData]):
         """Join several polygonal datasets.
 
@@ -405,11 +442,11 @@ class ModelDataSet:
         self.display_mode = DisplayMode.Shaded
         self.color_by = None
 
-    @property
+    @ property
     def fields_info(self) -> dict:
         return {} if not self.data else self.data[0]._fields
 
-    @property
+    @ property
     def active_field_info(self) -> DataFieldInfo:
         """Get information for active field info.
 
@@ -456,11 +493,11 @@ class ModelDataSet:
             self.data[count].add_data(
                 d, name=name, cell=per_face, colors=colors, data_range=data_range)
 
-    @property
+    @ property
     def is_empty(self):
         return len(self.data) == 0
 
-    @property
+    @ property
     def color(self) -> Color:
         """Diffuse color.
 
@@ -469,11 +506,11 @@ class ModelDataSet:
         """
         return self._color
 
-    @color.setter
+    @ color.setter
     def color(self, value: Color):
         self._color = value if value else Color(204, 204, 204, 255)
 
-    @property
+    @ property
     def color_by(self) -> str:
         """Set the field that the DataSet should colored-by when exported to vtkjs.
 
@@ -481,7 +518,7 @@ class ModelDataSet:
         """
         return self._color_by
 
-    @color_by.setter
+    @ color_by.setter
     def color_by(self, value: str):
         fields_info = self.fields_info
         if not value:
@@ -496,12 +533,12 @@ class ModelDataSet:
 
         self._color_by = value
 
-    @property
+    @ property
     def opacity(self) -> float:
         """Visualization opacity."""
         return self.color.a
 
-    @property
+    @ property
     def display_mode(self) -> DisplayMode:
         """Display model (AKA Representation) mode in VTK Glance viewer.
 
@@ -516,11 +553,11 @@ class ModelDataSet:
         """
         return self._display_mode
 
-    @display_mode.setter
+    @ display_mode.setter
     def display_mode(self, mode: DisplayMode = DisplayMode.Surface):
         self._display_mode = mode
 
-    @property
+    @ property
     def edge_visibility(self) -> bool:
         """Edge visibility.
 
