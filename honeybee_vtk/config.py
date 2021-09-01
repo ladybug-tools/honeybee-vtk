@@ -341,8 +341,8 @@ def _load_data(folder_path: pathlib.Path, identifier: str, model: Model,
 def _get_legend_range(data: DataConfig) -> List[Union[float, int]]:
     """Read and get legend min and max values from data if provided by the user.
 
-    The value provided by this function is processed in _get_data_range function in the
-    type module.
+    The value provided by this function is processed and validated in _get_data_range 
+    function in the type module.
 
     Args:
         data (DataConfig): A Dataconfig object.
@@ -363,15 +363,7 @@ def _get_legend_range(data: DataConfig) -> List[Union[float, int]]:
         else:
             max = legend_params.max
 
-        if not min and not max:
-            warnings.warn(
-                f'In data {data.identifier.capitalize()}, since min and max'
-                ' values of legend are not provided, those values will be auto'
-                ' calculated based on data. \n'
-            )
         return [min, max]
-    else:
-        return None
 
 
 def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene,
@@ -390,7 +382,10 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene,
 
     legend.colors = legend_params.color_set
     legend.unit = data.unit
-    legend.min, legend.max = legend_range
+    if legend_range:
+        legend.min, legend.max = legend_range
+    else:
+        legend.min, legend.max = [None, None]
     legend.hide_legend = legend_params.hide_legend
     legend.orientation = legend_params.orientation
     legend.position = legend_params.position
