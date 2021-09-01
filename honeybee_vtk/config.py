@@ -284,7 +284,7 @@ def _validate_simulation_data(data: DataConfig, model: Model, grid_type: str) ->
 
 
 def _load_data(folder_path: pathlib.Path, identifier: str, model: Model,
-               grid_type: str) -> None:
+               grid_type: str, legend_range: List[Union[float, int]]) -> None:
     """Load validated data on a honeybee-vtk model.
 
     This is a helper method to the public load_config method.
@@ -296,7 +296,8 @@ def _load_data(folder_path: pathlib.Path, identifier: str, model: Model,
         model: A honeybee-vtk model.
         grid_type: A string indicating whether the sensor grid in the model is made of
             points or meshes.
-        legend_range: A tuple of min and max values of the legend parameters.
+        legend_range: A list of min and max values of the legend parameters provided by
+            the user in the config file.
     """
 
     grids_info_json = folder_path.joinpath('grids_info.json')
@@ -327,47 +328,69 @@ def _load_data(folder_path: pathlib.Path, identifier: str, model: Model,
 
     if grid_type == 'meshes':
         ds.add_data_fields(
-            result, name=identifier, per_face=True)
+            result, name=identifier, per_face=True, data_range=legend_range)
         ds.color_by = identifier
         ds.display_mode = DisplayMode.SurfaceWithEdges
     else:
         ds.add_data_fields(
-            result, name=identifier, per_face=False)
+            result, name=identifier, per_face=False, data_range=legend_range)
         ds.color_by = identifier
         ds.display_mode = DisplayMode.Points
 
 
-def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene) -> None:
+def _get_legend_range(data: DataConfig) -> List[Union[float, int]]:
+    """Read and get legend min and max values from data if provided by the user.
+
+    The value provided by this function is processed in _get_data_range function in the
+    type module.
+
+    Args:
+        data (DataConfig): A Dataconfig object.
+
+    Returns:
+        A list of two numbers representing min and max values for data.
+    """
+    if data.legend_parameters:
+        legend_params = data.legend_parameters
+
+        if isinstance(legend_params.min, Autocalculate):
+            min = None
+        else:
+            min = legend_params.min
+
+        if isinstance(legend_params.max, Autocalculate):
+            max = None
+        else:
+            max = legend_params.max
+
+        if not min and not max:
+            warnings.warn(
+                f'In data {data.identifier.capitalize()}, since min and max'
+                ' values of legend are not provided, those values will be auto'
+                ' calculated based on data. \n'
+            )
+        return [min, max]
+    else:
+        return None
+
+
+def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene,
+                            legend_range: List[Union[float, int]]) -> None:
     """Load legend_parameters.
 
     Args:
         data: A Dataconfig object.
         model: A honeybee-vtk model object.
         scene: A honeyebee-vtk scene object.
+        legend_range: A list of min and max values of the legend parameters provided by
+            the user in the config file.
     """
     legend_params = data.legend_parameters
     legend = scene.legend_parameter(data.identifier)
 
     legend.colors = legend_params.color_set
     legend.unit = data.unit
-
-    if isinstance(legend_params.min, Autocalculate):
-        legend.min = None
-    else:
-        legend.min = legend_params.min
-
-    if isinstance(legend_params.max, Autocalculate):
-        legend.max = None
-    else:
-        legend.max = legend_params.max
-
-    if not legend.min and not legend.max:
-        warnings.warn(
-            f'In data {data.identifier.capitalize()}, since min and max'
-            ' values are not provided, those values will be auto calculated based'
-            ' on data. \n'
-        )
-
+    legend.min, legend.max = legend_range
     legend.hide_legend = legend_params.hide_legend
     legend.orientation = legend_params.orientation
     legend.position = legend_params.position
@@ -432,12 +455,14 @@ def load_config(json_path: str, model: Model, scene: Scene,
                 # Validate data if asked for
                 if validation:
                     _validate_simulation_data(data, model, grid_type)
+                # get legend range if provided by the user
+                legend_range = _get_legend_range(data)
                 # Load data
-                _load_data(folder_path, identifier, model, grid_type)
+                _load_data(folder_path, identifier, model, grid_type, legend_range)
                 # If legend is requested and legend parameters are provided
                 # Legend will only be used in export-images command
                 if legend and data.legend_parameters:
-                    _load_legend_parameters(data, model, scene)
+                    _load_legend_parameters(data, model, scene, legend_range)
             else:
                 warnings.warn(
                     f'Data for {data.identifier} is not loaded.'
