@@ -627,8 +627,7 @@ class ModelDataSet:
             'mapper': mapper.dict(),
             'legend_ranges': ranges
         }
-        if self.name == 'Grid':
-            print(data)
+
         return DataSet.parse_obj(data)
 
     def __repr__(self) -> str:
