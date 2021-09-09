@@ -54,7 +54,7 @@ def convert_directory_to_zip_file(
 
 def add_data_to_viewer(data_path, src_html_path=None):
     template = pathlib.Path(
-        pathlib.Path(__file__).parent, '../assets/ParaViewGlance.html'
+        pathlib.Path(__file__).parent, '../assets/PollinationViewer.html'
     ).resolve().as_posix()
     src_html_path = src_html_path or template
     if not os.path.isfile(data_path):
@@ -75,18 +75,12 @@ def add_data_to_viewer(data_path, src_html_path=None):
     with open(src_html_path, mode="r", encoding="utf-8") as srcHtml:
         with open(dstHtmlPath, mode="w", encoding="utf-8") as dstHtml:
             for line in srcHtml:
-                if "</body>" in line:
+                if "<!–– insert ––>" in line:
                     dstHtml.write("<script>\n")
                     dstHtml.write('var contentToLoad = "%s";\n\n' % base64Content)
-                    dstHtml.write(
-                        'Glance.importBase64Dataset("%s" , contentToLoad, glanceInstance.proxyManager);\n'
-                        % os.path.basename(data_path)
-                    )
-                    dstHtml.write("glanceInstance.showApp();\n")
-                    dstHtml.write("</script>\n")
-
+                    dstHtml.write("function _getContent() { return contentToLoad }</script>\n")
+                    continue
                 dstHtml.write(line)
-
     return dstHtmlPath
 
 
