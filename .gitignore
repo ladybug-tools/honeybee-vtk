@@ -18,7 +18,7 @@ tox.ini
 *.log
 *.pnm
 *.ps
-
+.DS_Store
 # Rhino Backup files
 *.3dm.rhl
 *3dmbak
