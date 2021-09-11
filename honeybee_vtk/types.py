@@ -20,6 +20,7 @@ from .legend_parameter import LegendParameter, ColorSets
 from .vtkjs.schema import DataSetProperty, DataSet, DisplayMode, DataSetMapper
 from honeybee.face import Face
 from honeybee.aperture import Aperture
+from honeybee.door import Door
 from honeybee.shade import Shade
 
 
@@ -314,6 +315,8 @@ class PolyData(vtk.vtkPolyData):
             self.type = 'Aperture'
         elif isinstance(hb_object, Shade):
             self.type = 'Shade'
+        elif isinstance(hb_object, Door):
+            self.type = 'Door'
         self.identifier = hb_object.identifier
         self.name = hb_object.display_name
         if self.type != 'Shade':
