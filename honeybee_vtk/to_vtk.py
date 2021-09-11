@@ -21,6 +21,7 @@ from ladybug_geometry.geometry3d import Face3D, Mesh3D, Point3D, Vector3D, Polyl
 from honeybee.room import Room
 from honeybee.face import Face
 from honeybee.aperture import Aperture
+from honeybee.door import Door
 from honeybee.shade import Shade
 from honeybee_radiance.sensorgrid import SensorGrid
 
@@ -118,6 +119,14 @@ def convert_aperture(aperture: Aperture) -> List[PolyData]:
     return data
 
 
+def convert_door(door: Door) -> List[PolyData]:
+    polydata = convert_face_3d(door.geometry)
+    metadata = polydata._get_metadata(door)
+    polydata._add_metadata(metadata)
+    data = [polydata]
+    return data
+
+
 def convert_face(face: Face) -> List[PolyData]:
     """Convert a HBFace to a PolyData."""
 
@@ -125,8 +134,12 @@ def convert_face(face: Face) -> List[PolyData]:
     metadata = polydata._get_metadata(face)
     polydata._add_metadata(metadata)
     data = [polydata]
-    for aperture in face.apertures:
-        data.extend(convert_aperture(aperture))
+    if face.apertures:
+        for aperture in face.apertures:
+            data.extend(convert_aperture(aperture))
+    if face.doors:
+        for door in face.doors:
+            data.extend(convert_door(door))
     return data
 
 
