@@ -17,7 +17,7 @@ from ladybug.color import Color
 from .camera import Camera
 from .types import ModelDataSet, PolyData
 from .to_vtk import convert_aperture, convert_face, convert_room, convert_shade, \
-    convert_sensor_grid
+    convert_sensor_grid, convert_door
 from .vtkjs.schema import IndexJSON, DisplayMode, SensorGridOptions
 from .vtkjs.helper import convert_directory_to_zip_file, add_data_to_viewer
 from .types import DataSetNames, VTKWriters, JoinedPolyData
@@ -228,6 +228,10 @@ class Model(object):
         if hasattr(model, 'orphaned_apertures'):
             for face in model.orphaned_apertures:
                 self._apertures.data.extend(convert_aperture(face))
+
+        if hasattr(model, 'orphaned_doors'):
+            for face in model.orphaned_doors:
+                self._doors.data.extend(convert_door(face))
 
         if hasattr(model, 'orphaned_faces'):
             for face in model.orphaned_faces:
