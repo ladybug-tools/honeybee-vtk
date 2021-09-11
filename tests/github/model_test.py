@@ -126,3 +126,10 @@ def test_get_modeldataset():
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
 
     assert model.get_modeldataset(DataSetNames.wall).name == 'Wall'
+
+
+def test_doors():
+    """Test if doors are being translated from HBJSON to VTK."""
+    file_path = r'tests/assets/doors.hbjson'
+    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
+    assert len(model.doors.data) == 2
