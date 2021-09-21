@@ -26,8 +26,7 @@ jobs:
         run: python -m pytest --cov=. tests/github
       - name: run test coverage
         run: |
-          coverage report
-          coveralls --service=github
+          echo "Coveralls is no longer supported" --service=github
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -67,7 +66,7 @@ jobs:
       - name: install semantic-release
         run: npm install @semantic-release/exec
       - name: run semantic release
-        run: npx semantic-release
+        run: npx semantic-release@^17.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
