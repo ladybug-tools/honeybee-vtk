@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>honeybee_vtk.legend_parameter &#8212; honeybee-radiance-postprocess  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          honeybee-radiance-postprocess</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/main.html">main</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/main.html#honeybee-vtk">honeybee-vtk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/export.html">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/export.html#honeybee-vtk-export">honeybee-vtk export</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/translate.html#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../honeybee_vtk.html">honeybee_vtk package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <h1>Source code for honeybee_vtk.legend_parameter</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Vtk legend parameters.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">vtk</span>
+<span class="kn">from</span> <span class="nn">ladybug.color</span> <span class="kn">import</span> <span class="n">Colorset</span><span class="p">,</span> <span class="n">Color</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">auto</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">._helper</span> <span class="kn">import</span> <span class="n">_validate_input</span>
+
+
+<div class="viewcode-block" id="DecimalCount"><a class="viewcode-back" href="../../honeybee_vtk.legend_parameter.html#honeybee_vtk.legend_parameter.DecimalCount">[docs]</a><span class="k">class</span> <span class="nc">DecimalCount</span> <span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Controlling the number of decimals on each label of the legend.&quot;&quot;&quot;</span>
+    <span class="n">decimal_two</span> <span class="o">=</span> <span class="s1">&#39;decimal_two&#39;</span>
+    <span class="n">decimal_three</span> <span class="o">=</span> <span class="s1">&#39;decimal_three&#39;</span>
+    <span class="n">default</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+    <span class="n">integer</span> <span class="o">=</span> <span class="s1">&#39;integer&#39;</span></div>
+
+
+<span class="n">decimal_count</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;decimal_two&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%#6.2f</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;decimal_three&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%-#6.3f</span><span class="s1">&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%-#6.3g</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;integer&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%4.3g</span><span class="s1">&#39;</span><span class="p">}</span>
+
+
+<span class="n">decimal_count</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;decimal_two&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%#6.2f</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;decimal_three&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%-#6.3f</span><span class="s1">&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%-#6.3g</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;integer&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%4.3g</span><span class="s1">&#39;</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="Orientation"><a class="viewcode-back" href="../../honeybee_vtk.legend_parameter.html#honeybee_vtk.legend_parameter.Orientation">[docs]</a><span class="k">class</span> <span class="nc">Orientation</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Orientation of a legend.&quot;&quot;&quot;</span>
+    <span class="n">vertical</span> <span class="o">=</span> <span class="s1">&#39;vertical&#39;</span>
+    <span class="n">horizontal</span> <span class="o">=</span> <span class="s1">&#39;horizontal&#39;</span></div>
+
+
+<div class="viewcode-block" id="ColorSets"><a class="viewcode-back" href="../../honeybee_vtk.legend_parameter.html#honeybee_vtk.legend_parameter.ColorSets">[docs]</a><span class="k">class</span> <span class="nc">ColorSets</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Colors for a legend.&quot;&quot;&quot;</span>
+    <span class="n">annual_comfort</span> <span class="o">=</span> <span class="s1">&#39;annual_comfort&#39;</span>
+    <span class="n">benefit</span> <span class="o">=</span> <span class="s1">&#39;benefit&#39;</span>
+    <span class="n">benefit_harm</span> <span class="o">=</span> <span class="s1">&#39;benefit_harm&#39;</span>
+    <span class="n">black_to_white</span> <span class="o">=</span> <span class="s1">&#39;black_to_white&#39;</span>
+    <span class="n">blue_green_red</span> <span class="o">=</span> <span class="s1">&#39;blue_green_red&#39;</span>
+    <span class="n">cloud_cover</span> <span class="o">=</span> <span class="s1">&#39;cloud_cover&#39;</span>
+    <span class="n">cold_sensation</span> <span class="o">=</span> <span class="s1">&#39;cloud_sensation&#39;</span>
+    <span class="n">ecotect</span> <span class="o">=</span> <span class="s1">&#39;ecotect&#39;</span>
+    <span class="n">energy_balance</span> <span class="o">=</span> <span class="s1">&#39;energy_balance&#39;</span>
+    <span class="n">energy_balance_storage</span> <span class="o">=</span> <span class="s1">&#39;energy_balance_storag&#39;</span>
+    <span class="n">glare_study</span> <span class="o">=</span> <span class="s1">&#39;glare_study&#39;</span>
+    <span class="n">harm</span> <span class="o">=</span> <span class="s1">&#39;harm&#39;</span>
+    <span class="n">heat_sensation</span> <span class="o">=</span> <span class="s1">&#39;heat_sensation&#39;</span>
+    <span class="n">multi_colored</span> <span class="o">=</span> <span class="s1">&#39;multi_colored&#39;</span>
+    <span class="n">multicolored_2</span> <span class="o">=</span> <span class="s1">&#39;multicolored_2&#39;</span>
+    <span class="n">multicolored_3</span> <span class="o">=</span> <span class="s1">&#39;multicolored_3&#39;</span>
+    <span class="n">nuanced</span> <span class="o">=</span> <span class="s1">&#39;nuanced&#39;</span>
+    <span class="n">openstudio_palette</span> <span class="o">=</span> <span class="s1">&#39;openstudio_palette&#39;</span>
+    <span class="n">original</span> <span class="o">=</span> <span class="s1">&#39;original&#39;</span>
+    <span class="n">peak_load_balance</span> <span class="o">=</span> <span class="s1">&#39;peak_load_balance&#39;</span>
+    <span class="n">shade_benefit</span> <span class="o">=</span> <span class="s1">&#39;shade_benefit&#39;</span>
+    <span class="n">shade_benefit_harm</span> <span class="o">=</span> <span class="s1">&#39;shade_benefit_harm&#39;</span>
+    <span class="n">shade_harm</span> <span class="o">=</span> <span class="s1">&#39;shade_harm&#39;</span>
+    <span class="n">shadow_study</span> <span class="o">=</span> <span class="s1">&#39;shadow_study&#39;</span>
+    <span class="n">therm</span> <span class="o">=</span> <span class="s1">&#39;therm&#39;</span>
+    <span class="n">thermal_comfort</span> <span class="o">=</span> <span class="s1">&#39;thermal_comfort&#39;</span>
+    <span class="n">view_study</span> <span class="o">=</span> <span class="s1">&#39;view_study&#39;</span></div>
+
+
+<span class="n">color_set</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;annual_comfort&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">annual_comfort</span><span class="p">(),</span>
+    <span class="s1">&#39;benefit&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">benefit</span><span class="p">(),</span>
+    <span class="s1">&#39;benefit_harm&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">benefit_harm</span><span class="p">(),</span>
+    <span class="s1">&#39;black_to_white&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">black_to_white</span><span class="p">(),</span>
+    <span class="s1">&#39;blue_green_red&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">blue_green_red</span><span class="p">(),</span>
+    <span class="s1">&#39;cloud_cover&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">cloud_cover</span><span class="p">(),</span>
+    <span class="s1">&#39;cold_sensation&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">cold_sensation</span><span class="p">(),</span>
+    <span class="s1">&#39;ecotect&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">ecotect</span><span class="p">(),</span>
+    <span class="s1">&#39;energy_balance&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">energy_balance</span><span class="p">(),</span>
+    <span class="s1">&#39;energy_balance_storage&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">energy_balance_storage</span><span class="p">(),</span>
+    <span class="s1">&#39;glare_study&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">glare_study</span><span class="p">(),</span>
+    <span class="s1">&#39;harm&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">harm</span><span class="p">(),</span>
+    <span class="s1">&#39;heat_sensation&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">heat_sensation</span><span class="p">(),</span>
+    <span class="s1">&#39;multi_colored&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">multi_colored</span><span class="p">(),</span>
+    <span class="s1">&#39;multicolored_2&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">multicolored_2</span><span class="p">(),</span>
+    <span class="s1">&#39;multicolored_3&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">multicolored_3</span><span class="p">(),</span>
+    <span class="s1">&#39;nuanced&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">nuanced</span><span class="p">(),</span>
+    <span class="s1">&#39;openstudio_palette&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">openstudio_palette</span><span class="p">(),</span>
+    <span class="s1">&#39;original&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">original</span><span class="p">(),</span>
+    <span class="s1">&#39;peak_load_balance&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">peak_load_balance</span><span class="p">(),</span>
+    <span class="s1">&#39;shade_benefit&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">shade_benefit</span><span class="p">(),</span>
+    <span class="s1">&#39;shade_benefit_harm&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">shade_benefit_harm</span><span class="p">(),</span>
+    <span class="s1">&#39;shade_harm&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">shade_harm</span><span class="p">(),</span>
+    <span class="s1">&#39;shadow_study&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">shadow_study</span><span class="p">(),</span>
+    <span class="s1">&#39;therm&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">therm</span><span class="p">(),</span>
+    <span class="s1">&#39;thermal_comfort&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">thermal_comfort</span><span class="p">(),</span>
+    <span class="s1">&#39;view_study&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">view_study</span><span class="p">()</span>
+<span class="p">}</span>
+
+
+<span class="n">color_set</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;annual_comfort&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">annual_comfort</span><span class="p">(),</span>
+    <span class="s1">&#39;benefit&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">benefit</span><span class="p">(),</span>
+    <span class="s1">&#39;benefit_harm&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">benefit_harm</span><span class="p">(),</span>
+    <span class="s1">&#39;black_to_white&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">black_to_white</span><span class="p">(),</span>
+    <span class="s1">&#39;blue_green_red&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">blue_green_red</span><span class="p">(),</span>
+    <span class="s1">&#39;cloud_cover&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">cloud_cover</span><span class="p">(),</span>
+    <span class="s1">&#39;cold_sensation&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">cold_sensation</span><span class="p">(),</span>
+    <span class="s1">&#39;ecotect&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">ecotect</span><span class="p">(),</span>
+    <span class="s1">&#39;energy_balance&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">energy_balance</span><span class="p">(),</span>
+    <span class="s1">&#39;energy_balance_storage&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">energy_balance_storage</span><span class="p">(),</span>
+    <span class="s1">&#39;glare_study&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">glare_study</span><span class="p">(),</span>
+    <span class="s1">&#39;harm&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">harm</span><span class="p">(),</span>
+    <span class="s1">&#39;heat_sensation&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">heat_sensation</span><span class="p">(),</span>
+    <span class="s1">&#39;multi_colored&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">multi_colored</span><span class="p">(),</span>
+    <span class="s1">&#39;multicolored_2&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">multicolored_2</span><span class="p">(),</span>
+    <span class="s1">&#39;multicolored_3&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">multicolored_3</span><span class="p">(),</span>
+    <span class="s1">&#39;nuanced&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">nuanced</span><span class="p">(),</span>
+    <span class="s1">&#39;openstudio_palette&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">openstudio_palette</span><span class="p">(),</span>
+    <span class="s1">&#39;original&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">original</span><span class="p">(),</span>
+    <span class="s1">&#39;peak_load_balance&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">peak_load_balance</span><span class="p">(),</span>
+    <span class="s1">&#39;shade_benefit&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">shade_benefit</span><span class="p">(),</span>
+    <span class="s1">&#39;shade_benefit_harm&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">shade_benefit_harm</span><span class="p">(),</span>
+    <span class="s1">&#39;shade_harm&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">shade_harm</span><span class="p">(),</span>
+    <span class="s1">&#39;shadow_study&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">shadow_study</span><span class="p">(),</span>
+    <span class="s1">&#39;therm&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">therm</span><span class="p">(),</span>
+    <span class="s1">&#39;thermal_comfort&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">thermal_comfort</span><span class="p">(),</span>
+    <span class="s1">&#39;view_study&#39;</span><span class="p">:</span> <span class="n">Colorset</span><span class="o">.</span><span class="n">view_study</span><span class="p">()</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="Text"><a class="viewcode-back" href="../../honeybee_vtk.legend_parameter.html#honeybee_vtk.legend_parameter.Text">[docs]</a><span class="k">class</span> <span class="nc">Text</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Text parameters for the legend.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            color: A tuple of three integer values for R, G, and B. Defaults (0, 0, 0).</span>
+<span class="sd">            size: An integer representing the size of fonts in points. Defaults to 30.</span>
+<span class="sd">            bold: A boolean to specify whether the fonts should be made bold.</span>
+<span class="sd">                Defaults to False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+            <span class="n">bold</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bold</span> <span class="o">=</span> <span class="n">bold</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Color of fonts in RGB decimal.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_color</span>
+
+    <span class="nd">@color</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">and</span> <span class="n">_validate_input</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="mi">256</span><span class="p">)</span> \
+                <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="p">(</span><span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="n">val</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="n">val</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="mi">255</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;Color accepts a tuple of a list of three integers for R, G, and B&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39; values. Instead got </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Size of fonts.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_size</span>
+
+    <span class="nd">@size</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_size</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_size</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Size expects an integer value. Instead got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bold</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;To make font bold nor not.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bold</span>
+
+    <span class="nd">@bold</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">bold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bold</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bold</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Bold accepts boolean values only. Instead got </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="Text.to_vtk"><a class="viewcode-back" href="../../honeybee_vtk.legend_parameter.html#honeybee_vtk.legend_parameter.Text.to_vtk">[docs]</a>    <span class="k">def</span> <span class="nf">to_vtk</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkTextProperty</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a vtk TextProperty object.&quot;&quot;&quot;</span>
+        <span class="n">font</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkTextProperty</span><span class="p">()</span>
+        <span class="n">font</span><span class="o">.</span><span class="n">SetColor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_color</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_color</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_color</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">font</span><span class="o">.</span><span class="n">SetFontSize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_size</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bold</span><span class="p">:</span>
+            <span class="n">font</span><span class="o">.</span><span class="n">BoldOn</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">font</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Font color: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_color</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Font size: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_size</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Bold: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_bold</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LegendParameter"><a class="viewcode-back" href="../../honeybee_vtk.legend_parameter.html#honeybee_vtk.legend_parameter.LegendParameter">[docs]</a><span class="k">class</span> <span class="nc">LegendParameter</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Legend parameters for the vtk legend (scalarbar) object.</span>
+
+<span class="sd">    A vtk legend has a number of colors, labels, and a title. Here, labels mean the</span>
+<span class="sd">    numbers you see on a legend such as 0, 1, 2, 3, 4, 5 on a legend with max value of 5.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name: A text string representing the name of the legend object and the</span>
+<span class="sd">                title of the legend. Default to &quot;Legend&quot;.</span>
+<span class="sd">            unit: A text string representing the unit of the data that the legend</span>
+<span class="sd">                represents. Examples are &#39;celsius&#39;, &#39;kwn/m2&#39;, etc.</span>
+<span class="sd">            colors: A Colors object. Defaults to Ecotect colorset.</span>
+<span class="sd">            hide_legend: A boolean to set the visibility of a legend in Scene.</span>
+<span class="sd">                Defaults to False.</span>
+<span class="sd">            orientation: An Orientation object that sets the orientation of the legend in</span>
+<span class="sd">                the scene. Defaults to horizontal orientation.</span>
+<span class="sd">            position: A tuple of two decimal values. The values represent the fraction</span>
+<span class="sd">                of viewport width and the fraction of viewport height. These</span>
+<span class="sd">                fractions in decimal numbers will define the location of the start</span>
+<span class="sd">                point of the legend. For example, a value of (0.0, 0.5) will place the</span>
+<span class="sd">                start point of the legend at the left most side of the viewport and at</span>
+<span class="sd">                the 50% height of the viewport. Defaults to (0.5, 0.1).</span>
+<span class="sd">            width: A decimal number representing the fraction of viewport width that</span>
+<span class="sd">                will be used to define the width of the legend. A value of 0.45 will</span>
+<span class="sd">                make the width of legend equal to the 45% width of the viewport.</span>
+<span class="sd">                Defaults to 0.45.</span>
+<span class="sd">            height: A decimal number representing the fraction of viewport height that</span>
+<span class="sd">                will be used to define the height of the legend. A value of 0.05 will</span>
+<span class="sd">                make the height of legend equal to the 5% height of the viewport.</span>
+<span class="sd">                Defaults to 0.05.</span>
+<span class="sd">            color_count: An integer representing the number of colors in a legend.</span>
+<span class="sd">                Defaults to None which will use all the colors in the colors property.</span>
+<span class="sd">            label_count: An integer representing the number of text labels on a</span>
+<span class="sd">                legend. Default to None which will use vtk legend&#39;s default setting.</span>
+<span class="sd">            decimal_count: A DecimalCount object that specifies the number of decimals</span>
+<span class="sd">                on each label of the legend. Defaults to the type of data. For data</span>
+<span class="sd">                with integer values this will default to integer. Similarly, for data</span>
+<span class="sd">                with decimal values, this will default to decimal point numbers. </span>
+<span class="sd">            preceding_labels: A boolean value to indicate whether the title and the</span>
+<span class="sd">                labels should precede the legend or not. Defaults to False.</span>
+<span class="sd">            label_parameters: A Text object. Defaults to size 30 black text.</span>
+<span class="sd">            title_parameters: A Text object. Defaults to size 50 black bold text.</span>
+<span class="sd">            min: A number that will be set as the lower bound of the legend.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            min: A number that will be set as the upper bound of the legend.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            auto_range: A tuple of minimum and maximum values for legend. This is </span>
+<span class="sd">                auto set when Data is loaded on a model. Use min and max arguments to</span>
+<span class="sd">                customize this auto calculated range.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Legend&#39;</span><span class="p">,</span>
+            <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">colors</span><span class="p">:</span> <span class="n">ColorSets</span> <span class="o">=</span> <span class="n">ColorSets</span><span class="o">.</span><span class="n">ecotect</span><span class="p">,</span>
+            <span class="n">hide_legend</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">orientation</span><span class="p">:</span> <span class="n">Orientation</span> <span class="o">=</span> <span class="n">Orientation</span><span class="o">.</span><span class="n">horizontal</span><span class="p">,</span>
+            <span class="n">position</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+            <span class="n">width</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.45</span><span class="p">,</span>
+            <span class="n">height</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+            <span class="n">color_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">label_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">decimal_count</span><span class="p">:</span> <span class="n">DecimalCount</span> <span class="o">=</span> <span class="n">DecimalCount</span><span class="o">.</span><span class="n">default</span><span class="p">,</span>
+            <span class="n">preceding_labels</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">label_parameters</span><span class="p">:</span> <span class="n">Text</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="n">title_parameters</span><span class="p">:</span> <span class="n">Text</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bold</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="nb">min</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="nb">max</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">auto_range</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">colors</span> <span class="o">=</span> <span class="n">colors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hide_legend</span> <span class="o">=</span> <span class="n">hide_legend</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orientation</span> <span class="o">=</span> <span class="n">orientation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">position</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">height</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_count</span> <span class="o">=</span> <span class="n">color_count</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_count</span> <span class="o">=</span> <span class="n">label_count</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decimal_count</span> <span class="o">=</span> <span class="n">decimal_count</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">preceding_labels</span> <span class="o">=</span> <span class="n">preceding_labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_parameters</span> <span class="o">=</span> <span class="n">label_parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title_parameters</span> <span class="o">=</span> <span class="n">title_parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="nb">min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="nb">max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_range</span> <span class="o">=</span> <span class="n">auto_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_range</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Name of the legend parameter object and the title of the legend.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+
+    <span class="nd">@name</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;Legend&#39;</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Name only accepts text. Instead got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Unit for the data that the legend represents.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span>
+
+    <span class="nd">@unit</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Unit only accepts text. Instead got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">colors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ColorSets</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Colors to be used in the legend.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_colors</span>
+
+    <span class="nd">@colors</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">colors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_colors</span> <span class="o">=</span> <span class="n">ColorSets</span><span class="o">.</span><span class="n">ecotect</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">ColorSets</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_colors</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;A ColorSet objects expected. Instead got </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">hide_legend</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Visibility of legend in the scene.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hide_legend</span>
+
+    <span class="nd">@hide_legend</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">hide_legend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hide_legend</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hide_legend</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;Only a True or False value is accepted.&#39;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Orientation</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Orientation of a legend in the scene.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span>
+
+    <span class="nd">@orientation</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span> <span class="o">=</span> <span class="n">Orientation</span><span class="o">.</span><span class="n">horizontal</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">Orientation</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;Orientation accepts either an Orientation object.&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39; Instead got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">position</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position</span>
+
+    <span class="nd">@position</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_position</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">and</span> <span class="n">_validate_input</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="mf">0.96</span><span class="p">)</span> \
+                <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_position</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;Position accepts a tuple or a list of two decimal values up to 0.95&#39;</span>
+                <span class="s1">&#39; for both X and Y.&#39;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">width</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Width of the legend as a fraction of viewport width.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span>
+
+    <span class="nd">@width</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">width</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_width</span> <span class="o">=</span> <span class="mf">0.45</span>
+        <span class="k">elif</span> <span class="n">val</span> <span class="o">&lt;</span> <span class="mf">0.96</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_width</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;Width accepts a decimal number up to 0.95.&#39;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">height</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;height of the legend as a fraction of viewport height.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_height</span>
+
+    <span class="nd">@height</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_height</span> <span class="o">=</span> <span class="mf">0.05</span>
+        <span class="k">elif</span> <span class="n">val</span> <span class="o">&lt;</span> <span class="mf">0.96</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_height</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;Height accepts a decimal number up to 0.95.&#39;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">color_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Number of colors in the legend.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_color_count</span>
+
+    <span class="nd">@color_count</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">color_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_color_count</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">val</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_color_count</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;Color count must be a number less than or equal to the number of&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39; colors in the colors property, which is </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s1">.&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39; Instead got </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">label_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Number of text labels in the legend.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label_count</span>
+
+    <span class="nd">@label_count</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">label_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_label_count</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_color_count</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">val</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_label_count</span> <span class="o">=</span> <span class="n">val</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s1">&#39;Label count must be a number less than or equal to the number of&#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39; colors </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s1">. Instead got </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s1">.&#39;</span>
+                <span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_color_count</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">val</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_color_count</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_label_count</span> <span class="o">=</span> <span class="n">val</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s1">&#39;Label count must be a number less than or equal to&#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39; color count, which is </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_color_count</span><span class="si">}</span><span class="s1">. Instead got </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s1">.&#39;</span>
+                <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">decimal_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DecimalCount</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The format of legend labels.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decimal_count</span>
+
+    <span class="nd">@decimal_count</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">decimal_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_decimal_count</span> <span class="o">=</span> <span class="n">DecimalCount</span><span class="o">.</span><span class="n">default</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">DecimalCount</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_decimal_count</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;A DecimalCount object expected. Instead got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">preceding_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Boolean to indicate whether the title and the labels should precede the legend</span>
+<span class="sd">        or not.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_preceding_labels</span>
+
+    <span class="nd">@preceding_labels</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">preceding_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_preceding_labels</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_preceding_labels</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Label position only accepts boolean values. Instead got </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">label_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Text</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Font for the legend labels.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label_parameters</span>
+
+    <span class="nd">@label_parameters</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">label_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_label_parameters</span> <span class="o">=</span> <span class="n">Text</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">Text</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_label_parameters</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Label font expects a Font object. Instead got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">title_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Text</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Font for the legend title.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_title_parameters</span>
+
+    <span class="nd">@title_parameters</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">title_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_title_parameters</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="n">bold</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">Text</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_title_parameters</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Title font expects a Font object. Instead got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min</span>
+
+    <span class="nd">@min</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">min</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_min</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_min</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Min must be a number. Instead got </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max</span>
+
+    <span class="nd">@max</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_max</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_max</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Max must be a number. Instead got </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">auto_range</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;A tuple with min and max values in the legend.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_range</span>
+
+    <span class="nd">@auto_range</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">auto_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_auto_range</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">and</span> <span class="n">_validate_input</span><span class="p">(</span>
+                <span class="n">val</span><span class="p">,</span> <span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">num_val</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_auto_range</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;Range takes a tuple or a list of integers.&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39; Instead got </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">range</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_range</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;In </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s1">,&#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39; min value </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_min</span><span class="si">}</span><span class="s1"> must be less than auto-calculated&#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39; max value </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_auto_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">. Either update min value or&#39;</span>
+                    <span class="s1">&#39; provide a max value.&#39;</span>
+                <span class="p">)</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_auto_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;In </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s1">,&#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39; max value </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_max</span><span class="si">}</span><span class="s1"> must be greater than auto-calculated&#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39; max value </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_auto_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">. Either update max value or&#39;</span>
+                    <span class="s1">&#39; provide a min value.&#39;</span>
+                <span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_min</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_max</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;In </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s1">,&#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39; make sure max value </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_max</span><span class="si">}</span><span class="s1"> is greater than the min&#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39; value </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_min</span><span class="si">}</span><span class="s1">.&#39;</span>
+                <span class="p">)</span>
+
+<div class="viewcode-block" id="LegendParameter.get_lookuptable"><a class="viewcode-back" href="../../honeybee_vtk.legend_parameter.html#honeybee_vtk.legend_parameter.LegendParameter.get_lookuptable">[docs]</a>    <span class="k">def</span> <span class="nf">get_lookuptable</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkLookupTable</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get a vtk lookuptable.&quot;&quot;&quot;</span>
+        <span class="n">minimum</span><span class="p">,</span> <span class="n">maximum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span>
+        <span class="n">color_values</span> <span class="o">=</span> <span class="n">color_set</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_colors</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
+        <span class="n">lut</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkLookupTable</span><span class="p">()</span>
+        <span class="n">lut</span><span class="o">.</span><span class="n">SetRange</span><span class="p">(</span><span class="n">minimum</span><span class="p">,</span> <span class="n">maximum</span><span class="p">)</span>
+        <span class="n">lut</span><span class="o">.</span><span class="n">SetRampToLinear</span><span class="p">()</span>
+        <span class="n">lut</span><span class="o">.</span><span class="n">SetValueRange</span><span class="p">(</span><span class="n">minimum</span><span class="p">,</span> <span class="n">maximum</span><span class="p">)</span>
+        <span class="n">lut</span><span class="o">.</span><span class="n">SetHueRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">lut</span><span class="o">.</span><span class="n">SetSaturationRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">lut</span><span class="o">.</span><span class="n">SetNumberOfTableValues</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">color_values</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">color_values</span><span class="p">):</span>
+            <span class="n">lut</span><span class="o">.</span><span class="n">SetTableValue</span><span class="p">(</span>
+                <span class="n">count</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">r</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">g</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">b</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">a</span> <span class="o">/</span> <span class="mi">255</span>
+            <span class="p">)</span>
+        <span class="n">lut</span><span class="o">.</span><span class="n">Build</span><span class="p">()</span>
+        <span class="n">lut</span><span class="o">.</span><span class="n">SetNanColor</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">lut</span></div>
+
+<div class="viewcode-block" id="LegendParameter.get_scalarbar"><a class="viewcode-back" href="../../honeybee_vtk.legend_parameter.html#honeybee_vtk.legend_parameter.LegendParameter.get_scalarbar">[docs]</a>    <span class="k">def</span> <span class="nf">get_scalarbar</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkScalarBarActor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get a vtk scalar bar (legend).&quot;&quot;&quot;</span>
+
+        <span class="n">color_range</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lookuptable</span><span class="p">()</span>
+
+        <span class="n">scalar_bar</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkScalarBarActor</span><span class="p">()</span>
+        <span class="n">scalar_bar</span><span class="o">.</span><span class="n">SetLookupTable</span><span class="p">(</span><span class="n">color_range</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span><span class="p">:</span>
+            <span class="n">scalar_bar</span><span class="o">.</span><span class="n">SetTitle</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s1"> [</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_unit</span><span class="si">}</span><span class="s1">]&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scalar_bar</span><span class="o">.</span><span class="n">SetTitle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
+
+        <span class="n">scalar_bar</span><span class="o">.</span><span class="n">SetPosition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="p">)</span>
+        <span class="n">scalar_bar</span><span class="o">.</span><span class="n">SetWidth</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_width</span><span class="p">)</span>
+        <span class="n">scalar_bar</span><span class="o">.</span><span class="n">SetHeight</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_height</span><span class="p">)</span>
+        <span class="c1"># The following allows the change in font size for the text labels on the legend</span>
+        <span class="n">scalar_bar</span><span class="o">.</span><span class="n">SetUnconstrainedFontSize</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span> <span class="o">==</span> <span class="n">Orientation</span><span class="o">.</span><span class="n">horizontal</span><span class="p">:</span>
+            <span class="n">scalar_bar</span><span class="o">.</span><span class="n">SetOrientationToHorizontal</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scalar_bar</span><span class="o">.</span><span class="n">SetOrientationToVertical</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_color_count</span><span class="p">:</span>
+            <span class="n">scalar_bar</span><span class="o">.</span><span class="n">SetMaximumNumberOfColors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_color_count</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label_count</span><span class="p">:</span>
+            <span class="n">scalar_bar</span><span class="o">.</span><span class="n">SetNumberOfLabels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_label_count</span><span class="p">)</span>
+
+        <span class="c1"># setting the type of labels. Such as integers, decimals, etc.</span>
+        <span class="n">scalar_bar</span><span class="o">.</span><span class="n">SetLabelFormat</span><span class="p">(</span><span class="n">decimal_count</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_decimal_count</span><span class="o">.</span><span class="n">value</span><span class="p">])</span>
+
+        <span class="c1"># Setting whether the labels and title should precede the legend</span>
+        <span class="n">scalar_bar</span><span class="o">.</span><span class="n">SetTextPosition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_preceding_labels</span><span class="p">)</span>
+
+        <span class="n">scalar_bar</span><span class="o">.</span><span class="n">SetLabelTextProperty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_label_parameters</span><span class="o">.</span><span class="n">to_vtk</span><span class="p">())</span>
+        <span class="n">scalar_bar</span><span class="o">.</span><span class="n">SetTitleTextProperty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_title_parameters</span><span class="o">.</span><span class="n">to_vtk</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">scalar_bar</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Legend name: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Legend title: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_unit</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Legend visibility: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_hide_legend</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Legend color scheme: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_colors</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Legend orientation: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_orientation</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Legend position: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Legend width: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_width</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Legend height: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_height</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Number of colors in legend: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_color_count</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Number of lables in legend: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_label_count</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Type of label: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_decimal_count</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Position of label: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_preceding_labels</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Font of label: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_label_parameters</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Font of title: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_title_parameters</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Legend auto-range: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_auto_range</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Legend min: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_min</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Legend max: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_max</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Legend range: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="si">}</span><span class="s1"> |&#39;</span>
+        <span class="p">)</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

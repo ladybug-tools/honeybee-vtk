@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>honeybee_vtk.to_vtk &#8212; honeybee-radiance-postprocess  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          honeybee-radiance-postprocess</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/main.html">main</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/main.html#honeybee-vtk">honeybee-vtk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/export.html">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/export.html#honeybee-vtk-export">honeybee-vtk export</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/translate.html#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../honeybee_vtk.html">honeybee_vtk package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <h1>Source code for honeybee_vtk.to_vtk</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Functions to translate HB Model objects to PolyData or JoinedPolyData.</span>
+
+<span class="sd">honeybee-vtk provides a wrapper for vtkPolyData or vtkAppendPolyData which are used</span>
+<span class="sd">instead of the original objects to add additional fields that are needed to provide</span>
+<span class="sd">additional functionalities in honeybee-vtk. See ``types`` module for more information.</span>
+
+<span class="sd">There are two sets of functions in this module:</span>
+
+<span class="sd">    - create_x : These methods create an object from other objects. For instance</span>
+<span class="sd">        create_polyline creates a polyline for a list of points.</span>
+<span class="sd">    - convert_x: These methods convert a LBT object directly to a PolyData. For instance</span>
+<span class="sd">        convert_polyline converts a Polyline3D to a VTK-based Polyline.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="kn">import</span> <span class="nn">vtk</span>
+
+<span class="kn">from</span> <span class="nn">ladybug_geometry.geometry3d</span> <span class="kn">import</span> <span class="n">Face3D</span><span class="p">,</span> <span class="n">Mesh3D</span><span class="p">,</span> <span class="n">Point3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Polyline3D</span>
+<span class="kn">from</span> <span class="nn">honeybee.room</span> <span class="kn">import</span> <span class="n">Room</span>
+<span class="kn">from</span> <span class="nn">honeybee.face</span> <span class="kn">import</span> <span class="n">Face</span>
+<span class="kn">from</span> <span class="nn">honeybee.aperture</span> <span class="kn">import</span> <span class="n">Aperture</span>
+<span class="kn">from</span> <span class="nn">honeybee.door</span> <span class="kn">import</span> <span class="n">Door</span>
+<span class="kn">from</span> <span class="nn">honeybee.shade</span> <span class="kn">import</span> <span class="n">Shade</span>
+<span class="kn">from</span> <span class="nn">honeybee_radiance.sensorgrid</span> <span class="kn">import</span> <span class="n">SensorGrid</span>
+
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">PolyData</span><span class="p">,</span> <span class="n">JoinedPolyData</span>
+<span class="kn">from</span> <span class="nn">.vtkjs.schema</span> <span class="kn">import</span> <span class="n">SensorGridOptions</span>
+
+
+<div class="viewcode-block" id="convert_face_3d"><a class="viewcode-back" href="../../honeybee_vtk.to_vtk.html#honeybee_vtk.to_vtk.convert_face_3d">[docs]</a><span class="k">def</span> <span class="nf">convert_face_3d</span><span class="p">(</span><span class="n">face</span><span class="p">:</span> <span class="n">Face3D</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PolyData</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Convert a ladybug_geometry.Face3D to vtkPolyData.&quot;&quot;&quot;</span>
+    <span class="c1"># check if geometry has holes or is convex</span>
+    <span class="c1"># mesh them and use convert_mesh</span>
+    <span class="k">if</span> <span class="n">face</span><span class="o">.</span><span class="n">has_holes</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">face</span><span class="o">.</span><span class="n">is_convex</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">convert_mesh</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">triangulated_mesh3d</span><span class="p">)</span>
+
+    <span class="c1"># create a PolyData from face points</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPoints</span><span class="p">()</span>
+    <span class="n">polygon</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPolygon</span><span class="p">()</span>
+    <span class="n">cells</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkCellArray</span><span class="p">()</span>
+
+    <span class="n">vertices_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span>
+    <span class="n">polygon</span><span class="o">.</span><span class="n">GetPointIds</span><span class="p">()</span><span class="o">.</span><span class="n">SetNumberOfIds</span><span class="p">(</span><span class="n">vertices_count</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">ver</span> <span class="ow">in</span> <span class="n">face</span><span class="o">.</span><span class="n">vertices</span><span class="p">:</span>
+        <span class="n">points</span><span class="o">.</span><span class="n">InsertNextPoint</span><span class="p">(</span><span class="o">*</span><span class="n">ver</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">vertices_count</span><span class="p">):</span>
+        <span class="n">polygon</span><span class="o">.</span><span class="n">GetPointIds</span><span class="p">()</span><span class="o">.</span><span class="n">SetId</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+    <span class="n">cells</span><span class="o">.</span><span class="n">InsertNextCell</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
+
+    <span class="n">face_vtk</span> <span class="o">=</span> <span class="n">PolyData</span><span class="p">()</span>
+    <span class="n">face_vtk</span><span class="o">.</span><span class="n">SetPoints</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">face_vtk</span><span class="o">.</span><span class="n">SetPolys</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">face_vtk</span></div>
+
+
+<div class="viewcode-block" id="convert_mesh"><a class="viewcode-back" href="../../honeybee_vtk.to_vtk.html#honeybee_vtk.to_vtk.convert_mesh">[docs]</a><span class="k">def</span> <span class="nf">convert_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">:</span> <span class="n">Mesh3D</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PolyData</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Convert a ladybug_geometry.Mesh to vtkPolyData.&quot;&quot;&quot;</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPoints</span><span class="p">()</span>
+    <span class="n">polygon</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPolygon</span><span class="p">()</span>
+    <span class="n">cells</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkCellArray</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">ver</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">:</span>
+        <span class="n">points</span><span class="o">.</span><span class="n">InsertNextPoint</span><span class="p">(</span><span class="o">*</span><span class="n">ver</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">:</span>
+        <span class="n">polygon</span><span class="o">.</span><span class="n">GetPointIds</span><span class="p">()</span><span class="o">.</span><span class="n">SetNumberOfIds</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">face</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
+            <span class="n">polygon</span><span class="o">.</span><span class="n">GetPointIds</span><span class="p">()</span><span class="o">.</span><span class="n">SetId</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">cells</span><span class="o">.</span><span class="n">InsertNextCell</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
+
+    <span class="n">grid_vtk</span> <span class="o">=</span> <span class="n">PolyData</span><span class="p">()</span>
+    <span class="n">grid_vtk</span><span class="o">.</span><span class="n">SetPoints</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">grid_vtk</span><span class="o">.</span><span class="n">SetPolys</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">grid_vtk</span></div>
+
+
+<div class="viewcode-block" id="convert_sensor_grid"><a class="viewcode-back" href="../../honeybee_vtk.to_vtk.html#honeybee_vtk.to_vtk.convert_sensor_grid">[docs]</a><span class="k">def</span> <span class="nf">convert_sensor_grid</span><span class="p">(</span>
+    <span class="n">sensor_grid</span><span class="p">:</span> <span class="n">SensorGrid</span><span class="p">,</span> <span class="n">load_option</span><span class="p">:</span> <span class="n">SensorGridOptions</span> <span class="o">=</span> <span class="n">SensorGridOptions</span><span class="o">.</span><span class="n">Mesh</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PolyData</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Convert a honeybee-radiance sensor grid to a vtkPolyData.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">load_option</span> <span class="o">==</span> <span class="n">SensorGridOptions</span><span class="o">.</span><span class="n">Sensors</span><span class="p">:</span>
+        <span class="c1"># load sensors</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">ap</span><span class="o">.</span><span class="n">pos</span> <span class="k">for</span> <span class="n">ap</span> <span class="ow">in</span> <span class="n">sensor_grid</span><span class="o">.</span><span class="n">sensors</span><span class="p">]</span>
+        <span class="n">grid_data</span> <span class="o">=</span> <span class="n">convert_points</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">sensor_grid</span><span class="o">.</span><span class="n">mesh</span>
+        <span class="k">if</span> <span class="n">mesh</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">sensor_grid</span><span class="o">.</span><span class="n">display_name</span><span class="si">}</span><span class="s1"> does not include mesh information. &#39;</span>
+                <span class="s1">&#39;Try again with SensorGridOptions.Sensors&#39;</span>
+            <span class="p">)</span>
+        <span class="n">grid_data</span> <span class="o">=</span> <span class="n">convert_mesh</span><span class="p">(</span><span class="n">sensor_grid</span><span class="o">.</span><span class="n">mesh</span><span class="p">)</span>
+
+    <span class="n">grid_data</span><span class="o">.</span><span class="n">identifier</span> <span class="o">=</span> <span class="n">sensor_grid</span><span class="o">.</span><span class="n">identifier</span>
+    <span class="n">grid_data</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">sensor_grid</span><span class="o">.</span><span class="n">display_name</span>
+    <span class="n">grid_data</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s1">&#39;Grid&#39;</span>
+    <span class="k">return</span> <span class="n">grid_data</span></div>
+
+
+<div class="viewcode-block" id="convert_shade"><a class="viewcode-back" href="../../honeybee_vtk.to_vtk.html#honeybee_vtk.to_vtk.convert_shade">[docs]</a><span class="k">def</span> <span class="nf">convert_shade</span><span class="p">(</span><span class="n">shade</span><span class="p">:</span> <span class="n">Shade</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PolyData</span><span class="p">:</span>
+    <span class="n">polydata</span> <span class="o">=</span> <span class="n">convert_face_3d</span><span class="p">(</span><span class="n">shade</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">polydata</span><span class="o">.</span><span class="n">_get_metadata</span><span class="p">(</span><span class="n">shade</span><span class="p">)</span>
+    <span class="n">polydata</span><span class="o">.</span><span class="n">_add_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">polydata</span></div>
+
+
+<div class="viewcode-block" id="convert_aperture"><a class="viewcode-back" href="../../honeybee_vtk.to_vtk.html#honeybee_vtk.to_vtk.convert_aperture">[docs]</a><span class="k">def</span> <span class="nf">convert_aperture</span><span class="p">(</span><span class="n">aperture</span><span class="p">:</span> <span class="n">Aperture</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">PolyData</span><span class="p">]:</span>
+    <span class="n">polydata</span> <span class="o">=</span> <span class="n">convert_face_3d</span><span class="p">(</span><span class="n">aperture</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">polydata</span><span class="o">.</span><span class="n">_get_metadata</span><span class="p">(</span><span class="n">aperture</span><span class="p">)</span>
+    <span class="n">polydata</span><span class="o">.</span><span class="n">_add_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">polydata</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">shade</span> <span class="ow">in</span> <span class="n">aperture</span><span class="o">.</span><span class="n">outdoor_shades</span><span class="p">:</span>
+        <span class="n">polydata</span> <span class="o">=</span> <span class="n">convert_shade</span><span class="p">(</span><span class="n">shade</span><span class="p">)</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">polydata</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="convert_door"><a class="viewcode-back" href="../../honeybee_vtk.to_vtk.html#honeybee_vtk.to_vtk.convert_door">[docs]</a><span class="k">def</span> <span class="nf">convert_door</span><span class="p">(</span><span class="n">door</span><span class="p">:</span> <span class="n">Door</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">PolyData</span><span class="p">]:</span>
+    <span class="n">polydata</span> <span class="o">=</span> <span class="n">convert_face_3d</span><span class="p">(</span><span class="n">door</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">polydata</span><span class="o">.</span><span class="n">_get_metadata</span><span class="p">(</span><span class="n">door</span><span class="p">)</span>
+    <span class="n">polydata</span><span class="o">.</span><span class="n">_add_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">polydata</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="convert_face"><a class="viewcode-back" href="../../honeybee_vtk.to_vtk.html#honeybee_vtk.to_vtk.convert_face">[docs]</a><span class="k">def</span> <span class="nf">convert_face</span><span class="p">(</span><span class="n">face</span><span class="p">:</span> <span class="n">Face</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">PolyData</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Convert a HBFace to a PolyData.&quot;&quot;&quot;</span>
+
+    <span class="n">polydata</span> <span class="o">=</span> <span class="n">convert_face_3d</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">punched_geometry</span><span class="p">)</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">polydata</span><span class="o">.</span><span class="n">_get_metadata</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+    <span class="n">polydata</span><span class="o">.</span><span class="n">_add_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">polydata</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">face</span><span class="o">.</span><span class="n">apertures</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">aperture</span> <span class="ow">in</span> <span class="n">face</span><span class="o">.</span><span class="n">apertures</span><span class="p">:</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">convert_aperture</span><span class="p">(</span><span class="n">aperture</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">face</span><span class="o">.</span><span class="n">doors</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">door</span> <span class="ow">in</span> <span class="n">face</span><span class="o">.</span><span class="n">doors</span><span class="p">:</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">convert_door</span><span class="p">(</span><span class="n">door</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="convert_room"><a class="viewcode-back" href="../../honeybee_vtk.to_vtk.html#honeybee_vtk.to_vtk.convert_room">[docs]</a><span class="k">def</span> <span class="nf">convert_room</span><span class="p">(</span><span class="n">room</span><span class="p">:</span> <span class="n">Room</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">PolyData</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Convert HB Room to PolyData.&quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">room</span><span class="o">.</span><span class="n">faces</span><span class="p">:</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">convert_face</span><span class="p">(</span><span class="n">face</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="convert_points"><a class="viewcode-back" href="../../honeybee_vtk.to_vtk.html#honeybee_vtk.to_vtk.convert_points">[docs]</a><span class="k">def</span> <span class="nf">convert_points</span><span class="p">(</span><span class="n">points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Point3D</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">PolyData</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Export a list of points to VTK.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        points: A list of Point3D.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A vtk object with multiple VTK point objects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">vtk_points</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPoints</span><span class="p">()</span>
+    <span class="n">vtk_vertices</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkCellArray</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+        <span class="n">vtk_points</span><span class="o">.</span><span class="n">InsertNextPoint</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
+
+    <span class="n">vtk_vertices</span><span class="o">.</span><span class="n">InsertNextCell</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">))))</span>
+
+    <span class="n">polydata</span> <span class="o">=</span> <span class="n">PolyData</span><span class="p">()</span>
+    <span class="n">polydata</span><span class="o">.</span><span class="n">SetPoints</span><span class="p">(</span><span class="n">vtk_points</span><span class="p">)</span>
+    <span class="n">polydata</span><span class="o">.</span><span class="n">SetVerts</span><span class="p">(</span><span class="n">vtk_vertices</span><span class="p">)</span>
+    <span class="n">polydata</span><span class="o">.</span><span class="n">Modified</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">polydata</span></div>
+
+
+<span class="k">def</span> <span class="nf">_create_lines</span><span class="p">(</span>
+        <span class="n">start_points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Point3D</span><span class="p">],</span> <span class="n">vectors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPolyData</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Create a line from start and end point.&quot;&quot;&quot;</span>
+    <span class="c1"># Create a vtkPoints container and store the points for all the lines</span>
+    <span class="n">lines_data</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPolyData</span><span class="p">()</span>
+    <span class="n">pts</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPoints</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">st_pt</span><span class="p">,</span> <span class="n">vector</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">start_points</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
+        <span class="n">end_pt</span> <span class="o">=</span> <span class="n">st_pt</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+        <span class="n">pts</span><span class="o">.</span><span class="n">InsertNextPoint</span><span class="p">(</span><span class="n">st_pt</span><span class="p">)</span>
+        <span class="n">pts</span><span class="o">.</span><span class="n">InsertNextPoint</span><span class="p">(</span><span class="n">end_pt</span><span class="p">)</span>
+
+    <span class="c1"># add all the points to lines dataset</span>
+    <span class="n">lines_data</span><span class="o">.</span><span class="n">SetPoints</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span>
+
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkCellArray</span><span class="p">()</span>
+    <span class="c1"># create lines based on points</span>
+    <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">start_points</span><span class="p">)):</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkLine</span><span class="p">()</span>
+        <span class="c1"># the second 0 is the index of p0 in linesPolyData&#39;s points</span>
+        <span class="n">line</span><span class="o">.</span><span class="n">GetPointIds</span><span class="p">()</span><span class="o">.</span><span class="n">SetId</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">count</span><span class="p">)</span>
+        <span class="c1"># the second 1 is the index of P1 in linesPolyData&#39;s points</span>
+        <span class="n">line</span><span class="o">.</span><span class="n">GetPointIds</span><span class="p">()</span><span class="o">.</span><span class="n">SetId</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">count</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">InsertNextCell</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+    <span class="n">lines_data</span><span class="o">.</span><span class="n">SetLines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">lines_data</span>
+
+
+<span class="k">def</span> <span class="nf">_create_cone</span><span class="p">(</span>
+    <span class="n">center</span><span class="p">:</span> <span class="n">Point3D</span><span class="p">,</span> <span class="n">vector</span><span class="p">:</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
+    <span class="n">resolution</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PolyData</span><span class="p">:</span>
+    <span class="n">cone_poly</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPolyData</span><span class="p">()</span>
+
+    <span class="c1"># Parameters for the cone</span>
+    <span class="n">cone_source</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkConeSource</span><span class="p">()</span>
+    <span class="n">cone_source</span><span class="o">.</span><span class="n">SetResolution</span><span class="p">(</span><span class="n">resolution</span><span class="p">)</span>
+    <span class="n">cone_source</span><span class="o">.</span><span class="n">SetRadius</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+    <span class="n">cone_source</span><span class="o">.</span><span class="n">SetHeight</span><span class="p">(</span><span class="n">height</span><span class="p">)</span>
+    <span class="n">cone_source</span><span class="o">.</span><span class="n">SetDirection</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">vector</span><span class="p">))</span>
+    <span class="n">cone_source</span><span class="o">.</span><span class="n">SetCenter</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">center</span><span class="p">))</span>
+    <span class="n">cone_source</span><span class="o">.</span><span class="n">Update</span><span class="p">()</span>
+
+    <span class="n">cone_poly</span><span class="o">.</span><span class="n">ShallowCopy</span><span class="p">(</span><span class="n">cone_source</span><span class="o">.</span><span class="n">GetOutput</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">cone_poly</span>
+
+
+<span class="c1"># TODO: Add an optional input for data</span>
+<div class="viewcode-block" id="create_arrow"><a class="viewcode-back" href="../../honeybee_vtk.to_vtk.html#honeybee_vtk.to_vtk.create_arrow">[docs]</a><span class="k">def</span> <span class="nf">create_arrow</span><span class="p">(</span><span class="n">start_points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Point3D</span><span class="p">],</span> <span class="n">vectors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">JoinedPolyData</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Create arrows from point and vector.&quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">start_points</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">),</span> \
+        <span class="s1">&#39;Number of start points must match the number of vectors.&#39;</span>
+    <span class="n">cones</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">_create_lines</span><span class="p">(</span><span class="n">start_points</span><span class="p">,</span> <span class="n">vectors</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">st_pt</span><span class="p">,</span> <span class="n">vector</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">start_points</span><span class="p">,</span> <span class="n">vectors</span><span class="p">):</span>
+        <span class="n">end_pt</span> <span class="o">=</span> <span class="n">st_pt</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+        <span class="n">cones</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_create_cone</span><span class="p">(</span><span class="n">end_pt</span><span class="p">,</span> <span class="n">vector</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">JoinedPolyData</span><span class="o">.</span><span class="n">from_polydata</span><span class="p">([</span><span class="n">lines</span><span class="p">]</span> <span class="o">+</span> <span class="n">cones</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="create_polyline"><a class="viewcode-back" href="../../honeybee_vtk.to_vtk.html#honeybee_vtk.to_vtk.create_polyline">[docs]</a><span class="k">def</span> <span class="nf">create_polyline</span><span class="p">(</span><span class="n">points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Point3D</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">PolyData</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Create a polyline from a list of points.&quot;&quot;&quot;</span>
+    <span class="c1"># Create a vtkPoints container and store the points for all the lines</span>
+    <span class="n">pts</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPoints</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+        <span class="n">pts</span><span class="o">.</span><span class="n">InsertNextPoint</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">pt</span><span class="p">))</span>
+
+    <span class="c1"># add all the points to lines dataset</span>
+    <span class="n">polyline</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPolyLine</span><span class="p">()</span>
+    <span class="n">polyline</span><span class="o">.</span><span class="n">GetPointIds</span><span class="p">()</span><span class="o">.</span><span class="n">SetNumberOfIds</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)):</span>
+        <span class="n">polyline</span><span class="o">.</span><span class="n">GetPointIds</span><span class="p">()</span><span class="o">.</span><span class="n">SetId</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+
+    <span class="c1"># Create a cell array to store the lines in and add the lines to it</span>
+    <span class="n">cells</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkCellArray</span><span class="p">()</span>
+    <span class="n">cells</span><span class="o">.</span><span class="n">InsertNextCell</span><span class="p">(</span><span class="n">polyline</span><span class="p">)</span>
+
+    <span class="c1"># Create a polydata to store everything in</span>
+    <span class="n">polydata</span> <span class="o">=</span> <span class="n">PolyData</span><span class="p">()</span>
+
+    <span class="c1"># Add the points to the dataset</span>
+    <span class="n">polydata</span><span class="o">.</span><span class="n">SetPoints</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span>
+
+    <span class="c1"># Add the lines to the dataset</span>
+    <span class="n">polydata</span><span class="o">.</span><span class="n">SetLines</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">polydata</span></div>
+
+
+<div class="viewcode-block" id="convert_polyline"><a class="viewcode-back" href="../../honeybee_vtk.to_vtk.html#honeybee_vtk.to_vtk.convert_polyline">[docs]</a><span class="k">def</span> <span class="nf">convert_polyline</span><span class="p">(</span><span class="n">polyline</span><span class="p">:</span> <span class="n">Polyline3D</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PolyData</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">create_polyline</span><span class="p">(</span><span class="n">polyline</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

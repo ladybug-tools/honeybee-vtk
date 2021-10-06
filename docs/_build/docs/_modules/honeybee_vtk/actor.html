@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>honeybee_vtk.actor &#8212; honeybee-radiance-postprocess  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          honeybee-radiance-postprocess</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/main.html">main</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/main.html#honeybee-vtk">honeybee-vtk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/export.html">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/export.html#honeybee-vtk-export">honeybee-vtk export</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/translate.html#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../honeybee_vtk.html">honeybee_vtk package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <h1>Source code for honeybee_vtk.actor</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Vtk actors that are added to a vtk scene.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">import</span> <span class="nn">vtk</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">.model</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">ModelDataSet</span><span class="p">,</span> <span class="n">DisplayMode</span>
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">JoinedPolyData</span>
+<span class="kn">from</span> <span class="nn">._helper</span> <span class="kn">import</span> <span class="n">_validate_input</span>
+<span class="kn">from</span> <span class="nn">ladybug_geometry.geometry3d.pointvector</span> <span class="kn">import</span> <span class="n">Point3D</span>
+<span class="kn">from</span> <span class="nn">.legend_parameter</span> <span class="kn">import</span> <span class="n">LegendParameter</span>
+
+
+<div class="viewcode-block" id="Actor"><a class="viewcode-back" href="../../honeybee_vtk.actor.html#honeybee_vtk.actor.Actor">[docs]</a><span class="k">class</span> <span class="nc">Actor</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Create a vtk actor from a ModelDataSet.</span>
+
+<span class="sd">    Objects in Honeybee such as walls, floors, ceilings, shades, apertures, rooms are</span>
+<span class="sd">    called actors in vtk terms. The actors are created from the Modeldatasets in a</span>
+<span class="sd">    Model object.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        modeldataset: A ModelDataSet object from a honeybee-vtk Model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modeldataset</span><span class="p">:</span> <span class="n">ModelDataSet</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modeldataset</span> <span class="o">=</span> <span class="n">modeldataset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modeldataset</span><span class="o">.</span><span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_monochrome_color</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">modeldataset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelDataSet</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A honeybee-vtk Model object.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modeldataset</span>
+
+    <span class="nd">@modeldataset</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">modeldataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">ModelDataSet</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">ModelDataSet</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_modeldataset</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;A </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">ModelDataSet</span><span class="p">)</span><span class="si">}</span><span class="s1"> object created using honeybee-vtk required.&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39; Instead got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">monochrome_color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Color to be used if actors are to be painted in a monochrome color.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_monochrome_color</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">legend_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">LegendParameter</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Legend parameters in the DataFieldInfo of ModelDataSet of this actor.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">info</span><span class="o">.</span><span class="n">legend_parameter</span> <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modeldataset</span><span class="o">.</span><span class="n">fields_info</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">info</span><span class="o">.</span><span class="n">legend_parameter</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Actor.get_monochrome"><a class="viewcode-back" href="../../honeybee_vtk.actor.html#honeybee_vtk.actor.Actor.get_monochrome">[docs]</a>    <span class="k">def</span> <span class="nf">get_monochrome</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">monochrome_color</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get actors in monochrome color.</span>
+
+<span class="sd">        This is especially useful when the wireframe display-mode is being used.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            monochrome_color: A color that you&#39;d like to paint actors with. Color here</span>
+<span class="sd">                is a tuple of three decimal values representing R,G, and B.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">_validate_input</span><span class="p">(</span><span class="n">monochrome_color</span><span class="p">,</span> <span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">max_val</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_monochrome_color</span> <span class="o">=</span> <span class="n">monochrome_color</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;monochrome color is a tuple with three decimal values less than 1&#39;</span>
+                <span class="s1">&#39; representing R, G, and B.&#39;</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Actor.to_vtk"><a class="viewcode-back" href="../../honeybee_vtk.actor.html#honeybee_vtk.actor.Actor.to_vtk">[docs]</a>    <span class="k">def</span> <span class="nf">to_vtk</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkActor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a vtk actor from a ModelDataSet object.&quot;&quot;&quot;</span>
+
+        <span class="c1"># calculate point data based on cell data</span>
+        <span class="n">cell_to_point</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkCellDataToPointData</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_modeldataset</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">polydata</span> <span class="o">=</span> <span class="n">JoinedPolyData</span><span class="o">.</span><span class="n">from_polydata</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_modeldataset</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">cell_to_point</span><span class="o">.</span><span class="n">SetInputConnection</span><span class="p">(</span><span class="n">polydata</span><span class="o">.</span><span class="n">GetOutputPort</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">polydata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modeldataset</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">cell_to_point</span><span class="o">.</span><span class="n">SetInputData</span><span class="p">(</span><span class="n">polydata</span><span class="p">)</span>
+
+        <span class="n">mapper</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPolyDataMapper</span><span class="p">()</span>
+        <span class="n">mapper</span><span class="o">.</span><span class="n">SetInputConnection</span><span class="p">(</span><span class="n">cell_to_point</span><span class="o">.</span><span class="n">GetOutputPort</span><span class="p">())</span>
+
+        <span class="c1"># map cell data to pointdata</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modeldataset</span><span class="o">.</span><span class="n">fields_info</span><span class="p">:</span>
+            <span class="n">field_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modeldataset</span><span class="o">.</span><span class="n">active_field_info</span>
+            <span class="n">mapper</span><span class="o">.</span><span class="n">SetColorModeToMapScalars</span><span class="p">()</span>
+            <span class="n">mapper</span><span class="o">.</span><span class="n">SetScalarModeToUsePointData</span><span class="p">()</span>
+            <span class="n">mapper</span><span class="o">.</span><span class="n">SetScalarVisibility</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="n">mapper</span><span class="o">.</span><span class="n">SetLookupTable</span><span class="p">(</span><span class="n">field_info</span><span class="o">.</span><span class="n">legend_parameter</span><span class="o">.</span><span class="n">get_lookuptable</span><span class="p">())</span>
+            <span class="n">mapper</span><span class="o">.</span><span class="n">SetScalarRange</span><span class="p">(</span><span class="n">field_info</span><span class="o">.</span><span class="n">legend_parameter</span><span class="o">.</span><span class="n">range</span><span class="p">)</span>
+            <span class="n">mapper</span><span class="o">.</span><span class="n">Update</span><span class="p">()</span>
+
+        <span class="n">actor</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkActor</span><span class="p">()</span>
+        <span class="n">actor</span><span class="o">.</span><span class="n">SetMapper</span><span class="p">(</span><span class="n">mapper</span><span class="p">)</span>
+
+        <span class="c1"># Assign Ladybug Tools colors</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_monochrome_color</span><span class="p">:</span>
+            <span class="n">actor</span><span class="o">.</span><span class="n">GetProperty</span><span class="p">()</span><span class="o">.</span><span class="n">SetColor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_monochrome_color</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">actor</span><span class="o">.</span><span class="n">GetProperty</span><span class="p">()</span><span class="o">.</span><span class="n">SetColor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_modeldataset</span><span class="o">.</span><span class="n">rgb_to_decimal</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modeldataset</span><span class="o">.</span><span class="n">edge_visibility</span><span class="p">:</span>
+            <span class="n">actor</span><span class="o">.</span><span class="n">GetProperty</span><span class="p">()</span><span class="o">.</span><span class="n">EdgeVisibilityOn</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modeldataset</span><span class="o">.</span><span class="n">display_mode</span> <span class="o">==</span> <span class="n">DisplayMode</span><span class="o">.</span><span class="n">Wireframe</span><span class="p">:</span>
+            <span class="n">actor</span><span class="o">.</span><span class="n">GetProperty</span><span class="p">()</span><span class="o">.</span><span class="n">SetRepresentationToWireframe</span><span class="p">()</span>
+
+        <span class="c1"># This is import for grids with sensor points instead of meshes</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modeldataset</span><span class="o">.</span><span class="n">display_mode</span> <span class="o">==</span> <span class="n">DisplayMode</span><span class="o">.</span><span class="n">Points</span><span class="p">:</span>
+            <span class="n">actor</span><span class="o">.</span><span class="n">GetProperty</span><span class="p">()</span><span class="o">.</span><span class="n">SetPointSize</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">actor</span></div>
+
+<div class="viewcode-block" id="Actor.from_model"><a class="viewcode-back" href="../../honeybee_vtk.actor.html#honeybee_vtk.actor.Actor.from_model">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_model</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Actor</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Create a list of vtk actors from a honeybee-vtk model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            model: A honeybee-vtk model.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A list of vtk actors.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">cls</span><span class="p">(</span><span class="n">modeldataset</span><span class="o">=</span><span class="n">ds</span><span class="p">)</span> <span class="k">for</span> <span class="n">ds</span> <span class="ow">in</span> <span class="n">model</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Actor.get_bounds"><a class="viewcode-back" href="../../honeybee_vtk.actor.html#honeybee_vtk.actor.Actor.get_bounds">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_bounds</span><span class="p">(</span><span class="n">actors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Actor</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Point3D</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Get a list of Ladybug Point3D objects that represent the bounds of actors.</span>
+
+<span class="sd">        Bounds of an actor are the outermost vertices of an actor. A bound is a tuple of</span>
+<span class="sd">        x, y, and z coordinates.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            actors: A list of honeybee-vtk actor objects.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A list of Ladybug Point3D objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">actor</span> <span class="ow">in</span> <span class="n">actors</span><span class="p">:</span>
+            <span class="n">vtk_actor</span> <span class="o">=</span> <span class="n">actor</span><span class="o">.</span><span class="n">to_vtk</span><span class="p">()</span>
+            <span class="n">bound</span> <span class="o">=</span> <span class="n">vtk_actor</span><span class="o">.</span><span class="n">GetBounds</span><span class="p">()</span>
+            <span class="n">pt_min</span> <span class="o">=</span> <span class="n">Point3D</span><span class="p">(</span><span class="n">bound</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bound</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">bound</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+            <span class="n">pt_max</span> <span class="o">=</span> <span class="n">Point3D</span><span class="p">(</span><span class="n">bound</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">bound</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">bound</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+            <span class="n">min_max</span> <span class="o">=</span> <span class="p">[</span><span class="n">pt_min</span><span class="p">,</span> <span class="n">pt_max</span><span class="p">]</span>
+            <span class="n">points</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">min_max</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">points</span></div>
+
+<div class="viewcode-block" id="Actor.get_centroid"><a class="viewcode-back" href="../../honeybee_vtk.actor.html#honeybee_vtk.actor.Actor.get_centroid">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_centroid</span><span class="p">(</span><span class="n">actors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Actor</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Point3D</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get Centroid of actors.</span>
+
+<span class="sd">        This method is used in CLI to create a default Top view camera for models that</span>
+<span class="sd">        don&#39;t have any radiance views.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            actors: A list of honeybee-vtk actor objects.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Centroid as a Point3D object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">Actor</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">(</span><span class="n">actors</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">point</span><span class="o">.</span><span class="n">x</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">point</span><span class="o">.</span><span class="n">y</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">point</span><span class="o">.</span><span class="n">z</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Point3D</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span></div></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>honeybee_vtk.assistant &#8212; honeybee-radiance-postprocess  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          honeybee-radiance-postprocess</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/main.html">main</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/main.html#honeybee-vtk">honeybee-vtk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/export.html">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/export.html#honeybee-vtk-export">honeybee-vtk export</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/translate.html#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../honeybee_vtk.html">honeybee_vtk package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <h1>Source code for honeybee_vtk.assistant</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;An assistant class to the Scene object.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">vtk</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">.actor</span> <span class="kn">import</span> <span class="n">Actor</span>
+<span class="kn">from</span> <span class="nn">.camera</span> <span class="kn">import</span> <span class="n">Camera</span>
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">ImageTypes</span>
+
+
+<div class="viewcode-block" id="Assistant"><a class="viewcode-back" href="../../honeybee_vtk.assistant.html#honeybee_vtk.assistant.Assistant">[docs]</a><span class="k">class</span> <span class="nc">Assistant</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Initialize an Assistant object.</span>
+
+<span class="sd">    This is more of a helper class and the interface for this class is the Scene object.</span>
+<span class="sd">    This class takes a camera and a list of actors to assemble a vtk interactor, a vtk</span>
+<span class="sd">    renderWindow, and a vtk renderer objects.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        background_color: A tuple of three integers that represent RGB values of the</span>
+<span class="sd">            color that you&#39;d like to set as the background color.</span>
+<span class="sd">        actors: A dictionary of actors from a Scene object</span>
+<span class="sd">        camera: A Camera object.</span>
+<span class="sd">        legend_parameters: A list of legend parameter objects to be added to the scene</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">background_color</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">camera</span><span class="p">:</span> <span class="n">Camera</span><span class="p">,</span>
+                 <span class="n">actors</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">legend_parameters</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_background_color</span> <span class="o">=</span> <span class="n">background_color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_actors</span> <span class="o">=</span> <span class="n">actors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_camera</span> <span class="o">=</span> <span class="n">camera</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_legend_params</span> <span class="o">=</span> <span class="n">legend_parameters</span>
+
+    <span class="k">def</span> <span class="nf">_create_window</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a rendering window with a single renderer and an interactor.</span>
+
+<span class="sd">        The objects are embedded inside each other. interactor is the outmost layer.</span>
+<span class="sd">        A render is added to a window and then the window is set inside the interactor.</span>
+<span class="sd">        This method returns a tuple of a window_interactor, a render_window, and a</span>
+<span class="sd">        renderer.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A tuple with three elements</span>
+
+<span class="sd">            -   interactor: A vtkRenderWindowInteractor object.</span>
+
+<span class="sd">            -   window: A vtkRenderWindow object.</span>
+
+<span class="sd">            -   renderer: A vtkRenderer object.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_camera</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;A camera is needed to create a render window.&#39;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Setting renderer, render window, and interactor</span>
+        <span class="n">renderer</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkRenderer</span><span class="p">()</span>
+
+        <span class="c1"># Add actors to the window</span>
+        <span class="k">for</span> <span class="n">actor</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_actors</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">renderer</span><span class="o">.</span><span class="n">AddActor</span><span class="p">(</span><span class="n">actor</span><span class="o">.</span><span class="n">to_vtk</span><span class="p">())</span>
+
+        <span class="c1"># Add legends to the window</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_legend_params</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">legend_param</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_legend_params</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">legend_param</span><span class="o">.</span><span class="n">hide_legend</span><span class="p">:</span>
+                    <span class="c1"># Add legends to renderer</span>
+                    <span class="n">renderer</span><span class="o">.</span><span class="n">AddActor</span><span class="p">(</span><span class="n">legend_param</span><span class="o">.</span><span class="n">get_scalarbar</span><span class="p">())</span>
+
+        <span class="c1"># add renderer to rendering window</span>
+        <span class="n">window</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkRenderWindow</span><span class="p">()</span>
+        <span class="n">window</span><span class="o">.</span><span class="n">AddRenderer</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
+
+        <span class="c1"># set rendering window in window interactor</span>
+        <span class="n">interactor</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkRenderWindowInteractor</span><span class="p">()</span>
+        <span class="n">interactor</span><span class="o">.</span><span class="n">SetRenderWindow</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+
+        <span class="c1"># Set background color</span>
+        <span class="n">renderer</span><span class="o">.</span><span class="n">SetBackground</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_background_color</span><span class="p">)</span>
+        <span class="n">renderer</span><span class="o">.</span><span class="n">TwoSidedLightingOn</span><span class="p">()</span>
+
+        <span class="n">renderer</span><span class="o">.</span><span class="n">SetActiveCamera</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_camera</span><span class="o">.</span><span class="n">to_vtk</span><span class="p">())</span>
+        <span class="n">renderer</span><span class="o">.</span><span class="n">ResetCamera</span><span class="p">()</span>
+
+        <span class="c1"># the order is from outside to inside</span>
+        <span class="k">return</span> <span class="n">interactor</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">renderer</span>
+
+    <span class="k">def</span> <span class="nf">_export_gltf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Export a scene to a glTF file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            folder: A valid path to where you&#39;d like to write the gltf file.</span>
+<span class="sd">            name: Name of the gltf file as a text string.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A text string representing the path to the gltf file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: Find out why model&#39;s displaymode is not applied</span>
+        <span class="c1"># TODO: Find out if the axis should be rotated to work with gltf viewers</span>
+        <span class="c1"># TODO: Find a viewer for gltf files. The up axis of f3d viewer is Y axis.</span>
+
+        <span class="n">window</span><span class="p">,</span> <span class="n">renderer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_window</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>
+
+        <span class="n">gltf_file_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.gltf&#39;</span><span class="p">)</span>
+        <span class="n">exporter</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkGLTFExporter</span><span class="p">()</span>
+        <span class="n">exporter</span><span class="o">.</span><span class="n">SaveNormalOn</span><span class="p">()</span>
+        <span class="n">exporter</span><span class="o">.</span><span class="n">InlineDataOn</span><span class="p">()</span>
+        <span class="n">exporter</span><span class="o">.</span><span class="n">SetFileName</span><span class="p">(</span><span class="n">gltf_file_path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+        <span class="n">exporter</span><span class="o">.</span><span class="n">SetActiveRenderer</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
+        <span class="n">exporter</span><span class="o">.</span><span class="n">SetRenderWindow</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+        <span class="n">exporter</span><span class="o">.</span><span class="n">Modified</span><span class="p">()</span>
+        <span class="n">exporter</span><span class="o">.</span><span class="n">Write</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">gltf_file_path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_image_writer</span><span class="p">(</span><span class="n">image_type</span><span class="p">:</span> <span class="n">ImageTypes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get vtk image writer for each image type.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">image_type</span> <span class="o">==</span> <span class="n">ImageTypes</span><span class="o">.</span><span class="n">png</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPNGWriter</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">image_type</span> <span class="o">==</span> <span class="n">ImageTypes</span><span class="o">.</span><span class="n">bmp</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkBMPWriter</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">image_type</span> <span class="o">==</span> <span class="n">ImageTypes</span><span class="o">.</span><span class="n">jpg</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkJPEGWriter</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">image_type</span> <span class="o">==</span> <span class="n">ImageTypes</span><span class="o">.</span><span class="n">pnm</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPNMWriter</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">image_type</span> <span class="o">==</span> <span class="n">ImageTypes</span><span class="o">.</span><span class="n">ps</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPostScriptWriter</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">image_type</span> <span class="o">==</span> <span class="n">ImageTypes</span><span class="o">.</span><span class="n">tiff</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkTIFFWriter</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid image type: </span><span class="si">{</span><span class="n">image_type</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">writer</span>
+
+<div class="viewcode-block" id="Assistant.auto_image_dimension"><a class="viewcode-back" href="../../honeybee_vtk.assistant.html#honeybee_vtk.assistant.Assistant.auto_image_dimension">[docs]</a>    <span class="k">def</span> <span class="nf">auto_image_dimension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">image_height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Calculate image dimension.</span>
+
+<span class="sd">        If image width and image height are not specified by the user, Camera&#39;s x and y</span>
+<span class="sd">        dimension are used instead. Note that a Camera object gets x and y dimension from</span>
+<span class="sd">        its parent Radiance View object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            image_width: Image width in pixels set by the user. Defaults to 0, which</span>
+<span class="sd">                will use view&#39;s x dimension.</span>
+<span class="sd">            image_height: Image height in pixels set by the user. Defaults to 0, which</span>
+<span class="sd">                will use view&#39;s y dimension.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A tuple with two elements</span>
+
+<span class="sd">            -   image_width: Image width in pixels.</span>
+
+<span class="sd">            -   image_height: Image height in pixels.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dim_x</span><span class="p">,</span> <span class="n">dim_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_camera</span><span class="o">.</span><span class="n">dimension_x_y</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">image_width</span><span class="p">:</span>
+            <span class="n">image_width</span> <span class="o">=</span> <span class="n">dim_x</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">image_height</span><span class="p">:</span>
+            <span class="n">image_height</span> <span class="o">=</span> <span class="n">dim_y</span>
+
+        <span class="k">return</span> <span class="n">image_width</span><span class="p">,</span> <span class="n">image_height</span></div>
+
+<div class="viewcode-block" id="Assistant.auto_text_height"><a class="viewcode-back" href="../../honeybee_vtk.assistant.html#honeybee_vtk.assistant.Assistant.auto_text_height">[docs]</a>    <span class="k">def</span> <span class="nf">auto_text_height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_width</span><span class="p">,</span> <span class="n">image_height</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Calculate text height based on image dimension.</span>
+
+<span class="sd">        If a user has not specified the text height in legend parameters, it will be</span>
+<span class="sd">        calculated based on the average of image width and image height. 2.5% of this</span>
+<span class="sd">        average is used as the text height.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            image_width: Image width in pixels set by the user.</span>
+<span class="sd">            image_height: Image height in pixels set by the user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">text_size</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(((</span><span class="n">image_width</span> <span class="o">+</span> <span class="n">image_height</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.025</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">legend_param</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_legend_params</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">legend_param</span><span class="o">.</span><span class="n">label_parameters</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">legend_param</span><span class="o">.</span><span class="n">label_parameters</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">text_size</span>
+            <span class="k">if</span> <span class="n">legend_param</span><span class="o">.</span><span class="n">title_parameters</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">legend_param</span><span class="o">.</span><span class="n">title_parameters</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">text_size</span></div>
+
+    <span class="k">def</span> <span class="nf">_export_image</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">image_type</span><span class="p">:</span> <span class="n">ImageTypes</span> <span class="o">=</span> <span class="n">ImageTypes</span><span class="o">.</span><span class="n">png</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+            <span class="n">image_scale</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">image_width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">image_height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="n">color_range</span><span class="p">:</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkLookupTable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">rgba</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Export the window as an image.</span>
+
+<span class="sd">        Reference: https://kitware.github.io/vtk-examples/site/Python/IO/ImageWriter/</span>
+<span class="sd">        This method is able to export an image in &#39;.png&#39;, &#39;.jpg&#39;, &#39;.ps&#39;, &#39;.tiff&#39;, &#39;.bmp&#39;,</span>
+<span class="sd">        and &#39;.pnm&#39; formats.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            folder: A valid path to where you&#39;d like to write the image.</span>
+<span class="sd">            image_type: An ImageType object.</span>
+<span class="sd">            image_scale: An integer value as a scale factor. Defaults to 1.</span>
+<span class="sd">            image_width: An integer value that sets the width of image in pixels.</span>
+<span class="sd">                Defaults to 0, which will use view&#39;s x dimension.</span>
+<span class="sd">            image_height: An integer value that sets the height of image in pixels.</span>
+<span class="sd">                Defaults to 0, which will use view&#39;s y dimension.</span>
+<span class="sd">            color_range: A vtk lookup table object which can be obtained</span>
+<span class="sd">                from the color_range mehtod of the DataFieldInfo object.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            rgba: A boolean value to set the type of buffer. A True value sets</span>
+<span class="sd">                an the background color to black. A False value uses the Scene object&#39;s</span>
+<span class="sd">                background color. Defaults to False.</span>
+<span class="sd">            show: A boolean value to decide if the the render window should pop up.</span>
+<span class="sd">                Defaults to False.</span>
+<span class="sd">            legends: Legends to add to the image.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A text string representing the path to the image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Set image width and height</span>
+        <span class="n">image_width</span><span class="p">,</span> <span class="n">image_height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_image_dimension</span><span class="p">(</span><span class="n">image_width</span><span class="p">,</span> <span class="n">image_height</span><span class="p">)</span>
+
+        <span class="c1"># Set text height for the labels and the title of the legend</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_text_height</span><span class="p">(</span><span class="n">image_width</span><span class="p">,</span> <span class="n">image_height</span><span class="p">)</span>
+
+        <span class="c1"># Create a render window</span>
+        <span class="n">interactor</span><span class="p">,</span> <span class="n">window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_window</span><span class="p">()[:</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="c1"># render window</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">show</span><span class="p">:</span>
+            <span class="n">window</span><span class="o">.</span><span class="n">OffScreenRenderingOn</span><span class="p">()</span>
+            <span class="n">window</span><span class="o">.</span><span class="n">SetSize</span><span class="p">(</span><span class="n">image_width</span><span class="p">,</span> <span class="n">image_height</span><span class="p">)</span>
+            <span class="n">window</span><span class="o">.</span><span class="n">Render</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">window</span><span class="o">.</span><span class="n">SetSize</span><span class="p">(</span><span class="n">image_width</span><span class="p">,</span> <span class="n">image_height</span><span class="p">)</span>
+            <span class="n">window</span><span class="o">.</span><span class="n">Render</span><span class="p">()</span>
+            <span class="n">interactor</span><span class="o">.</span><span class="n">Initialize</span><span class="p">()</span>
+            <span class="n">interactor</span><span class="o">.</span><span class="n">Start</span><span class="p">()</span>
+
+        <span class="n">image_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+            <span class="n">folder</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_camera</span><span class="o">.</span><span class="n">identifier</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">image_type</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_image_writer</span><span class="p">(</span><span class="n">image_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">image_type</span> <span class="o">==</span> <span class="n">ImageTypes</span><span class="o">.</span><span class="n">jpg</span><span class="p">:</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">SetQuality</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>  <span class="c1"># image quality</span>
+
+        <span class="n">window_to_image_filter</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkWindowToImageFilter</span><span class="p">()</span>
+        <span class="n">window_to_image_filter</span><span class="o">.</span><span class="n">SetInput</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+        <span class="n">window_to_image_filter</span><span class="o">.</span><span class="n">SetScale</span><span class="p">(</span><span class="n">image_scale</span><span class="p">)</span>
+
+        <span class="c1"># rgba is not supported for postscript image type</span>
+        <span class="k">if</span> <span class="n">rgba</span> <span class="ow">and</span> <span class="n">image_type</span> <span class="o">!=</span> <span class="n">ImageTypes</span><span class="o">.</span><span class="n">ps</span><span class="p">:</span>
+            <span class="n">window_to_image_filter</span><span class="o">.</span><span class="n">SetInputBufferTypeToRGBA</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">window_to_image_filter</span><span class="o">.</span><span class="n">SetInputBufferTypeToRGB</span><span class="p">()</span>
+            <span class="c1"># Read from the front buffer.</span>
+            <span class="n">window_to_image_filter</span><span class="o">.</span><span class="n">ReadFrontBufferOff</span><span class="p">()</span>
+            <span class="n">window_to_image_filter</span><span class="o">.</span><span class="n">Update</span><span class="p">()</span>
+
+        <span class="n">writer</span><span class="o">.</span><span class="n">SetFileName</span><span class="p">(</span><span class="n">image_path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">SetInputConnection</span><span class="p">(</span><span class="n">window_to_image_filter</span><span class="o">.</span><span class="n">GetOutputPort</span><span class="p">())</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">Write</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">image_path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

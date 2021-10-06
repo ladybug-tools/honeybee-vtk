@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>honeybee_vtk.model module &#8212; honeybee-radiance-postprocess  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="honeybee_vtk.scene module" href="honeybee_vtk.scene.html" />
+    <link rel="prev" title="honeybee_vtk.legend_parameter module" href="honeybee_vtk.legend_parameter.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          honeybee-radiance-postprocess</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli/main.html">main</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli/main.html#honeybee-vtk">honeybee-vtk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli/export.html">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli/export.html#honeybee-vtk-export">honeybee-vtk export</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli/translate.html#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">honeybee_vtk</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee_vtk.html">honeybee_vtk package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="reference internal" href="honeybee_vtk.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="cli/index.html">CLI Docs</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">honeybee_vtk</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee_vtk.html">honeybee_vtk package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#subpackages">Subpackages</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="honeybee_vtk.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="honeybee_vtk.legend_parameter.html" title="Previous Chapter: honeybee_vtk.legend_parameter module"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; honeybee_vtk....</span>
+    </a>
+  </li>
+  <li>
+    <a href="honeybee_vtk.scene.html" title="Next Chapter: honeybee_vtk.scene module"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">honeybee_vtk.... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="_sources/honeybee_vtk.model.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="cli/index.html">CLI Docs</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">honeybee_vtk</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee_vtk.html">honeybee_vtk package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#subpackages">Subpackages</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="honeybee_vtk.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <section id="module-honeybee_vtk.model">
+<span id="honeybee-vtk-model-module"></span><h1>honeybee_vtk.model module<a class="headerlink" href="#module-honeybee_vtk.model" title="Permalink to this headline">¶</a></h1>
+<p>A VTK representation of HBModel.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="honeybee_vtk.model.Model">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">honeybee_vtk.model.</span></span><span class="sig-name descname"><span class="pre">Model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">honeybee.model.Model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_grids</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="honeybee_vtk.vtkjs.schema.html#honeybee_vtk.vtkjs.schema.SensorGridOptions" title="honeybee_vtk.vtkjs.schema.SensorGridOptions"><span class="pre">honeybee_vtk.vtkjs.schema.SensorGridOptions</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">SensorGridOptions.Ignore</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee_vtk/model.html#Model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.model.Model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A honeybee-vtk model.</p>
+<p>The model objects are accessible based on their types:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>apertures</p></li>
+<li><p>doors</p></li>
+<li><p>shades</p></li>
+<li><p>walls</p></li>
+<li><p>floors</p></li>
+<li><p>roof_ceilings</p></li>
+<li><p>air_boundaries</p></li>
+<li><p>sensor_grids</p></li>
+</ul>
+</div></blockquote>
+<p>You can control the style for each type separately.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.model.Model.from_hbjson">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_hbjson</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hbjson</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_grids</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="honeybee_vtk.vtkjs.schema.html#honeybee_vtk.vtkjs.schema.SensorGridOptions" title="honeybee_vtk.vtkjs.schema.SensorGridOptions"><span class="pre">honeybee_vtk.vtkjs.schema.SensorGridOptions</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">SensorGridOptions.Ignore</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#honeybee_vtk.model.Model" title="honeybee_vtk.model.Model"><span class="pre">honeybee_vtk.model.Model</span></a></span></span><a class="reference internal" href="_modules/honeybee_vtk/model.html#Model.from_hbjson"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.model.Model.from_hbjson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate hbjson to a honeybee-vtk model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – A text string representing the path to the hbjson file.</p></li>
+<li><p><strong>load_grids</strong> – A SensorGridOptions object. Defaults to SensorGridOptions.Ignore
+which will ignore the grids in hbjson and will not load them in the
+honeybee-vtk model.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A honeybee-vtk model object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.model.Model.get_default_color">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">get_default_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">face_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">face_types</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Color</span></span></span><a class="reference internal" href="_modules/honeybee_vtk/model.html#Model.get_default_color"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.model.Model.get_default_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the default color based of face type.</p>
+<p>Use these colors to generate visualizations that are familiar for Ladybug Tools
+users. User can overwrite these colors as needed. This method converts decimal
+RGBA to integer RGBA values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.model.Model.get_modeldataset">
+<span class="sig-name descname"><span class="pre">get_modeldataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.DataSetNames" title="honeybee_vtk.types.DataSetNames"><span class="pre">honeybee_vtk.types.DataSetNames</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.ModelDataSet" title="honeybee_vtk.types.ModelDataSet"><span class="pre">honeybee_vtk.types.ModelDataSet</span></a></span></span><a class="reference internal" href="_modules/honeybee_vtk/model.html#Model.get_modeldataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.model.Model.get_modeldataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a ModelDataSet object from a model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dataset</strong> – A DataSetNames object.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A ModelDataSet object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.model.Model.separate_by_type">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">separate_by_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.PolyData" title="honeybee_vtk.types.PolyData"><span class="pre">honeybee_vtk.types.PolyData</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/honeybee_vtk/model.html#Model.separate_by_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.model.Model.separate_by_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Separate PolyData objects by type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.model.Model.to_files">
+<span class="sig-name descname"><span class="pre">to_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">writer</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.VTKWriters" title="honeybee_vtk.types.VTKWriters"><span class="pre">honeybee_vtk.types.VTKWriters</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/honeybee_vtk/model.html#Model.to_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.model.Model.to_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a .zip of VTK/VTP files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – A text string for the name of the .zip file to be written. If no
+text string is provided, the name of the HBJSON file will be used as a
+file name for the .zip file.</p></li>
+<li><p><strong>folder</strong> – File path to the output folder. The file
+will be written to the current folder if not provided.</p></li>
+<li><p><strong>writer</strong> – A VTkWriters object.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A text string containing the path to the .zip file with VTK/VTP files.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.model.Model.to_html">
+<span class="sig-name descname"><span class="pre">to_html</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/honeybee_vtk/model.html#Model.to_html"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.model.Model.to_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write an HTML file.</p>
+<p>Write your honeybee-vtk model to an HTML file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder</strong> – A valid text string representing the location of folder where
+you’d want to write the HTML file. Defaults to current working directory.</p></li>
+<li><p><strong>name</strong> – Name for the HTML file. File name will be Model.html if not provided.</p></li>
+<li><p><strong>show</strong> – A boolean value. If set to True, the HTML file will be opened in the
+default browser. Defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A text string representing the file path to the HTML file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.model.Model.to_vtkjs">
+<span class="sig-name descname"><span class="pre">to_vtkjs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/honeybee_vtk/model.html#Model.to_vtkjs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.model.Model.to_vtkjs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a vtkjs file.</p>
+<p>Write your honeybee-vtk model to a vtkjs file that you can open in
+Paraview-Glance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder</strong> – A valid text string representing the location of folder where
+you’d want to write the vtkjs file. Defaults to current working
+directory.</p></li>
+<li><p><strong>name</strong> – Name for the vtkjs file. File name will be Model.vtkjs if not
+provided.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A text string representing the file path to the vtkjs file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.model.Model.update_display_mode">
+<span class="sig-name descname"><span class="pre">update_display_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="honeybee_vtk.vtkjs.schema.html#honeybee_vtk.vtkjs.schema.DisplayMode" title="honeybee_vtk.vtkjs.schema.DisplayMode"><span class="pre">honeybee_vtk.vtkjs.schema.DisplayMode</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/honeybee_vtk/model.html#Model.update_display_mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.model.Model.update_display_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change display mode for all the object types in the model.</p>
+<p>Sensor grids display model will not be affected. For changing the display model
+for a single object type, change the display_mode property separately.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">sensor_grids</span><span class="o">.</span><span class="n">display_mode</span> <span class="o">=</span> <span class="n">DisplayMode</span><span class="o">.</span><span class="n">Wireframe</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="honeybee_vtk.model.Model.air_boundaries">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">air_boundaries</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.ModelDataSet" title="honeybee_vtk.types.ModelDataSet"><span class="pre">honeybee_vtk.types.ModelDataSet</span></a></em><a class="headerlink" href="#honeybee_vtk.model.Model.air_boundaries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Air boundaries.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="honeybee_vtk.model.Model.apertures">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">apertures</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.ModelDataSet" title="honeybee_vtk.types.ModelDataSet"><span class="pre">honeybee_vtk.types.ModelDataSet</span></a></em><a class="headerlink" href="#honeybee_vtk.model.Model.apertures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model aperture.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="honeybee_vtk.model.Model.cameras">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">cameras</span></span><a class="headerlink" href="#honeybee_vtk.model.Model.cameras" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of Camera objects attached to this Model object.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="honeybee_vtk.model.Model.doors">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">doors</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.ModelDataSet" title="honeybee_vtk.types.ModelDataSet"><span class="pre">honeybee_vtk.types.ModelDataSet</span></a></em><a class="headerlink" href="#honeybee_vtk.model.Model.doors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model doors.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="honeybee_vtk.model.Model.floors">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">floors</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.ModelDataSet" title="honeybee_vtk.types.ModelDataSet"><span class="pre">honeybee_vtk.types.ModelDataSet</span></a></em><a class="headerlink" href="#honeybee_vtk.model.Model.floors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model floors.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="honeybee_vtk.model.Model.roof_ceilings">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">roof_ceilings</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.ModelDataSet" title="honeybee_vtk.types.ModelDataSet"><span class="pre">honeybee_vtk.types.ModelDataSet</span></a></em><a class="headerlink" href="#honeybee_vtk.model.Model.roof_ceilings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Roof and ceilings.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="honeybee_vtk.model.Model.sensor_grids">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">sensor_grids</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.ModelDataSet" title="honeybee_vtk.types.ModelDataSet"><span class="pre">honeybee_vtk.types.ModelDataSet</span></a></em><a class="headerlink" href="#honeybee_vtk.model.Model.sensor_grids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sensor grids.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="honeybee_vtk.model.Model.shades">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">shades</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.ModelDataSet" title="honeybee_vtk.types.ModelDataSet"><span class="pre">honeybee_vtk.types.ModelDataSet</span></a></em><a class="headerlink" href="#honeybee_vtk.model.Model.shades" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model shades.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="honeybee_vtk.model.Model.walls">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">walls</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.ModelDataSet" title="honeybee_vtk.types.ModelDataSet"><span class="pre">honeybee_vtk.types.ModelDataSet</span></a></em><a class="headerlink" href="#honeybee_vtk.model.Model.walls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model walls.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

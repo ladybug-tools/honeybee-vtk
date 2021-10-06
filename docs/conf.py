@@ -2,7 +2,7 @@
 #
 # Configuration file for the Sphinx documentation builder.
 #
-# This file does only contain a selection of the most common options. For a
+# This file only contains a selection of the most common options. For a
 # full list see the documentation:
 # http://www.sphinx-doc.org/en/master/config
 
@@ -14,15 +14,16 @@
 #
 import sphinx_bootstrap_theme
 import os
-from datetime import datetime
-import re
 import sys
+import re
+import datetime
+now = datetime.datetime.now()
 sys.path.insert(0, os.path.abspath('../'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'honeybee vtk'
-copyright = '{}, Ladybug Tools'.format(datetime.today().year)
+project = 'honeybee-radiance-postprocess'
+copyright = '{}, Ladybug Tools'.format(str(now.year))
 author = 'Ladybug Tools'
 
 # The full version, including alpha/beta/rc tags
@@ -140,11 +141,8 @@ html_sidebars = {
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
-
-autodoc_member_order = 'groupwise'
-
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'hbvtkdoc'
+htmlhelp_basename = 'lbtoolsdoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -171,7 +169,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'honeybee vtk.tex', 'honeybee vtk Documentation',
+    (master_doc, 'honeybee-radiance-postprocess.tex', 'honeybee-radiance-postprocess Documentation',
      'Ladybug Tools', 'manual'),
 ]
 
@@ -181,7 +179,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'honeybee vtk', 'honeybee vtk Documentation',
+    (master_doc, 'honeybee-radiance-postprocess', 'honeybee-radiance-postprocess Documentation',
      [author], 1)
 ]
 
@@ -192,8 +190,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'honeybee vtk', 'honeybee vtk Documentation',
-     author, 'honeybee vtk', 'One line description of project.',
+    (master_doc, 'honeybee-radiance-postprocess', 'honeybee-radiance-postprocess Documentation',
+     author, 'honeybee-radiance-postprocess', 'One line description of project.',
      'Miscellaneous'),
 ]
 
@@ -230,6 +228,7 @@ autodoc_default_options = {
 
 autodoc_member_order = 'groupwise'
 
+
 # -- CLI documentation  -------------------------------------------------------
 """Improves the CLI documentation section.
 
@@ -241,7 +240,7 @@ Note:
 """
 # Activate this CLI documentation process.
 custom_cli_docs = True
-# Override existing reSt files found in docs//cli folder.
+# Override existing reSt files found in docs\cli folder.
 cli_overwrite = False
 
 # Repository/library hash table.
@@ -364,10 +363,12 @@ def get_cli_data(project_folder):
         print("[CLI data]: Cannot find library path")
         return None
 
-    cli_path = os.path.join(lib_path, 'cli')
-    if not os.path.isdir(cli_path):
-        print("[CLI data]: No CLI library found")
-        return None
+    cli_path = lib_path
+    if not os.path.isfile(os.path.join(lib_path, "cli.py")):
+        cli_path = os.path.join(lib_path, 'cli')
+        if not os.path.isdir(cli_path):
+            print("[CLI data]: No CLI library found")
+            return None
 
     # Get CLI module names and their corresponding group names as a dictionary.
     ht_mod_group = get_cli_groups(cli_path)
@@ -391,8 +392,11 @@ def get_cli_groups(cli_path):
         A dictionary with module file names and the corresponding
         group names found.
     """
-    module_names = [os.path.splitext(file)[0] for file in os.listdir(cli_path)
-                    if os.path.splitext(file)[1] == ".py"]
+    if os.path.split(cli_path)[1] == 'cli':
+        module_names = [os.path.splitext(file)[0] for file in os.listdir(cli_path)
+                        if os.path.splitext(file)[1] == ".py"]
+    else:
+        module_names = ['cli']
 
     # Look for group function names inside their CLI module. Assume (1) group
     # and (1) function per module. Assumme possible multiple groups and
@@ -407,19 +411,18 @@ def get_cli_groups(cli_path):
         fnd = re.findall(r'^@click\.group\(.*\n(@click.*\n){0,2}def\s(\w*)\s*\(\):\n',
                          text, flags=re.MULTILINE)
         # Add multiple commands found in each group inside '__init__.py'
-        if name == "__init__":
+        if name == "__init__" or name == "cli":
             init_text = text
             for result in fnd:
-                tr, cli_comm = result
+                options, cli_comm = result
                 comm_exp = r'^@' + cli_comm + r'.command\(\'([\w-]+)'
                 im = re.findall(comm_exp, text, flags=re.MULTILINE)
-                if im:
+                if im or 'version_option' in options:
                     # add sub-group key with list of commands to the
                     # 'main' group dict. key
-                    if 'main' not in ht_groups:
-                        ht_groups['main'] = {}
-                    ht_groups['main'][cli_comm] = list(im)
-
+                    if name not in ht_groups:
+                        ht_groups[name] = {}
+                    ht_groups[name][cli_comm] = list(im)
         else:
             # Store module function name and initial command name in hash table.
             if fnd:
@@ -435,7 +438,7 @@ def get_cli_groups(cli_path):
             cli_func, tr, cli_comm = group
             for file in ht_groups:
                 # 'main' groups are excluded, assumes not used in CLI.
-                if file != 'main' and ht_groups[file][0] == cli_func:
+                if file not in ["__init__", "cli"] and ht_groups[file][0] == cli_func:
                     ht_groups[file][1] = cli_comm
 
     return ht_groups
@@ -463,32 +466,37 @@ def write_cli_files(ht_cli_data, lib_name, tool_name, doc_folder):
 
     # Write sphinx-click directive with options for each CLI group.
     for file in group_filenames:
-        cli_content = ["{}\n".format(file),
-                       "{}\n".format("=" * len(file))]
-        if file != "main":
+        if file != "__init__" and file != "cli":
             # one command(with all its subcommands) per cli module.
-            cli_content += ["\n",
-                            ".. click:: {}.cli.{}:{}\n".format(
-                                lib_name, file, ht_cli_data[file][0]),
-                            "   :prog: {} {}\n".format(
-                                tool_name, ht_cli_data[file][1]),
-                            "   :show-nested:\n"]
+            cli_content = ["{}\n".format(file),
+                           "{}\n".format("=" * len(file)),
+                           "\n",
+                           ".. click:: {}.cli.{}:{}\n".format(
+                lib_name, file, ht_cli_data[file][0]),
+                "   :prog: {} {}\n".format(
+                tool_name, ht_cli_data[file][1]),
+                "   :show-nested:\n"]
+            group_file = file
         else:
-            # multiple commands in the 'main' group (implicitly named to
+            # multiple commands in the 'main' group (explicitly named to
             # avoid commands from other modules to be included). Also specify
-            # commands as a root command.
+            # commands as root commands.
+            main_file = 'cli' if file == "cli" else 'cli.__init__'
+            cli_content = ["main\n",
+                           "====\n"]
             for group in ht_cli_data[file].keys():
                 cli_content += ["\n",
-                                ".. click:: {}.cli.{}:{}\n".
-                                format(lib_name, "__init__", group),
+                                ".. click:: {}.{}:{}\n".
+                                format(lib_name, main_file, group),
                                 "   :prog: {}\n".format(tool_name),
                                 "   :show-nested:\n",
                                 "   :commands: " + " ,".
                                 join(ht_cli_data[file][group]) + "\n"
                                 ]
+            group_file = 'main'
 
         # Create CLI group reST file.
-        with open(os.path.join(doc_folder, file + ".rst"), 'w') as group_file:
+        with open(os.path.join(doc_folder, group_file + ".rst"), 'w') as group_file:
             group_file.writelines(cli_content)
 
     return 1
@@ -525,10 +533,12 @@ def update_cli_index(index_path, group_filenames):
                     "\n"
                     ]
 
-    # Add sub-command groups to content.
-    if "main" in group_filenames:
-        group_filenames.remove('main')
+    # replace root filenames with 'main' and place at top of list
+    main_file = list(set(group_filenames).intersection(["__init__", "cli"]))[0]
+    if main_file:
+        group_filenames.remove(main_file)
         group_filenames.insert(0, 'main')
+    # Add sub-command groups to content.
     for file in group_filenames:
         cli_content.append("   {}\n".format(file))
 
@@ -565,7 +575,7 @@ def update_doc_index(proj_folder, lib_name):
         return 1
 
     print("[CLI doc\\index]: Updating index.rst file...")
-    # Add CLi Docs section
+    # Add CLI Docs section
     cli_text = "\n" + \
                "CLI Docs\n" + \
                "========\n" + \
@@ -581,15 +591,15 @@ def update_doc_index(proj_folder, lib_name):
                "\n"
 
     # Find insert location, add text and save
-    lib_exp = r'^' + lib_name + ' *\n=+\n'
+    lib_exp = r'^' + lib_name + r' *\n=+\n|^\.\. toctree:: *\n'
     m = re.search(lib_exp, text, flags=re.MULTILINE)
     if m:
         text_updated = text[:m.start()-1] + cli_text + text[m.start():]
         with open(os.path.join(proj_folder, "index.rst"), 'w') as index_file:
             text = index_file.write(text_updated)
     else:
-        print("[CLI doc\\index]: index.rst update not possible - content \
-              format cannot be recognized.")
+        print(
+            "[CLI doc\\index]: index.rst update not possible - content format cannot be recognized.")
         return -1
 
     return 1
@@ -609,4 +619,4 @@ def setup(app):
     """
 
     # Add bootstrap theme custom stylesheet
-    app.add_stylesheet("custom.css")
+    app.add_css_file("custom.css")

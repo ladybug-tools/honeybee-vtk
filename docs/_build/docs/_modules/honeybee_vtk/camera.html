@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>honeybee_vtk.camera &#8212; honeybee-radiance-postprocess  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          honeybee-radiance-postprocess</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/main.html">main</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/main.html#honeybee-vtk">honeybee-vtk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/export.html">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/export.html#honeybee-vtk-export">honeybee-vtk export</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/translate.html#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../honeybee_vtk.html">honeybee_vtk package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <h1>Source code for honeybee_vtk.camera</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;A VTK camera object.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">import</span> <span class="nn">vtk</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">honeybee_radiance.view</span> <span class="kn">import</span> <span class="n">View</span>
+<span class="kn">from</span> <span class="nn">ladybug_geometry.geometry3d</span> <span class="kn">import</span> <span class="n">Point3D</span><span class="p">,</span> <span class="n">LineSegment3D</span>
+
+
+<div class="viewcode-block" id="Camera"><a class="viewcode-back" href="../../honeybee_vtk.camera.html#honeybee_vtk.camera.Camera">[docs]</a><span class="k">class</span> <span class="nc">Camera</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a vtk camera object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            identifier: A text string to be used as a name for the camera.</span>
+<span class="sd">                Defaults to &#39;camera&#39;.</span>
+<span class="sd">            position: A tuple of three numbers that represent the x, y and z</span>
+<span class="sd">                coordinates of camera in a 3D space. Defaults to (0, 0, 50). Which</span>
+<span class="sd">                puts the camera 50 units off of ground (XY plane).</span>
+<span class="sd">            direction: A tuple of three numbers that represent the x, y, and z</span>
+<span class="sd">                components of a vector towards the aim of the camera.</span>
+<span class="sd">                Defaults to (0, 0, -1). Which means the camera will look towards the</span>
+<span class="sd">                ground (XY plane).</span>
+<span class="sd">            up_vector: A tuple of three numbers to represent the x, y, and z</span>
+<span class="sd">                component of the vector that represents where the top of the camera is.</span>
+<span class="sd">                Defaults to (0, 1, 0).</span>
+<span class="sd">            h_size: A number representing the horizontal view angle.</span>
+<span class="sd">                Defaults to 60.</span>
+<span class="sd">            v_size: A number representing the vertical view angle.</span>
+<span class="sd">                Defaults to 60.</span>
+<span class="sd">            type: Choose between a perspective and parallel view type. &#39;v&#39; will set</span>
+<span class="sd">                the perspective view and &#39;l&#39; will set the parallel view. Defaults to &#39;v&#39;</span>
+<span class="sd">                which is the perspective view.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;camera&#39;</span><span class="p">,</span>
+            <span class="n">position</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+            <span class="n">direction</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">up_vector</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="n">h_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span>
+            <span class="n">v_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span>
+            <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;v&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">identifier</span><span class="o">=</span><span class="n">identifier</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">position</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="n">direction</span><span class="p">,</span>
+            <span class="n">up_vector</span><span class="o">=</span><span class="n">up_vector</span><span class="p">,</span> <span class="n">h_size</span><span class="o">=</span><span class="n">h_size</span><span class="p">,</span> <span class="n">v_size</span><span class="o">=</span><span class="n">v_size</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">type</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Camera.to_vtk"><a class="viewcode-back" href="../../honeybee_vtk.camera.html#honeybee_vtk.camera.Camera.to_vtk">[docs]</a>    <span class="k">def</span> <span class="nf">to_vtk</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkCamera</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get a vtk camera object.&quot;&quot;&quot;</span>
+        <span class="n">camera</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkCamera</span><span class="p">()</span>
+
+        <span class="c1"># Parallel projection</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span>
+            <span class="n">camera</span><span class="o">.</span><span class="n">SetParallelProjection</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">camera</span><span class="o">.</span><span class="n">ParallelProjectionOn</span><span class="p">()</span>
+
+        <span class="c1"># The location of camera in a 3D space</span>
+        <span class="n">camera</span><span class="o">.</span><span class="n">SetPosition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="c1"># get a focal_point on the same axis as the camera position.</span>
+        <span class="n">fp</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_direction</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+              <span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_direction</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+              <span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_direction</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="c1"># The direction to the point where the camera is looking at</span>
+        <span class="n">camera</span><span class="o">.</span><span class="n">SetFocalPoint</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+
+        <span class="c1"># calculate view normal to the camera</span>
+        <span class="n">camera</span><span class="o">.</span><span class="n">ComputeViewPlaneNormal</span><span class="p">()</span>
+        <span class="c1"># Where the top of the camera is</span>
+        <span class="n">camera</span><span class="o">.</span><span class="n">SetViewUp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_up_vector</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="c1"># Make sure that view up is 90 degrees to the view normal</span>
+        <span class="n">camera</span><span class="o">.</span><span class="n">OrthogonalizeViewUp</span><span class="p">()</span>
+
+        <span class="c1"># Horizontal view angle</span>
+        <span class="n">camera</span><span class="o">.</span><span class="n">SetViewAngle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_h_size</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">camera</span><span class="o">.</span><span class="n">SetUseHorizontalViewAngle</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">camera</span><span class="o">.</span><span class="n">UseHorizontalViewAngleOn</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">camera</span></div>
+
+<div class="viewcode-block" id="Camera.from_view"><a class="viewcode-back" href="../../honeybee_vtk.camera.html#honeybee_vtk.camera.Camera.from_view">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_view</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">Camera</span><span class="p">,</span> <span class="n">view</span><span class="p">:</span> <span class="n">View</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Camera</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a Camera object from a radiance view.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            view: A radiance view</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A Camera object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">identifier</span><span class="o">=</span><span class="n">view</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span>
+            <span class="n">position</span><span class="o">=</span><span class="n">view</span><span class="o">.</span><span class="n">position</span><span class="p">,</span>
+            <span class="n">direction</span><span class="o">=</span><span class="n">view</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span>
+            <span class="n">up_vector</span><span class="o">=</span><span class="n">view</span><span class="o">.</span><span class="n">up_vector</span><span class="p">,</span>
+            <span class="n">h_size</span><span class="o">=</span><span class="n">view</span><span class="o">.</span><span class="n">h_size</span><span class="p">,</span>
+            <span class="n">v_size</span><span class="o">=</span><span class="n">view</span><span class="o">.</span><span class="n">v_size</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="n">view</span><span class="o">.</span><span class="n">type</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Camera.from_view_file"><a class="viewcode-back" href="../../honeybee_vtk.camera.html#honeybee_vtk.camera.Camera.from_view_file">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_view_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">Camera</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Camera</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a Camera object from a radiance view file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_path: A valid path to a radiance view file with .vf extension.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A Camera object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">view_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">view_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">and</span> <span class="n">view_file</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span> <span class="o">==</span> <span class="s1">&#39;.vf&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Camera</span><span class="o">.</span><span class="n">from_view</span><span class="p">(</span><span class="n">view</span><span class="o">=</span><span class="n">View</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">view_file</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+                <span class="s1">&#39;Radiance view file not found.&#39;</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Camera.aerial_cameras"><a class="viewcode-back" href="../../honeybee_vtk.camera.html#honeybee_vtk.camera.Camera.aerial_cameras">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">aerial_cameras</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">Camera</span><span class="p">,</span> <span class="n">bounds</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Point3D</span><span class="p">],</span> <span class="n">centroid</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Camera</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Get four aerial cameras.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            bounds: A list of Point3D objects representing bounds of the actors in the</span>
+<span class="sd">                scene.</span>
+<span class="sd">            centroid: A Point3D object representing the centroid of the actors.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A list of Camera objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># find the top most z-cordinate in the model</span>
+        <span class="n">cord_point</span> <span class="o">=</span> <span class="p">{</span><span class="n">point</span><span class="o">.</span><span class="n">z</span><span class="p">:</span> <span class="n">point</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">bounds</span><span class="p">}</span>
+        <span class="n">topmost_z_cord</span> <span class="o">=</span> <span class="n">cord_point</span><span class="p">[</span><span class="nb">sorted</span><span class="p">(</span><span class="n">cord_point</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">z</span>
+
+        <span class="c1"># move centroid to the level of top most z-cordinate</span>
+        <span class="n">centroid_moved</span> <span class="o">=</span> <span class="n">Point3D</span><span class="p">(</span><span class="n">centroid</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">centroid</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+                                 <span class="n">topmost_z_cord</span><span class="p">)</span>
+
+        <span class="c1"># distance of four cameras from centroid</span>
+        <span class="n">distances</span> <span class="o">=</span> <span class="p">[</span><span class="n">centroid</span><span class="o">.</span><span class="n">distance_to_point</span><span class="p">(</span><span class="n">pt</span><span class="p">)</span> <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">bounds</span><span class="p">]</span>
+        <span class="n">farthest_distance</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">distances</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">camera_distance</span> <span class="o">=</span> <span class="n">farthest_distance</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># generate total four points at 45 degrees and -45 degrees on left and right</span>
+        <span class="c1"># side of the centroid</span>
+        <span class="n">pt0</span> <span class="o">=</span> <span class="n">Point3D</span><span class="p">(</span>
+            <span class="n">centroid_moved</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">45</span><span class="p">))</span><span class="o">*</span><span class="n">camera_distance</span><span class="p">,</span>
+            <span class="n">centroid_moved</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">45</span><span class="p">))</span><span class="o">*</span><span class="n">camera_distance</span><span class="p">,</span>
+            <span class="n">centroid_moved</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">pt1</span> <span class="o">=</span> <span class="n">Point3D</span><span class="p">(</span>
+            <span class="n">centroid_moved</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="o">-</span><span class="mi">45</span><span class="p">))</span><span class="o">*</span><span class="n">camera_distance</span><span class="p">,</span>
+            <span class="n">centroid_moved</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="o">-</span><span class="mi">45</span><span class="p">))</span><span class="o">*</span><span class="n">camera_distance</span><span class="p">,</span>
+            <span class="n">centroid_moved</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">pt2</span> <span class="o">=</span> <span class="n">Point3D</span><span class="p">(</span>
+            <span class="n">centroid_moved</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">45</span><span class="p">))</span><span class="o">*</span><span class="n">camera_distance</span><span class="o">*-</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">centroid_moved</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">45</span><span class="p">))</span><span class="o">*</span><span class="n">camera_distance</span><span class="o">*-</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">centroid_moved</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">pt3</span> <span class="o">=</span> <span class="n">Point3D</span><span class="p">(</span>
+            <span class="n">centroid_moved</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="o">-</span><span class="mi">45</span><span class="p">))</span><span class="o">*</span><span class="n">camera_distance</span><span class="o">*-</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">centroid_moved</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="o">-</span><span class="mi">45</span><span class="p">))</span><span class="o">*</span><span class="n">camera_distance</span><span class="o">*-</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">centroid_moved</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">camera_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">pt0</span><span class="p">,</span> <span class="n">pt3</span><span class="p">,</span> <span class="n">pt2</span><span class="p">,</span> <span class="n">pt1</span><span class="p">]</span>
+
+        <span class="c1"># get directions (vectors) from each point to the centroid</span>
+        <span class="n">directions</span> <span class="o">=</span> <span class="p">[</span><span class="n">LineSegment3D</span><span class="o">.</span><span class="n">from_end_points</span><span class="p">(</span>
+            <span class="n">pt</span><span class="p">,</span> <span class="n">centroid</span><span class="p">)</span><span class="o">.</span><span class="n">v</span> <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">camera_points</span><span class="p">]</span>
+
+        <span class="c1"># default camera identifiers</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;45_degrees&#39;</span><span class="p">,</span> <span class="s1">&#39;315_degrees&#39;</span><span class="p">,</span> <span class="s1">&#39;225_degrees&#39;</span><span class="p">,</span> <span class="s1">&#39;135_degrees&#39;</span><span class="p">]</span>
+
+        <span class="c1"># create cameras from four points. These cameras look at the centroid.</span>
+        <span class="n">default_cameras</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">camera_points</span><span class="p">)):</span>
+            <span class="n">point</span> <span class="o">=</span> <span class="n">camera_points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">direction</span> <span class="o">=</span> <span class="n">directions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">default_cameras</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">cls</span><span class="p">(</span><span class="n">identifier</span><span class="o">=</span><span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">point</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">point</span><span class="o">.</span><span class="n">z</span><span class="p">),</span>
+                                       <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="n">direction</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">direction</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">direction</span><span class="o">.</span><span class="n">z</span><span class="p">),</span>
+                                       <span class="n">up_vector</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+
+        <span class="k">return</span> <span class="n">default_cameras</span></div></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
