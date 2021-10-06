@@ -1,4 +1,4 @@
-"""Data json schema and validation."""
+"""Data json schema and validation for the config file."""
 
 from __future__ import annotations
 import json
