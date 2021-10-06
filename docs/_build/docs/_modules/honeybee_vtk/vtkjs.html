@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>honeybee_vtk.vtkjs &#8212; honeybee-radiance-postprocess  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          honeybee-radiance-postprocess</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/main.html">main</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/main.html#honeybee-vtk">honeybee-vtk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/export.html">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/export.html#honeybee-vtk-export">honeybee-vtk export</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/translate.html#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../honeybee_vtk.html">honeybee_vtk package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <h1>Source code for honeybee_vtk.vtkjs</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">validator</span>
+
+
+<span class="n">_COLORSET</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Wall&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.901</span><span class="p">,</span> <span class="mf">0.705</span><span class="p">,</span> <span class="mf">0.235</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s1">&#39;Aperture&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.250</span><span class="p">,</span> <span class="mf">0.705</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
+    <span class="s1">&#39;Door&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.627</span><span class="p">,</span> <span class="mf">0.588</span><span class="p">,</span> <span class="mf">0.392</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s1">&#39;Shade&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.470</span><span class="p">,</span> <span class="mf">0.294</span><span class="p">,</span> <span class="mf">0.745</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s1">&#39;Floor&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.501</span><span class="p">,</span> <span class="mf">0.501</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s1">&#39;RoofCeiling&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.501</span><span class="p">,</span> <span class="mf">0.078</span><span class="p">,</span> <span class="mf">0.078</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s1">&#39;AirBoundary&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.784</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s1">&#39;Grid&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.925</span><span class="p">,</span> <span class="mf">0.250</span><span class="p">,</span> <span class="mf">0.403</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="color_by_type"><a class="viewcode-back" href="../../honeybee_vtk.vtkjs.html#honeybee_vtk.vtkjs.color_by_type">[docs]</a><span class="k">def</span> <span class="nf">color_by_type</span><span class="p">(</span><span class="n">face_type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get the default color based of face type.</span>
+
+<span class="sd">    Use these colors to generate visualizations that are familiar for Ladybug Tools</span>
+<span class="sd">    users.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_COLORSET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">face_type</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="Camera"><a class="viewcode-back" href="../../honeybee_vtk.vtkjs.html#honeybee_vtk.vtkjs.Camera">[docs]</a><span class="k">class</span> <span class="nc">Camera</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Camera in vtkjs viewer.&quot;&quot;&quot;</span>
+    <span class="n">focalPoint</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Camera focal point.&#39;</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">3</span>
+    <span class="p">)</span>
+    <span class="n">position</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">[</span><span class="mf">19.3843</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.75305</span><span class="p">,</span> <span class="mf">10.2683</span><span class="p">],</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Camera position.&#39;</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">3</span>
+    <span class="p">)</span>
+    <span class="n">viewUp</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">[</span><span class="o">-</span><span class="mf">0.303079</span><span class="p">,</span> <span class="mf">0.250543</span><span class="p">,</span> <span class="mf">0.919441</span><span class="p">],</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;View up vector.&#39;</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">3</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DataSetResource"><a class="viewcode-back" href="../../honeybee_vtk.vtkjs.html#honeybee_vtk.vtkjs.DataSetResource">[docs]</a><span class="k">class</span> <span class="nc">DataSetResource</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Path to a data resource.&quot;&quot;&quot;</span>
+    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Relative path to data resource.&#39;</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DataSetActor"><a class="viewcode-back" href="../../honeybee_vtk.vtkjs.html#honeybee_vtk.vtkjs.DataSetActor">[docs]</a><span class="k">class</span> <span class="nc">DataSetActor</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Dataset actor.&quot;&quot;&quot;</span>
+    <span class="n">origin</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">scale</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">position</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="DataSetMapper"><a class="viewcode-back" href="../../honeybee_vtk.vtkjs.html#honeybee_vtk.vtkjs.DataSetMapper">[docs]</a><span class="k">class</span> <span class="nc">DataSetMapper</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">colorByArrayName</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">colorMode</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">scalarMode</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DataSetProperty"><a class="viewcode-back" href="../../honeybee_vtk.vtkjs.html#honeybee_vtk.vtkjs.DataSetProperty">[docs]</a><span class="k">class</span> <span class="nc">DataSetProperty</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">representation</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">edgeVisibility</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">diffuseColor</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Surface color.&#39;</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">3</span>
+    <span class="p">)</span>
+    <span class="n">pointSize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DataSet"><a class="viewcode-back" href="../../honeybee_vtk.vtkjs.html#honeybee_vtk.vtkjs.DataSet">[docs]</a><span class="k">class</span> <span class="nc">DataSet</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A VTKJS dataset.&quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;DataSet name.&#39;</span><span class="p">)</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s1">&#39;httpDataSetReader&#39;</span><span class="p">)</span>  <span class="c1"># I don&#39;t know enough about this field!</span>
+    <span class="n">httpDataSetReader</span><span class="p">:</span> <span class="n">DataSetResource</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+    <span class="n">actor</span><span class="p">:</span> <span class="n">DataSetActor</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">DataSetActor</span><span class="p">())</span>
+    <span class="n">actorRotation</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Actor rotation axis.&#39;</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">4</span>
+    <span class="p">)</span>
+    <span class="n">mapper</span><span class="p">:</span> <span class="n">DataSetMapper</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">DataSetMapper</span><span class="p">())</span>
+    <span class="nb">property</span><span class="p">:</span> <span class="n">DataSetProperty</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">DataSetProperty</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="ViewerSettings"><a class="viewcode-back" href="../../honeybee_vtk.vtkjs.html#honeybee_vtk.vtkjs.ViewerSettings">[docs]</a><span class="k">class</span> <span class="nc">ViewerSettings</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">background</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Background color.&#39;</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">3</span>
+    <span class="p">)</span>
+    <span class="n">camera</span><span class="p">:</span> <span class="n">Camera</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">Camera</span><span class="p">(),</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Initial camera in the viewer.&#39;</span>
+    <span class="p">)</span>
+    <span class="n">centerOfRotation</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;X, Y, Z for center of rotation.&#39;</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">3</span>
+    <span class="p">)</span>
+    <span class="n">scene</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">DataSet</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;List of data set in viewer.&#39;</span>
+    <span class="p">)</span>
+    <span class="n">lookupTables</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="ViewerSettings.empty_list"><a class="viewcode-back" href="../../honeybee_vtk.vtkjs.html#honeybee_vtk.vtkjs.ViewerSettings.empty_list">[docs]</a>    <span class="nd">@validator</span><span class="p">(</span><span class="s1">&#39;scene&#39;</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">empty_list</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">v</span></div>
+
+<div class="viewcode-block" id="ViewerSettings.empty_dict"><a class="viewcode-back" href="../../honeybee_vtk.vtkjs.html#honeybee_vtk.vtkjs.ViewerSettings.empty_dict">[docs]</a>    <span class="nd">@validator</span><span class="p">(</span><span class="s1">&#39;lookupTables&#39;</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">empty_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">v</span></div>
+
+<div class="viewcode-block" id="ViewerSettings.to_json"><a class="viewcode-back" href="../../honeybee_vtk.vtkjs.html#honeybee_vtk.vtkjs.ViewerSettings.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Write the settings as index.json.&quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+        <span class="n">target_folder</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+        <span class="n">target_folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">index_file</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">target_folder</span><span class="p">,</span> <span class="s1">&#39;index.json&#39;</span><span class="p">)</span>
+        <span class="n">index_file</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">index_file</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span></div></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

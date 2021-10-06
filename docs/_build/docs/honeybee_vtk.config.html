@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>honeybee_vtk.config module &#8212; honeybee-radiance-postprocess  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="honeybee_vtk.headless module" href="honeybee_vtk.headless.html" />
+    <link rel="prev" title="honeybee_vtk.camera module" href="honeybee_vtk.camera.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          honeybee-radiance-postprocess</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli/main.html">main</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli/main.html#honeybee-vtk">honeybee-vtk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli/export.html">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli/export.html#honeybee-vtk-export">honeybee-vtk export</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli/translate.html#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">honeybee_vtk</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee_vtk.html">honeybee_vtk package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="reference internal" href="honeybee_vtk.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="cli/index.html">CLI Docs</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">honeybee_vtk</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee_vtk.html">honeybee_vtk package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#subpackages">Subpackages</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="honeybee_vtk.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="honeybee_vtk.camera.html" title="Previous Chapter: honeybee_vtk.camera module"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; honeybee_vtk....</span>
+    </a>
+  </li>
+  <li>
+    <a href="honeybee_vtk.headless.html" title="Next Chapter: honeybee_vtk.headless module"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">honeybee_vtk.... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="_sources/honeybee_vtk.config.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="cli/index.html">CLI Docs</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">honeybee_vtk</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee_vtk.html">honeybee_vtk package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#subpackages">Subpackages</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="honeybee_vtk.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <section id="module-honeybee_vtk.config">
+<span id="honeybee-vtk-config-module"></span><h1>honeybee_vtk.config module<a class="headerlink" href="#module-honeybee_vtk.config" title="Permalink to this headline">¶</a></h1>
+<p>Data json schema and validation.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="honeybee_vtk.config.Autocalculate">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">honeybee_vtk.config.</span></span><span class="sig-name descname"><span class="pre">Autocalculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">honeybee_vtk.config.ConstrainedStrValue</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'Autocalculate'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee_vtk/config.html#Autocalculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.config.Autocalculate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.Autocalculate.Config">
+<span class="sig-name descname"><span class="pre">Config</span></span><a class="headerlink" href="#honeybee_vtk.config.Autocalculate.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseConfig</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.Autocalculate.construct">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">construct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_fields_set</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">SetStr</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.Autocalculate.construct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new model setting __dict__ and __fields_set__ from trusted or pre-validated data.
+Default values are respected, but no other validation is performed.
+Behaves as if <cite>Config.extra = ‘allow’</cite> was set since it adds all passed values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.Autocalculate.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">DictStrAny</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.Autocalculate.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Duplicate a model, optionally choose which fields to include, exclude and change.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>include</strong> – fields to include in new model</p></li>
+<li><p><strong>exclude</strong> – fields to exclude from new model, as with values this takes precedence over include</p></li>
+<li><p><strong>update</strong> – values to change/add in the new model. Note: the data is not validated before creating
+the new model: you should trust this data</p></li>
+<li><p><strong>deep</strong> – set to <cite>True</cite> to make a deep copy of the model</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new model instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.Autocalculate.dict">
+<span class="sig-name descname"><span class="pre">dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_defaults</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_unset</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_defaults</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_none</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DictStrAny</span></span></span><a class="headerlink" href="#honeybee_vtk.config.Autocalculate.dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.Autocalculate.from_orm">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_orm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.Autocalculate.from_orm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.Autocalculate.json">
+<span class="sig-name descname"><span class="pre">json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_defaults</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_unset</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_defaults</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_none</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">dumps_kwargs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">unicode</span></span></span><a class="headerlink" href="#honeybee_vtk.config.Autocalculate.json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a JSON representation of the model, <cite>include</cite> and <cite>exclude</cite> arguments as per <cite>dict()</cite>.</p>
+<p><cite>encoder</cite> is an optional function to supply as <cite>default</cite> to json.dumps(), other arguments as per <cite>json.dumps()</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.Autocalculate.parse_file">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">parse_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'utf8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proto</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pydantic.parse.Protocol</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_pickle</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.Autocalculate.parse_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.Autocalculate.parse_obj">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">parse_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.Autocalculate.parse_obj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.Autocalculate.parse_raw">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">parse_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'utf8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proto</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pydantic.parse.Protocol</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_pickle</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.Autocalculate.parse_raw" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.Autocalculate.schema">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_template</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'#/definitions/{model}'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DictStrAny</span></span></span><a class="headerlink" href="#honeybee_vtk.config.Autocalculate.schema" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.Autocalculate.schema_json">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">schema_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_template</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'#/definitions/{model}'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">dumps_kwargs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">unicode</span></span></span><a class="headerlink" href="#honeybee_vtk.config.Autocalculate.schema_json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.Autocalculate.update_forward_refs">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">update_forward_refs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">localns</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#honeybee_vtk.config.Autocalculate.update_forward_refs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to update ForwardRefs on fields based on this Model, globalns and localns.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.Autocalculate.validate">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.Autocalculate.validate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.Autocalculate.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="pre">:</span> <span class="pre">honeybee_vtk.config.ConstrainedStrValue</span></em><a class="headerlink" href="#honeybee_vtk.config.Autocalculate.type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">honeybee_vtk.config.</span></span><span class="sig-name descname"><span class="pre">DataConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">*,</span> <span class="pre">identifier:</span> <span class="pre">str,</span> <span class="pre">object_type:</span> <span class="pre">honeybee_vtk.types.DataSetNames,</span> <span class="pre">unit:</span> <span class="pre">str,</span> <span class="pre">path:</span> <span class="pre">str,</span> <span class="pre">hide:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">legend_parameters:</span> <span class="pre">honeybee_vtk.config.LegendConfig</span> <span class="pre">=</span> <span class="pre">LegendConfig(color_set=&lt;ColorSets.ecotect:</span> <span class="pre">'ecotect'&gt;,</span> <span class="pre">min=Autocalculate(type='Autocalculate'),</span> <span class="pre">max=Autocalculate(type='Autocalculate'),</span> <span class="pre">hide_legend=False,</span> <span class="pre">orientation=&lt;Orientation.horizontal:</span> <span class="pre">'horizontal'&gt;,</span> <span class="pre">width=0.45,</span> <span class="pre">height=0.05,</span> <span class="pre">position=[0.5,</span> <span class="pre">0.1],</span> <span class="pre">color_count=Autocalculate(type='Autocalculate'),</span> <span class="pre">label_count=Autocalculate(type='Autocalculate'),</span> <span class="pre">decimal_count=&lt;DecimalCount.default:</span> <span class="pre">'default'&gt;,</span> <span class="pre">preceding_labels=False,</span> <span class="pre">label_parameters=TextConfig(color=[0,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">size=0,</span> <span class="pre">bold=False),</span> <span class="pre">title_parameters=TextConfig(color=[0,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">size=0,</span> <span class="pre">bold=True))</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee_vtk/config.html#DataConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.config.DataConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></p>
+<p>Config for simulation results you’d like to load on a honeybee-vtk model.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig.Config">
+<span class="sig-name descname"><span class="pre">Config</span></span><a class="headerlink" href="#honeybee_vtk.config.DataConfig.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseConfig</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig.check_pos_against_width_height">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">check_pos_against_width_height</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#honeybee_vtk.config.LegendConfig" title="honeybee_vtk.config.LegendConfig"><span class="pre">honeybee_vtk.config.LegendConfig</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#honeybee_vtk.config.LegendConfig" title="honeybee_vtk.config.LegendConfig"><span class="pre">honeybee_vtk.config.LegendConfig</span></a></span></span><a class="reference internal" href="_modules/honeybee_vtk/config.html#DataConfig.check_pos_against_width_height"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.config.DataConfig.check_pos_against_width_height" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig.construct">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">construct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_fields_set</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">SetStr</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.DataConfig.construct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new model setting __dict__ and __fields_set__ from trusted or pre-validated data.
+Default values are respected, but no other validation is performed.
+Behaves as if <cite>Config.extra = ‘allow’</cite> was set since it adds all passed values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">DictStrAny</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.DataConfig.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Duplicate a model, optionally choose which fields to include, exclude and change.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>include</strong> – fields to include in new model</p></li>
+<li><p><strong>exclude</strong> – fields to exclude from new model, as with values this takes precedence over include</p></li>
+<li><p><strong>update</strong> – values to change/add in the new model. Note: the data is not validated before creating
+the new model: you should trust this data</p></li>
+<li><p><strong>deep</strong> – set to <cite>True</cite> to make a deep copy of the model</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new model instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig.dict">
+<span class="sig-name descname"><span class="pre">dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_defaults</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_unset</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_defaults</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_none</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DictStrAny</span></span></span><a class="headerlink" href="#honeybee_vtk.config.DataConfig.dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig.from_orm">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_orm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.DataConfig.from_orm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig.json">
+<span class="sig-name descname"><span class="pre">json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_defaults</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_unset</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_defaults</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_none</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">dumps_kwargs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">unicode</span></span></span><a class="headerlink" href="#honeybee_vtk.config.DataConfig.json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a JSON representation of the model, <cite>include</cite> and <cite>exclude</cite> arguments as per <cite>dict()</cite>.</p>
+<p><cite>encoder</cite> is an optional function to supply as <cite>default</cite> to json.dumps(), other arguments as per <cite>json.dumps()</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig.parse_file">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">parse_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'utf8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proto</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pydantic.parse.Protocol</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_pickle</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.DataConfig.parse_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig.parse_obj">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">parse_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.DataConfig.parse_obj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig.parse_raw">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">parse_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'utf8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proto</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pydantic.parse.Protocol</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_pickle</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.DataConfig.parse_raw" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig.schema">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_template</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'#/definitions/{model}'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DictStrAny</span></span></span><a class="headerlink" href="#honeybee_vtk.config.DataConfig.schema" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig.schema_json">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">schema_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_template</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'#/definitions/{model}'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">dumps_kwargs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">unicode</span></span></span><a class="headerlink" href="#honeybee_vtk.config.DataConfig.schema_json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig.update_forward_refs">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">update_forward_refs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">localns</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#honeybee_vtk.config.DataConfig.update_forward_refs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to update ForwardRefs on fields based on this Model, globalns and localns.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig.validate">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.DataConfig.validate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig.validate_folder_path">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">validate_folder_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/honeybee_vtk/config.html#DataConfig.validate_folder_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.config.DataConfig.validate_folder_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig.hide">
+<span class="sig-name descname"><span class="pre">hide</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#honeybee_vtk.config.DataConfig.hide" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig.identifier">
+<span class="sig-name descname"><span class="pre">identifier</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#honeybee_vtk.config.DataConfig.identifier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig.legend_parameters">
+<span class="sig-name descname"><span class="pre">legend_parameters</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="#honeybee_vtk.config.LegendConfig" title="honeybee_vtk.config.LegendConfig"><span class="pre">honeybee_vtk.config.LegendConfig</span></a></em><a class="headerlink" href="#honeybee_vtk.config.DataConfig.legend_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig.object_type">
+<span class="sig-name descname"><span class="pre">object_type</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.DataSetNames" title="honeybee_vtk.types.DataSetNames"><span class="pre">honeybee_vtk.types.DataSetNames</span></a></em><a class="headerlink" href="#honeybee_vtk.config.DataConfig.object_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig.path">
+<span class="sig-name descname"><span class="pre">path</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#honeybee_vtk.config.DataConfig.path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.DataConfig.unit">
+<span class="sig-name descname"><span class="pre">unit</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#honeybee_vtk.config.DataConfig.unit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">honeybee_vtk.config.</span></span><span class="sig-name descname"><span class="pre">LegendConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_set</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="honeybee_vtk.legend_parameter.html#honeybee_vtk.legend_parameter.ColorSets" title="honeybee_vtk.legend_parameter.ColorSets"><span class="pre">honeybee_vtk.legend_parameter.ColorSets</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">ColorSets.ecotect</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#honeybee_vtk.config.Autocalculate" title="honeybee_vtk.config.Autocalculate"><span class="pre">honeybee_vtk.config.Autocalculate</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">Autocalculate(type='Autocalculate')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#honeybee_vtk.config.Autocalculate" title="honeybee_vtk.config.Autocalculate"><span class="pre">honeybee_vtk.config.Autocalculate</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">Autocalculate(type='Autocalculate')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hide_legend</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orientation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="honeybee_vtk.legend_parameter.html#honeybee_vtk.legend_parameter.Orientation" title="honeybee_vtk.legend_parameter.Orientation"><span class="pre">honeybee_vtk.legend_parameter.Orientation</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">Orientation.horizontal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">honeybee_vtk.config.ConstrainedFloatValue</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.45</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">honeybee_vtk.config.ConstrainedFloatValue</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">types.ConstrainedListValue</span><span class="p"><span class="pre">[</span></span><span class="pre">honeybee_vtk.config.ConstrainedFloatValue</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[0.5,</span> <span class="pre">0.1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_count</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#honeybee_vtk.config.Autocalculate" title="honeybee_vtk.config.Autocalculate"><span class="pre">honeybee_vtk.config.Autocalculate</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">Autocalculate(type='Autocalculate')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_count</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#honeybee_vtk.config.Autocalculate" title="honeybee_vtk.config.Autocalculate"><span class="pre">honeybee_vtk.config.Autocalculate</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">Autocalculate(type='Autocalculate')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimal_count</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="honeybee_vtk.legend_parameter.html#honeybee_vtk.legend_parameter.DecimalCount" title="honeybee_vtk.legend_parameter.DecimalCount"><span class="pre">honeybee_vtk.legend_parameter.DecimalCount</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">DecimalCount.default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preceding_labels</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_parameters</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#honeybee_vtk.config.TextConfig" title="honeybee_vtk.config.TextConfig"><span class="pre">honeybee_vtk.config.TextConfig</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">TextConfig(color=[0,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">size=0,</span> <span class="pre">bold=False)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_parameters</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#honeybee_vtk.config.TextConfig" title="honeybee_vtk.config.TextConfig"><span class="pre">honeybee_vtk.config.TextConfig</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">TextConfig(color=[0,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">size=0,</span> <span class="pre">bold=True)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee_vtk/config.html#LegendConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.config.LegendConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></p>
+<p>Config for the legend to be created from a dataset.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.Config">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Config</span></span><a class="reference internal" href="_modules/honeybee_vtk/config.html#LegendConfig.Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.Config.validate_all">
+<span class="sig-name descname"><span class="pre">validate_all</span></span><em class="property"> <span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.Config.validate_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.Config.validate_assignment">
+<span class="sig-name descname"><span class="pre">validate_assignment</span></span><em class="property"> <span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.Config.validate_assignment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.construct">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">construct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_fields_set</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">SetStr</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.construct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new model setting __dict__ and __fields_set__ from trusted or pre-validated data.
+Default values are respected, but no other validation is performed.
+Behaves as if <cite>Config.extra = ‘allow’</cite> was set since it adds all passed values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">DictStrAny</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Duplicate a model, optionally choose which fields to include, exclude and change.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>include</strong> – fields to include in new model</p></li>
+<li><p><strong>exclude</strong> – fields to exclude from new model, as with values this takes precedence over include</p></li>
+<li><p><strong>update</strong> – values to change/add in the new model. Note: the data is not validated before creating
+the new model: you should trust this data</p></li>
+<li><p><strong>deep</strong> – set to <cite>True</cite> to make a deep copy of the model</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new model instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.dict">
+<span class="sig-name descname"><span class="pre">dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_defaults</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_unset</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_defaults</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_none</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DictStrAny</span></span></span><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.from_orm">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_orm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.from_orm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.json">
+<span class="sig-name descname"><span class="pre">json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_defaults</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_unset</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_defaults</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_none</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">dumps_kwargs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">unicode</span></span></span><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a JSON representation of the model, <cite>include</cite> and <cite>exclude</cite> arguments as per <cite>dict()</cite>.</p>
+<p><cite>encoder</cite> is an optional function to supply as <cite>default</cite> to json.dumps(), other arguments as per <cite>json.dumps()</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.parse_file">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">parse_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'utf8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proto</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pydantic.parse.Protocol</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_pickle</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.parse_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.parse_obj">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">parse_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.parse_obj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.parse_raw">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">parse_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'utf8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proto</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pydantic.parse.Protocol</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_pickle</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.parse_raw" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.schema">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_template</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'#/definitions/{model}'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DictStrAny</span></span></span><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.schema" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.schema_json">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">schema_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_template</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'#/definitions/{model}'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">dumps_kwargs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">unicode</span></span></span><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.schema_json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.update_forward_refs">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">update_forward_refs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">localns</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.update_forward_refs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to update ForwardRefs on fields based on this Model, globalns and localns.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.validate">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.validate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.color_count">
+<span class="sig-name descname"><span class="pre">color_count</span></span><em class="property"><span class="pre">:</span> <span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#honeybee_vtk.config.Autocalculate" title="honeybee_vtk.config.Autocalculate"><span class="pre">honeybee_vtk.config.Autocalculate</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.color_count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.color_set">
+<span class="sig-name descname"><span class="pre">color_set</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="honeybee_vtk.legend_parameter.html#honeybee_vtk.legend_parameter.ColorSets" title="honeybee_vtk.legend_parameter.ColorSets"><span class="pre">honeybee_vtk.legend_parameter.ColorSets</span></a></em><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.color_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.decimal_count">
+<span class="sig-name descname"><span class="pre">decimal_count</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="honeybee_vtk.legend_parameter.html#honeybee_vtk.legend_parameter.DecimalCount" title="honeybee_vtk.legend_parameter.DecimalCount"><span class="pre">honeybee_vtk.legend_parameter.DecimalCount</span></a></em><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.decimal_count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.height">
+<span class="sig-name descname"><span class="pre">height</span></span><em class="property"><span class="pre">:</span> <span class="pre">honeybee_vtk.config.ConstrainedFloatValue</span></em><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.height" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.hide_legend">
+<span class="sig-name descname"><span class="pre">hide_legend</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.hide_legend" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.label_count">
+<span class="sig-name descname"><span class="pre">label_count</span></span><em class="property"><span class="pre">:</span> <span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#honeybee_vtk.config.Autocalculate" title="honeybee_vtk.config.Autocalculate"><span class="pre">honeybee_vtk.config.Autocalculate</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.label_count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.label_parameters">
+<span class="sig-name descname"><span class="pre">label_parameters</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="#honeybee_vtk.config.TextConfig" title="honeybee_vtk.config.TextConfig"><span class="pre">honeybee_vtk.config.TextConfig</span></a></em><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.label_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.max">
+<span class="sig-name descname"><span class="pre">max</span></span><em class="property"><span class="pre">:</span> <span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#honeybee_vtk.config.Autocalculate" title="honeybee_vtk.config.Autocalculate"><span class="pre">honeybee_vtk.config.Autocalculate</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.max" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.min">
+<span class="sig-name descname"><span class="pre">min</span></span><em class="property"><span class="pre">:</span> <span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#honeybee_vtk.config.Autocalculate" title="honeybee_vtk.config.Autocalculate"><span class="pre">honeybee_vtk.config.Autocalculate</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.min" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.orientation">
+<span class="sig-name descname"><span class="pre">orientation</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="honeybee_vtk.legend_parameter.html#honeybee_vtk.legend_parameter.Orientation" title="honeybee_vtk.legend_parameter.Orientation"><span class="pre">honeybee_vtk.legend_parameter.Orientation</span></a></em><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.orientation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.position">
+<span class="sig-name descname"><span class="pre">position</span></span><em class="property"><span class="pre">:</span> <span class="pre">types.ConstrainedListValue</span><span class="p"><span class="pre">[</span></span><span class="pre">honeybee_vtk.config.ConstrainedFloatValue</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.position" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.preceding_labels">
+<span class="sig-name descname"><span class="pre">preceding_labels</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.preceding_labels" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.title_parameters">
+<span class="sig-name descname"><span class="pre">title_parameters</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="#honeybee_vtk.config.TextConfig" title="honeybee_vtk.config.TextConfig"><span class="pre">honeybee_vtk.config.TextConfig</span></a></em><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.title_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.LegendConfig.width">
+<span class="sig-name descname"><span class="pre">width</span></span><em class="property"><span class="pre">:</span> <span class="pre">honeybee_vtk.config.ConstrainedFloatValue</span></em><a class="headerlink" href="#honeybee_vtk.config.LegendConfig.width" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="honeybee_vtk.config.TextConfig">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">honeybee_vtk.config.</span></span><span class="sig-name descname"><span class="pre">TextConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">honeybee_vtk.config.ConstrainedIntValue</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">honeybee_vtk.config.ConstrainedIntValue</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bold</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee_vtk/config.html#TextConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.config.TextConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></p>
+<p>Config for the text to be used in a legend.</p>
+<p>This object applies to text for legend title and legend labels as well.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="honeybee_vtk.config.TextConfig.Config">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Config</span></span><a class="reference internal" href="_modules/honeybee_vtk/config.html#TextConfig.Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.config.TextConfig.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.TextConfig.Config.validate_all">
+<span class="sig-name descname"><span class="pre">validate_all</span></span><em class="property"> <span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#honeybee_vtk.config.TextConfig.Config.validate_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.TextConfig.Config.validate_assignment">
+<span class="sig-name descname"><span class="pre">validate_assignment</span></span><em class="property"> <span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#honeybee_vtk.config.TextConfig.Config.validate_assignment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.TextConfig.construct">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">construct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_fields_set</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">SetStr</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.TextConfig.construct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new model setting __dict__ and __fields_set__ from trusted or pre-validated data.
+Default values are respected, but no other validation is performed.
+Behaves as if <cite>Config.extra = ‘allow’</cite> was set since it adds all passed values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.TextConfig.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">DictStrAny</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.TextConfig.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Duplicate a model, optionally choose which fields to include, exclude and change.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>include</strong> – fields to include in new model</p></li>
+<li><p><strong>exclude</strong> – fields to exclude from new model, as with values this takes precedence over include</p></li>
+<li><p><strong>update</strong> – values to change/add in the new model. Note: the data is not validated before creating
+the new model: you should trust this data</p></li>
+<li><p><strong>deep</strong> – set to <cite>True</cite> to make a deep copy of the model</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new model instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.TextConfig.dict">
+<span class="sig-name descname"><span class="pre">dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_defaults</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_unset</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_defaults</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_none</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DictStrAny</span></span></span><a class="headerlink" href="#honeybee_vtk.config.TextConfig.dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.TextConfig.from_orm">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_orm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.TextConfig.from_orm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.TextConfig.json">
+<span class="sig-name descname"><span class="pre">json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">AbstractSetIntStr</span><span class="p"><span class="pre">,</span> </span><span class="pre">MappingIntStrAny</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_defaults</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_unset</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_defaults</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_none</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">dumps_kwargs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">unicode</span></span></span><a class="headerlink" href="#honeybee_vtk.config.TextConfig.json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a JSON representation of the model, <cite>include</cite> and <cite>exclude</cite> arguments as per <cite>dict()</cite>.</p>
+<p><cite>encoder</cite> is an optional function to supply as <cite>default</cite> to json.dumps(), other arguments as per <cite>json.dumps()</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.TextConfig.parse_file">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">parse_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'utf8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proto</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pydantic.parse.Protocol</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_pickle</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.TextConfig.parse_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.TextConfig.parse_obj">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">parse_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.TextConfig.parse_obj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.TextConfig.parse_raw">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">parse_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'utf8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proto</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pydantic.parse.Protocol</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_pickle</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.TextConfig.parse_raw" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.TextConfig.schema">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_template</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'#/definitions/{model}'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DictStrAny</span></span></span><a class="headerlink" href="#honeybee_vtk.config.TextConfig.schema" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.TextConfig.schema_json">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">schema_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_template</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">unicode</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'#/definitions/{model}'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">dumps_kwargs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">unicode</span></span></span><a class="headerlink" href="#honeybee_vtk.config.TextConfig.schema_json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.TextConfig.update_forward_refs">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">update_forward_refs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">localns</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#honeybee_vtk.config.TextConfig.update_forward_refs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to update ForwardRefs on fields based on this Model, globalns and localns.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="honeybee_vtk.config.TextConfig.validate">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Model</span></span></span><a class="headerlink" href="#honeybee_vtk.config.TextConfig.validate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.TextConfig.bold">
+<span class="sig-name descname"><span class="pre">bold</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#honeybee_vtk.config.TextConfig.bold" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.TextConfig.color">
+<span class="sig-name descname"><span class="pre">color</span></span><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">honeybee_vtk.config.ConstrainedIntValue</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#honeybee_vtk.config.TextConfig.color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="honeybee_vtk.config.TextConfig.size">
+<span class="sig-name descname"><span class="pre">size</span></span><em class="property"><span class="pre">:</span> <span class="pre">honeybee_vtk.config.ConstrainedIntValue</span></em><a class="headerlink" href="#honeybee_vtk.config.TextConfig.size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="honeybee_vtk.config.load_config">
+<span class="sig-prename descclassname"><span class="pre">honeybee_vtk.config.</span></span><span class="sig-name descname"><span class="pre">load_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="honeybee_vtk.model.html#honeybee_vtk.model.Model" title="honeybee_vtk.model.Model"><span class="pre">honeybee_vtk.model.Model</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="honeybee_vtk.scene.html#honeybee_vtk.scene.Scene" title="honeybee_vtk.scene.Scene"><span class="pre">honeybee_vtk.scene.Scene</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="honeybee_vtk.model.html#honeybee_vtk.model.Model" title="honeybee_vtk.model.Model"><span class="pre">honeybee_vtk.model.Model</span></a></span></span><a class="reference internal" href="_modules/honeybee_vtk/config.html#load_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.config.load_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mount data on model from config json.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>json_path</strong> – File path to the config json file.</p></li>
+<li><p><strong>model</strong> – A honeybee-vtk model object.</p></li>
+<li><p><strong>scene</strong> – A honeybee-vtk scene object.</p></li>
+<li><p><strong>validation</strong> – A boolean indicating whether to validate the data before loading.</p></li>
+<li><p><strong>legend</strong> – A boolean indicating whether to load legend parameters.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A honeybee-vtk model with data loaded on it.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

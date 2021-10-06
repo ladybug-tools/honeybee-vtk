@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>honeybee_vtk.model &#8212; honeybee-radiance-postprocess  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          honeybee-radiance-postprocess</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/main.html">main</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/main.html#honeybee-vtk">honeybee-vtk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/export.html">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/export.html#honeybee-vtk-export">honeybee-vtk export</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/translate.html#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../honeybee_vtk.html">honeybee_vtk package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <h1>Source code for honeybee_vtk.model</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;A VTK representation of HBModel.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span> <span class="nn">json.decoder</span> <span class="kn">import</span> <span class="n">JSONDecodeError</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">webbrowser</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">honeybee.facetype</span> <span class="kn">import</span> <span class="n">face_types</span>
+<span class="kn">from</span> <span class="nn">honeybee.model</span> <span class="kn">import</span> <span class="n">Model</span> <span class="k">as</span> <span class="n">HBModel</span>
+<span class="kn">from</span> <span class="nn">ladybug.color</span> <span class="kn">import</span> <span class="n">Color</span>
+<span class="kn">from</span> <span class="nn">.camera</span> <span class="kn">import</span> <span class="n">Camera</span>
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">ModelDataSet</span><span class="p">,</span> <span class="n">PolyData</span>
+<span class="kn">from</span> <span class="nn">.to_vtk</span> <span class="kn">import</span> <span class="n">convert_aperture</span><span class="p">,</span> <span class="n">convert_face</span><span class="p">,</span> <span class="n">convert_room</span><span class="p">,</span> <span class="n">convert_shade</span><span class="p">,</span> \
+    <span class="n">convert_sensor_grid</span><span class="p">,</span> <span class="n">convert_door</span>
+<span class="kn">from</span> <span class="nn">.vtkjs.schema</span> <span class="kn">import</span> <span class="n">IndexJSON</span><span class="p">,</span> <span class="n">DisplayMode</span><span class="p">,</span> <span class="n">SensorGridOptions</span>
+<span class="kn">from</span> <span class="nn">.vtkjs.helper</span> <span class="kn">import</span> <span class="n">convert_directory_to_zip_file</span><span class="p">,</span> <span class="n">add_data_to_viewer</span>
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">DataSetNames</span><span class="p">,</span> <span class="n">VTKWriters</span><span class="p">,</span> <span class="n">JoinedPolyData</span>
+
+
+<span class="n">_COLORSET</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Wall&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.901</span><span class="p">,</span> <span class="mf">0.705</span><span class="p">,</span> <span class="mf">0.235</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s1">&#39;Aperture&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.250</span><span class="p">,</span> <span class="mf">0.705</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
+    <span class="s1">&#39;Door&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.627</span><span class="p">,</span> <span class="mf">0.588</span><span class="p">,</span> <span class="mf">0.392</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s1">&#39;Shade&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.470</span><span class="p">,</span> <span class="mf">0.294</span><span class="p">,</span> <span class="mf">0.745</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s1">&#39;Floor&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.501</span><span class="p">,</span> <span class="mf">0.501</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s1">&#39;RoofCeiling&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.501</span><span class="p">,</span> <span class="mf">0.078</span><span class="p">,</span> <span class="mf">0.078</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s1">&#39;AirBoundary&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.784</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s1">&#39;Grid&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.925</span><span class="p">,</span> <span class="mf">0.250</span><span class="p">,</span> <span class="mf">0.403</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="p">}</span>
+
+
+<span class="n">DATA_SETS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Aperture&#39;</span><span class="p">:</span> <span class="s1">&#39;apertures&#39;</span><span class="p">,</span> <span class="s1">&#39;Door&#39;</span><span class="p">:</span> <span class="s1">&#39;doors&#39;</span><span class="p">,</span> <span class="s1">&#39;Shade&#39;</span><span class="p">:</span> <span class="s1">&#39;shades&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Wall&#39;</span><span class="p">:</span> <span class="s1">&#39;walls&#39;</span><span class="p">,</span> <span class="s1">&#39;Floor&#39;</span><span class="p">:</span> <span class="s1">&#39;floors&#39;</span><span class="p">,</span> <span class="s1">&#39;RoofCeiling&#39;</span><span class="p">:</span> <span class="s1">&#39;roof_ceilings&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;AirBoundary&#39;</span><span class="p">:</span> <span class="s1">&#39;air_boundaries&#39;</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="Model"><a class="viewcode-back" href="../../honeybee_vtk.model.html#honeybee_vtk.model.Model">[docs]</a><span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A honeybee-vtk model.</span>
+
+<span class="sd">    The model objects are accessible based on their types:</span>
+
+<span class="sd">        * apertures</span>
+<span class="sd">        * doors</span>
+<span class="sd">        * shades</span>
+<span class="sd">        * walls</span>
+<span class="sd">        * floors</span>
+<span class="sd">        * roof_ceilings</span>
+<span class="sd">        * air_boundaries</span>
+<span class="sd">        * sensor_grids</span>
+
+<span class="sd">    You can control the style for each type separately.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">HBModel</span><span class="p">,</span>
+            <span class="n">load_grids</span><span class="p">:</span> <span class="n">SensorGridOptions</span> <span class="o">=</span> <span class="n">SensorGridOptions</span><span class="o">.</span><span class="n">Ignore</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Instantiate a honeybee-vtk model object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            model : A text string representing the path to the hbjson file.</span>
+<span class="sd">            load_grids: A SensorGridOptions object. Defaults to SensorGridOptions.Ignore</span>
+<span class="sd">                which will ignore the grids in hbjson and will not load them in the</span>
+<span class="sd">                honeybee-vtk model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># apertures and orphaned apertures</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_apertures</span> <span class="o">=</span> \
+            <span class="n">ModelDataSet</span><span class="p">(</span><span class="s1">&#39;Aperture&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_default_color</span><span class="p">(</span><span class="s1">&#39;Aperture&#39;</span><span class="p">))</span>
+        <span class="c1"># doors and orphaned doors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_doors</span> <span class="o">=</span> <span class="n">ModelDataSet</span><span class="p">(</span><span class="s1">&#39;Door&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_default_color</span><span class="p">(</span><span class="s1">&#39;Door&#39;</span><span class="p">))</span>
+        <span class="c1"># shades and orphaned shades</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shades</span> <span class="o">=</span> <span class="n">ModelDataSet</span><span class="p">(</span><span class="s1">&#39;Shade&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_default_color</span><span class="p">(</span><span class="s1">&#39;Shade&#39;</span><span class="p">))</span>
+        <span class="c1"># face objects based on type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_walls</span> <span class="o">=</span> <span class="n">ModelDataSet</span><span class="p">(</span><span class="s1">&#39;Wall&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_default_color</span><span class="p">(</span><span class="s1">&#39;Wall&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_floors</span> <span class="o">=</span> <span class="n">ModelDataSet</span><span class="p">(</span><span class="s1">&#39;Floor&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_default_color</span><span class="p">(</span><span class="s1">&#39;Floor&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_roof_ceilings</span> <span class="o">=</span> \
+            <span class="n">ModelDataSet</span><span class="p">(</span><span class="s1">&#39;RoofCeiling&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_default_color</span><span class="p">(</span><span class="s1">&#39;RoofCeiling&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_air_boundaries</span> <span class="o">=</span> \
+            <span class="n">ModelDataSet</span><span class="p">(</span><span class="s1">&#39;AirBoundary&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_default_color</span><span class="p">(</span><span class="s1">&#39;AirBoundary&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sensor_grids</span> <span class="o">=</span> <span class="n">ModelDataSet</span><span class="p">(</span><span class="s1">&#39;Grid&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_default_color</span><span class="p">(</span><span class="s1">&#39;Grid&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cameras</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_convert_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load_grids</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">load_grids</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load_cameras</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sensor_grids_option</span> <span class="o">=</span> <span class="n">load_grids</span>  <span class="c1"># keep this for adding data</span>
+
+<div class="viewcode-block" id="Model.from_hbjson"><a class="viewcode-back" href="../../honeybee_vtk.model.html#honeybee_vtk.model.Model.from_hbjson">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_hbjson</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">hbjson</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                    <span class="n">load_grids</span><span class="p">:</span> <span class="n">SensorGridOptions</span> <span class="o">=</span> <span class="n">SensorGridOptions</span><span class="o">.</span><span class="n">Ignore</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Model</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Translate hbjson to a honeybee-vtk model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            model : A text string representing the path to the hbjson file.</span>
+<span class="sd">            load_grids: A SensorGridOptions object. Defaults to SensorGridOptions.Ignore</span>
+<span class="sd">                which will ignore the grids in hbjson and will not load them in the</span>
+<span class="sd">                honeybee-vtk model.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A honeybee-vtk model object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hb_file</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">hbjson</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">hb_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">(),</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">hbjson</span><span class="si">}</span><span class="s1"> doesn</span><span class="se">\&#39;</span><span class="s1">t exist.&#39;</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">HBModel</span><span class="o">.</span><span class="n">from_hbjson</span><span class="p">(</span><span class="n">hb_file</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">load_grids</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">walls</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelDataSet</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Model walls.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_walls</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">apertures</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelDataSet</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Model aperture.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apertures</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">shades</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelDataSet</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Model shades.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shades</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">doors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelDataSet</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Model doors.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_doors</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">floors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelDataSet</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Model floors.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_floors</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">roof_ceilings</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelDataSet</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Roof and ceilings.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_roof_ceilings</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">air_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelDataSet</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Air boundaries.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_air_boundaries</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sensor_grids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelDataSet</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Sensor grids.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sensor_grids</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cameras</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List of Camera objects attached to this Model object.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cameras</span>
+
+<div class="viewcode-block" id="Model.get_modeldataset"><a class="viewcode-back" href="../../honeybee_vtk.model.html#honeybee_vtk.model.Model.get_modeldataset">[docs]</a>    <span class="k">def</span> <span class="nf">get_modeldataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">:</span> <span class="n">DataSetNames</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelDataSet</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get a ModelDataSet object from a model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dataset: A DataSetNames object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A ModelDataSet object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="p">{</span><span class="n">ds</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span> <span class="n">ds</span> <span class="k">for</span> <span class="n">ds</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">ds</span><span class="p">[</span><span class="n">dataset</span><span class="o">.</span><span class="n">value</span><span class="p">]</span></div>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This dunder method makes this class an iterator object.</span>
+
+<span class="sd">        Due to this method, you can access apertures, walls, shades, doors, floors,</span>
+<span class="sd">        roof_ceilings, air_boundaries and sensor_grids in a model</span>
+<span class="sd">        like items of a list in Python. Which means, you can use loops on these objects</span>
+<span class="sd">        of a model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">apertures</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">walls</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shades</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">doors</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">floors</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">roof_ceilings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">air_boundaries</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sensor_grids</span>
+        <span class="p">):</span>
+            <span class="k">yield</span> <span class="n">dataset</span>
+
+    <span class="k">def</span> <span class="nf">_load_grids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">HBModel</span><span class="p">,</span> <span class="n">grid_options</span><span class="p">:</span> <span class="n">SensorGridOptions</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Load sensor grids.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">grid_options</span> <span class="o">==</span> <span class="n">SensorGridOptions</span><span class="o">.</span><span class="n">Ignore</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">properties</span><span class="p">,</span> <span class="s1">&#39;radiance&#39;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">sensor_grid</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">radiance</span><span class="o">.</span><span class="n">sensor_grids</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_sensor_grids</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">convert_sensor_grid</span><span class="p">(</span><span class="n">sensor_grid</span><span class="p">,</span> <span class="n">grid_options</span><span class="p">)</span>
+                <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_load_cameras</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">HBModel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Load radiance views.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">radiance</span><span class="o">.</span><span class="n">views</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">view</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">radiance</span><span class="o">.</span><span class="n">views</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cameras</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Camera</span><span class="o">.</span><span class="n">from_view</span><span class="p">(</span><span class="n">view</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Model.update_display_mode"><a class="viewcode-back" href="../../honeybee_vtk.model.html#honeybee_vtk.model.Model.update_display_mode">[docs]</a>    <span class="k">def</span> <span class="nf">update_display_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">DisplayMode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Change display mode for all the object types in the model.</span>
+
+<span class="sd">        Sensor grids display model will not be affected. For changing the display model</span>
+<span class="sd">        for a single object type, change the display_mode property separately.</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            model.sensor_grids.display_mode = DisplayMode.Wireframe</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">DATA_SETS</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span><span class="o">.</span><span class="n">display_mode</span> <span class="o">=</span> <span class="n">value</span></div>
+
+    <span class="k">def</span> <span class="nf">_convert_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">HBModel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;An internal method to convert the objects on class initiation.&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;rooms&#39;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">room</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">rooms</span><span class="p">:</span>
+                <span class="n">objects</span> <span class="o">=</span> <span class="n">convert_room</span><span class="p">(</span><span class="n">room</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">separate_by_type</span><span class="p">(</span><span class="n">objects</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;orphaned_shades&#39;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">orphaned_shades</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_shades</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">convert_shade</span><span class="p">(</span><span class="n">face</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;orphaned_apertures&#39;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">orphaned_apertures</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_apertures</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">convert_aperture</span><span class="p">(</span><span class="n">face</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;orphaned_doors&#39;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">orphaned_doors</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_doors</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">convert_door</span><span class="p">(</span><span class="n">face</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;orphaned_faces&#39;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">orphaned_faces</span><span class="p">:</span>
+                <span class="n">objects</span> <span class="o">=</span> <span class="n">convert_face</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">separate_by_type</span><span class="p">(</span><span class="n">objects</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_add_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Add object to different fields based on data type.</span>
+
+<span class="sd">        This method is called from inside ``_convert_model``. Valid values for key are</span>
+<span class="sd">        different types:</span>
+
+<span class="sd">            * aperture</span>
+<span class="sd">            * door</span>
+<span class="sd">            * shade</span>
+<span class="sd">            * wall</span>
+<span class="sd">            * floor</span>
+<span class="sd">            * roof_ceiling</span>
+<span class="sd">            * air_boundary</span>
+<span class="sd">            * sensor_grid</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Note: this approach will fail for air_boundary</span>
+                <span class="n">attr</span> <span class="o">=</span> <span class="n">DATA_SETS</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unsupported type: </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid attribute: </span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Model.to_vtkjs"><a class="viewcode-back" href="../../honeybee_vtk.model.html#honeybee_vtk.model.Model.to_vtkjs">[docs]</a>    <span class="k">def</span> <span class="nf">to_vtkjs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Write a vtkjs file.</span>
+
+<span class="sd">        Write your honeybee-vtk model to a vtkjs file that you can open in</span>
+<span class="sd">        Paraview-Glance.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            folder: A valid text string representing the location of folder where</span>
+<span class="sd">                you&#39;d want to write the vtkjs file. Defaults to current working</span>
+<span class="sd">                directory.</span>
+<span class="sd">            name : Name for the vtkjs file. File name will be Model.vtkjs if not</span>
+<span class="sd">                provided.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A text string representing the file path to the vtkjs file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># name of the vtkjs file</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">or</span> <span class="s1">&#39;model&#39;</span>
+        <span class="c1"># create a temp folder</span>
+        <span class="n">temp_folder</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+        <span class="c1"># The folder set by the user is the target folder</span>
+        <span class="n">target_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+        <span class="c1"># Set a file path to move the .zip file to the target folder</span>
+        <span class="n">target_vtkjs_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">target_folder</span><span class="p">,</span> <span class="n">file_name</span> <span class="o">+</span> <span class="s1">&#39;.vtkjs&#39;</span><span class="p">)</span>
+
+        <span class="c1"># write every dataset</span>
+        <span class="n">scene</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">data_set</span> <span class="ow">in</span> <span class="n">DATA_SETS</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_set</span><span class="p">)</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to_folder</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
+                <span class="c1"># empty dataset</span>
+                <span class="k">continue</span>
+            <span class="n">scene</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">as_data_set</span><span class="p">())</span>
+
+        <span class="c1"># add sensor grids</span>
+        <span class="c1"># it is separate from other DATA_SETS mainly for data visualization</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sensor_grids</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to_folder</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">path</span><span class="p">:</span>
+            <span class="n">scene</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">as_data_set</span><span class="p">())</span>
+
+        <span class="c1"># write index.json</span>
+        <span class="n">index_json</span> <span class="o">=</span> <span class="n">IndexJSON</span><span class="p">()</span>
+        <span class="n">index_json</span><span class="o">.</span><span class="n">scene</span> <span class="o">=</span> <span class="n">scene</span>
+        <span class="n">index_json</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">)</span>
+
+        <span class="c1"># zip as vtkjs</span>
+        <span class="n">temp_vtkjs_file</span> <span class="o">=</span> <span class="n">convert_directory_to_zip_file</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s1">&#39;vtkjs&#39;</span><span class="p">,</span>
+                                                        <span class="n">move</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># Move the generated vtkjs to target folder</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">temp_vtkjs_file</span><span class="p">,</span> <span class="n">target_vtkjs_file</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="k">return</span> <span class="n">target_vtkjs_file</span></div>
+
+<div class="viewcode-block" id="Model.to_html"><a class="viewcode-back" href="../../honeybee_vtk.model.html#honeybee_vtk.model.Model.to_html">[docs]</a>    <span class="k">def</span> <span class="nf">to_html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Write an HTML file.</span>
+
+<span class="sd">        Write your honeybee-vtk model to an HTML file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            folder: A valid text string representing the location of folder where</span>
+<span class="sd">                you&#39;d want to write the HTML file. Defaults to current working directory.</span>
+<span class="sd">            name : Name for the HTML file. File name will be Model.html if not provided.</span>
+<span class="sd">            show: A boolean value. If set to True, the HTML file will be opened in the</span>
+<span class="sd">                default browser. Defaults to False</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A text string representing the file path to the HTML file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Name of the html file</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">or</span> <span class="s1">&#39;model&#39;</span>
+        <span class="c1"># Set the target folder</span>
+        <span class="n">target_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+        <span class="c1"># Set a file path to move the .html file to the target folder</span>
+        <span class="n">html_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">target_folder</span><span class="p">,</span> <span class="n">file_name</span> <span class="o">+</span> <span class="s1">&#39;.html&#39;</span><span class="p">)</span>
+        <span class="c1"># Set temp folder to do the operation</span>
+        <span class="n">temp_folder</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+        <span class="n">vtkjs_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_vtkjs</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">)</span>
+        <span class="n">temp_html_file</span> <span class="o">=</span> <span class="n">add_data_to_viewer</span><span class="p">(</span><span class="n">vtkjs_file</span><span class="p">)</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">temp_html_file</span><span class="p">,</span> <span class="n">html_file</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+            <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">html_file</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">html_file</span></div>
+
+<div class="viewcode-block" id="Model.to_files"><a class="viewcode-back" href="../../honeybee_vtk.model.html#honeybee_vtk.model.Model.to_files">[docs]</a>    <span class="k">def</span> <span class="nf">to_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">writer</span><span class="p">:</span> <span class="n">VTKWriters</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write a .zip of VTK/VTP files.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name: A text string for the name of the .zip file to be written. If no</span>
+<span class="sd">                text string is provided, the name of the HBJSON file will be used as a</span>
+<span class="sd">                file name for the .zip file.</span>
+<span class="sd">            folder: File path to the output folder. The file</span>
+<span class="sd">                will be written to the current folder if not provided.</span>
+<span class="sd">            writer: A VTkWriters object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A text string containing the path to the .zip file with VTK/VTP files.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Name of the html file</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">or</span> <span class="s1">&#39;model&#39;</span>
+        <span class="c1"># Set the target folder</span>
+        <span class="n">target_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+        <span class="c1"># Set a file path to move the .zip file to the target folder</span>
+        <span class="n">target_zip_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">target_folder</span><span class="p">,</span> <span class="n">file_name</span> <span class="o">+</span> <span class="s1">&#39;.zip&#39;</span><span class="p">)</span>
+        <span class="c1"># Set temp folder to do the operation</span>
+        <span class="n">temp_folder</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+        <span class="c1"># Write datasets to vtk/vtp files</span>
+        <span class="k">for</span> <span class="n">ds</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">jp</span> <span class="o">=</span> <span class="n">JoinedPolyData</span><span class="p">()</span>
+                <span class="n">jp</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+                <span class="n">jp</span><span class="o">.</span><span class="n">to_vtk</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">,</span> <span class="n">ds</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">writer</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">polydata</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">polydata</span><span class="o">.</span><span class="n">to_vtk</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">,</span> <span class="n">ds</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">writer</span><span class="p">)</span>
+
+        <span class="c1"># collect files in a zip</span>
+        <span class="n">temp_zip_file</span> <span class="o">=</span> <span class="n">convert_directory_to_zip_file</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s1">&#39;zip&#39;</span><span class="p">,</span>
+                                                      <span class="n">move</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># Move the generated zip file to the target folder</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">temp_zip_file</span><span class="p">,</span> <span class="n">target_zip_file</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="k">return</span> <span class="n">target_zip_file</span></div>
+
+<div class="viewcode-block" id="Model.get_default_color"><a class="viewcode-back" href="../../honeybee_vtk.model.html#honeybee_vtk.model.Model.get_default_color">[docs]</a>    <span class="o">@</span> <span class="nb">staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_default_color</span><span class="p">(</span><span class="n">face_type</span><span class="p">:</span> <span class="n">face_types</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Color</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get the default color based of face type.</span>
+
+<span class="sd">        Use these colors to generate visualizations that are familiar for Ladybug Tools</span>
+<span class="sd">        users. User can overwrite these colors as needed. This method converts decimal</span>
+<span class="sd">        RGBA to integer RGBA values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">_COLORSET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">face_type</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">Color</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="mi">255</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">color</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Model.separate_by_type"><a class="viewcode-back" href="../../honeybee_vtk.model.html#honeybee_vtk.model.Model.separate_by_type">[docs]</a>    <span class="o">@</span> <span class="nb">staticmethod</span>
+    <span class="k">def</span> <span class="nf">separate_by_type</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">PolyData</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Separate PolyData objects by type.&quot;&quot;&quot;</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">data_dict</span><span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">type</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">data_dict</span></div></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

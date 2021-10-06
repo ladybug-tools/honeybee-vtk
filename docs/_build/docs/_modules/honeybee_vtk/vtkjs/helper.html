@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>honeybee_vtk.vtkjs.helper &#8212; honeybee-radiance-postprocess  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          honeybee-radiance-postprocess</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../cli/main.html">main</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../cli/main.html#honeybee-vtk">honeybee-vtk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../cli/export.html">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../cli/export.html#honeybee-vtk-export">honeybee-vtk export</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../cli/translate.html#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">honeybee_vtk</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../honeybee_vtk.html">honeybee_vtk package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../../honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../../honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../../honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../honeybee_vtk.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">honeybee_vtk</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">honeybee_vtk</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <h1>Source code for honeybee_vtk.vtkjs.helper</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module helps in embedding vtkjs data in Paraview Glance HTML.</span>
+
+<span class="sd">This module is originally developed by Kitware and can be found at the following link.</span>
+<span class="sd">https://github.com/Kitware/VTK/blob/master/Web/Python/vtkmodules/web/vtkjs_helper.py</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">zipfile</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">zlib</span>
+    <span class="n">compression</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZIP_DEFLATED</span>
+<span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+    <span class="n">compression</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZIP_STORED</span>
+
+
+<div class="viewcode-block" id="convert_directory_to_zip_file"><a class="viewcode-back" href="../../../honeybee_vtk.vtkjs.helper.html#honeybee_vtk.vtkjs.helper.convert_directory_to_zip_file">[docs]</a><span class="k">def</span> <span class="nf">convert_directory_to_zip_file</span><span class="p">(</span>
+    <span class="n">directory_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">remove</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s1">&#39;zip&#39;</span><span class="p">,</span> <span class="n">move</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">directory_path</span><span class="p">):</span>
+        <span class="k">return</span>
+
+    <span class="n">zip_file_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">directory_path</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">extension</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">zf</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">zip_file_path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">dir_name</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">file_list</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">directory_path</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
+                <span class="n">full_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+                <span class="n">rel_path</span> <span class="o">=</span> <span class="n">full_path</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">directory_path</span><span class="p">)</span>
+                <span class="n">zf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                    <span class="n">full_path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">(),</span>
+                    <span class="n">arcname</span><span class="o">=</span><span class="n">rel_path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">(),</span>
+                    <span class="n">compress_type</span><span class="o">=</span><span class="n">compression</span>
+                <span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">zf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">remove</span><span class="p">:</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">directory_path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">move</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">zip_file_path</span><span class="p">,</span> <span class="n">directory_path</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">zip_file_path</span></div>
+
+
+<div class="viewcode-block" id="add_data_to_viewer"><a class="viewcode-back" href="../../../honeybee_vtk.vtkjs.helper.html#honeybee_vtk.vtkjs.helper.add_data_to_viewer">[docs]</a><span class="k">def</span> <span class="nf">add_data_to_viewer</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">src_html_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+        <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="s1">&#39;../assets/PollinationViewer.html&#39;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
+    <span class="n">src_html_path</span> <span class="o">=</span> <span class="n">src_html_path</span> <span class="ow">or</span> <span class="n">template</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">data_path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Failed to find </span><span class="si">{</span><span class="n">data_path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">src_html_path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Failed to find source html file: </span><span class="si">{</span><span class="n">src_html_path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">dstDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
+    <span class="n">dstHtmlPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dstDir</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.html&quot;</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">data_path</span><span class="p">)[:</span><span class="o">-</span><span class="mi">6</span><span class="p">])</span>
+
+    <span class="c1"># Extract data as base64</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">data_content</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">base64Content</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">data_content</span><span class="p">)</span>
+        <span class="n">base64Content</span> <span class="o">=</span> <span class="n">base64Content</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Create new output file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">src_html_path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">srcHtml</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dstHtmlPath</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dstHtml</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">srcHtml</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;&lt;!–– insert ––&gt;&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="n">dstHtml</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&lt;script&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">dstHtml</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;var contentToLoad = &quot;</span><span class="si">%s</span><span class="s1">&quot;;</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">base64Content</span><span class="p">)</span>
+                    <span class="n">dstHtml</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;function _getContent() { return contentToLoad }&lt;/script&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="n">dstHtml</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dstHtmlPath</span></div>
+
+
+<div class="viewcode-block" id="zipAllTimeSteps"><a class="viewcode-back" href="../../../honeybee_vtk.vtkjs.helper.html#honeybee_vtk.vtkjs.helper.zipAllTimeSteps">[docs]</a><span class="k">def</span> <span class="nf">zipAllTimeSteps</span><span class="p">(</span><span class="n">directory_path</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">directory_path</span><span class="p">):</span>
+        <span class="k">return</span>
+
+    <span class="k">class</span> <span class="nc">UrlCounterDict</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+        <span class="n">Counter</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">def</span> <span class="nf">GetUrlName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="bp">self</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">objNameToUrls</span><span class="o">.</span><span class="n">Counter</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Counter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Counter</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">InitIndex</span><span class="p">(</span><span class="n">sourcePath</span><span class="p">,</span> <span class="n">destObj</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">sourcePath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">sourceFile</span><span class="p">:</span>
+            <span class="n">sourceData</span> <span class="o">=</span> <span class="n">sourceFile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">sourceObj</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">sourceData</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">sourceObj</span><span class="p">:</span>
+                <span class="n">destObj</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">sourceObj</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="c1"># remove vtkHttpDataSetReader information</span>
+            <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">destObj</span><span class="p">[</span><span class="s2">&quot;scene&quot;</span><span class="p">]:</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">])</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getUrlToNameDictionary</span><span class="p">(</span><span class="n">indexObj</span><span class="p">):</span>
+        <span class="n">urls</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">indexObj</span><span class="p">[</span><span class="s2">&quot;scene&quot;</span><span class="p">]:</span>
+            <span class="n">urls</span><span class="p">[</span><span class="n">obj</span><span class="p">[</span><span class="n">obj</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]][</span><span class="s2">&quot;url&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">obj</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">urls</span>
+
+    <span class="k">def</span> <span class="nf">addDirectoryToZip</span><span class="p">(</span>
+        <span class="n">dir_name</span><span class="p">,</span> <span class="n">zipobj</span><span class="p">,</span> <span class="n">storedData</span><span class="p">,</span> <span class="n">rootIdx</span><span class="p">,</span> <span class="n">timeStep</span><span class="p">,</span> <span class="n">objNameToUrls</span>
+    <span class="p">):</span>
+        <span class="c1"># Update root index.json file from index.json of this timestep</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="s2">&quot;index.json&quot;</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">currentIdxFile</span><span class="p">:</span>
+            <span class="n">currentIdx</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">currentIdxFile</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+            <span class="n">urlToName</span> <span class="o">=</span> <span class="n">getUrlToNameDictionary</span><span class="p">(</span><span class="n">currentIdx</span><span class="p">)</span>
+            <span class="n">rootTimeStepSection</span> <span class="o">=</span> <span class="n">rootIdx</span><span class="p">[</span><span class="s2">&quot;animation&quot;</span><span class="p">][</span><span class="s2">&quot;timeSteps&quot;</span><span class="p">][</span><span class="n">timeStep</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">currentIdx</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;scene&quot;</span> <span class="ow">or</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">rootTimeStepSection</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">currentIdx</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">currentIdx</span><span class="p">[</span><span class="s2">&quot;scene&quot;</span><span class="p">]:</span>
+                <span class="n">objName</span> <span class="o">=</span> <span class="n">obj</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+                <span class="n">rootTimeStepSection</span><span class="p">[</span><span class="n">objName</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">rootTimeStepSection</span><span class="p">[</span><span class="n">objName</span><span class="p">][</span><span class="s2">&quot;actor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="p">[</span><span class="s2">&quot;actor&quot;</span><span class="p">]</span>
+                <span class="n">rootTimeStepSection</span><span class="p">[</span><span class="n">objName</span><span class="p">][</span><span class="s2">&quot;actorRotation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="p">[</span><span class="s2">&quot;actorRotation&quot;</span><span class="p">]</span>
+                <span class="n">rootTimeStepSection</span><span class="p">[</span><span class="n">objName</span><span class="p">][</span><span class="s2">&quot;mapper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="p">[</span><span class="s2">&quot;mapper&quot;</span><span class="p">]</span>
+                <span class="n">rootTimeStepSection</span><span class="p">[</span><span class="n">objName</span><span class="p">][</span><span class="s2">&quot;property&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="p">[</span><span class="s2">&quot;property&quot;</span><span class="p">]</span>
+
+        <span class="c1"># For every object in the current timestep</span>
+        <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">dir_name</span><span class="p">)):</span>
+            <span class="n">currentItem</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">folder</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">currentItem</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="c1"># Write all data array of the current timestep in the archive</span>
+            <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">currentItem</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">)):</span>
+                <span class="n">full_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">currentItem</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span> <span class="ow">and</span> <span class="n">filename</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">storedData</span><span class="p">:</span>
+                    <span class="n">storedData</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+                    <span class="n">rel_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+                    <span class="n">zipobj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="n">arcname</span><span class="o">=</span><span class="n">rel_path</span><span class="p">,</span> <span class="n">compress_type</span><span class="o">=</span><span class="n">compression</span><span class="p">)</span>
+            <span class="c1"># Write the index.json containing pointers to these data arrays</span>
+            <span class="c1"># while replacing every basepath as &#39;../../data&#39;</span>
+            <span class="n">objIndexFilePath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="s2">&quot;index.json&quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">objIndexFilePath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">objIndexFile</span><span class="p">:</span>
+                <span class="n">objIndexObjData</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">objIndexFile</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">elm</span> <span class="ow">in</span> <span class="n">objIndexObjData</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s2">&quot;ref&quot;</span> <span class="ow">in</span> <span class="n">objIndexObjData</span><span class="p">[</span><span class="n">elm</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="n">objIndexObjData</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="s2">&quot;ref&quot;</span><span class="p">][</span><span class="s2">&quot;basepath&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;../../data&quot;</span>
+                    <span class="k">if</span> <span class="s2">&quot;arrays&quot;</span> <span class="ow">in</span> <span class="n">objIndexObjData</span><span class="p">[</span><span class="n">elm</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="k">for</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">objIndexObjData</span><span class="p">[</span><span class="n">elm</span><span class="p">][</span><span class="s2">&quot;arrays&quot;</span><span class="p">]:</span>
+                            <span class="n">array</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="s2">&quot;ref&quot;</span><span class="p">][</span><span class="s2">&quot;basepath&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;../../data&quot;</span>
+                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                    <span class="k">continue</span>
+            <span class="n">currentObjName</span> <span class="o">=</span> <span class="n">urlToName</span><span class="p">[</span><span class="n">folder</span><span class="p">]</span>
+            <span class="n">objIndexrel_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">objNameToUrls</span><span class="o">.</span><span class="n">GetUrlName</span><span class="p">(</span><span class="n">currentObjName</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">timeStep</span><span class="p">),</span> <span class="s2">&quot;index.json&quot;</span>
+            <span class="p">)</span>
+            <span class="n">zipobj</span><span class="o">.</span><span class="n">writestr</span><span class="p">(</span>
+                <span class="n">objIndexrel_path</span><span class="p">,</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">objIndexObjData</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+                <span class="n">compress_type</span><span class="o">=</span><span class="n">compression</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="n">zip_file_path</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.zip&quot;</span> <span class="o">%</span> <span class="n">directory_path</span>
+    <span class="n">currentDirectory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory_path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">))</span>
+    <span class="n">rootIndexPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">currentDirectory</span><span class="p">,</span> <span class="s2">&quot;index.json&quot;</span><span class="p">)</span>
+    <span class="n">rootIndexFile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">rootIndexPath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+    <span class="n">rootIndexObj</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">rootIndexFile</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+    <span class="n">zf</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">zip_file_path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># We copy the scene from an index of a specific timestep to the root index</span>
+        <span class="c1"># Scenes should all have the same objects so only do it for the first one</span>
+        <span class="n">isSceneInitialized</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># currentlyAddedData set stores hashes of every data we already added to the</span>
+        <span class="c1"># vtkjs archive to prevent data duplication</span>
+        <span class="n">currentlyAddedData</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="c1"># Regex that folders storing timestep data from paraview should follow</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">directory_path</span><span class="p">)</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;\.[0-9]+$&quot;</span><span class="p">)</span>
+        <span class="c1"># We assume an object will not be deleted from a timestep to another so we</span>
+        <span class="c1"># create a generic index.json for each object</span>
+        <span class="n">genericIndexObj</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">genericIndexObj</span><span class="p">[</span><span class="s2">&quot;series&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">timeStep</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">rootIndexObj</span><span class="p">[</span><span class="s2">&quot;animation&quot;</span><span class="p">][</span><span class="s2">&quot;timeSteps&quot;</span><span class="p">]:</span>
+            <span class="n">genericIndexObj</span><span class="p">[</span><span class="s2">&quot;series&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({})</span>
+            <span class="n">genericIndexObj</span><span class="p">[</span><span class="s2">&quot;series&quot;</span><span class="p">][</span><span class="n">timeStep</span><span class="p">][</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timeStep</span><span class="p">)</span>
+            <span class="n">genericIndexObj</span><span class="p">[</span><span class="s2">&quot;series&quot;</span><span class="p">][</span><span class="n">timeStep</span><span class="p">][</span><span class="s2">&quot;timeStep&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">])</span>
+            <span class="n">timeStep</span> <span class="o">=</span> <span class="n">timeStep</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="c1"># Keep track of the url for every object</span>
+        <span class="n">objNameToUrls</span> <span class="o">=</span> <span class="n">UrlCounterDict</span><span class="p">()</span>
+
+        <span class="n">timeStep</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># zip all timestep directories</span>
+        <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">currentDirectory</span><span class="p">)):</span>
+            <span class="n">full_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">currentDirectory</span><span class="p">,</span> <span class="n">folder</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span> <span class="ow">and</span> <span class="n">reg</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">isSceneInitialized</span><span class="p">:</span>
+                    <span class="n">InitIndex</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="s2">&quot;index.json&quot;</span><span class="p">),</span> <span class="n">rootIndexObj</span><span class="p">)</span>
+                    <span class="n">isSceneInitialized</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">addDirectoryToZip</span><span class="p">(</span>
+                    <span class="n">full_path</span><span class="p">,</span>
+                    <span class="n">zf</span><span class="p">,</span>
+                    <span class="n">currentlyAddedData</span><span class="p">,</span>
+                    <span class="n">rootIndexObj</span><span class="p">,</span>
+                    <span class="n">timeStep</span><span class="p">,</span>
+                    <span class="n">objNameToUrls</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span>
+                <span class="n">timeStep</span> <span class="o">=</span> <span class="n">timeStep</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="c1"># Write every index.json holding time information for each object</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">objNameToUrls</span><span class="p">:</span>
+            <span class="n">zf</span><span class="o">.</span><span class="n">writestr</span><span class="p">(</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">objNameToUrls</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="s2">&quot;index.json&quot;</span><span class="p">),</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">genericIndexObj</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+                <span class="n">compress_type</span><span class="o">=</span><span class="n">compression</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Update root index.json urls and write it in the archive</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">rootIndexObj</span><span class="p">[</span><span class="s2">&quot;scene&quot;</span><span class="p">]:</span>
+            <span class="n">obj</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="n">obj</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;vtkHttpDataSetSeriesReader&quot;</span>
+            <span class="n">obj</span><span class="p">[</span><span class="s2">&quot;vtkHttpDataSetSeriesReader&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">obj</span><span class="p">[</span><span class="s2">&quot;vtkHttpDataSetSeriesReader&quot;</span><span class="p">][</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">objNameToUrls</span><span class="p">[</span><span class="n">obj</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]]</span>
+        <span class="n">zf</span><span class="o">.</span><span class="n">writestr</span><span class="p">(</span>
+            <span class="s2">&quot;index.json&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">rootIndexObj</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">compress_type</span><span class="o">=</span><span class="n">compression</span>
+        <span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">rootIndexPath</span><span class="p">)</span>
+
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">zf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">zip_file_path</span><span class="p">,</span> <span class="n">directory_path</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s1">&#39;Usage: python helper.py /path/to/directory.vtkjs &#39;</span>
+            <span class="s1">&#39;[/path/to/ParaViewGlance.html]&#39;</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fileName</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">convert_directory_to_zip_file</span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">add_data_to_viewer</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

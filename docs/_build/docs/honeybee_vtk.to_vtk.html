@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>honeybee_vtk.to_vtk module &#8212; honeybee-radiance-postprocess  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="honeybee_vtk.types module" href="honeybee_vtk.types.html" />
+    <link rel="prev" title="honeybee_vtk.scene module" href="honeybee_vtk.scene.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          honeybee-radiance-postprocess</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli/main.html">main</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli/main.html#honeybee-vtk">honeybee-vtk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli/export.html">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli/export.html#honeybee-vtk-export">honeybee-vtk export</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli/translate.html#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">honeybee_vtk</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee_vtk.html">honeybee_vtk package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="reference internal" href="honeybee_vtk.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="cli/index.html">CLI Docs</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">honeybee_vtk</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee_vtk.html">honeybee_vtk package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#subpackages">Subpackages</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="honeybee_vtk.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="honeybee_vtk.scene.html" title="Previous Chapter: honeybee_vtk.scene module"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; honeybee_vtk....</span>
+    </a>
+  </li>
+  <li>
+    <a href="honeybee_vtk.types.html" title="Next Chapter: honeybee_vtk.types module"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">honeybee_vtk.... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="_sources/honeybee_vtk.to_vtk.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="cli/index.html">CLI Docs</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">honeybee_vtk</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee_vtk.html">honeybee_vtk package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#subpackages">Subpackages</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="honeybee_vtk.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <section id="module-honeybee_vtk.to_vtk">
+<span id="honeybee-vtk-to-vtk-module"></span><h1>honeybee_vtk.to_vtk module<a class="headerlink" href="#module-honeybee_vtk.to_vtk" title="Permalink to this headline">¶</a></h1>
+<p>Functions to translate HB Model objects to PolyData or JoinedPolyData.</p>
+<p>honeybee-vtk provides a wrapper for vtkPolyData or vtkAppendPolyData which are used
+instead of the original objects to add additional fields that are needed to provide
+additional functionalities in honeybee-vtk. See <code class="docutils literal notranslate"><span class="pre">types</span></code> module for more information.</p>
+<p>There are two sets of functions in this module:</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>create_x<span class="classifier">These methods create an object from other objects. For instance</span></dt><dd><p>create_polyline creates a polyline for a list of points.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>convert_x: These methods convert a LBT object directly to a PolyData. For instance</dt><dd><p>convert_polyline converts a Polyline3D to a VTK-based Polyline.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<dl class="py function">
+<dt class="sig sig-object py" id="honeybee_vtk.to_vtk.convert_aperture">
+<span class="sig-prename descclassname"><span class="pre">honeybee_vtk.to_vtk.</span></span><span class="sig-name descname"><span class="pre">convert_aperture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aperture</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">honeybee.aperture.Aperture</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.PolyData" title="honeybee_vtk.types.PolyData"><span class="pre">honeybee_vtk.types.PolyData</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/honeybee_vtk/to_vtk.html#convert_aperture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.to_vtk.convert_aperture" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="honeybee_vtk.to_vtk.convert_door">
+<span class="sig-prename descclassname"><span class="pre">honeybee_vtk.to_vtk.</span></span><span class="sig-name descname"><span class="pre">convert_door</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">door</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">honeybee.door.Door</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.PolyData" title="honeybee_vtk.types.PolyData"><span class="pre">honeybee_vtk.types.PolyData</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/honeybee_vtk/to_vtk.html#convert_door"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.to_vtk.convert_door" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="honeybee_vtk.to_vtk.convert_face">
+<span class="sig-prename descclassname"><span class="pre">honeybee_vtk.to_vtk.</span></span><span class="sig-name descname"><span class="pre">convert_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">face</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">honeybee.face.Face</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.PolyData" title="honeybee_vtk.types.PolyData"><span class="pre">honeybee_vtk.types.PolyData</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/honeybee_vtk/to_vtk.html#convert_face"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.to_vtk.convert_face" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a HBFace to a PolyData.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="honeybee_vtk.to_vtk.convert_face_3d">
+<span class="sig-prename descclassname"><span class="pre">honeybee_vtk.to_vtk.</span></span><span class="sig-name descname"><span class="pre">convert_face_3d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">face</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">ladybug_geometry.geometry3d.face.Face3D</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.PolyData" title="honeybee_vtk.types.PolyData"><span class="pre">honeybee_vtk.types.PolyData</span></a></span></span><a class="reference internal" href="_modules/honeybee_vtk/to_vtk.html#convert_face_3d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.to_vtk.convert_face_3d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a ladybug_geometry.Face3D to vtkPolyData.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="honeybee_vtk.to_vtk.convert_mesh">
+<span class="sig-prename descclassname"><span class="pre">honeybee_vtk.to_vtk.</span></span><span class="sig-name descname"><span class="pre">convert_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">ladybug_geometry.geometry3d.mesh.Mesh3D</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.PolyData" title="honeybee_vtk.types.PolyData"><span class="pre">honeybee_vtk.types.PolyData</span></a></span></span><a class="reference internal" href="_modules/honeybee_vtk/to_vtk.html#convert_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.to_vtk.convert_mesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a ladybug_geometry.Mesh to vtkPolyData.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="honeybee_vtk.to_vtk.convert_points">
+<span class="sig-prename descclassname"><span class="pre">honeybee_vtk.to_vtk.</span></span><span class="sig-name descname"><span class="pre">convert_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ladybug_geometry.geometry3d.pointvector.Point3D</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.PolyData" title="honeybee_vtk.types.PolyData"><span class="pre">honeybee_vtk.types.PolyData</span></a></span></span><a class="reference internal" href="_modules/honeybee_vtk/to_vtk.html#convert_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.to_vtk.convert_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export a list of points to VTK.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>points</strong> – A list of Point3D.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A vtk object with multiple VTK point objects.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="honeybee_vtk.to_vtk.convert_polyline">
+<span class="sig-prename descclassname"><span class="pre">honeybee_vtk.to_vtk.</span></span><span class="sig-name descname"><span class="pre">convert_polyline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polyline</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">ladybug_geometry.geometry3d.polyline.Polyline3D</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.PolyData" title="honeybee_vtk.types.PolyData"><span class="pre">honeybee_vtk.types.PolyData</span></a></span></span><a class="reference internal" href="_modules/honeybee_vtk/to_vtk.html#convert_polyline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.to_vtk.convert_polyline" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="honeybee_vtk.to_vtk.convert_room">
+<span class="sig-prename descclassname"><span class="pre">honeybee_vtk.to_vtk.</span></span><span class="sig-name descname"><span class="pre">convert_room</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">room</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">honeybee.room.Room</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.PolyData" title="honeybee_vtk.types.PolyData"><span class="pre">honeybee_vtk.types.PolyData</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/honeybee_vtk/to_vtk.html#convert_room"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.to_vtk.convert_room" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert HB Room to PolyData.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="honeybee_vtk.to_vtk.convert_sensor_grid">
+<span class="sig-prename descclassname"><span class="pre">honeybee_vtk.to_vtk.</span></span><span class="sig-name descname"><span class="pre">convert_sensor_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sensor_grid</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">honeybee_radiance.sensorgrid.SensorGrid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_option</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="honeybee_vtk.vtkjs.schema.html#honeybee_vtk.vtkjs.schema.SensorGridOptions" title="honeybee_vtk.vtkjs.schema.SensorGridOptions"><span class="pre">honeybee_vtk.vtkjs.schema.SensorGridOptions</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">SensorGridOptions.Mesh</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.PolyData" title="honeybee_vtk.types.PolyData"><span class="pre">honeybee_vtk.types.PolyData</span></a></span></span><a class="reference internal" href="_modules/honeybee_vtk/to_vtk.html#convert_sensor_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.to_vtk.convert_sensor_grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a honeybee-radiance sensor grid to a vtkPolyData.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="honeybee_vtk.to_vtk.convert_shade">
+<span class="sig-prename descclassname"><span class="pre">honeybee_vtk.to_vtk.</span></span><span class="sig-name descname"><span class="pre">convert_shade</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shade</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">honeybee.shade.Shade</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.PolyData" title="honeybee_vtk.types.PolyData"><span class="pre">honeybee_vtk.types.PolyData</span></a></span></span><a class="reference internal" href="_modules/honeybee_vtk/to_vtk.html#convert_shade"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.to_vtk.convert_shade" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="honeybee_vtk.to_vtk.create_arrow">
+<span class="sig-prename descclassname"><span class="pre">honeybee_vtk.to_vtk.</span></span><span class="sig-name descname"><span class="pre">create_arrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_points</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ladybug_geometry.geometry3d.pointvector.Point3D</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vectors</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ladybug_geometry.geometry3d.pointvector.Vector3D</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.JoinedPolyData" title="honeybee_vtk.types.JoinedPolyData"><span class="pre">honeybee_vtk.types.JoinedPolyData</span></a></span></span><a class="reference internal" href="_modules/honeybee_vtk/to_vtk.html#create_arrow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.to_vtk.create_arrow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create arrows from point and vector.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="honeybee_vtk.to_vtk.create_polyline">
+<span class="sig-prename descclassname"><span class="pre">honeybee_vtk.to_vtk.</span></span><span class="sig-name descname"><span class="pre">create_polyline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ladybug_geometry.geometry3d.pointvector.Point3D</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="honeybee_vtk.types.html#honeybee_vtk.types.PolyData" title="honeybee_vtk.types.PolyData"><span class="pre">honeybee_vtk.types.PolyData</span></a></span></span><a class="reference internal" href="_modules/honeybee_vtk/to_vtk.html#create_polyline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#honeybee_vtk.to_vtk.create_polyline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a polyline from a list of points.</p>
+</dd></dl>
+
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

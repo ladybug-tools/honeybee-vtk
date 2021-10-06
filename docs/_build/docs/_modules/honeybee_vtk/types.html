@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>honeybee_vtk.types &#8212; honeybee-radiance-postprocess  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          honeybee-radiance-postprocess</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/main.html">main</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/main.html#honeybee-vtk">honeybee-vtk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/export.html">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/export.html#honeybee-vtk-export">honeybee-vtk export</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/translate.html#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../honeybee_vtk.html">honeybee_vtk package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <h1>Source code for honeybee_vtk.types</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;An extension of VTK PolyData objects.</span>
+
+<span class="sd">The purpose of creating these extensions is to add metadata to object itself. This will</span>
+<span class="sd">work fine for the purpose of exporting the geometries and finding the type for each</span>
+<span class="sd">object but it will not be useful for passing them to the exported VTK file itself.</span>
+
+<span class="sd">For that purpose we should start to look into FieldData:</span>
+<span class="sd">https://lorensen.github.io/VTKExamples/site/Cxx/PolyData/FieldData/</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">vtk</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">ladybug.color</span> <span class="kn">import</span> <span class="n">Color</span>
+<span class="kn">from</span> <span class="nn">.legend_parameter</span> <span class="kn">import</span> <span class="n">LegendParameter</span><span class="p">,</span> <span class="n">ColorSets</span>
+<span class="kn">from</span> <span class="nn">.vtkjs.schema</span> <span class="kn">import</span> <span class="n">DataSetProperty</span><span class="p">,</span> <span class="n">DataSet</span><span class="p">,</span> <span class="n">DisplayMode</span><span class="p">,</span> <span class="n">DataSetMapper</span>
+<span class="kn">from</span> <span class="nn">honeybee.face</span> <span class="kn">import</span> <span class="n">Face</span>
+<span class="kn">from</span> <span class="nn">honeybee.aperture</span> <span class="kn">import</span> <span class="n">Aperture</span>
+<span class="kn">from</span> <span class="nn">honeybee.door</span> <span class="kn">import</span> <span class="n">Door</span>
+<span class="kn">from</span> <span class="nn">honeybee.shade</span> <span class="kn">import</span> <span class="n">Shade</span>
+
+
+<div class="viewcode-block" id="DataSetNames"><a class="viewcode-back" href="../../honeybee_vtk.types.html#honeybee_vtk.types.DataSetNames">[docs]</a><span class="k">class</span> <span class="nc">DataSetNames</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Valid ModelDataset names.&quot;&quot;&quot;</span>
+    <span class="n">wall</span> <span class="o">=</span> <span class="s1">&#39;wall&#39;</span>
+    <span class="n">aperture</span> <span class="o">=</span> <span class="s1">&#39;aperture&#39;</span>
+    <span class="n">shade</span> <span class="o">=</span> <span class="s1">&#39;shade&#39;</span>
+    <span class="n">door</span> <span class="o">=</span> <span class="s1">&#39;door&#39;</span>
+    <span class="n">floor</span> <span class="o">=</span> <span class="s1">&#39;floor&#39;</span>
+    <span class="n">roofceiling</span> <span class="o">=</span> <span class="s1">&#39;roofceiling&#39;</span>
+    <span class="n">airboundary</span> <span class="o">=</span> <span class="s1">&#39;airboundary&#39;</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="s1">&#39;grid&#39;</span></div>
+
+
+<div class="viewcode-block" id="VTKWriters"><a class="viewcode-back" href="../../honeybee_vtk.types.html#honeybee_vtk.types.VTKWriters">[docs]</a><span class="k">class</span> <span class="nc">VTKWriters</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Vtk writers.&quot;&quot;&quot;</span>
+    <span class="n">legacy</span> <span class="o">=</span> <span class="s1">&#39;vtk&#39;</span>
+    <span class="n">binary</span> <span class="o">=</span> <span class="s1">&#39;vtp&#39;</span></div>
+
+
+<div class="viewcode-block" id="ImageTypes"><a class="viewcode-back" href="../../honeybee_vtk.types.html#honeybee_vtk.types.ImageTypes">[docs]</a><span class="k">class</span> <span class="nc">ImageTypes</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Supported image types.&quot;&quot;&quot;</span>
+    <span class="n">png</span> <span class="o">=</span> <span class="s1">&#39;png&#39;</span>
+    <span class="n">jpg</span> <span class="o">=</span> <span class="s1">&#39;jpg&#39;</span>
+    <span class="n">ps</span> <span class="o">=</span> <span class="s1">&#39;ps&#39;</span>
+    <span class="n">tiff</span> <span class="o">=</span> <span class="s1">&#39;tiff&#39;</span>
+    <span class="n">bmp</span> <span class="o">=</span> <span class="s1">&#39;bmp&#39;</span>
+    <span class="n">pnm</span> <span class="o">=</span> <span class="s1">&#39;pnm&#39;</span></div>
+
+
+<div class="viewcode-block" id="DataFieldInfo"><a class="viewcode-back" href="../../honeybee_vtk.types.html#honeybee_vtk.types.DataFieldInfo">[docs]</a><span class="k">class</span> <span class="nc">DataFieldInfo</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Data info for metadata that is added to Polydata.</span>
+
+<span class="sd">    This object hosts information about the data that is added to polydata.</span>
+<span class="sd">    This object consists name, min and max values in the data, and the color</span>
+<span class="sd">    theme to be used in visualization of the data.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        name: A string representing the name of for data.</span>
+<span class="sd">        range: A tuple of min, max values as either integers or floats.</span>
+<span class="sd">            Defaults to None which will create a range of minimum and maximum</span>
+<span class="sd">            values in the data.</span>
+<span class="sd">        colors: A Colors object that defines colors for the legend.</span>
+<span class="sd">            Defaults to Ecotect colorset.</span>
+<span class="sd">        per_face : A Boolean to indicate if the data is per face or per point. In</span>
+<span class="sd">            most cases except for sensor points that are loaded as sensors the data</span>
+<span class="sd">            are provided per face.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">colors</span><span class="p">:</span> <span class="n">ColorSets</span> <span class="o">=</span> <span class="n">ColorSets</span><span class="o">.</span><span class="n">ecotect</span><span class="p">,</span> <span class="n">per_face</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+                 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_range</span> <span class="o">=</span> <span class="nb">range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">per_face</span> <span class="o">=</span> <span class="n">per_face</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_legend_param</span> <span class="o">=</span> <span class="n">LegendParameter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">auto_range</span><span class="o">=</span><span class="nb">range</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">legend_parameter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LegendParameter</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Legend associated with the DataFieldInfo object.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_legend_param</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">range</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Range is a tuple of minimum and maximum values.</span>
+
+<span class="sd">        If these minimum and maximum values are not provided, they are calculated</span>
+<span class="sd">        automatically. In such a case, the minimum and maximum values in the data are</span>
+<span class="sd">        used.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_range</span></div>
+
+
+<span class="k">def</span> <span class="nf">_get_data_range</span><span class="p">(</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">data_range</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span>
+        <span class="n">array</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">vtk</span><span class="o">.</span><span class="n">vtkFloatArray</span><span class="p">,</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkIntArray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;Calculate data range for data based on data array and user provided legend range.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        name: Name of data (e.g. Useful Daylight Autonomy.)</span>
+<span class="sd">        data_range: A list of numbers.</span>
+<span class="sd">        array: A vtk float array or a vtk int array.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A list of min and max values to be used as a range for the data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># calculate range based on the data</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkStringArray</span><span class="p">):</span>
+
+        <span class="n">auto_range</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">GetRange</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">data_range</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;In data </span><span class="si">{</span><span class="n">name</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s1">, since min and max&#39;</span>
+                <span class="s1">&#39; values of legend are not provided, those values will be auto&#39;</span>
+                <span class="s1">&#39; calculated based on data. </span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">auto_range</span><span class="p">)</span>
+
+        <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span> <span class="o">=</span> <span class="n">data_range</span>
+        <span class="k">if</span> <span class="nb">min</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">max</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;In data </span><span class="si">{</span><span class="n">name</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s1">, since min and max&#39;</span>
+                <span class="s1">&#39; values of legend are not provided, those values will be auto&#39;</span>
+                <span class="s1">&#39; calculated based on data. </span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">auto_range</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">min</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">max</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;In data </span><span class="si">{</span><span class="n">name</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s1">, since min&#39;</span>
+                <span class="s1">&#39; value of the legend is not provided, that value will be auto&#39;</span>
+                <span class="s1">&#39; calculated based on data. </span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">auto_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">max</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">min</span> <span class="ow">and</span> <span class="nb">max</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;In data </span><span class="si">{</span><span class="n">name</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s1">, since max&#39;</span>
+                <span class="s1">&#39; value of the legend is not provided, that value will be auto&#39;</span>
+                <span class="s1">&#39; calculated based on data. </span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="n">auto_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">elif</span> <span class="nb">min</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">max</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;In data </span><span class="si">{</span><span class="n">name</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s1">, min and max values&#39;</span>
+                <span class="s1">&#39; of legend cannot be both 0. </span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">max</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">min</span> <span class="o">&gt;=</span> <span class="nb">max</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;In data </span><span class="si">{</span><span class="n">name</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s1"> Min value cannot be greater&#39;</span>
+                    <span class="s1">&#39; than the max value.&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">min</span> <span class="o">==</span> <span class="nb">max</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;In data </span><span class="si">{</span><span class="n">name</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s1"> Min and max values cannot&#39;</span>
+                    <span class="s1">&#39; be the same.&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">data_range</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="PolyData"><a class="viewcode-back" href="../../honeybee_vtk.types.html#honeybee_vtk.types.PolyData">[docs]</a><span class="k">class</span> <span class="nc">PolyData</span><span class="p">(</span><span class="n">vtk</span><span class="o">.</span><span class="n">vtkPolyData</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A thin wrapper around vtk.vtkPolyData.</span>
+
+<span class="sd">    PolyData has additional fields for metadata information.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">identifier</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boundary</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">construction</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modifier</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># keep track of information for each data field.</span>
+
+    <span class="o">@</span> <span class="nb">staticmethod</span>
+    <span class="k">def</span> <span class="nf">_resolve_array_type</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkFloatArray</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkIntArray</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkStringArray</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unsupported input data type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="o">@</span> <span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">data_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DataFieldInfo</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Get data fields for this Polydata.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span>
+
+<div class="viewcode-block" id="PolyData.add_data"><a class="viewcode-back" href="../../honeybee_vtk.types.html#honeybee_vtk.types.PolyData.add_data">[docs]</a>    <span class="k">def</span> <span class="nf">add_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">cell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">data_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a list of data to a vtkPolyData.</span>
+
+<span class="sd">        Data can be added to cells or points. By default the data will be added to cells.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data: A list of values. The length of the data should match the length of</span>
+<span class="sd">                DataCells or DataPoints in Polydata.</span>
+<span class="sd">            name: Name of data (e.g. Useful Daylight Autonomy.)</span>
+<span class="sd">            cell: A Boolean to indicate if the data is per cell or per point. In</span>
+<span class="sd">                most cases except for sensor points that are loaded as sensors the data</span>
+<span class="sd">                are provided per cell.</span>
+<span class="sd">            colors: A Colors object that defines colors for the legend.</span>
+<span class="sd">            data_range: A list with two values for minimum and maximum values for legend</span>
+<span class="sd">                parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">,</span> \
+            <span class="sa">f</span><span class="s1">&#39;A data filed by name &quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; already exist. Try a different name.&#39;</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_array_type</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">values</span><span class="o">.</span><span class="n">SetNumberOfComponents</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">values</span><span class="o">.</span><span class="n">SetNumberOfTuples</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+            <span class="n">iterator</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_array_type</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">iterator</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">values</span><span class="o">.</span><span class="n">SetName</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">iterator</span><span class="p">:</span>
+            <span class="c1"># NOTE: This is my (mostapha&#39;s) understanding from the original code for</span>
+            <span class="c1"># tuple data. This needs to be tested.</span>
+            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">values</span><span class="o">.</span><span class="n">InsertNextValue</span><span class="p">(</span><span class="o">*</span><span class="n">d</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">values</span><span class="o">.</span><span class="n">InsertNextValue</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">cell</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">GetCellData</span><span class="p">()</span><span class="o">.</span><span class="n">AddArray</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">GetPointData</span><span class="p">()</span><span class="o">.</span><span class="n">AddArray</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Modified</span><span class="p">()</span>
+
+        <span class="c1"># set data range</span>
+        <span class="n">data_range</span> <span class="o">=</span> <span class="n">_get_data_range</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">data_range</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+
+        <span class="c1"># set colors</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">colors</span><span class="p">:</span>
+            <span class="n">colors</span> <span class="o">=</span> <span class="n">ColorSets</span><span class="o">.</span><span class="n">ecotect</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">DataFieldInfo</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">data_range</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">cell</span><span class="p">)</span>
+
+        <span class="c1"># if it&#39;s a string array don&#39;t publish the legend</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkStringArray</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">legend_parameter</span><span class="o">.</span><span class="n">hide_legend</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="PolyData.color_by"><a class="viewcode-back" href="../../honeybee_vtk.types.html#honeybee_vtk.types.PolyData.color_by">[docs]</a>    <span class="k">def</span> <span class="nf">color_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set the name for active data that should be used to color PolyData.&quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">,</span> \
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> is not a valid data field for this PolyData. Available &#39;</span> \
+            <span class="sa">f</span><span class="s1">&#39;data fields are: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+
+        <span class="k">if</span> <span class="n">cell</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">GetCellData</span><span class="p">()</span><span class="o">.</span><span class="n">SetActiveScalars</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">GetPointData</span><span class="p">()</span><span class="o">.</span><span class="n">SetActiveScalars</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Modified</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PolyData.to_vtk"><a class="viewcode-back" href="../../honeybee_vtk.types.html#honeybee_vtk.types.PolyData.to_vtk">[docs]</a>    <span class="k">def</span> <span class="nf">to_vtk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_folder</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">writer</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write to a VTK file.</span>
+
+<span class="sd">        The file extension will be set to vtk for ASCII format and vtp for binary format.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_write_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_folder</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">writer</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PolyData.to_folder"><a class="viewcode-back" href="../../honeybee_vtk.types.html#honeybee_vtk.types.PolyData.to_folder">[docs]</a>    <span class="k">def</span> <span class="nf">to_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_folder</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write data to a folder with a JSON meta file.</span>
+
+<span class="sd">        This method generates a folder that includes a JSON meta file along with all the</span>
+<span class="sd">        binary arrays written as standalone binary files.</span>
+
+<span class="sd">        The generated format can be used by vtk.js using the reader below</span>
+<span class="sd">        https://kitware.github.io/vtk-js/examples/HttpDataSetReader.html</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            target_folder: Path to target folder. Default: .</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_write_to_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_folder</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hb_object</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Face</span><span class="p">,</span> <span class="n">Aperture</span><span class="p">,</span> <span class="n">Shade</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Extract metadata from a honeybee object and get it as a dictionary.</span>
+
+<span class="sd">        This private method will extract properties such as display name,</span>
+<span class="sd">        boundary condition, construction display name, and modifier display name from</span>
+<span class="sd">        a honeybee object and will return a dictionary that has property name as keys</span>
+<span class="sd">        and a list of property names as values. The length of the list will be</span>
+<span class="sd">        equal to the number of cells in the Polydata object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># extracting metadata and setting attributes</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hb_object</span><span class="p">,</span> <span class="n">Face</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">hb_object</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hb_object</span><span class="p">,</span> <span class="n">Aperture</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s1">&#39;Aperture&#39;</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hb_object</span><span class="p">,</span> <span class="n">Shade</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s1">&#39;Shade&#39;</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hb_object</span><span class="p">,</span> <span class="n">Door</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s1">&#39;Door&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">identifier</span> <span class="o">=</span> <span class="n">hb_object</span><span class="o">.</span><span class="n">identifier</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">hb_object</span><span class="o">.</span><span class="n">display_name</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s1">&#39;Shade&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">boundary</span> <span class="o">=</span> <span class="n">hb_object</span><span class="o">.</span><span class="n">boundary_condition</span><span class="o">.</span><span class="n">ToString</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">construction</span> <span class="o">=</span> <span class="n">hb_object</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">construction</span><span class="o">.</span><span class="n">display_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modifier</span> <span class="o">=</span> <span class="n">hb_object</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">radiance</span><span class="o">.</span><span class="n">modifier</span><span class="o">.</span><span class="n">display_name</span>
+
+        <span class="c1"># number of cells in polydata</span>
+        <span class="n">num_of_cells</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetNumberOfCells</span><span class="p">()</span>
+
+        <span class="c1"># creating a dictionary with metadata name : List[metadata value] structure</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;Shade&#39;</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_of_cells</span>
+            <span class="n">construction</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">construction</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_of_cells</span>
+            <span class="n">modifier</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">modifier</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_of_cells</span>
+
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;Name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+                <span class="s2">&quot;Construction&quot;</span><span class="p">:</span> <span class="n">construction</span><span class="p">,</span>
+                <span class="s2">&quot;Modifier&quot;</span><span class="p">:</span> <span class="n">modifier</span>
+            <span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_of_cells</span>
+            <span class="n">boundary</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">boundary</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_of_cells</span>
+            <span class="n">construction</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">construction</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_of_cells</span>
+            <span class="n">modifier</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">modifier</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_of_cells</span>
+
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;Name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+                <span class="s2">&quot;Boundary&quot;</span><span class="p">:</span> <span class="n">boundary</span><span class="p">,</span>
+                <span class="s2">&quot;Construction&quot;</span><span class="p">:</span> <span class="n">construction</span><span class="p">,</span>
+                <span class="s2">&quot;Modifier&quot;</span><span class="p">:</span> <span class="n">modifier</span>
+            <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">metadata</span>
+
+    <span class="k">def</span> <span class="nf">_add_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Add metadata to Polydata.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            metadata: A dictionary generated from _get_metadata method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">data_range</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Name: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Boundary: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">boundary</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Construction: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">construction</span><span class="si">}</span><span class="s1"> |&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39; Modifier: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">modifier</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="JoinedPolyData"><a class="viewcode-back" href="../../honeybee_vtk.types.html#honeybee_vtk.types.JoinedPolyData">[docs]</a><span class="k">class</span> <span class="nc">JoinedPolyData</span><span class="p">(</span><span class="n">vtk</span><span class="o">.</span><span class="n">vtkAppendPolyData</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A thin wrapper around vtk.vtkAppendPolyData.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="JoinedPolyData.from_polydata"><a class="viewcode-back" href="../../honeybee_vtk.types.html#honeybee_vtk.types.JoinedPolyData.from_polydata">[docs]</a>    <span class="o">@</span> <span class="nb">classmethod</span>
+    <span class="k">def</span> <span class="nf">from_polydata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">polydata</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">PolyData</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;Join several polygonal datasets.</span>
+
+<span class="sd">        This function merges several polygonal datasets into a single polygonal datasets.</span>
+<span class="sd">        All geometry is extracted and appended, but point and cell attributes (i.e.,</span>
+<span class="sd">        scalars, vectors, normals) are extracted and appended only if all datasets have</span>
+<span class="sd">        the point and/or cell attributes available. (For example, if one dataset has</span>
+<span class="sd">        point scalars but another does not, point scalars will not be appended.)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">joined_polydata</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">vtk_polydata</span> <span class="ow">in</span> <span class="n">polydata</span><span class="p">:</span>
+            <span class="n">joined_polydata</span><span class="o">.</span><span class="n">AddInputData</span><span class="p">(</span><span class="n">vtk_polydata</span><span class="p">)</span>
+
+        <span class="n">joined_polydata</span><span class="o">.</span><span class="n">Update</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">joined_polydata</span></div>
+
+<div class="viewcode-block" id="JoinedPolyData.append"><a class="viewcode-back" href="../../honeybee_vtk.types.html#honeybee_vtk.types.JoinedPolyData.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polydata</span><span class="p">:</span> <span class="n">PolyData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Append a new polydata to current data.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">AddInputData</span><span class="p">(</span><span class="n">polydata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Update</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="JoinedPolyData.extend"><a class="viewcode-back" href="../../honeybee_vtk.types.html#honeybee_vtk.types.JoinedPolyData.extend">[docs]</a>    <span class="k">def</span> <span class="nf">extend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polydata</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">PolyData</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Extend a list of new polydata to current data.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">polydata</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">AddInputData</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Update</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="JoinedPolyData.to_vtk"><a class="viewcode-back" href="../../honeybee_vtk.types.html#honeybee_vtk.types.JoinedPolyData.to_vtk">[docs]</a>    <span class="k">def</span> <span class="nf">to_vtk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_folder</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">writer</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write to a VTK file.</span>
+
+<span class="sd">        The file extension will be set to vtk for ASCII format and vtp for binary format.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_write_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_folder</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">writer</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="JoinedPolyData.to_folder"><a class="viewcode-back" href="../../honeybee_vtk.types.html#honeybee_vtk.types.JoinedPolyData.to_folder">[docs]</a>    <span class="k">def</span> <span class="nf">to_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_folder</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write data to a folder with a JSON meta file.</span>
+
+<span class="sd">        This method generates a folder that includes a JSON meta file along with all the</span>
+<span class="sd">        binary arrays written as standalone binary files.</span>
+
+<span class="sd">        The generated format can be used by vtk.js using the reader below</span>
+<span class="sd">        https://kitware.github.io/vtk-js/examples/HttpDataSetReader.html</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            target_folder: Path to target folder. Default: .</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_write_to_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_folder</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ModelDataSet"><a class="viewcode-back" href="../../honeybee_vtk.types.html#honeybee_vtk.types.ModelDataSet">[docs]</a><span class="k">class</span> <span class="nc">ModelDataSet</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A dataset object in honeybee VTK model.</span>
+
+<span class="sd">    This data set holds the PolyData objects as well as representation information</span>
+<span class="sd">    for those PolyData. All the objects in ModelDataSet will have the same</span>
+<span class="sd">    representation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">PolyData</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="n">Color</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_mode</span> <span class="o">=</span> <span class="n">DisplayMode</span><span class="o">.</span><span class="n">Shaded</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_by</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="o">@</span> <span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">fields_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{}</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_fields</span>
+
+    <span class="o">@</span> <span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">active_field_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFieldInfo</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get information for active field info.</span>
+
+<span class="sd">        It will be the field info for the field that is set in color_by. If color_by</span>
+<span class="sd">        is not set the first field will be used. If no field is available a default</span>
+<span class="sd">        field will be generated.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields_info</span>
+        <span class="n">color_by</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_by</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">info</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">DataFieldInfo</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">color_by</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="n">info</span><span class="p">[</span><span class="n">color_by</span><span class="p">]</span>
+
+<div class="viewcode-block" id="ModelDataSet.add_data_fields"><a class="viewcode-back" href="../../honeybee_vtk.types.html#honeybee_vtk.types.ModelDataSet.add_data_fields">[docs]</a>    <span class="k">def</span> <span class="nf">add_data_fields</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">per_face</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">data_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add data fields to PolyData objects in this dataset.</span>
+
+<span class="sd">        Use this method to add data like temperature or illuminance values to PolyData</span>
+<span class="sd">        objects. The length of the input data should match the length of the data in</span>
+<span class="sd">        DataSet.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data: A list of list of values. There should be a list per data in DataSet.</span>
+<span class="sd">                The order of data should match the order of data in DataSet. You can</span>
+<span class="sd">                use data.identifier to match the orders before assigning them to DataSet.</span>
+<span class="sd">            name: Name of data (e.g. Useful Daylight Autonomy.)</span>
+<span class="sd">            per_face: A Boolean to indicate if the data is per face or per point. In</span>
+<span class="sd">                most cases except for sensor points that are loaded as sensors the data</span>
+<span class="sd">                are provided per face.</span>
+<span class="sd">            colors: A Colors object that defines colors for the legend.</span>
+<span class="sd">            data_range: A list with two values for minimum and maximum values for legend</span>
+<span class="sd">                parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> \
+            <span class="sa">f</span><span class="s1">&#39;Length of input data </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s1"> does not match the length of&#39;</span>\
+            <span class="sa">f</span><span class="s1">&#39; </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1"> in this dataset </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s1">.&#39;</span>
+
+        <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">count</span><span class="p">]</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span>
+                <span class="n">d</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">cell</span><span class="o">=</span><span class="n">per_face</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">data_range</span><span class="o">=</span><span class="n">data_range</span><span class="p">)</span></div>
+
+    <span class="o">@</span> <span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+
+    <span class="o">@</span> <span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Color</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Diffuse color.</span>
+
+<span class="sd">        By default the dataset will be colored by this color unless color_by property</span>
+<span class="sd">        is set to a dataset value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_color</span>
+
+    <span class="o">@</span> <span class="n">color</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Color</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="n">value</span> <span class="k">if</span> <span class="n">value</span> <span class="k">else</span> <span class="n">Color</span><span class="p">(</span><span class="mi">204</span><span class="p">,</span> <span class="mi">204</span><span class="p">,</span> <span class="mi">204</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+
+    <span class="o">@</span> <span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">color_by</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set the field that the DataSet should colored-by when exported to vtkjs.</span>
+
+<span class="sd">        By default the dataset will be colored by surface color and not data fields.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_color_by</span>
+
+    <span class="o">@</span> <span class="n">color_by</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">color_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">fields_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields_info</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_color_by</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">fields_info</span><span class="p">,</span> \
+                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1"> is not a valid data field for this ModelDataSet. Available &#39;</span> \
+                <span class="sa">f</span><span class="s1">&#39;data fields are: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">fields_info</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s1">&#39;</span>
+
+        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">color_by</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">fields_info</span><span class="p">[</span><span class="n">value</span><span class="p">]</span><span class="o">.</span><span class="n">per_face</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_color_by</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="o">@</span> <span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">opacity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Visualization opacity.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">a</span>
+
+    <span class="o">@</span> <span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">display_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DisplayMode</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Display model (AKA Representation) mode in VTK Glance viewer.</span>
+
+<span class="sd">        Valid values are:</span>
+<span class="sd">            * Surface / Shaded</span>
+<span class="sd">            * SurfaceWithEdges</span>
+<span class="sd">            * Wireframe</span>
+<span class="sd">            * Points</span>
+
+<span class="sd">        Default is 0 for Surface mode.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_mode</span>
+
+    <span class="o">@</span> <span class="n">display_mode</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">display_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="n">DisplayMode</span> <span class="o">=</span> <span class="n">DisplayMode</span><span class="o">.</span><span class="n">Surface</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display_mode</span> <span class="o">=</span> <span class="n">mode</span>
+
+    <span class="o">@</span> <span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">edge_visibility</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Edge visibility.</span>
+
+<span class="sd">        The edges will be visible in Wireframe or SurfaceWithEdges modes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_mode</span><span class="o">.</span><span class="n">value</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="ModelDataSet.rgb_to_decimal"><a class="viewcode-back" href="../../honeybee_vtk.types.html#honeybee_vtk.types.ModelDataSet.rgb_to_decimal">[docs]</a>    <span class="k">def</span> <span class="nf">rgb_to_decimal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;RGB color in decimal.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="mi">255</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ModelDataSet.to_folder"><a class="viewcode-back" href="../../honeybee_vtk.types.html#honeybee_vtk.types.ModelDataSet.to_folder">[docs]</a>    <span class="k">def</span> <span class="nf">to_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">sub_folder</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Write data information to a folder.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            folder: Target folder to write the dataset.</span>
+<span class="sd">            sub_folder: Subfolder name for this dataset. By default it will be set to</span>
+<span class="sd">                the name of the dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sub_folder</span> <span class="o">=</span> <span class="n">sub_folder</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">target_folder</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">sub_folder</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ModelDataSet: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> has no data to be exported to folder.&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">JoinedPolyData</span><span class="o">.</span><span class="n">from_polydata</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_write_to_folder</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">target_folder</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="ModelDataSet.as_data_set"><a class="viewcode-back" href="../../honeybee_vtk.types.html#honeybee_vtk.types.ModelDataSet.as_data_set">[docs]</a>    <span class="k">def</span> <span class="nf">as_data_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataSet</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Convert to a vtkjs DataSet object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            url: Relative path to where PolyData information should be sourced from.</span>
+<span class="sd">                By default url will be set to ModelDataSet name assuming data is dumped</span>
+<span class="sd">                to a folder with the same name.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;representation&#39;</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">display_mode</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="s1">&#39;edgeVisibility&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_visibility</span><span class="p">),</span>
+            <span class="s1">&#39;diffuseColor&#39;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">r</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">g</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">b</span> <span class="o">/</span> <span class="mi">255</span><span class="p">],</span>
+            <span class="s1">&#39;opacity&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">opacity</span> <span class="o">/</span> <span class="mi">255</span>
+        <span class="p">}</span>
+
+        <span class="n">ds_prop</span> <span class="o">=</span> <span class="n">DataSetProperty</span><span class="o">.</span><span class="n">parse_obj</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+
+        <span class="n">mapper</span> <span class="o">=</span> <span class="n">DataSetMapper</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_by</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mapper</span><span class="o">.</span><span class="n">colorByArrayName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_by</span>
+
+        <span class="c1"># Getting range of each data added to the ModelDataSet object.</span>
+        <span class="n">ranges</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;Grid&#39;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields_info</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields_info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">ranges</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">range</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s1">&#39;httpDataSetReader&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;url&#39;</span><span class="p">:</span> <span class="n">url</span> <span class="k">if</span> <span class="n">url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">},</span>
+            <span class="s1">&#39;property&#39;</span><span class="p">:</span> <span class="n">ds_prop</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span>
+            <span class="s1">&#39;mapper&#39;</span><span class="p">:</span> <span class="n">mapper</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span>
+            <span class="s1">&#39;legend_ranges&#39;</span><span class="p">:</span> <span class="n">ranges</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">DataSet</span><span class="o">.</span><span class="n">parse_obj</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;ModelDataSet: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span> \
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  DataSets: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s1">  Color:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="si">}</span><span class="s1">&#39;</span></div>
+
+
+<span class="k">def</span> <span class="nf">_write_to_file</span><span class="p">(</span>
+    <span class="n">polydata</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PolyData</span><span class="p">,</span> <span class="n">JoinedPolyData</span><span class="p">],</span> <span class="n">target_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">writer</span><span class="p">:</span> <span class="n">VTKWriters</span> <span class="o">=</span> <span class="n">VTKWriters</span><span class="o">.</span><span class="n">binary</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Write vtkPolyData to a file.&quot;&quot;&quot;</span>
+
+    <span class="n">extension</span> <span class="o">=</span> <span class="n">writer</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="k">if</span> <span class="n">writer</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;legacy&#39;</span><span class="p">:</span>
+        <span class="n">_writer</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPolyDataWriter</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">_writer</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkXMLPolyDataWriter</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">writer</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;binary&#39;</span><span class="p">:</span>
+            <span class="n">_writer</span><span class="o">.</span><span class="n">SetDataModeToBinary</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">_writer</span><span class="o">.</span><span class="n">SetDataModeToAscii</span><span class="p">()</span>
+
+    <span class="n">file_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">target_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">extension</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">_writer</span><span class="o">.</span><span class="n">SetFileName</span><span class="p">(</span><span class="n">file_path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">polydata</span><span class="p">,</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPolyData</span><span class="p">):</span>
+        <span class="n">_writer</span><span class="o">.</span><span class="n">SetInputData</span><span class="p">(</span><span class="n">polydata</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">_writer</span><span class="o">.</span><span class="n">SetInputConnection</span><span class="p">(</span><span class="n">polydata</span><span class="o">.</span><span class="n">GetOutputPort</span><span class="p">())</span>
+
+    <span class="n">_writer</span><span class="o">.</span><span class="n">Write</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">file_path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">_write_to_folder</span><span class="p">(</span><span class="n">polydata</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PolyData</span><span class="p">,</span> <span class="n">JoinedPolyData</span><span class="p">],</span> <span class="n">target_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Write PolyData to a folder using vtkJSONDataSetWriter.&quot;&quot;&quot;</span>
+    <span class="n">writer</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkJSONDataSetWriter</span><span class="p">()</span>
+    <span class="n">folder</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">target_folder</span><span class="p">)</span>
+    <span class="n">folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">SetFileName</span><span class="p">(</span><span class="n">folder</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">polydata</span><span class="p">,</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkPolyData</span><span class="p">):</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">SetInputData</span><span class="p">(</span><span class="n">polydata</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">SetInputConnection</span><span class="p">(</span><span class="n">polydata</span><span class="o">.</span><span class="n">GetOutputPort</span><span class="p">())</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">Write</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">folder</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
