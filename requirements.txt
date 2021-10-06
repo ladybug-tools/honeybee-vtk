@@ -1,2 +1,3 @@
 lbt-honeybee>=0.5.65
-vtk==9.0.3
+vtk==8.1.2;python_version<'3.0'
+vtk==9.0.3;python_version>='3.6'
