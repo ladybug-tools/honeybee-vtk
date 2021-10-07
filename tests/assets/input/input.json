@@ -1,0 +1,5 @@
+{
+  "paths": ["tests/assets/df_results", "tests/assets/udi_results"],
+  "identifiers": ["Daylight-Factor", "UDI"],
+  "units": ["%", "%"]
+}
