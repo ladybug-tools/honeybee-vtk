@@ -1,17 +1,17 @@
-
-{ 
-
-    "grid: {
-            "name": "Daylight-Factor",
-            "object_type": "grid",
-            "file_paths": ["./tests/assets/df_results/TestRoom_1.res",
-            "./tests/assets/df_results/TestRoom_2.res"]
+{
+  "data": [
+    {
+      "name": "Daylight-Factor",
+      "object_type": "grid",
+      "file_paths": [
+        "./tests/assets/df_results/TestRoom_1.res",
+        "./tests/assets/df_results/TestRoom_2.res"
+      ]
     },
-    "radiation":{
-        "name": "Radiation",
-        "object_type": "shade",
-        "file_paths": ["./tests/assets/radiation_results/radiation.csv"]
+    {
+      "name": "Radiation",
+      "object_type": "shade",
+      "file_paths": ["./tests/assets/radiation_results/radiation.csv"]
     }
-
+  ]
 }
-
