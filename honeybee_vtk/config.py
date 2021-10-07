@@ -206,6 +206,14 @@ class DataConfig(BaseModel):
         return v
 
 
+class Config(BaseModel):
+    """Config for simulation results you'd like to load on a honeybee-vtk model."""
+    data: List[DataConfig] = Field(
+        description='List of data-config objects that define the data to be loaded on'
+        ' the model.'
+    )
+
+
 def _get_grid_type(model: Model) -> str:
     """Get the type of grid in the model
 
