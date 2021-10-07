@@ -141,7 +141,7 @@ class LegendConfig(BaseModel):
 
 
 class DataConfig(BaseModel):
-    """Config for simulation results you'd like to load on a honeybee-vtk model."""
+    """data-config for simulation results you'd like to load on a honeybee-vtk model."""
 
     identifier: str = Field(
         description='identifier to be given to data. Example, "Daylight-Factor".'
@@ -341,7 +341,7 @@ def _load_data(folder_path: pathlib.Path, identifier: str, model: Model,
 def _get_legend_range(data: DataConfig) -> List[Union[float, int]]:
     """Read and get legend min and max values from data if provided by the user.
 
-    The value provided by this function is processed and validated in _get_data_range 
+    The value provided by this function is processed and validated in _get_data_range
     function in the type module.
 
     Args:
