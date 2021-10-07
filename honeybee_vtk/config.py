@@ -5,7 +5,7 @@ import json
 import pathlib
 import warnings
 
-from typing import List, Union, Tuple
+from typing import List, Union, Tuple, TypeVar
 from pydantic import BaseModel, validator, Field, constr, conint
 from pydantic.types import confloat, conlist
 from .types import DataSetNames
@@ -14,6 +14,27 @@ from .model import Model
 from ._helper import get_line_count, get_min_max
 from .vtkjs.schema import DisplayMode
 from .scene import Scene
+
+
+class InputFile(BaseModel):
+    """Config for the input file to be consumed by the config command."""
+    paths: List[str] = Field(
+        description='Paths to the result folders.')
+
+    identifiers: List[str] = Field(
+        description='Identifiers for the simulation data that will be mounted on the'
+        ' model. The length of this list must match the length of paths.')
+
+    units: List[str] = Field(
+        description='Units for the simulation data that will be mounted on the'
+        ' model. The length of this list must match the length of paths.')
+
+    @validator('identifiers', 'units')
+    def check_length(cls, v, values):
+        """Check that the length of identifiers and units match the length of paths."""
+        if len(values['paths']) != len(v):
+            raise ValueError('The length of paths, identifiers, and units must match.')
+        return v
 
 
 class Autocalculate(BaseModel):
