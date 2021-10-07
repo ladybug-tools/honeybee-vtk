@@ -1,7 +1,9 @@
 """Command to write a config file to be consumed by honeybee-vtk."""
 import click
+import sys
+import traceback
 import pathlib
-from honeybee_vtk.config import DataConfig
+from honeybee_vtk.config import DataConfig, Config
 
 
 @click.group()
@@ -19,13 +21,17 @@ def config():
 @click.option('--unit', type=click.STRING, required=True, multiple=True,
               help='The unit of the data being loaded.')
 @click.option('--config-path', '-cp',
-              type=click.Path(exists=True, dir_okay=True, resolve_path=True),
+              type=click.Path(dir_okay=True, resolve_path=True),
               default=pathlib.Path.cwd(), show_default=True,
               help='Path to where the config file shall be written.')
-@click.option('--name', '-n', type=click.STRING, default='config', show_default=True,
-              help='Name of the config file.')
-def config(paths, id, unit, config_path, name,):
+@click.option('--name', '-n', type=click.STRING, default='config',
+              show_default=True, help='Name of the config file.')
+def config(paths, id, unit, config_path, name):
     """Write a config file to be consumed by honeybee-vtk.
+
+    \b
+    This command accepts multiple values. The number of values provided to the options
+    "id" and "unit" must match the number of paths provided to the command as an argument.
 
     \b
     Args:
@@ -34,7 +40,7 @@ def config(paths, id, unit, config_path, name,):
             model. For example, "Daylight-Factor". Accepts multiple values.
         unit: A string representing the unit of the data being mounted on the model.
             For example, 'Lux'. Accepts multiple values.
-        config_path: Path to where the config file shall be written..
+        config_path: Path to where the config file shall be written.
             Defaults to the current working directory.
         name: A string as the name of the config file. Defaults to 'config'.
     """
