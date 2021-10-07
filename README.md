@@ -38,7 +38,8 @@ Usage: honeybee-vtk translate [OPTIONS] HBJSON_FILE
 Options:
   -n, --name TEXT                 Name of the output file.  [default: model]
   -f, --folder DIRECTORY          Path to target folder.  [default: .]
-  -ft, --file-type [html|vtkjs]   Switch between html and vtkjs formats
+  -ft, --file-type [html|vtkjs|vtp|vtk]
+                                  Switch between html and vtkjs formats
                                   [default: html]
 
   -dm, --display-mode [shaded|surface|surfacewithedges|wireframe|points]
@@ -51,6 +52,13 @@ Options:
 
   -sh, --show-html, --show        Open the generated HTML file in a browser.
                                   [default: False]
+
+  -cf, --config PATH              File Path to the config json file which can
+                                  be used to mount simulation data on HBJSON.
+
+  -vd, --validate-data            Validate simulation data before loading on
+                                  the model. This is recommended when using
+                                  this command locally.  [default: False]
 
   --help                          Show this message and exit.
 ```
@@ -65,19 +73,24 @@ Usage: honeybee-vtk export-images [OPTIONS] HBJSON_FILE
       hbjson-file: Path to an HBJSON file.
 
 Options:
-  -n, --name TEXT                 Name of image files.  [default: Camera]
   -f, --folder DIRECTORY          Path to target folder.  [default: .]
   -it, --image-type [png|jpg|ps|tiff|bmp|pnm]
                                   choose the type of image file.  [default:
                                   jpg]
 
-  -iw, --image-width INTEGER      Width of images in pixels.  [default: 2500]
-  -ih, --image-height INTEGER     Height of images in pixels.  [default: 2000]
+  -iw, --image-width INTEGER      Width of images in pixels. If not set,
+                                  Radiance default x dimension of view will be
+                                  used.  [default: 0]
+
+  -ih, --image-height INTEGER     Height of images in pixels.If not set,
+                                  Radiance default y dimension of view will be
+                                  used.  [default: 0]
+
   -bc, --background-color <INTEGER INTEGER INTEGER>...
                                   Set background color for images  [default:
                                   255, 255, 255]
 
-  -dmm, --display-mode-model [shaded|surface|surfacewithedges|wireframe|points]
+  -mdm, --model-display-mode [shaded|surface|surfacewithedges|wireframe|points]
                                   Set display mode for the model.  [default:
                                   shaded]
 
@@ -85,7 +98,7 @@ Options:
                                   Export sensor grids as either points or
                                   meshes.  [default: ignore]
 
-  -dmg, --display-mode-grid [shaded|surface|surfacewithedges|wireframe|points]
+  -gdm, --grid-display-mode [shaded|surface|surfacewithedges|wireframe|points]
                                   Set display mode for the Sensorgrids.
                                   [default: shaded]
 
@@ -95,7 +108,31 @@ Options:
   -cf, --config PATH              File Path to the config json file which can
                                   be used to mount simulation data on HBJSON.
 
+  -vd, --validate-data            Validate simulation data before loading on
+                                  the model. This is recommended when using
+                                  this command locally.  [default: False]
+
   --help                          Show this message and exit.
+```
+
+## Write a config file to be consumed by the Translate command
+```console
+Usage: honeybee-vtk config [OPTIONS] INPUT_FILE
+
+  Write a config file to be consumed by honeybee-vtk.
+
+  Args:
+      input_file: A path to the input file in json format.
+      folder_path: Path to the folder where the config file shall be written.
+          Defaults to the current working directory.
+      name: A string as the name of the config file. Defaults to 'config'.
+
+Options:
+  -fp, --folder-path PATH  Path to the folder where the config file shall be
+                           written.  [default: D:\github\honeybee-vtk]
+
+  -n, --name TEXT          Name of the config file.  [default: config]
+  --help                   Show this message and exit.
 ```
 ## Create arrows and write to a vtp file and open it in a minimalist desktop [viewer](https://kitware.github.io/F3D/)
 
