@@ -50,9 +50,34 @@ def config(paths, id, unit, config_path, name):
             ' to provide the number of values in options "id" and "unit" to match the'
             f' {len(paths)} number of paths provided as an argument to the command.'
         )
+    try:
+        # write minimum required data required to create a DataConfig object
+        req_data = []
+        for count, path in enumerate(paths):
+            temp = {}
+            temp['identifier'] = id[count]
+            temp['object_type'] = 'grid'
+            temp['unit'] = unit[count]
+            temp['path'] = path
+            req_data.append(temp)
 
-    print(paths)
-    print(config_path)
-    print(name)
-    print(id)
-    print(unit)
+        data_configs = [DataConfig.parse_obj(data) for data in req_data]
+        config_data = {'data': data_configs}
+        config = Config.parse_obj(config_data)
+
+        file_name = f'{name}.json'
+        target_path = pathlib.Path(config_path)
+        if not target_path.exists():
+            target_path.mkdir()
+
+        config_path = target_path.joinpath(file_name)
+        with open(config_path, 'w') as f:
+            f.write(config.json())
+        output = f'Config file written to {config_path}'
+
+    except Exception:
+        traceback.print_exc()
+        sys.exit(1)
+    else:
+        print(output, file=sys.stderr)
+        return sys.exit(0)
