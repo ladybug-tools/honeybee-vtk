@@ -197,15 +197,6 @@ class DataConfig(BaseModel):
         description='Legend parameters to create legend out of the this dataset.'
     )
 
-    @validator('path')
-    def validate_folder_path(cls, v: str) -> str:
-        if pathlib.Path(v).is_dir():
-            return v
-        else:
-            raise ValueError(
-                'Not a valid folder path.'
-            )
-
     @validator('legend_parameters')
     def check_pos_against_width_height(cls, v: LegendConfig, values) -> LegendConfig:
         id = values['identifier']
