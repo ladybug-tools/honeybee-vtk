@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 import json
+import os
 import pathlib
 import warnings
 
@@ -328,7 +329,6 @@ def _load_data(folder_path: pathlib.Path, identifier: str, model: Model,
         legend_range: A list of min and max values of the legend parameters provided by
             the user in the config file.
     """
-
     grids_info_json = folder_path.joinpath('grids_info.json')
     with open(grids_info_json) as fh:
         grids_info = json.load(fh)
@@ -465,6 +465,9 @@ def load_config(json_path: str, model: Model, scene: Scene,
             'Not a valid json file.'
         )
     else:
+        cwd = pathlib.Path.cwd()
+        jwd = pathlib.Path(json_path).absolute().parent
+        os.chdir(jwd)
         for json_obj in config['data']:
             # check if model has grids loaded
             assert len(model.sensor_grids.data) > 0, 'Sensor grids are not loaded on'\
@@ -491,5 +494,5 @@ def load_config(json_path: str, model: Model, scene: Scene,
                 warnings.warn(
                     f'Data for {data.identifier} is not loaded.'
                 )
-
+        os.chdir(cwd)
     return model
