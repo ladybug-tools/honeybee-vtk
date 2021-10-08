@@ -470,7 +470,7 @@ def load_config(json_path: str, model: Model, scene: Scene,
         for json_obj in config['data']:
             if not pathlib.Path(json_obj['path']).is_dir():
                 # Making all results folders path relative to the config file
-                json_obj['path'] = str(jwd.joinpath(json_obj['path']))
+                json_obj['path'] = jwd.joinpath(json_obj['path']).as_posix()
             # check if model has grids loaded
             assert len(model.sensor_grids.data) > 0, 'Sensor grids are not loaded on'\
                 ' this model. Reload them using grid options.'
