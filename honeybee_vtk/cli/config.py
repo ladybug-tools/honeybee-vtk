@@ -18,7 +18,7 @@ def config():
                                               resolve_path=True), required=True)
 @click.option('--folder-path', '-fp',
               type=click.Path(dir_okay=True, resolve_path=True),
-              default=pathlib.Path.cwd(), show_default=True,
+              default='.', show_default=True,
               help='Path to the folder where the config file shall be written.')
 @click.option('--name', '-n', type=click.STRING, default='config',
               show_default=True, help='Name of the config file.')

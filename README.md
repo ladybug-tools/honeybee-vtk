@@ -129,7 +129,7 @@ Usage: honeybee-vtk config [OPTIONS] INPUT_FILE
 
 Options:
   -fp, --folder-path PATH  Path to the folder where the config file shall be
-                           written.  [default: D:\github\honeybee-vtk]
+                           written.  [default: .]
 
   -n, --name TEXT          Name of the config file.  [default: config]
   --help                   Show this message and exit.
