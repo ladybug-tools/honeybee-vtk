@@ -201,7 +201,7 @@ def test_validate_data_invalid_json():
     invalid_json_path = r'tests/assets/config/invalid.json'
     model = Model.from_hbjson(model_grid_mesh, load_grids=SensorGridOptions.Mesh)
     scene = Scene()
-    with pytest.raises(ValueError):
+    with pytest.raises(KeyError):
         load_config(invalid_json_path, model, scene)
 
 
