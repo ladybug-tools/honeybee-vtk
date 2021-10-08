@@ -144,12 +144,6 @@ def test_data_config_validators():
     with pytest.raises(ValidationError):
         data_config = DataConfig(identifier='Starlight')
 
-    # invalid folder path
-    with pytest.raises(ValidationError):
-        data_config = DataConfig(
-            identifier='Daylight-factor', object_type='grid', unit='Percentage',
-            path='tests/assets/config/valid.json')
-
     # invalid object type
     with pytest.raises(ValidationError):
         data_config = DataConfig(
