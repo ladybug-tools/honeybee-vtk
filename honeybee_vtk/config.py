@@ -465,6 +465,7 @@ def load_config(json_path: str, model: Model, scene: Scene,
             'Not a valid json file.'
         )
     else:
+        # directory where the config file is located
         jwd = pathlib.Path(json_path).absolute().parent
         for json_obj in config['data']:
             if not pathlib.Path(json_obj['path']).is_dir():
