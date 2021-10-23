@@ -448,6 +448,9 @@ def load_config(json_path: str, model: Model, scene: Scene,
     Returns:
         A honeybee-vtk model with data loaded on it.
     """
+    assert len(model.sensor_grids.data) > 0, 'Sensor grids are not loaded on'\
+        ' this model. Reload them using grid options.'
+
     try:
         with open(json_path) as fh:
             config = json.load(fh)
