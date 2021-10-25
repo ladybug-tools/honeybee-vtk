@@ -1,17 +1,16 @@
 {
   "data": [
     {
-      "name": "Daylight-Factor",
+      "identifier": "Daylight-Factor",
       "object_type": "grid",
-      "file_paths": [
-        "./tests/assets/df_results/TestRoom_1.res",
-        "./tests/assets/df_results/TestRoom_2.res"
-      ]
+      "path": "./tests/assets/df_results/TestRoom_1.res"
+      "unit": "%"
     },
     {
-      "name": "Radiation",
+      "identifier": "Radiation",
       "object_type": "shade",
-      "file_paths": ["./tests/assets/radiation_results/radiation.csv"]
+      "path": "./tests/assets/radiation_results/radiation.csv",
+      "unit": "kwh/m2"
     }
   ]
 }
