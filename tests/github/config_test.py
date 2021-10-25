@@ -191,11 +191,12 @@ def test_load_legend_parameter():
 
 
 def test_validate_data_invalid_json():
+    """Tets if invalid json is detected."""
     model_grid_mesh = r'tests/assets/gridbased.hbjson'
     invalid_json_path = r'tests/assets/config/invalid.json'
     model = Model.from_hbjson(model_grid_mesh, load_grids=SensorGridOptions.Mesh)
     scene = Scene()
-    with pytest.raises(KeyError):
+    with pytest.raises(TypeError):
         load_config(invalid_json_path, model, scene)
 
 
