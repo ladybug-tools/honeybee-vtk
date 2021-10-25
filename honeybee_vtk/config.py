@@ -460,17 +460,17 @@ def load_config(json_path: str, model: Model, scene: Scene,
         )
     else:
         for json_obj in config['data']:
-            if not pathlib.Path(json_obj['path']).is_dir():
-                raise FileNotFoundError(
-                    f'The path {json_obj["path"]} does not exist. It is likely that the'
-                    ' config file is not in the current working directory and the paths'
-                    ' to the result folders defined in the config file are relative to'
-                    ' the location of the config file.'
-                )
             # validate config
             data = DataConfig.parse_obj(json_obj)
-            # if data is requested
+            # only if data is requested move forward.
             if not data.hide:
+                if not pathlib.Path(json_obj['path']).is_dir():
+                    raise FileNotFoundError(
+                        f'The path {json_obj["path"]} does not exist. It is likely that the'
+                        ' config file is not in the current working directory and the paths'
+                        ' to the result folders defined in the config file are relative to'
+                        ' the location of the config file.'
+                    )
                 folder_path = pathlib.Path(data.path)
                 identifier = data.identifier
                 grid_type = _get_grid_type(model)
