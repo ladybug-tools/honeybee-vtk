@@ -19,6 +19,8 @@ tox.ini
 *.pnm
 *.ps
 .DS_Store
+# generated html file
+model.html
 # Rhino Backup files
 *.3dm.rhl
 *3dmbak
