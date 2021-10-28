@@ -23,7 +23,7 @@ except ModuleNotFoundError:
 
 def convert_directory_to_zip_file(
     directory_path: str, remove: bool = True, extension='zip', move=True
-        ) -> str:
+) -> str:
 
     if os.path.isfile(directory_path):
         return
@@ -60,10 +60,12 @@ def add_data_to_viewer(data_path, src_html_path=None):
     if not os.path.isfile(data_path):
         raise FileNotFoundError(f'Failed to find {data_path}')
     if not os.path.exists(src_html_path):
-        raise FileNotFoundError(f'Failed to find source html file: {src_html_path}')
+        raise FileNotFoundError(
+            f'Failed to find source html file: {src_html_path}')
 
     dstDir = os.path.dirname(data_path)
-    dstHtmlPath = os.path.join(dstDir, "%s.html" % os.path.basename(data_path)[:-6])
+    dstHtmlPath = os.path.join(dstDir, "%s.html" %
+                               os.path.basename(data_path)[:-6])
 
     # Extract data as base64
     with open(data_path, 'rb') as data:
@@ -75,10 +77,18 @@ def add_data_to_viewer(data_path, src_html_path=None):
     with open(src_html_path, mode="r", encoding="utf-8") as srcHtml:
         with open(dstHtmlPath, mode="w", encoding="utf-8") as dstHtml:
             for line in srcHtml:
-                if "<!–– insert ––>" in line:
+                if "<noscript>You need to enable JavaScript to run this app.</noscript>" in line:
+                    strings = line.split(
+                        "<noscript>You need to enable JavaScript to run this app.</noscript>", 1)
+                    dstHtml.write(strings[0])
                     dstHtml.write("<script>\n")
-                    dstHtml.write('var contentToLoad = "%s";\n\n' % base64Content)
-                    dstHtml.write("function _getContent() { return contentToLoad }</script>\n")
+                    dstHtml.write('var contentToLoad = "%s";\n' %
+                                  base64Content)
+                    dstHtml.write(
+                        "function _getContent() { return contentToLoad }</script>\n")
+                    dstHtml.write(
+                        "<noscript>You need to enable JavaScript to run this app.</noscript>")
+                    dstHtml.write(strings[1])
                     continue
                 dstHtml.write(line)
     return dstHtmlPath
@@ -145,7 +155,8 @@ def zipAllTimeSteps(directory_path):
                 if os.path.isfile(full_path) and filename not in storedData:
                     storedData.add(filename)
                     rel_path = os.path.join("data", filename)
-                    zipobj.write(full_path, arcname=rel_path, compress_type=compression)
+                    zipobj.write(full_path, arcname=rel_path,
+                                 compress_type=compression)
             # Write the index.json containing pointers to these data arrays
             # while replacing every basepath as '../../data'
             objIndexFilePath = os.path.join(dir_name, folder, "index.json")
@@ -162,7 +173,8 @@ def zipAllTimeSteps(directory_path):
                     continue
             currentObjName = urlToName[folder]
             objIndexrel_path = os.path.join(
-                objNameToUrls.GetUrlName(currentObjName), str(timeStep), "index.json"
+                objNameToUrls.GetUrlName(currentObjName), str(
+                    timeStep), "index.json"
             )
             zipobj.writestr(
                 objIndexrel_path,
@@ -185,7 +197,8 @@ def zipAllTimeSteps(directory_path):
         # vtkjs archive to prevent data duplication
         currentlyAddedData = set()
         # Regex that folders storing timestep data from paraview should follow
-        reg = re.compile(r"^" + os.path.basename(directory_path) + r"\.[0-9]+$")
+        reg = re.compile(
+            r"^" + os.path.basename(directory_path) + r"\.[0-9]+$")
         # We assume an object will not be deleted from a timestep to another so we
         # create a generic index.json for each object
         genericIndexObj = {}
@@ -194,7 +207,8 @@ def zipAllTimeSteps(directory_path):
         for item in rootIndexObj["animation"]["timeSteps"]:
             genericIndexObj["series"].append({})
             genericIndexObj["series"][timeStep]["url"] = str(timeStep)
-            genericIndexObj["series"][timeStep]["timeStep"] = float(item["time"])
+            genericIndexObj["series"][timeStep]["timeStep"] = float(
+                item["time"])
             timeStep = timeStep + 1
         # Keep track of the url for every object
         objNameToUrls = UrlCounterDict()
@@ -205,7 +219,8 @@ def zipAllTimeSteps(directory_path):
             full_path = os.path.join(currentDirectory, folder)
             if os.path.isdir(full_path) and reg.match(folder):
                 if not isSceneInitialized:
-                    InitIndex(os.path.join(full_path, "index.json"), rootIndexObj)
+                    InitIndex(os.path.join(
+                        full_path, "index.json"), rootIndexObj)
                     isSceneInitialized = True
                 addDirectoryToZip(
                     full_path,
