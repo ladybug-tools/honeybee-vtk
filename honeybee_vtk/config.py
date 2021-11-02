@@ -451,6 +451,8 @@ def load_config(json_path: str, model: Model, scene: Scene,
     assert len(model.sensor_grids.data) > 0, 'Sensor grids are not loaded on'\
         ' this model. Reload them using grid options.'
 
+    config_dir = pathlib.Path(json_path).parent
+
     try:
         with open(json_path) as fh:
             config = json.load(fh)
@@ -464,14 +466,14 @@ def load_config(json_path: str, model: Model, scene: Scene,
             data = DataConfig.parse_obj(json_obj)
             # only if data is requested move forward.
             if not data.hide:
-                if not pathlib.Path(json_obj['path']).is_dir():
-                    raise FileNotFoundError(
-                        f'The path {json_obj["path"]} does not exist. It is likely that the'
-                        ' config file is not in the current working directory and the paths'
-                        ' to the result folders defined in the config file are relative to'
-                        ' the location of the config file.'
-                    )
                 folder_path = pathlib.Path(data.path)
+                if not folder_path.is_dir():
+                    folder_path = config_dir.joinpath(
+                        folder_path).resolve().absolute()
+                    data.path = folder_path.as_posix()
+                    if not folder_path.is_dir():
+                        raise FileNotFoundError(
+                            f'No folder found at {data.path}')
                 identifier = data.identifier
                 grid_type = _get_grid_type(model)
                 # Validate data if asked for
