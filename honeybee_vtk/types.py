@@ -526,6 +526,7 @@ class ModelDataSet:
         fields_info = self.fields_info
         if not value:
             self._color_by = None
+            return
         else:
             assert value in fields_info, \
                 f'{value} is not a valid data field for this ModelDataSet. Available ' \
