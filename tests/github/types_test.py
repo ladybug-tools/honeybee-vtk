@@ -1,11 +1,10 @@
 """Unit test for the types module."""
 
-import warnings
 import pytest
 import vtk
 from honeybee.model import Model as HBModel
-from honeybee_vtk.types import PolyData, _get_data_range
 from honeybee_vtk.model import Model
+from honeybee_vtk.types import ModelDataSet, PolyData, _get_data_range
 
 file_path = r'tests/assets/gridbased.hbjson'
 hb_model = HBModel.from_hbjson(file_path)
@@ -151,3 +150,12 @@ def test_get_data_range():
     # make sure when string array is used, simply data_range is returned
     values = vtk.vtkStringArray()
     assert _get_data_range('test', [0, 100], values) == (0, 100)
+
+
+def test_model_dataset_initialization_with_polydata():
+    polydata = PolyData()
+    polydata.add_data([1, 2, 3], 'demo-data')
+    md = ModelDataSet('test', [polydata])
+
+    assert md.data == [polydata]
+    assert md._color_by is None
