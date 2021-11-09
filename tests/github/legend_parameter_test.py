@@ -92,8 +92,6 @@ def test_legend_parameter_errors():
         lp.label_parameters = 'Arial'
     with pytest.raises(ValueError):
         lp.title_parameters = 'Italic'
-    with pytest.raises(AssertionError):
-        lp.auto_range = (0.1, 0.5, 3)
     with pytest.raises(ValueError):
         lp.min = "min"
     with pytest.raises(ValueError):
