@@ -1,7 +1,7 @@
 """Vtk legend parameters."""
 
 import vtk
-from ladybug.color import Colorset, Color
+from ladybug.color import Colorset
 from enum import Enum, auto
 from typing import Tuple, Union
 from ._helper import _validate_input
@@ -264,7 +264,6 @@ class LegendParameter:
         self.min = min
         self.max = max
         self.auto_range = auto_range
-        self._range = None
 
     @property
     def name(self) -> str:
@@ -664,7 +663,6 @@ class LegendParameter:
             f' Position of label: {self._preceding_labels} |'
             f' Font of label: {self._label_parameters} |'
             f' Font of title: {self._title_parameters} |'
-            f' Legend auto-range: {self._auto_range} |'
             f' Legend min: {self._min} |'
             f' Legend max: {self._max} |'
             f' Legend range: {self.range} |'
