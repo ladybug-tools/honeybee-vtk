@@ -572,6 +572,23 @@ class LegendParameter:
                     f' value {self._min}.'
                 )
 
+    def _to_dict(self) -> dict:
+        """Get the legend parameters as a dictionary object.
+
+        This method is only used in the 'translate' command.
+        """
+        return {
+            'name': self.name,
+            'unit': self.unit,
+            'colors': self.colors.value,
+            'hide_legend': self.hide_legend,
+            'color_count': self.color_count,
+            'label_count': self.label_count,
+            'min': self.min,
+            'max': self.max,
+            'range': self.range
+        }
+
     def get_lookuptable(self) -> vtk.vtkLookupTable:
         """Get a vtk lookuptable."""
         minimum, maximum = self.range
