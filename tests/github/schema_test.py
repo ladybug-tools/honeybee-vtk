@@ -10,4 +10,4 @@ def test_default_legend_ranges():
     """Check default values of legend_ranges."""
     dr = DataSetResource(url='.')
     ds = DataSet(name='temp', httpDataSetReader=dr)
-    assert ds.legend_ranges == {}
+    assert ds.legends == []
