@@ -82,9 +82,10 @@ class DataSet(BaseModel):
     )
     mapper: DataSetMapper = Field(DataSetMapper())
     property: DataSetProperty = Field(DataSetProperty())
-    legend_ranges: Dict[str, Tuple[float, float]] = Field(
-        {},
-        description='legned range of data for all the data added to the Dataset object.'
+    legends: List[dict] = Field(
+        [],
+        description='A list of dictionaries representing legend information for the'
+        ' data added to the Dataset object.'
     )
 
 
