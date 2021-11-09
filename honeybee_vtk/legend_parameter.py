@@ -536,47 +536,29 @@ class LegendParameter:
             )
 
     @property
-    def auto_range(self) -> Tuple[float, float]:
-        """A tuple with min and max values in the legend."""
-        return self._auto_range
-
-    @auto_range.setter
-    def auto_range(self, val) -> None:
-        if not val:
-            self._auto_range = None
-        elif isinstance(val, (tuple, list)) and _validate_input(
-                val, [float, int], num_val=2):
-            self._auto_range = val
-        else:
-            raise ValueError(
-                'Range takes a tuple or a list of integers.'
-                f' Instead got {val}.'
-            )
-
-    @property
     def range(self) -> Tuple[float, float]:
         if self._min == None and self._max == None:
-            return self._auto_range
+            return self.auto_range
 
         elif self._min and self._max == None:
-            if self._min < self._auto_range[1]:
-                return (self._min, self._auto_range[1])
+            if self._min < self.auto_range[1]:
+                return (self._min, self.auto_range[1])
             else:
                 raise ValueError(
                     f'In {self._name},'
                     f' min value {self._min} must be less than auto-calculated'
-                    f' max value {self._auto_range[1]}. Either update min value or'
+                    f' max value {self.auto_range[1]}. Either update min value or'
                     ' provide a max value.'
                 )
 
         elif self._min == None and self._max:
-            if self._max > self._auto_range[0]:
-                return (self._auto_range[0], self._max)
+            if self._max > self.auto_range[0]:
+                return (self.auto_range[0], self._max)
             else:
                 raise ValueError(
                     f'In {self._name},'
                     f' max value {self._max} must be greater than auto-calculated'
-                    f' max value {self._auto_range[1]}. Either update max value or'
+                    f' max value {self.auto_range[1]}. Either update max value or'
                     ' provide a min value.'
                 )
 
