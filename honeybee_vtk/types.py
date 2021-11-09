@@ -618,18 +618,18 @@ class ModelDataSet:
         if self.color_by is not None:
             mapper.colorByArrayName = self.color_by
 
-        # Getting range of each data added to the ModelDataSet object.
-        ranges = {}
+        # Getting legend information for each data added to the ModelDataSet object.
+        legends = []
         if self.name == 'Grid' and self.fields_info:
-            for name, value in self.fields_info.items():
-                ranges[name] = value.range
+            for field_info in self.fields_info.values():
+                legends.append(field_info.legend_parameter._to_dict())
 
         data = {
             'name': self.name,
             'httpDataSetReader': {'url': url if url is not None else self.name},
             'property': ds_prop.dict(),
             'mapper': mapper.dict(),
-            'legend_ranges': ranges
+            'legends': legends
         }
 
         return DataSet.parse_obj(data)
