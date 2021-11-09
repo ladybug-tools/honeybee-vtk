@@ -483,10 +483,8 @@ def load_config(json_path: str, model: Model, scene: Scene,
                 legend_range = _get_legend_range(data)
                 # Load data
                 _load_data(folder_path, identifier, model, grid_type, legend_range)
-                # If legend is requested and legend parameters are provided
-                # Legend will only be used in export-images command
-                if legend and data.legend_parameters:
-                    _load_legend_parameters(data, model, scene, legend_range)
+                # Load legend parameters
+                _load_legend_parameters(data, model, scene, legend_range)
             else:
                 warnings.warn(
                     f'Data for {data.identifier} is not loaded.'
