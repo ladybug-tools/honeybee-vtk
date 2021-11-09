@@ -91,37 +91,6 @@ color_set = {
 }
 
 
-color_set = {
-    'annual_comfort': Colorset.annual_comfort(),
-    'benefit': Colorset.benefit(),
-    'benefit_harm': Colorset.benefit_harm(),
-    'black_to_white': Colorset.black_to_white(),
-    'blue_green_red': Colorset.blue_green_red(),
-    'cloud_cover': Colorset.cloud_cover(),
-    'cold_sensation': Colorset.cold_sensation(),
-    'ecotect': Colorset.ecotect(),
-    'energy_balance': Colorset.energy_balance(),
-    'energy_balance_storage': Colorset.energy_balance_storage(),
-    'glare_study': Colorset.glare_study(),
-    'harm': Colorset.harm(),
-    'heat_sensation': Colorset.heat_sensation(),
-    'multi_colored': Colorset.multi_colored(),
-    'multicolored_2': Colorset.multicolored_2(),
-    'multicolored_3': Colorset.multicolored_3(),
-    'nuanced': Colorset.nuanced(),
-    'openstudio_palette': Colorset.openstudio_palette(),
-    'original': Colorset.original(),
-    'peak_load_balance': Colorset.peak_load_balance(),
-    'shade_benefit': Colorset.shade_benefit(),
-    'shade_benefit_harm': Colorset.shade_benefit_harm(),
-    'shade_harm': Colorset.shade_harm(),
-    'shadow_study': Colorset.shadow_study(),
-    'therm': Colorset.therm(),
-    'thermal_comfort': Colorset.thermal_comfort(),
-    'view_study': Colorset.view_study()
-}
-
-
 class Text:
     """Text parameters for the legend.
 
