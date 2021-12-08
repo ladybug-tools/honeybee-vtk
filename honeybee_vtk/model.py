@@ -189,9 +189,11 @@ class Model(object):
         if grid_options == SensorGridOptions.Ignore:
             return
         if hasattr(model.properties, 'radiance'):
+            # list of unique sensor_grid identifiers in the model
             ids = set([grid.identifier for grid in model.properties.radiance.sensor_grids])
+
+            # if all the grids have the same identifier, merge them into one grid
             if len(ids) == 1:
-                # if all the grids have the same identifier, merge them into one grid
                 id = model.properties.radiance.sensor_grids[0].identifier
                 sensors = [
                     sensor for grid in model.properties.radiance.sensor_grids for sensor in grid.sensors]
@@ -199,6 +201,7 @@ class Model(object):
                 self._sensor_grids.data.append(
                     convert_sensor_grid(sensor_grid, grid_options)
                 )
+            # else add them as separate grids
             else:
                 for sensor_grid in model.properties.radiance.sensor_grids:
                     self._sensor_grids.data.append(
