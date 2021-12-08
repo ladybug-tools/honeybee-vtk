@@ -59,9 +59,14 @@ def translate():
     ' mount simulation data on HBJSON.', type=click.Path(exists=True), default=None,
     show_default=True
 )
+@click.option(
+    '--validate-data', '-vd', is_flag=True, default=False,
+    help='Validate simulation data before loading on the model. This is recommended'
+    ' when using this command locally.', show_default=True
+)
 def translate(
         hbjson_file, name, folder, file_type, display_mode, grid_options, show_html,
-        config):
+        config, validate_data):
     """Translate a HBJSON file to an HTML or a vtkjs file.
 
     \b
@@ -104,7 +109,10 @@ def translate(
             cameras = Camera.aerial_cameras(bounds=bounds, centroid=centroid)
             scene.add_actors(actors)
             scene.add_cameras(cameras)
-            model = load_config(config, model, scene)
+            if validate_data:
+                model = load_config(config, model, scene, validation=True)
+            else:
+                model = load_config(config, model, scene)
 
         # Set file type
 
