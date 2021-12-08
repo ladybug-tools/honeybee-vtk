@@ -13,6 +13,7 @@ from collections import defaultdict
 from typing import Dict, List
 from honeybee.facetype import face_types
 from honeybee.model import Model as HBModel
+from honeybee_radiance.sensorgrid import SensorGrid
 from ladybug.color import Color
 from .camera import Camera
 from .types import ModelDataSet, PolyData
@@ -188,10 +189,21 @@ class Model(object):
         if grid_options == SensorGridOptions.Ignore:
             return
         if hasattr(model.properties, 'radiance'):
-            for sensor_grid in model.properties.radiance.sensor_grids:
+            ids = set([grid.identifier for grid in model.properties.radiance.sensor_grids])
+            if len(ids) == 1:
+                # if all the grids have the same identifier, merge them into one grid
+                id = model.properties.radiance.sensor_grids[0].identifier
+                sensors = [
+                    sensor for grid in model.properties.radiance.sensor_grids for sensor in grid.sensors]
+                sensor_grid = SensorGrid(id, sensors)
                 self._sensor_grids.data.append(
                     convert_sensor_grid(sensor_grid, grid_options)
                 )
+            else:
+                for sensor_grid in model.properties.radiance.sensor_grids:
+                    self._sensor_grids.data.append(
+                        convert_sensor_grid(sensor_grid, grid_options)
+                    )
 
     def _load_cameras(self, model: HBModel) -> None:
         """Load radiance views."""
