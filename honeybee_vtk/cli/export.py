@@ -74,15 +74,10 @@ def export():
     ' mount simulation data on HBJSON.', type=click.Path(exists=True), default=None,
     show_default=True
 )
-@click.option(
-    '--validate-data', '-vd', is_flag=True, default=False,
-    help='Validate simulation data before loading on the model. This is recommended'
-    ' when using this command locally.', show_default=True
-)
 def export(
         hbjson_file, folder, image_type, image_width, image_height,
         background_color, model_display_mode, grid_options, grid_display_mode, view,
-        config, validate_data):
+        config):
     """Export images from radiance views in a HBJSON file.
 
     \b
@@ -171,10 +166,7 @@ def export(
 
         # load config if provided
         if config:
-            if validate_data:
-                load_config(config, model, scene, validation=True)
-            else:
-                load_config(config, model, scene)
+            load_config(config, model, scene)
 
         output = scene.export_images(
             folder=folder, image_type=image_type,
