@@ -8,20 +8,27 @@ import webbrowser
 import tempfile
 import os
 import tempfile
+import json
+import warnings
 
 from collections import defaultdict
-from typing import Dict, List
+from typing import Dict, List, Union, Tuple
 from honeybee.facetype import face_types
 from honeybee.model import Model as HBModel
 from honeybee_radiance.sensorgrid import SensorGrid
 from ladybug.color import Color
+
+from .actor import Actor
+from .scene import Scene
 from .camera import Camera
 from .types import ModelDataSet, PolyData
 from .to_vtk import convert_aperture, convert_face, convert_room, convert_shade, \
     convert_sensor_grid, convert_door
 from .vtkjs.schema import IndexJSON, DisplayMode, SensorGridOptions
 from .vtkjs.helper import convert_directory_to_zip_file, add_data_to_viewer
-from .types import DataSetNames, VTKWriters, JoinedPolyData
+from .types import DataSetNames, VTKWriters, JoinedPolyData, ImageTypes
+from .config import DataConfig, Autocalculate
+from .legend_parameter import Text
 
 
 _COLORSET = {
@@ -280,7 +287,20 @@ class Model(object):
             except AttributeError:
                 raise AttributeError(f'Invalid attribute: {attr}')
 
-    def to_vtkjs(self, folder: str = '.', name: str = None) -> str:
+    def actors(self) -> List[Actor]:
+        """Create a list of vtk actors from a honeybee-vtk model.
+
+        Args:
+            model: A honeybee-vtk model.
+
+        Returns:
+            A list of vtk actors.
+        """
+        return [Actor(modeldataset=ds) for ds in self if len(ds.data) > 0]
+
+    def to_vtkjs(self, folder: str = '.', name: str = None, config: str = None,
+                 validation: bool = False,
+                 display_mode: DisplayMode = DisplayMode.Shaded) -> str:
         """Write a vtkjs file.
 
         Write your honeybee-vtk model to a vtkjs file that you can open in
@@ -292,10 +312,18 @@ class Model(object):
                 directory.
             name : Name for the vtkjs file. File name will be Model.vtkjs if not
                 provided.
+            config: Path to the config file. Defaults to None.
+            validation: Boolean to indicate whether to validate the data before loading.
+                Defaults to False.
+            display_mode: Display mode for the model. Defaults to shaded.
 
         Returns:
             A text string representing the file path to the vtkjs file.
         """
+        self.update_display_mode(display_mode)
+
+        if config:
+            self.load_config(config, validation=validation)
 
         # name of the vtkjs file
         file_name = name or 'model'
@@ -342,7 +370,10 @@ class Model(object):
 
         return target_vtkjs_file
 
-    def to_html(self, folder: str = '.', name: str = None, show: bool = False) -> str:
+    def to_html(self, folder: str = '.', name: str = None, show: bool = False,
+                config: str = None,
+                validation: bool = False,
+                display_mode: DisplayMode = DisplayMode.Shaded) -> str:
         """Write an HTML file.
 
         Write your honeybee-vtk model to an HTML file.
@@ -353,10 +384,17 @@ class Model(object):
             name : Name for the HTML file. File name will be Model.html if not provided.
             show: A boolean value. If set to True, the HTML file will be opened in the
                 default browser. Defaults to False
+            config: Path to the config file. Defaults to None.
+            validation: Boolean to indicate whether to validate the data before loading.
+            display_mode: Display mode for the model. Defaults to shaded.
 
         Returns:
             A text string representing the file path to the HTML file.
         """
+        self.update_display_mode(display_mode)
+        if config:
+            self.load_config(config, validation=validation)
+
         # Name of the html file
         file_name = name or 'model'
         # Set the target folder
@@ -376,7 +414,9 @@ class Model(object):
             webbrowser.open(html_file)
         return html_file
 
-    def to_files(self, folder: str, name: str, writer: VTKWriters) -> str:
+    def to_files(self, folder: str, name: str, writer: VTKWriters, config: str = None,
+                 validation: bool = False,
+                 display_mode: DisplayMode = DisplayMode.Shaded) -> str:
         """
         Write a .zip of VTK/VTP files.
 
@@ -387,10 +427,17 @@ class Model(object):
             folder: File path to the output folder. The file
                 will be written to the current folder if not provided.
             writer: A VTkWriters object.
+            config: Path to the config file. Defaults to None.
+            validation: Boolean to indicate whether to validate the data before loading.
+            display_mode: Display mode for the model. Defaults to shaded.
 
         Returns:
             A text string containing the path to the .zip file with VTK/VTP files.
         """
+        self.update_display_mode(display_mode)
+        if config:
+            self.load_config(config, validation=validation)
+
         # Name of the html file
         file_name = name or 'model'
         # Set the target folder
@@ -426,6 +473,50 @@ class Model(object):
 
         return target_zip_file
 
+    def to_images(self, folder: str = '.', name: str = None, config: str = None,
+                  validation: bool = False,
+                  model_display_mode: DisplayMode = DisplayMode.Shaded,
+                  grid_display_mode: DisplayMode = DisplayMode.Shaded,
+                  background_color: Tuple[int, int, int] = None,
+                  view: List[str] = None,
+                  image_type: ImageTypes = ImageTypes.png,
+                  image_width: int = 0, image_height: int = 0) -> List[str]:
+
+        scene = Scene(background_color=background_color)
+        self.update_display_mode(model_display_mode)
+        self.sensor_grids.display_mode = grid_display_mode
+        if config:
+            self.load_config(config, scene=scene, legend=True, validation=validation)
+
+        actors = self.actors()
+
+        scene.add_actors(actors)
+
+        # Set a default camera if there are no cameras in the model
+        if not self.cameras and not view:
+            camera = Camera(identifier='plan', type='l')
+            scene.add_cameras(camera)
+            bounds = Actor.get_bounds(actors)
+            centroid = Actor.get_centroid(actors)
+            aerial_cameras = camera.aerial_cameras(bounds, centroid)
+            scene.add_cameras(aerial_cameras)
+
+        else:
+            # Collection cameras from model, if the model has it
+            if len(self.cameras) != 0:
+                cameras = self.cameras
+                scene.add_cameras(cameras)
+
+            # if view files are provided collect them
+            if view:
+                for vf in view:
+                    camera = Camera.from_view_file(file_path=vf)
+                    scene.add_cameras(camera)
+
+        return scene.export_images(
+            folder=folder, image_type=image_type,
+            image_width=image_width, image_height=image_height)
+
     @ staticmethod
     def get_default_color(face_type: face_types) -> Color:
         """Get the default color based of face type.
@@ -446,3 +537,260 @@ class Model(object):
             data_dict[d.type].append(d)
 
         return data_dict
+
+    def load_config(self, json_path: str, scene: Scene = None,
+                    validation: bool = False, legend: bool = False) -> Model:
+        """Mount data on model from config json.
+
+        Args:
+            json_path: File path to the config json file.
+            scene: A honeybee-vtk scene object. Defaults to None.
+            validation: A boolean indicating whether to validate the data before loading.
+            legend: A boolean indicating whether to load legend parameters.
+
+        Returns:
+            A honeybee-vtk model with data loaded on it.
+        """
+        assert len(self.sensor_grids.data) > 0, 'Sensor grids are not loaded on'\
+            ' this model. Reload them using grid options.'
+
+        config_dir = pathlib.Path(json_path).parent
+
+        try:
+            with open(json_path) as fh:
+                config = json.load(fh)
+        except json.decoder.JSONDecodeError:
+            raise TypeError(
+                'Not a valid json file.'
+            )
+        else:
+            for json_obj in config['data']:
+                # validate config
+                data = DataConfig.parse_obj(json_obj)
+                # only if data is requested move forward.
+                if not data.hide:
+                    folder_path = pathlib.Path(data.path)
+                    if not folder_path.is_dir():
+                        folder_path = config_dir.joinpath(
+                            folder_path).resolve().absolute()
+                        data.path = folder_path.as_posix()
+                        if not folder_path.is_dir():
+                            raise FileNotFoundError(
+                                f'No folder found at {data.path}')
+                    identifier = data.identifier
+                    grid_type = self._get_grid_type()
+                    # Validate data if asked for
+                    if validation:
+                        self._validate_simulation_data(data, grid_type)
+                    # get legend range if provided by the user
+                    legend_range = self._get_legend_range(data)
+                    # Load data
+                    self._load_data(folder_path, identifier, grid_type, legend_range)
+                    # Load legend parameters
+                    if legend:
+                        self._load_legend_parameters(data, scene, legend_range)
+                else:
+                    warnings.warn(
+                        f'Data for {data.identifier} is not loaded.'
+                    )
+
+    def _get_grid_type(self) -> str:
+        """Get the type of grid in the model
+
+        Args:
+            model(Model): A honeybee-vtk model.
+
+        Returns:
+            A string indicating whether the model has points and meshes.
+        """
+
+        if self.sensor_grids.data[0].GetNumberOfCells() == 1:
+            return 'points'
+        else:
+            return 'meshes'
+
+    def _validate_simulation_data(self, data: DataConfig, grid_type: str) -> None:
+        """Match result data with the sensor grids in the model.
+
+        It will be checked if the number of data files and the names of the
+        data files match with the grid identifiers. This function does not support validating
+        result data for other than sensor grids as of now.
+
+        This is a helper method to the public load_config method.
+
+        Args:
+            data: A DataConfig object.
+            grid_type: A string indicating whether the model has points and meshes.
+        """
+        # file path to the json file
+        grids_info_json = pathlib.Path(data.path).joinpath('grids_info.json')
+
+        # read the json file
+        with open(grids_info_json) as fh:
+            grids_info = json.load(fh)
+
+        # TODO: Make sure to remove this limitation. A user should not have to always
+        # TODO: load all the grids
+        assert len(self.sensor_grids.data) == len(grids_info), 'The number of result'\
+            f' files {len(grids_info)} does for {data.identifier} does not match'\
+            f' the number of sensor grids in the model {len(self.sensor_grids.data)}.'
+
+        # match identifiers of the grids with the identifiers of the result files
+        grids_model_identifiers = [grid.identifier for grid in self.sensor_grids.data]
+        grids_info_identifiers = [grid['full_id'] for grid in grids_info]
+        assert grids_model_identifiers == grids_info_identifiers, 'The identifiers of'\
+            ' the sensor grids in the model do not match the identifiers of the grids'\
+            f' in the grids_info.json for {data.identifier}.'
+
+        # make sure length of each file matches the number of sensors in grid
+        file_lengths = [grid['count'] for grid in grids_info]
+
+        # check if the grid data is meshes or points
+        # if grid is sensors
+        if grid_type == 'points':
+            num_sensors = [polydata.GetNumberOfPoints()
+                           for polydata in self.sensor_grids.data]
+        # if grid is meshes
+        else:
+            num_sensors = [polydata.GetNumberOfCells()
+                           for polydata in self.sensor_grids.data]
+
+        # lastly check if the length of a file matches the number of sensors or meshes on grid
+        if file_lengths != num_sensors:
+            length_matching = {
+                grids_info_identifiers[i]: file_lengths[i] == num_sensors[i] for i in
+                range(len(grids_model_identifiers))
+            }
+            names_to_report = [
+                id for id in length_matching if length_matching[id] is False]
+            raise ValueError(
+                'File lengths of result files must match the number of sensors on grids.'
+                ' Lengths of files with following names do not match'
+                f' {tuple(names_to_report)}.')
+
+    def _load_data(self, folder_path: pathlib.Path, identifier: str,
+                   grid_type: str, legend_range: List[Union[float, int]]) -> None:
+        """Load validated data on a honeybee-vtk model.
+
+        This is a helper method to the public load_config method.
+
+        Args:
+            folder_path: A valid pathlib path to the folder with grid_info.json and data.
+            identifier: A text string representing the identifier of the data in the config
+                file.
+            model: A honeybee-vtk model.
+            grid_type: A string indicating whether the sensor grid in the model is made of
+                points or meshes.
+            legend_range: A list of min and max values of the legend parameters provided by
+                the user in the config file.
+        """
+        grids_info_json = folder_path.joinpath('grids_info.json')
+        with open(grids_info_json) as fh:
+            grids_info = json.load(fh)
+
+        # grid identifier from grids_info.json
+        file_names = [grid['identifier'] for grid in grids_info]
+
+        # finding file extension for grid results
+        for path in folder_path.iterdir():
+            if path.stem == file_names[0]:
+                extension = path.suffix
+                break
+
+        # file paths to the result files
+        file_paths = [folder_path.joinpath(name+extension)
+                      for name in file_names]
+
+        result = []
+        for file_path in file_paths:
+            res_file = pathlib.Path(file_path)
+            grid_res = [float(v)
+                        for v in res_file.read_text().splitlines()]
+            result.append(grid_res)
+
+        ds = self.get_modeldataset(DataSetNames.grid)
+
+        if grid_type == 'meshes':
+            ds.add_data_fields(
+                result, name=identifier, per_face=True, data_range=legend_range)
+            ds.color_by = identifier
+            ds.display_mode = DisplayMode.SurfaceWithEdges
+        else:
+            ds.add_data_fields(
+                result, name=identifier, per_face=False, data_range=legend_range)
+            ds.color_by = identifier
+            ds.display_mode = DisplayMode.Points
+
+    @staticmethod
+    def _get_legend_range(data: DataConfig) -> List[Union[float, int]]:
+        """Read and get legend min and max values from data if provided by the user.
+
+        The value provided by this function is processed and validated in _get_data_range
+        function in the type module.
+
+        Args:
+            data (DataConfig): A Dataconfig object.
+
+        Returns:
+            A list of two numbers representing min and max values for data.
+        """
+        if data.legend_parameters:
+            legend_params = data.legend_parameters
+
+            if isinstance(legend_params.min, Autocalculate):
+                min = None
+            else:
+                min = legend_params.min
+
+            if isinstance(legend_params.max, Autocalculate):
+                max = None
+            else:
+                max = legend_params.max
+
+            return [min, max]
+
+    def _load_legend_parameters(self, data: DataConfig, scene: Scene,
+                                legend_range: List[Union[float, int]]) -> None:
+        """Load legend_parameters.
+
+        Args:
+            data: A Dataconfig object.
+            scene: A honeyebee-vtk scene object.
+            legend_range: A list of min and max values of the legend parameters provided by
+                the user in the config file.
+        """
+        legend_params = data.legend_parameters
+        legend = scene.legend_parameter(data.identifier)
+
+        legend.colors = legend_params.color_set
+        legend.unit = data.unit
+        if legend_range:
+            legend.min, legend.max = legend_range
+        else:
+            legend.min, legend.max = [None, None]
+        legend.hide_legend = legend_params.hide_legend
+        legend.orientation = legend_params.orientation
+        legend.position = legend_params.position
+        legend.width = legend_params.width
+        legend.height = legend_params.height
+
+        if isinstance(legend_params.color_count, int):
+            legend.color_count = legend_params.color_count
+        else:
+            legend.color_count = None
+
+        if isinstance(legend_params.label_count, int):
+            legend.label_count = legend_params.label_count
+        else:
+            legend.label_count = None
+
+        legend.decimal_count = legend_params.decimal_count
+        legend.preceding_labels = legend_params.preceding_labels
+
+        label_params = legend_params.label_parameters
+        legend.label_parameters = Text(
+            label_params.color, label_params.size, label_params.bold)
+
+        title_params = legend_params.title_parameters
+        legend.title_parameters = Text(
+            title_params.color, title_params.size, title_params.bold)
