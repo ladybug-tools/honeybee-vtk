@@ -5,15 +5,9 @@ import sys
 import click
 import traceback
 
-from click.exceptions import ClickException
-from pydantic import schema
-from honeybee_vtk.actor import Actor
-from honeybee_vtk.scene import Scene
-from honeybee_vtk.camera import Camera
 from honeybee_vtk.model import Model
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 from honeybee_vtk.types import ImageTypes
-from honeybee_vtk.config import load_config
 
 
 @click.group()
@@ -115,70 +109,38 @@ def export(
     elif grid_options == 'meshes':
         grid_options = SensorGridOptions.Mesh
 
+    # Set model's display mode
+    if model_display_mode == 'shaded':
+        model_display_mode = DisplayMode.Shaded
+    elif model_display_mode == 'surface':
+        model_display_mode = DisplayMode.Surface
+    elif model_display_mode == 'surfacewithedges':
+        model_display_mode = DisplayMode.SurfaceWithEdges
+    elif model_display_mode == 'wireframe':
+        model_display_mode = DisplayMode.Wireframe
+    elif model_display_mode == 'points':
+        model_display_mode = DisplayMode.Points
+
+    # Set model's grid's display mode
+    if grid_display_mode == 'shaded':
+        grid_display_mode = DisplayMode.Shaded
+    elif model_display_mode == 'surface':
+        grid_display_mode = DisplayMode.Surface
+    elif model_display_mode == 'surfacewithedges':
+        grid_display_mode = DisplayMode.SurfaceWithEdges
+    elif model_display_mode == 'wireframe':
+        grid_display_mode = DisplayMode.Wireframe
+    elif model_display_mode == 'points':
+        grid_display_mode = DisplayMode.Points
+
     try:
         model = Model.from_hbjson(hbjson=hbjson_file, load_grids=grid_options)
-
-        # Set model's display mode
-        if model_display_mode == 'shaded':
-            model.update_display_mode(DisplayMode.Shaded)
-        elif model_display_mode == 'surface':
-            model.update_display_mode(DisplayMode.Surface)
-        elif model_display_mode == 'surfacewithedges':
-            model.update_display_mode(DisplayMode.SurfaceWithEdges)
-        elif model_display_mode == 'wireframe':
-            model.update_display_mode(DisplayMode.Wireframe)
-        elif model_display_mode == 'points':
-            model.update_display_mode(DisplayMode.Points)
-
-        # Set model's grid's display mode
-        if grid_display_mode == 'shaded':
-            model.sensor_grids.display_mode = DisplayMode.Shaded
-        elif model_display_mode == 'surface':
-            model.sensor_grids.display_mode = DisplayMode.Surface
-        elif model_display_mode == 'surfacewithedges':
-            model.sensor_grids.display_mode = DisplayMode.SurfaceWithEdges
-        elif model_display_mode == 'wireframe':
-            model.sensor_grids.display_mode = DisplayMode.Wireframe
-        elif model_display_mode == 'points':
-            model.sensor_grids.display_mode = DisplayMode.Points
-
-        actors = Actor.from_model(model)
-
-        scene = Scene(background_color=background_color)
-        scene.add_actors(actors)
-
-        # Set a default camera if there are no cameras in the model
-        if not model.cameras and not view:
-            actors = Actor.from_model(model=model)
-            camera = Camera(identifier='plan', type='l')
-            scene.add_cameras(camera)
-            bounds = Actor.get_bounds(actors)
-            centroid = Actor.get_centroid(actors)
-            aerial_cameras = camera.aerial_cameras(bounds, centroid)
-            scene.add_cameras(aerial_cameras)
-
-        else:
-            # Collection cameras from model, if the model has it
-            if len(model.cameras) != 0:
-                cameras = model.cameras
-                scene.add_cameras(cameras)
-
-            # if view files are provided collect them
-            if view:
-                for vf in view:
-                    camera = Camera.from_view_file(file_path=vf)
-                    scene.add_cameras(camera)
-
-        # load config if provided
-        if config:
-            if validate_data:
-                load_config(config, model, scene, validation=True, legend=True)
-            else:
-                load_config(config, model, scene, legend=True)
-
-        output = scene.export_images(
-            folder=folder, image_type=image_type,
-            image_width=image_width, image_height=image_height)
+        output = model.to_images(folder=folder, config=config, validation=validate_data,
+                                 model_display_mode=model_display_mode,
+                                 grid_display_mode=grid_display_mode,
+                                 background_color=background_color, view=view,
+                                 image_type=image_type, image_width=image_width,
+                                 image_height=image_height,)
 
     except Exception:
         traceback.print_exc()
