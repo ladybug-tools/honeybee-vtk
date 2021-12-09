@@ -434,14 +434,14 @@ def _load_legend_parameters(data: DataConfig, model: Model, scene: Scene,
         title_params.color, title_params.size, title_params.bold)
 
 
-def load_config(json_path: str, model: Model, scene: Scene,
+def load_config(json_path: str, model: Model, scene: Scene = None,
                 validation: bool = False, legend: bool = False) -> Model:
     """Mount data on model from config json.
 
     Args:
         json_path: File path to the config json file.
         model: A honeybee-vtk model object.
-        scene: A honeybee-vtk scene object.
+        scene: A honeybee-vtk scene object. Defaults to None.
         validation: A boolean indicating whether to validate the data before loading.
         legend: A boolean indicating whether to load legend parameters.
 
@@ -484,7 +484,8 @@ def load_config(json_path: str, model: Model, scene: Scene,
                 # Load data
                 _load_data(folder_path, identifier, model, grid_type, legend_range)
                 # Load legend parameters
-                _load_legend_parameters(data, model, scene, legend_range)
+                if legend:
+                    _load_legend_parameters(data, model, scene, legend_range)
             else:
                 warnings.warn(
                     f'Data for {data.identifier} is not loaded.'
