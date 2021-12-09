@@ -102,17 +102,10 @@ def translate(
 
         # load data
         if config:
-            scene = Scene()
-            actors = Actor.from_model(model)
-            bounds = Actor.get_bounds(actors)
-            centroid = Actor.get_centroid(actors)
-            cameras = Camera.aerial_cameras(bounds=bounds, centroid=centroid)
-            scene.add_actors(actors)
-            scene.add_cameras(cameras)
             if validate_data:
-                model = load_config(config, model, scene, validation=True)
+                model = load_config(config, model, validation=True)
             else:
-                model = load_config(config, model, scene)
+                model = load_config(config, model)
 
         # Set file type
 
