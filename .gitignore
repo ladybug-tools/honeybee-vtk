@@ -22,4 +22,6 @@ tox.ini
 # Rhino Backup files
 *.3dm.rhl
 *3dmbak
+#generate html model
+model.html
 

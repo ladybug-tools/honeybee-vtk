@@ -75,10 +75,20 @@ def add_data_to_viewer(data_path, src_html_path=None):
     with open(src_html_path, mode="r", encoding="utf-8") as srcHtml:
         with open(dstHtmlPath, mode="w", encoding="utf-8") as dstHtml:
             for line in srcHtml:
-                if "<!–– insert ––>" in line:
+                if "<noscript>You need to enable JavaScript to run this app.</noscript>" in line:
+                    strings = line.split(
+                        "<noscript>You need to enable JavaScript to run this app.</noscript>", 1)
+                    dstHtml.write(strings[0])
                     dstHtml.write("<script>\n")
                     dstHtml.write('var contentToLoad = "%s";\n\n' % base64Content)
-                    dstHtml.write("function _getContent() { return contentToLoad }</script>\n")
+                    dstHtml.write("function _getContent() { return contentToLoad }\n")
+                    dstHtml.write('var contentToLoad = "%s";\n' %
+                                  base64Content)
+                    dstHtml.write(
+                        "function _getContent() { return contentToLoad }</script>\n")
+                    dstHtml.write(
+                        "<noscript>You need to enable JavaScript to run this app.</noscript>")
+                    dstHtml.write(strings[1])
                     continue
                 dstHtml.write(line)
     return dstHtmlPath
