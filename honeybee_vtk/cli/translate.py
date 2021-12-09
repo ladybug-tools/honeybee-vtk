@@ -3,17 +3,10 @@
 import sys
 import pathlib
 import traceback
-
 import click
-from click.exceptions import ClickException
-from pydantic.class_validators import validator
 
 from honeybee_vtk.model import Model
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
-from honeybee_vtk.config import load_config
-from honeybee_vtk.scene import Scene
-from honeybee_vtk.camera import Camera
-from honeybee_vtk.actor import Actor
 from honeybee_vtk.types import VTKWriters
 
 
@@ -90,35 +83,32 @@ def translate(
 
         # Set display style
         if display_mode == 'shaded':
-            model.update_display_mode(DisplayMode.Shaded)
+            display_mode = DisplayMode.Shaded
         elif display_mode == 'surface':
-            model.update_display_mode(DisplayMode.Surface)
+            display_mode = DisplayMode.Surface
         elif display_mode == 'surfacewithedges':
-            model.update_display_mode(DisplayMode.SurfaceWithEdges)
+            display_mode = DisplayMode.SurfaceWithEdges
         elif display_mode == 'wireframe':
-            model.update_display_mode(DisplayMode.Wireframe)
+            display_mode = DisplayMode.Wireframe
         elif display_mode == 'points':
-            model.update_display_mode(DisplayMode.Points)
-
-        # load data
-        if config:
-            if validate_data:
-                model = load_config(config, model, validation=True)
-            else:
-                model = load_config(config, model)
-
-        # Set file type
+            display_mode = DisplayMode.Points
 
         if file_type.lower() == 'html':
-            output = model.to_html(folder=folder, name=name, show=show_html)
+            output = model.to_html(folder=folder, name=name,
+                                   show=show_html, config=config,
+                                   display_mode=display_mode, validation=validate_data)
         elif file_type.lower() == 'vtkjs':
-            output = model.to_vtkjs(folder=folder, name=name)
+            output = model.to_vtkjs(folder=folder, name=name,
+                                    config=config, display_mode=display_mode,
+                                    validation=validate_data)
         elif file_type.lower() == 'vtk':
             output = model.to_files(folder=folder, name=name,
-                                    writer=VTKWriters.legacy)
+                                    writer=VTKWriters.legacy, config=config,
+                                    display_mode=display_mode, validation=validate_data)
         elif file_type.lower() == 'vtp':
             output = model.to_files(folder=folder, name=name,
-                                    writer=VTKWriters.binary)
+                                    writer=VTKWriters.binary, config=config,
+                                    display_mode=display_mode, validation=validate_data)
 
     except Exception as e:
         traceback.print_exc()
