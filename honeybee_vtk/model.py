@@ -196,7 +196,8 @@ class Model(object):
             if len(ids) == 1:
                 id = model.properties.radiance.sensor_grids[0].identifier
                 sensors = [
-                    sensor for grid in model.properties.radiance.sensor_grids for sensor in grid.sensors]
+                    sensor for grid in model.properties.radiance.sensor_grids
+                    for sensor in grid.sensors]
                 sensor_grid = SensorGrid(id, sensors)
                 self._sensor_grids.data.append(
                     convert_sensor_grid(sensor_grid, grid_options)
