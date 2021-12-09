@@ -3,11 +3,11 @@
 from __future__ import annotations
 import vtk
 from typing import List, Tuple
-from .model import Model, ModelDataSet, DisplayMode
-from .types import JoinedPolyData
+from .types import JoinedPolyData, ModelDataSet
 from ._helper import _validate_input
 from ladybug_geometry.geometry3d.pointvector import Point3D
 from .legend_parameter import LegendParameter
+from .vtkjs.schema import DisplayMode
 
 
 class Actor:
@@ -119,18 +119,6 @@ class Actor:
             actor.GetProperty().SetPointSize(15)
 
         return actor
-
-    @classmethod
-    def from_model(cls, model: Model) -> List[Actor]:
-        """Create a list of vtk actors from a honeybee-vtk model.
-
-        Args:
-            model: A honeybee-vtk model.
-
-        Returns:
-            A list of vtk actors.
-        """
-        return [cls(modeldataset=ds) for ds in model if len(ds.data) > 0]
 
     @staticmethod
     def get_bounds(actors: List[Actor]) -> List[Point3D]:
