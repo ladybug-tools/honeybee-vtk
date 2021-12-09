@@ -172,9 +172,9 @@ def export(
         # load config if provided
         if config:
             if validate_data:
-                load_config(config, model, scene, validation=True)
+                load_config(config, model, scene, validation=True, legend=True)
             else:
-                load_config(config, model, scene)
+                load_config(config, model, scene, legend=True)
 
         output = scene.export_images(
             folder=folder, image_type=image_type,
