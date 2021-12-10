@@ -483,14 +483,13 @@ class Model(object):
                   image_width: int = 0, image_height: int = 0) -> List[str]:
 
         scene = Scene(background_color=background_color)
+        actors = self.actors()
+        scene.add_actors(actors)
+
         self.update_display_mode(model_display_mode)
         self.sensor_grids.display_mode = grid_display_mode
         if config:
             self.load_config(config, scene=scene, legend=True, validation=validation)
-
-        actors = self.actors()
-
-        scene.add_actors(actors)
 
         # Set a default camera if there are no cameras in the model
         if not self.cameras and not view:
