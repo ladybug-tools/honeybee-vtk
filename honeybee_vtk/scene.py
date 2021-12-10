@@ -28,7 +28,7 @@ class Scene:
 
     Args:
         background_color: A tuple of three integers that represent RGB values of the
-            color that you'd like to set as the background color. Defaults to gray.
+            color that you'd like to set as the background color. Defaults to white.
     """
 
     def __init__(self, background_color: Tuple[int, int, int] = None) -> None:
@@ -191,9 +191,9 @@ class Scene:
             image_type: An ImageType object.
             image_scale: An integer value as a scale factor. Defaults to 1.
             image_width: An integer value that sets the width of image in pixels.
-                Defaults to 0, which will use view's x dimension.
+                Defaults to 0, which will use default radinace view's horizontal angle.
             image_height: An integer value that sets the height of image in pixels.
-                Defaults to 0, which will use view's y dimension.
+                Defaults to 0, which will use default radinace view's vertical angle.
             color_range: A vtk lookup table object which can be obtained
                 from the color_range mehtod of the DataFieldInfo object.
                 Defaults to None.
