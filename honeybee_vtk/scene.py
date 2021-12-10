@@ -46,7 +46,7 @@ class Scene:
     def background_color(self, val: Tuple[int, int, int]) -> None:
         if not val:
             colors = vtk.vtkNamedColors()
-            self._background_color = colors.GetColor3d("SlateGray")
+            self._background_color = colors.GetColor3d("White")
         elif _validate_input(val, [int]):
             self._background_color = val
         else:
