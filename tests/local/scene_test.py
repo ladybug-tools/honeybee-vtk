@@ -37,7 +37,7 @@ def test_export_images_from_view_file():
     model.sensor_grids.display_mode = DisplayMode.SurfaceWithEdges
 
     # actors
-    actors = Actor.from_model(model=model)
+    actors = model.actors()
 
     # Initialize a scene
     scene = Scene(background_color=(255, 255, 255))
@@ -96,7 +96,7 @@ def test_export_images():
     model.shades.display_mode = DisplayMode.SurfaceWithEdges
 
     # actors
-    actors = Actor.from_model(model=model)
+    actors = model.actors()
 
     # Initialize a scene
     scene = Scene(background_color=(255, 255, 255))

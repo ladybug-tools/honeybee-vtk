@@ -4,7 +4,7 @@ import pytest
 import vtk
 from honeybee_vtk.actor import Actor
 from honeybee_vtk.model import Model
-from ladybug_geometry.geometry3d.pointvector import Point3D
+
 
 file_path = r'tests/assets/gridbased.hbjson'
 
@@ -14,16 +14,14 @@ def test_class_initialization():
     with pytest.raises(TypeError):
         actors = Actor()
 
-    model = Model.from_hbjson(file_path)
-    actors = Actor.from_model(model)
+    actors = Model.from_hbjson(file_path).actors()
     for actor in actors:
         assert not actor.monochrome_color
 
 
 def test_monochrome():
     """Test setting actors to monochrome colors."""
-    model = Model.from_hbjson(file_path)
-    actors = Actor.from_model(model)
+    actors = Model.from_hbjson(file_path).actors()
     with pytest.raises(ValueError):
         actors[0].get_monochrome((255, 123, 33))
 
@@ -33,7 +31,6 @@ def test_monochrome():
 
 def test_to_vtk():
     """Test the to_vtk method."""
-    model = Model.from_hbjson(file_path)
-    actors = Actor.from_model(model)
+    actors = Model.from_hbjson(file_path).actors()
     for actor in actors:
         assert isinstance(actor.to_vtk(), vtk.vtkActor)
