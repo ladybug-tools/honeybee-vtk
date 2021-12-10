@@ -1,6 +1,7 @@
 """Unit tests for the config module."""
 
 
+from honeybee_vtk.vtkjs.schema import DisplayMode, SensorGridOptions
 from honeybee_vtk.types import DataSetNames
 from _pytest.config import Config
 import pytest
@@ -11,10 +12,8 @@ from honeybee_vtk.model import Model
 from honeybee_vtk.scene import Scene
 from honeybee_vtk.camera import Camera
 from honeybee_vtk.actor import Actor
-from honeybee_vtk.config import Autocalculate, DataConfig, LegendConfig,\
-    _load_legend_parameters, load_config, TextConfig, DecimalCount, \
-    _validate_simulation_data, _load_data, _get_grid_type, _get_legend_range
-from honeybee_vtk.vtkjs.schema import DisplayMode, SensorGridOptions
+from honeybee_vtk.config import Autocalculate, DataConfig, LegendConfig, TextConfig,\
+    DecimalCount
 
 
 def test_text_config_defaults():
@@ -180,14 +179,14 @@ def test_load_legend_parameter():
 
     model = Model.from_hbjson(model_grid_mesh, load_grids=SensorGridOptions.Mesh)
     cameras = model.cameras
-    actors = Actor.from_model(model)
+    actors = model.actors()
     scene = Scene()
     scene.add_cameras(cameras)
     scene.add_actors(actors)
 
     # warning when loading data that is requested to be kept hidden
     with pytest.warns(Warning):
-        load_config(valid_json_path, model, scene, validation=True, legend=True)
+        model.load_config(valid_json_path, scene, validation=True, legend=True)
 
 
 def test_validate_data_invalid_json():
@@ -197,7 +196,7 @@ def test_validate_data_invalid_json():
     model = Model.from_hbjson(model_grid_mesh, load_grids=SensorGridOptions.Mesh)
     scene = Scene()
     with pytest.raises(TypeError):
-        load_config(invalid_json_path, model, scene)
+        model.load_config(invalid_json_path, scene)
 
 
 def test_validate_data_grids_not_loaded():
@@ -206,7 +205,7 @@ def test_validate_data_grids_not_loaded():
     model = Model.from_hbjson(model_grid_mesh)
     scene = Scene()
     with pytest.raises(AssertionError):
-        load_config(valid_json_path, model, scene)
+        model.load_config(valid_json_path, scene)
 
 
 def test_validate_data_number_of_grids_mismatch():
@@ -216,12 +215,12 @@ def test_validate_data_number_of_grids_mismatch():
         model_grid_mesh, load_grids=SensorGridOptions.Mesh)
     scene_grids_loaded = Scene()
     cameras = model_grids_loaded.cameras
-    actors = Actor.from_model(model_grids_loaded)
+    actors = model_grids_loaded.actors()
     scene_grids_loaded.add_cameras(cameras)
     scene_grids_loaded.add_actors(actors)
 
     with pytest.raises(AssertionError):
-        load_config(more_grids, model_grids_loaded, scene_grids_loaded, validation=True)
+        model_grids_loaded.load_config(more_grids, scene_grids_loaded, validation=True)
 
 
 def test_validate_data_identifier_mismatch():
@@ -231,13 +230,13 @@ def test_validate_data_identifier_mismatch():
         model_grid_mesh, load_grids=SensorGridOptions.Mesh)
     scene_grids_loaded = Scene()
     cameras = model_grids_loaded.cameras
-    actors = Actor.from_model(model_grids_loaded)
+    actors = model_grids_loaded.actors()
     scene_grids_loaded.add_cameras(cameras)
     scene_grids_loaded.add_actors(actors)
 
     with pytest.raises(AssertionError):
-        load_config(identifier_mismatch, model_grids_loaded,
-                    scene_grids_loaded, validation=True)
+        model_grids_loaded.load_config(
+            identifier_mismatch, scene_grids_loaded, validation=True)
 
 
 def test_validate_data_file_lengths_mismatch():
@@ -247,12 +246,13 @@ def test_validate_data_file_lengths_mismatch():
         model_grid_mesh, load_grids=SensorGridOptions.Mesh)
     scene_grids_loaded = Scene()
     cameras = model_grids_loaded.cameras
-    actors = Actor.from_model(model_grids_loaded)
+    actors = model_grids_loaded.actors()
     scene_grids_loaded.add_cameras(cameras)
     scene_grids_loaded.add_actors(actors)
 
     with pytest.raises(ValueError):
-        load_config(short_length, model_grids_loaded, scene_grids_loaded)
+        model_grids_loaded.load_config(
+            short_length, scene_grids_loaded)
 
 
 def test_grid_display_mode():
@@ -264,18 +264,19 @@ def test_grid_display_mode():
         model_grid_mesh, load_grids=SensorGridOptions.Mesh)
     scene_grids_loaded = Scene()
     cameras = model_grids_loaded.cameras
-    actors = Actor.from_model(model_grids_loaded)
+    actors = model_grids_loaded.actors()
     scene_grids_loaded.add_cameras(cameras)
     scene_grids_loaded.add_actors(actors)
 
-    model = load_config(valid_json_path, model_grids_loaded, scene_grids_loaded)
-    assert model.sensor_grids.display_mode == DisplayMode.SurfaceWithEdges
+    model_grids_loaded.load_config(valid_json_path, scene_grids_loaded)
+    assert model_grids_loaded.sensor_grids.display_mode == DisplayMode.SurfaceWithEdges
 
     model_sensors_loaded = Model.from_hbjson(
         model_grid_mesh, load_grids=SensorGridOptions.Sensors)
 
-    model = load_config(valid_json_path, model_sensors_loaded, scene_grids_loaded)
-    assert model.sensor_grids.display_mode == DisplayMode.Points
+    model_sensors_loaded.load_config(
+        valid_json_path, scene_grids_loaded)
+    assert model_sensors_loaded.sensor_grids.display_mode == DisplayMode.Points
 
 
 def test_get_grid_type():
@@ -283,39 +284,41 @@ def test_get_grid_type():
     model_grid_mesh = r'tests/assets/gridbased.hbjson'
     model_grids_loaded = Model.from_hbjson(
         model_grid_mesh, load_grids=SensorGridOptions.Mesh)
-    assert _get_grid_type(model_grids_loaded) == 'meshes'
+    assert model_grids_loaded._get_grid_type() == 'meshes'
 
     model_sensors_loaded = Model.from_hbjson(
         model_grid_mesh, load_grids=SensorGridOptions.Sensors)
-    assert _get_grid_type(model_sensors_loaded) == 'points'
+    assert model_sensors_loaded._get_grid_type() == 'points'
 
 
 def test_get_legend_range():
     """Test if the _get_legend_range supplies correct range."""
+    path = r'tests/assets/gridbased.hbjson'
+    model = Model.from_hbjson(path)
     # if neither min nor max is set
     lc = LegendConfig()
     dc = DataConfig(identifier='test', object_type=DataSetNames.grid,
                     unit='sample', path='.', legend_parameters=lc)
-    legend_range = _get_legend_range(dc)
+    legend_range = model._get_legend_range(dc)
     assert legend_range == [None, None]
 
     # if both min and max are set
     lc = LegendConfig(min=0, max=0)
     dc = DataConfig(identifier='test', object_type=DataSetNames.grid,
                     unit='sample', path='.', legend_parameters=lc)
-    legend_range = _get_legend_range(dc)
+    legend_range = model._get_legend_range(dc)
     assert legend_range == [0.0, 0.0]
 
     # if only min is set
     lc = LegendConfig(min=0)
     dc = DataConfig(identifier='test', object_type=DataSetNames.grid,
                     unit='sample', path='.', legend_parameters=lc)
-    legend_range = _get_legend_range(dc)
+    legend_range = model._get_legend_range(dc)
     assert legend_range == [0.0, None]
 
     # if only max is set
     lc = LegendConfig(max=0)
     dc = DataConfig(identifier='test', object_type=DataSetNames.grid,
                     unit='sample', path='.', legend_parameters=lc)
-    legend_range = _get_legend_range(dc)
+    legend_range = model._get_legend_range(dc)
     assert legend_range == [None, 0.0]

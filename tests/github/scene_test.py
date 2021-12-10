@@ -35,7 +35,7 @@ def test_properties():
     """Test properties of a scene."""
     file_path = r'tests/assets/gridbased.hbjson'
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
-    actors = Actor.from_model(model=model)
+    actors = model.actors()
 
     scene = Scene()
     scene.add_cameras(model.cameras)
@@ -103,7 +103,7 @@ def test_write_gltf():
     model.update_display_mode(DisplayMode.Shaded)
 
     camera = Camera()
-    actors = Actor.from_model(model=model)
+    actors = model.actors()
     scene = Scene(background_color=(0, 0, 0))
     scene.add_actors(actors)
     scene.add_cameras(camera)
@@ -124,7 +124,7 @@ def test_remove_actor():
     file_path = r'tests/assets/gridbased.hbjson'
 
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
-    actors = Actor.from_model(model=model)
+    actors = model.actors()
 
     scene = Scene()
     scene.add_actors(actors)

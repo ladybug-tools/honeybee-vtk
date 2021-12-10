@@ -45,7 +45,7 @@ def test_aerial_cameras():
     """Test creation of default aerial cameras."""
     file_path = r'tests/assets/revit_model/model.hbjson'
     model = Model.from_hbjson(file_path)
-    actors = Actor.from_model(model)
+    actors = model.actors()
     bounds = Actor.get_bounds(actors)
     centroid = Actor.get_centroid(actors)
     cameras = Camera.aerial_cameras(bounds, centroid)

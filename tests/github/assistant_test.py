@@ -9,20 +9,18 @@ from honeybee_vtk.actor import Actor
 from honeybee_vtk.camera import Camera
 from honeybee_vtk.scene import Scene
 from honeybee_vtk.vtkjs.schema import SensorGridOptions
-from honeybee_vtk.config import load_config
+
 
 file_path = r'tests/assets/gridbased.hbjson'
 valid_json_path = r'tests/assets/config/valid.json'
 
 model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Sensors)
-actors = Actor.from_model(model)
+actors = model.actors()
 camera = Camera()
 scene = Scene()
 scene.add_actors(actors)
 scene.add_cameras(camera)
-
-load_config(valid_json_path, model, scene)
-
+model.load_config(valid_json_path, scene, legend=True)
 scene.update_scene()
 assistant = scene.assistants[0]
 
