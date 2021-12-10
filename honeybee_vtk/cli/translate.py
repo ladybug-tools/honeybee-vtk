@@ -78,20 +78,20 @@ def translate(
     elif grid_options == 'meshes':
         grid_options = SensorGridOptions.Mesh
 
+    # Set display style
+    if display_mode == 'shaded':
+        display_mode = DisplayMode.Shaded
+    elif display_mode == 'surface':
+        display_mode = DisplayMode.Surface
+    elif display_mode == 'surfacewithedges':
+        display_mode = DisplayMode.SurfaceWithEdges
+    elif display_mode == 'wireframe':
+        display_mode = DisplayMode.Wireframe
+    elif display_mode == 'points':
+        display_mode = DisplayMode.Points
+
     try:
         model = Model.from_hbjson(hbjson=hbjson_file, load_grids=grid_options)
-
-        # Set display style
-        if display_mode == 'shaded':
-            display_mode = DisplayMode.Shaded
-        elif display_mode == 'surface':
-            display_mode = DisplayMode.Surface
-        elif display_mode == 'surfacewithedges':
-            display_mode = DisplayMode.SurfaceWithEdges
-        elif display_mode == 'wireframe':
-            display_mode = DisplayMode.Wireframe
-        elif display_mode == 'points':
-            display_mode = DisplayMode.Points
 
         if file_type.lower() == 'html':
             output = model.to_html(folder=folder, name=name,
