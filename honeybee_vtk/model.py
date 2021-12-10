@@ -298,13 +298,13 @@ class Model(object):
         """
         return [Actor(modeldataset=ds) for ds in self if len(ds.data) > 0]
 
-    def to_vtkjs(self, folder: str = '.', name: str = None, config: str = None,
+    def to_vtkjs(self, *, folder: str = '.', name: str = None, config: str = None,
                  validation: bool = False,
                  display_mode: DisplayMode = DisplayMode.Shaded) -> str:
-        """Write a vtkjs file.
+        """Write the model to a vtkjs file.
 
         Write your honeybee-vtk model to a vtkjs file that you can open in
-        Paraview-Glance.
+        Paraview-Glance or the Pollination Viewer.
 
         Args:
             folder: A valid text string representing the location of folder where
@@ -312,7 +312,7 @@ class Model(object):
                 directory.
             name : Name for the vtkjs file. File name will be Model.vtkjs if not
                 provided.
-            config: Path to the config file. Defaults to None.
+            config: Path to the config file in JSON format. Defaults to None.
             validation: Boolean to indicate whether to validate the data before loading.
                 Defaults to False.
             display_mode: Display mode for the model. Defaults to shaded.
@@ -320,8 +320,10 @@ class Model(object):
         Returns:
             A text string representing the file path to the vtkjs file.
         """
+        # update display mode
         self.update_display_mode(display_mode)
 
+        # load data if provided
         if config:
             self.load_config(config, validation=validation)
 
@@ -370,13 +372,14 @@ class Model(object):
 
         return target_vtkjs_file
 
-    def to_html(self, folder: str = '.', name: str = None, show: bool = False,
+    def to_html(self, *, folder: str = '.', name: str = None, show: bool = False,
                 config: str = None,
                 validation: bool = False,
                 display_mode: DisplayMode = DisplayMode.Shaded) -> str:
-        """Write an HTML file.
+        """Write the model to an HTML file.
 
-        Write your honeybee-vtk model to an HTML file.
+        Write your honeybee-vtk model to an HTML file that you can open in any modern 
+        browser and can also share with other.
 
         Args:
             folder: A valid text string representing the location of folder where
@@ -384,7 +387,7 @@ class Model(object):
             name : Name for the HTML file. File name will be Model.html if not provided.
             show: A boolean value. If set to True, the HTML file will be opened in the
                 default browser. Defaults to False
-            config: Path to the config file. Defaults to None.
+            config: Path to the config file in JSON format. Defaults to None.
             validation: Boolean to indicate whether to validate the data before loading.
             display_mode: Display mode for the model. Defaults to shaded.
 
@@ -392,9 +395,6 @@ class Model(object):
             A text string representing the file path to the HTML file.
         """
         self.update_display_mode(display_mode)
-        if config:
-            self.load_config(config, validation=validation)
-
         # Name of the html file
         file_name = name or 'model'
         # Set the target folder
@@ -403,7 +403,8 @@ class Model(object):
         html_file = os.path.join(target_folder, file_name + '.html')
         # Set temp folder to do the operation
         temp_folder = tempfile.mkdtemp()
-        vtkjs_file = self.to_vtkjs(temp_folder)
+        vtkjs_file = self.to_vtkjs(
+            folder=temp_folder, config=config, validation=validation)
         temp_html_file = add_data_to_viewer(vtkjs_file)
         shutil.copy(temp_html_file, html_file)
         try:
@@ -414,27 +415,30 @@ class Model(object):
             webbrowser.open(html_file)
         return html_file
 
-    def to_files(self, folder: str, name: str, writer: VTKWriters, config: str = None,
+    def to_files(self, *, folder: str = '.', name: str = None,
+                 writer: VTKWriters = VTKWriters.binary, config: str = None,
                  validation: bool = False,
                  display_mode: DisplayMode = DisplayMode.Shaded) -> str:
         """
         Write a .zip of VTK/VTP files.
 
         Args:
+            folder: File path to the output folder. The file
+                will be written to the current folder if not provided.
             name: A text string for the name of the .zip file to be written. If no
                 text string is provided, the name of the HBJSON file will be used as a
                 file name for the .zip file.
-            folder: File path to the output folder. The file
-                will be written to the current folder if not provided.
-            writer: A VTkWriters object.
-            config: Path to the config file. Defaults to None.
+            writer: A VTkWriters object. Default is binary which will write .vtp files.
+            config: Path to the config file in JSON format. Defaults to None.
             validation: Boolean to indicate whether to validate the data before loading.
             display_mode: Display mode for the model. Defaults to shaded.
 
         Returns:
             A text string containing the path to the .zip file with VTK/VTP files.
         """
+        # update display mode
         self.update_display_mode(display_mode)
+        # load data if provided
         if config:
             self.load_config(config, validation=validation)
 
@@ -473,7 +477,7 @@ class Model(object):
 
         return target_zip_file
 
-    def to_images(self, folder: str = '.', name: str = None, config: str = None,
+    def to_images(self, *, folder: str = '.', config: str = None,
                   validation: bool = False,
                   model_display_mode: DisplayMode = DisplayMode.Shaded,
                   grid_display_mode: DisplayMode = DisplayMode.Shaded,
@@ -481,7 +485,26 @@ class Model(object):
                   view: List[str] = None,
                   image_type: ImageTypes = ImageTypes.png,
                   image_width: int = 0, image_height: int = 0) -> List[str]:
+        """Export images from model.
 
+        Args:
+            folder: A valid text string representing the location of folder where
+                you'd want to write the images. Defaults to current working directory.
+            config: Path to the config file in JSON format. Defaults to None.
+            validation: Boolean to indicate whether to validate the data before loading.
+            model_display_mode: Display mode for the model. Defaults to shaded.
+            grid_display_mode: Display mode for the grid. Defaults to shaded.
+            background_color: Background color of the image. Defaults to white.
+            view: A list of paths to radiance view files. Defaults to None.
+            image_type: Image type to be exported. Defaults to png.
+            image_width: Image width. Defaults to 0. Which will use the default radiance
+                view's horizontal angle.
+            image_height: Image height. Defaults to 0. Which will use the default radiance
+                view's vertical angle.
+
+        Returns:
+            A list of text strings representing the file paths to the images.
+        """
         scene = Scene(background_color=background_color)
         actors = self.actors()
         scene.add_actors(actors)
