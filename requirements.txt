@@ -1,2 +1,2 @@
-lbt-honeybee>=0.5.65
+lbt-honeybee>=0.5.260
 vtk==9.1.0
