@@ -148,6 +148,12 @@ def convert_room(room: Room) -> List[PolyData]:
     data = []
     for face in room.faces:
         data.extend(convert_face(face))
+    for shade in room.indoor_shades:
+        polydata = convert_shade(shade)
+        data.append(polydata)
+    for shade in room.outdoor_shades:
+        polydata = convert_shade(shade)
+        data.append(polydata)
 
     return data
 
