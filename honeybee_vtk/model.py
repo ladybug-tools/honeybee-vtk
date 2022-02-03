@@ -165,6 +165,11 @@ class Model(object):
         """List of Camera objects attached to this Model object."""
         return self._cameras
 
+    @cameras.setter
+    def cameras(self, cams: List(Camera)) -> None:
+        """Set the cameras for this Model object."""
+        self._cameras = cams
+
     def get_modeldataset(self, dataset: DataSetNames) -> ModelDataSet:
         """Get a ModelDataSet object from a model.
 
