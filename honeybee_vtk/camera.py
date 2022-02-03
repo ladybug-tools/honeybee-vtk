@@ -12,8 +12,7 @@ class Camera(View):
     """Create a vtk camera object.
 
         Args:
-            identifier: A text string to be used as a name for the camera.
-                Defaults to 'camera'.
+            identifier: A unique name for the camera. Defaults to 'camera'.
             position: A tuple of three numbers that represent the x, y and z
                 coordinates of camera in a 3D space. Defaults to (0, 0, 50). Which
                 puts the camera 50 units off of ground (XY plane).
@@ -41,11 +40,20 @@ class Camera(View):
             up_vector: Tuple[float, float, float] = (0, 1, 0),
             h_size: int = 60,
             v_size: int = 60,
-            type: str = 'v') -> None:
+            type: str = 'v',
+            focal_point: Tuple[float, float, float] = None,
+            clipping_range: Tuple[float, float] = None,
+            dolly: int = None,
+            parallel_scale: int = None) -> None:
 
         super().__init__(
             identifier=identifier, position=position, direction=direction,
             up_vector=up_vector, h_size=h_size, v_size=v_size, type=type)
+
+        self._focal_point = focal_point
+        self._clipping_range = clipping_range
+        self._dolly = dolly
+        self._parallel_scale = parallel_scale
 
     def to_vtk(self) -> vtk.vtkCamera:
         """Get a vtk camera object."""
@@ -58,10 +66,22 @@ class Camera(View):
 
         # The location of camera in a 3D space
         camera.SetPosition(self._position.value)
-        # get a focal_point on the same axis as the camera position.
-        fp = (self._position[0] + self._direction.value[0],
-              self._position[1] + self._direction.value[1],
-              self._position[2] + self._direction.value[2])
+
+        if not self._focal_point:
+            # get a focal_point on the same axis as the camera position.
+            fp = (self._position[0] + self._direction.value[0],
+                  self._position[1] + self._direction.value[1],
+                  self._position[2] + self._direction.value[2])
+        else:
+            fp = self._focal_point
+
+        if self._clipping_range:
+            camera.SetClippingRange(self._clipping_range)
+        if self._dolly:
+            camera.Dolly(self._dolly)
+        if self._parallel_scale:
+            camera.SetParallelScale(self._parallel_scale)
+
         # The direction to the point where the camera is looking at
         camera.SetFocalPoint(fp)
 
@@ -74,8 +94,8 @@ class Camera(View):
 
         # Horizontal view angle
         camera.SetViewAngle(self._h_size.value)
-        camera.SetUseHorizontalViewAngle(True)
-        camera.UseHorizontalViewAngleOn()
+        # camera.SetUseHorizontalViewAngle(True)
+        # camera.UseHorizontalViewAngleOn()
 
         return camera
 
