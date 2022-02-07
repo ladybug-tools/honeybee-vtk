@@ -3,7 +3,6 @@
 import vtk
 import pathlib
 from typing import Tuple
-from .actor import Actor
 from .camera import Camera
 from .types import ImageTypes
 
@@ -21,6 +20,7 @@ class Assistant:
         actors: A dictionary of actors from a Scene object
         camera: A Camera object.
         legend_parameters: A list of legend parameter objects to be added to the scene
+
     """
 
     def __init__(self, background_color: Tuple[int, int, int], camera: Camera,
@@ -31,7 +31,8 @@ class Assistant:
         self._camera = camera
         self._legend_params = legend_parameters
 
-    def _create_window(self) -> None:
+    def _create_window(self) -> \
+            Tuple[vtk.vtkRenderWindowInteractor, vtk.vtkRenderWindow, vtk.vtkRenderer]:
         """Create a rendering window with a single renderer and an interactor.
 
         The objects are embedded inside each other. interactor is the outmost layer.
