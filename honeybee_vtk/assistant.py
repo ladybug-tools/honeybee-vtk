@@ -83,7 +83,9 @@ class Assistant:
         renderer.TwoSidedLightingOn()
 
         renderer.SetActiveCamera(self._camera.to_vtk())
-        renderer.ResetCamera()
+
+        if self._camera.reset_camera:
+            renderer.ResetCamera()
 
         # the order is from outside to inside
         return interactor, window, renderer
