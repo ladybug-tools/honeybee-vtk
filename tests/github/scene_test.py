@@ -56,7 +56,7 @@ def test_scene_camera():
     "Test a scene constructed with a camera object."
 
     camera = Camera(position=(-50.28, -30.32, 58.64), direction=(0.59, 0.44, -0.67),
-                    up_vector=(0.53, 0.40, 0.74), h_size=52.90)
+                    up_vector=(0.53, 0.40, 0.74), view_angle=52.90)
     scene = Scene(background_color=(255, 255, 255))
     scene.add_cameras(camera)
     assert len(scene.cameras) == 1
@@ -73,7 +73,7 @@ def test_add_cameras_from_model():
 
     cameras = model.cameras
     camera = Camera(position=(-50.28, -30.32, 58.64), direction=(0.59, 0.44, -0.67),
-                    up_vector=(0.53, 0.40, 0.74), h_size=52.90)
+                    up_vector=(0.53, 0.40, 0.74), view_angle=52.90)
     cameras.append(camera)
 
     scene = Scene(background_color=(255, 255, 255))

@@ -521,7 +521,7 @@ class Model(object):
 
         # Set a default camera if there are no cameras in the model
         if not self.cameras and not view:
-            camera = Camera(identifier='plan', type='l')
+            camera = Camera(identifier='plan', projection='l')
             scene.add_cameras(camera)
             bounds = Actor.get_bounds(actors)
             centroid = Actor.get_centroid(actors)
