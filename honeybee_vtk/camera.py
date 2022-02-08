@@ -1,106 +1,159 @@
 """A VTK camera object."""
-from __future__ import annotations
+
+
 import vtk
 import math
 from pathlib import Path
-from typing import Tuple, List
+from typing import Tuple, List, Union, TypeVar, Type
 from honeybee_radiance.view import View
 from ladybug_geometry.geometry3d import Point3D, LineSegment3D
+
+
+T = TypeVar('T', bound='Camera')
+
+
+def _get_focal_point(focal_point: Union[Tuple[float, float, float], None],
+                     position: Tuple[float, float, float],
+                     direction: Tuple[float, float, float]) -> Tuple[float, float, float]:
+    """Set the focal point of the camera.
+
+    Args:
+        focal_point: x, y, z coordinates of the focal point. If not set, the focal
+            point will be set by moving the point of camera position in the direction
+            of the camera direction.
+        position: x, y, z coordinates of the camera position.
+        direction: x, y, z components of the camera direction.
+
+    Returns:
+        x, y, z coordinates of the focal point.
+    """
+    if not focal_point:
+        return (position[0] + direction[0], position[1] + direction[1], position[2] +
+                direction[2])
+    return focal_point
+
+
+def _apply_projection(camera: Type[T], projection: str, parallel_scale: int,
+                      clipping_range: Tuple[float, float]) -> vtk.vtkCamera:
+    """Set the parallel projection camera.
+
+    Args:
+        camera: A VTK camera object.
+        projection: The projection type. 'v' or 'l'
+        parallel_scale: The parallel scale of the camera.
+        clipping_range: The clipping range of the camera.
+
+    Returns:
+        A VTK camera object.
+    """
+    if projection == 'l':
+        camera.ParallelProjectionOn()
+        if parallel_scale:
+            camera.SetParallelScale(parallel_scale)
+        if clipping_range:
+            camera.SetClippingRange(clipping_range)
+        return camera
+    return camera
 
 
 class Camera(View):
     """Create a vtk camera object.
 
-        Args:
-            identifier: A unique name for the camera. Defaults to 'camera'.
-            position: A tuple of three numbers that represent the x, y and z
-                coordinates of camera in a 3D space. Defaults to (0, 0, 50). Which
-                puts the camera 50 units off of ground (XY plane).
-            direction: A tuple of three numbers that represent the x, y, and z
-                components of a vector towards the aim of the camera.
-                Defaults to (0, 0, -1). Which means the camera will look towards the
-                ground (XY plane).
-            up_vector: A tuple of three numbers to represent the x, y, and z
-                component of the vector that represents where the top of the camera is.
-                Defaults to (0, 1, 0).
-            h_size: A number representing the horizontal view angle.
-                Defaults to 60.
-            v_size: A number representing the vertical view angle.
-                Defaults to 60.
-            type: Choose between a perspective and parallel view type. 'v' will set
-                the perspective view and 'l' will set the parallel view. Defaults to 'v'
-                which is the perspective view.
+    This object inherits from the Honeybee_radiance.View object.
+    https://www.ladybug.tools/honeybee-radiance/docs/honeybee_radiance.view.html
+
+    Args:
+        identifier: A unique name for the camera. Defaults to 'camera'.
+        position: x, y, z coordinates of the camera in a 3D space. Defaults to (0, 0, 100)
+            which puts the camera 100 meters off of the XY plane (ground).
+        direction: x, y, and z components of a vector that represents the view direction
+            (aim) of the camera. Defaults to (0, 0, -1). Which means the camera will look 
+            towards the XY plane (ground).
+        up_vector: x, y, and z component of the vector that represents where the top 
+            of the camera is. Defaults to (0, 1, 0).
+        view_angle: The angular hight of the camera view in degrees. You can think of 
+            this as the vertical view angle. Defaults to 60
+        projection: Choose between a perspective and parallel view type. 'v' will set
+            the perspective view and 'l' will set the parallel view. Defaults to 'v'.
+        reset_camera: A boolean that indicates whether the camera should be reset.
+            Resetting the camera is helpful when you want to capture an image of a 
+            model from outside the model. This will make sure that the camera is far 
+            away from the model and the whole model is captured. This should be set
+            to false in case of the intention is to take snapshots inside the model. 
+            A use case is taking the snapshots of the grids in the model.
+            Defaults to True.
+        focal_point: x, y, and z coordinates of the point where the camera is looking at.
+            Defaults to None which means the camera will look towards the XY plane 
+            (ground).
+        clipping_range: A range of two numbers that define the near plane and the far
+            plane respectively. Both of these planes are perpendicular to the camera
+            direction and are effective only in when the view type is parallel. The 
+            distance from the camera to the near plane is the closest distance that
+            an object can be to the camera and still remain in the view. The distance
+            from the camera to the far plane is the farthest distance that an object
+            can be from the camera and still remain in the view. Defaults to None.
+        parallel_scale: Set the parallel scale for the camera. Note, that this parameters 
+            works as an inverse scale. So larger numbers produce smaller images.This can
+            be thought of as the zoom in and zoom out control. This parameter is effective
+            only when the view type is parallel. Defaults to None.
         """
 
-    def __init__(
-            self,
-            identifier: str = 'camera',
-            position: Tuple[float, float, float] = (0, 0, 100),
-            direction: Tuple[float, float, float] = (0, 0, -1),
-            up_vector: Tuple[float, float, float] = (0, 1, 0),
-            h_size: int = 60,
-            v_size: int = 60,
-            type: str = 'v',
-            focal_point: Tuple[float, float, float] = None,
-            clipping_range: Tuple[float, float] = None,
-            dolly: int = None,
-            parallel_scale: int = None) -> None:
+    def __init__(self, identifier: str = 'camera',
+                 position: Tuple[float, float, float] = (0, 0, 100),
+                 direction: Tuple[float, float, float] = (0, 0, -1),
+                 up_vector: Tuple[float, float, float] = (0, 1, 0),
+                 view_angle: int = 60,
+                 projection: str = 'v',
+                 reset_camera: bool = True,
+                 focal_point: Union[Tuple[float, float, float], None] = None,
+                 clipping_range: Union[Tuple[float, float], None] = None,
+                 parallel_scale: Union[int, None] = None) -> None:
 
         super().__init__(
             identifier=identifier, position=position, direction=direction,
-            up_vector=up_vector, h_size=h_size, v_size=v_size, type=type)
+            up_vector=up_vector, h_size=view_angle, type=projection)
 
+        self._identifier = identifier
+        self._position = position
+        self._direction = direction
+        self._up_vector = up_vector
+        self._view_angle = view_angle
+        self._projection = projection
+        self._reset_camera = reset_camera
         self._focal_point = focal_point
         self._clipping_range = clipping_range
-        self._dolly = dolly
         self._parallel_scale = parallel_scale
 
+    @property
+    def reset_camera(self) -> bool:
+        """Get a boolean that indicates whether the camera should be reset."""
+        return self._reset_camera
+
+    @reset_camera.setter
+    def reset_camera(self, reset_camera: bool) -> None:
+        """Set a boolean that indicates whether the camera should be reset. This is
+            helpful in case of the intention is to take snapshots inside the model.
+        """
+        self._reset_camera = reset_camera
+
     def to_vtk(self) -> vtk.vtkCamera:
-        """Get a vtk camera object."""
+        """Get a vtk camera object"""
+
         camera = vtk.vtkCamera()
-
-        # Parallel projection
-        if self._type.value == 'l':
-            camera.SetParallelProjection(True)
-            camera.ParallelProjectionOn()
-
-        # The location of camera in a 3D space
-        camera.SetPosition(self._position.value)
-
-        if not self._focal_point:
-            # get a focal_point on the same axis as the camera position.
-            fp = (self._position[0] + self._direction.value[0],
-                  self._position[1] + self._direction.value[1],
-                  self._position[2] + self._direction.value[2])
-        else:
-            fp = self._focal_point
-
-        if self._clipping_range:
-            camera.SetClippingRange(self._clipping_range)
-        if self._dolly:
-            camera.Dolly(self._dolly)
-        if self._parallel_scale:
-            camera.SetParallelScale(self._parallel_scale)
-
-        # The direction to the point where the camera is looking at
-        camera.SetFocalPoint(fp)
-
-        # calculate view normal to the camera
+        camera.SetPosition(self._position)
         camera.ComputeViewPlaneNormal()
-        # Where the top of the camera is
-        camera.SetViewUp(self._up_vector.value)
-        # Make sure that view up is 90 degrees to the view normal
+        camera.SetViewUp(self._up_vector)
+
+        camera.SetViewAngle(self._view_angle)
+        camera.SetFocalPoint(_get_focal_point(self._focal_point, self._position,
+                                              self._direction))
+        camera = _apply_projection(camera, self._projection, self._parallel_scale,
+                                   self._clipping_range)
         camera.OrthogonalizeViewUp()
-
-        # Horizontal view angle
-        camera.SetViewAngle(self._h_size.value)
-        # camera.SetUseHorizontalViewAngle(True)
-        # camera.UseHorizontalViewAngleOn()
-
         return camera
 
     @classmethod
-    def from_view(cls: Camera, view: View) -> Camera:
+    def from_view(cls: Type[T], view: View) -> T:
         """Create a Camera object from a radiance view.
 
         Args:
@@ -109,17 +162,13 @@ class Camera(View):
         Returns:
             A Camera object.
         """
-        return cls(
-            identifier=view.identifier,
-            position=view.position,
-            direction=view.direction,
-            up_vector=view.up_vector,
-            h_size=view.h_size,
-            v_size=view.v_size,
-            type=view.type)
+        return cls(identifier=view.identifier, position=view.position,
+                   direction=view.direction, up_vector=view.up_vector,
+                   view_angle=view.h_size if view.h_size > view.v_size else view.v_size,
+                   projection=view.type)
 
     @classmethod
-    def from_view_file(cls: Camera, file_path: str) -> Camera:
+    def from_view_file(cls: Type[T], file_path: str) -> T:
         """Create a Camera object from a radiance view file.
 
         Args:
@@ -132,14 +181,14 @@ class Camera(View):
         view_file = Path(file_path)
 
         if view_file.is_file() and view_file.as_posix()[-3:] == '.vf':
-            return Camera.from_view(view=View.from_file(view_file.as_posix()))
+            return cls.from_view(view=View.from_file(view_file.as_posix()))
         else:
             raise FileNotFoundError(
                 'Radiance view file not found.'
             )
 
     @classmethod
-    def aerial_cameras(cls: Camera, bounds: List[Point3D], centroid) -> List[Camera]:
+    def aerial_cameras(cls: Type[T], bounds: List[Point3D], centroid: Point3D) -> List[T]:
         """Get four aerial cameras.
 
         Args:
