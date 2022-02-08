@@ -116,7 +116,7 @@ def test_export_images():
 
     # A camera setup using the constructor
     camera = Camera(position=(-50.28, -30.32, 58.64), direction=(0.59, 0.44, -0.67),
-                    up_vector=(0.53, 0.40, 0.74), h_size=52.90)
+                    up_vector=(0.53, 0.40, 0.74), view_angle=52.90)
 
     # Cameras extracted from hbjson
     cameras = model.cameras
