@@ -237,7 +237,7 @@ class Model(object):
             if len(ids) == 1:
                 id = self._hb_model.properties.radiance.sensor_grids[0].identifier
                 sensors = [
-                    sensor for grid in _hb_model.properties.radiance.sensor_grids
+                    sensor for grid in self._hb_model.properties.radiance.sensor_grids
                     for sensor in grid.sensors]
                 sensor_grid = SensorGrid(id, sensors)
                 self._sensor_grids.data.append(
