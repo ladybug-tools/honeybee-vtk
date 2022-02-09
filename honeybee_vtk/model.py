@@ -13,9 +13,11 @@ import warnings
 
 from collections import defaultdict
 from typing import Dict, List, Union, Tuple
+
 from honeybee.facetype import face_types
 from honeybee.model import Model as HBModel
 from honeybee_radiance.sensorgrid import SensorGrid
+from honeybee_radiance.sensor import Sensor
 from ladybug.color import Color
 
 from .actor import Actor
@@ -119,8 +121,8 @@ class Model(object):
     """
 
     def __init__(
-            self, model: HBModel,
-            load_grids: SensorGridOptions = SensorGridOptions.Ignore) -> None:
+            self, hb_model: HBModel,
+            grid_options: SensorGridOptions = SensorGridOptions.Ignore) -> None:
         """Instantiate a honeybee-vtk model object.
 
         Args:
@@ -130,26 +132,24 @@ class Model(object):
                 honeybee-vtk model.
         """
         super().__init__()
-        # apertures and orphaned apertures
-        self._apertures = \
-            ModelDataSet('Aperture', color=self.get_default_color('Aperture'))
-        # doors and orphaned doors
+
+        self._hb_model = hb_model
+        self._sensor_grids_option = grid_options
+        self._apertures = ModelDataSet('Aperture',
+                                       color=self.get_default_color('Aperture'))
         self._doors = ModelDataSet('Door', color=self.get_default_color('Door'))
-        # shades and orphaned shades
         self._shades = ModelDataSet('Shade', color=self.get_default_color('Shade'))
-        # face objects based on type
         self._walls = ModelDataSet('Wall', color=self.get_default_color('Wall'))
         self._floors = ModelDataSet('Floor', color=self.get_default_color('Floor'))
-        self._roof_ceilings = \
-            ModelDataSet('RoofCeiling', color=self.get_default_color('RoofCeiling'))
-        self._air_boundaries = \
-            ModelDataSet('AirBoundary', color=self.get_default_color('AirBoundary'))
+        self._roof_ceilings = ModelDataSet('RoofCeiling',
+                                           color=self.get_default_color('RoofCeiling'))
+        self._air_boundaries = ModelDataSet('AirBoundary',
+                                            color=self.get_default_color('AirBoundary'))
         self._sensor_grids = ModelDataSet('Grid', color=self.get_default_color('Grid'))
         self._cameras = []
-        self._convert_model(model)
-        self._load_grids(model, load_grids)
-        self._load_cameras(model)
-        self._sensor_grids_option = load_grids  # keep this for adding data
+        self._convert_model()
+        self._load_grids()
+        self._load_cameras()
 
     @classmethod
     def from_hbjson(cls, hbjson: str,
@@ -246,35 +246,36 @@ class Model(object):
         ):
             yield dataset
 
-    def _load_grids(self, model: HBModel, grid_options: SensorGridOptions) -> None:
+    def _load_grids(self) -> None:
         """Load sensor grids."""
-        if grid_options == SensorGridOptions.Ignore:
+        if self._sensor_grids_option == SensorGridOptions.Ignore:
             return
-        if hasattr(model.properties, 'radiance'):
+        if hasattr(self._hb_model.properties, 'radiance'):
             # list of unique sensor_grid identifiers in the model
-            ids = set([grid.identifier for grid in model.properties.radiance.sensor_grids])
+            ids = set([grid.identifier for grid in
+                       self._hb_model.properties.radiance.sensor_grids])
 
             # if all the grids have the same identifier, merge them into one grid
             if len(ids) == 1:
-                id = model.properties.radiance.sensor_grids[0].identifier
+                id = self._hb_model.properties.radiance.sensor_grids[0].identifier
                 sensors = [
-                    sensor for grid in model.properties.radiance.sensor_grids
+                    sensor for grid in _hb_model.properties.radiance.sensor_grids
                     for sensor in grid.sensors]
                 sensor_grid = SensorGrid(id, sensors)
                 self._sensor_grids.data.append(
-                    convert_sensor_grid(sensor_grid, grid_options)
+                    convert_sensor_grid(sensor_grid, self._sensor_grids_option)
                 )
             # else add them as separate grids
             else:
-                for sensor_grid in model.properties.radiance.sensor_grids:
+                for sensor_grid in self._hb_model.properties.radiance.sensor_grids:
                     self._sensor_grids.data.append(
-                        convert_sensor_grid(sensor_grid, grid_options)
+                        convert_sensor_grid(sensor_grid, self._sensor_grids_option)
                     )
 
-    def _load_cameras(self, model: HBModel) -> None:
+    def _load_cameras(self) -> None:
         """Load radiance views."""
-        if len(model.properties.radiance.views) > 0:
-            for view in model.properties.radiance.views:
+        if len(self._hb_model.properties.radiance.views) > 0:
+            for view in self._hb_model.properties.radiance.views:
                 self._cameras.append(Camera.from_view(view))
 
     def update_display_mode(self, value: DisplayMode) -> None:
@@ -291,28 +292,28 @@ class Model(object):
         for attr in DATA_SETS.values():
             self.__getattribute__(attr).display_mode = value
 
-    def _convert_model(self, model: HBModel) -> None:
+    def _convert_model(self) -> None:
         """An internal method to convert the objects on class initiation."""
 
-        if hasattr(model, 'rooms'):
-            for room in model.rooms:
+        if hasattr(self._hb_model, 'rooms'):
+            for room in self._hb_model.rooms:
                 objects = convert_room(room)
                 self._add_objects(self.separate_by_type(objects))
 
-        if hasattr(model, 'orphaned_shades'):
-            for face in model.orphaned_shades:
+        if hasattr(self._hb_model, 'orphaned_shades'):
+            for face in self._hb_model.orphaned_shades:
                 self._shades.data.append(convert_shade(face))
 
-        if hasattr(model, 'orphaned_apertures'):
-            for face in model.orphaned_apertures:
+        if hasattr(self._hb_model, 'orphaned_apertures'):
+            for face in self._hb_model.orphaned_apertures:
                 self._apertures.data.extend(convert_aperture(face))
 
-        if hasattr(model, 'orphaned_doors'):
-            for face in model.orphaned_doors:
+        if hasattr(self._hb_model, 'orphaned_doors'):
+            for face in self._hb_model.orphaned_doors:
                 self._doors.data.extend(convert_door(face))
 
-        if hasattr(model, 'orphaned_faces'):
-            for face in model.orphaned_faces:
+        if hasattr(self._hb_model, 'orphaned_faces'):
+            for face in self._hb_model.orphaned_faces:
                 objects = convert_face(face)
                 self._add_objects(self.separate_by_type(objects))
 
@@ -433,7 +434,7 @@ class Model(object):
                 display_mode: DisplayMode = DisplayMode.Shaded) -> str:
         """Write the model to an HTML file.
 
-        Write your honeybee-vtk model to an HTML file that you can open in any modern 
+        Write your honeybee-vtk model to an HTML file that you can open in any modern
         browser and can also share with other.
 
         Args:
@@ -661,8 +662,8 @@ class Model(object):
         Returns:
             A honeybee-vtk model with data loaded on it.
         """
-        assert len(self.sensor_grids.data) > 0, 'Sensor grids are not loaded on'\
-            ' this model. Reload them using grid options.'
+        assert len(self.sensor_grids.data) > 0, 'Sensor grids are not loaded on'
+        ' this model. Reload them using grid options.'
 
         config_dir = pathlib.Path(json_path).parent
 
@@ -829,7 +830,7 @@ class Model(object):
                 result, name=identifier, per_face=False, data_range=legend_range)
             ds.color_by = identifier
 
-    @staticmethod
+    @ staticmethod
     def _get_legend_range(data: DataConfig) -> List[Union[float, int]]:
         """Read and get legend min and max values from data if provided by the user.
 
