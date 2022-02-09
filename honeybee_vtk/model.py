@@ -52,28 +52,15 @@ DATA_SETS = {
 }
 
 
-x, y, z = float, float, float
-center_point = Tuple[x, y, z]
+def _camera_to_actor(actor: Actor, zoom: int = 15, camera_offset: int = 100,
+                     clipping_range: Tuple[int, int] = (100, 101)) -> Camera:
+    """Create a Camera for each grid actor.
 
-
-def _center_of_sensors(sensors: Tuple[Sensor]) -> center_point:
-    """Get the center point of a list of sensors."""
-    x: float = 0.0
-    y: float = 0.0
-    z: float = 0.0
-    for sensor in sensors:
-        x += sensor.pos[0]
-        y += sensor.pos[1]
-        z += sensor.pos[2]
-    return x/len(sensors), y/len(sensors), z/len(sensors)
-
-
-def _cameras_to_grids(grids: List[SensorGrid], zoom: int = 15, camera_offset: int = 100,
-                      clipping_range: Tuple[int, int] = (100, 101)) -> List[Camera]:
-    """Create a list of cameras for each sensor grid.
+    This function uses the center point of a grid actor to create a camera that is
+    setup at the camera_offset distance from the center point.
 
     Args:
-        grids: A list of sensor grids.
+        actor: An Actor object.
         zoom: The zoom level of the camera. Defaults to 15.
         camera_offset: The distance between the camera and the sensor grid.
             Defaults to 100.
@@ -82,24 +69,15 @@ def _cameras_to_grids(grids: List[SensorGrid], zoom: int = 15, camera_offset: in
     Returns:
         A list of cameras.
     """
-    cameras: List[Camera] = []
-    for count, grid in enumerate(grids):
-        if grid.mesh:
-            center_point = grid.mesh.center
-        else:
-            center_point = _center_of_sensors(grid.sensors)
 
-        pos = (center_point[0], center_point[1], center_point[2] + camera_offset)
-        cam = Camera(identifier=f'cam_{count}',
-                     position=pos,
-                     projection='l',
-                     focal_point=center_point,
-                     clipping_range=clipping_range,
-                     parallel_scale=zoom,
-                     reset_camera=True)
-        cameras.append(cam)
-
-    return cameras
+    cent_pt = actor.centroid
+    return Camera(identifier=f'{actor.name}',
+                  position=(cent_pt.x, cent_pt.y, cent_pt.z + camera_offset),
+                  projection='l',
+                  focal_point=cent_pt,
+                  clipping_range=clipping_range,
+                  parallel_scale=zoom,
+                  reset_camera=True)
 
 
 class Model(object):
