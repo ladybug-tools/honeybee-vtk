@@ -21,10 +21,11 @@ class Actor:
         modeldataset: A ModelDataSet object from a honeybee-vtk Model.
     """
 
-    def __init__(self, modeldataset: ModelDataSet) -> None:
+    def __init__(self, modeldataset: ModelDataSet, data_to_show: str = None) -> None:
         self.modeldataset = modeldataset
         self._name = self._modeldataset.name
         self._monochrome_color = None
+        self._data_to_show = data_to_show
 
     @property
     def modeldataset(self) -> ModelDataSet:
@@ -53,8 +54,10 @@ class Actor:
     @property
     def legend_parameters(self) -> List[LegendParameter]:
         """Legend parameters in the DataFieldInfo of ModelDataSet of this actor."""
-        return [info.legend_parameter for info in self._modeldataset.fields_info.values()
-                if info.legend_parameter]
+        if not self._data_to_show:
+            return [info.legend_parameter for info in self._modeldataset.fields_info.values()
+                    if info.legend_parameter]
+        return[self._modeldataset.fields_info[self._data_to_show].legend_parameter]
 
     @property
     def bounds(self) -> List[Point3D]:
