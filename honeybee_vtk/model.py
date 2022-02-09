@@ -582,8 +582,9 @@ class Model(object):
             folder=folder, image_type=image_type,
             image_width=image_width, image_height=image_height)
 
-    def to_grid_images(self, *, folder: str = '.', config: str = None,
-                       validation: bool = False,
+    def to_grid_images(self, config: str, *, folder: str = '.',
+                       data_to_show: str = None,
+                       legend_range: Tuple[float, float] = None,
                        grid_display_mode: DisplayMode = DisplayMode.SurfaceWithEdges,
                        background_color: Tuple[int, int, int] = None,
                        image_type: ImageTypes = ImageTypes.png,
@@ -593,16 +594,20 @@ class Model(object):
         Returns:
             Path to the folder where the images are exported for each grid.
         """
-        data_to_show = list(self.sensor_grids.fields_info.keys())[-1]
+        self.load_config(config)
+        data_to_show = data_to_show if data_to_show else list(
+            self.sensor_grids.fields_info.keys())[-1]
+        data = self._get_data_from_config(config, data_to_show)
 
         for grid_polydata in self.sensor_grids.data:
             dataset = ModelDataSet(name=grid_polydata.identifier, data=[grid_polydata],
                                    display_model=grid_display_mode)
             dataset.color_by = data_to_show
-            actor = Actor(dataset)
+            actor = Actor(dataset, data_to_show=data_to_show)
             scene = Scene(background_color=background_color)
             scene.add_actors(actor)
             scene.add_cameras(_camera_to_actor(actor))
+            self._load_legend_parameters(data, scene, legend_range)
             scene.export_images(folder=folder, image_type=image_type,
                                 image_width=image_width, image_height=image_height)
 
@@ -682,6 +687,35 @@ class Model(object):
                     warnings.warn(
                         f'Data for {data.identifier} is not loaded.'
                     )
+
+    def _get_data_from_config(self, json_path: str,
+                              data_to_show: str = None) -> Union[List[DataConfig],
+                                                                 DataConfig]:
+        """Extract data from the Config file.
+
+        Args:
+            json_path: File path to the config json file.
+            data_to_show: A string indicating the data to extract.
+
+        Returns:
+            A list of DataConfig objects.
+        """
+        assert len(self.sensor_grids.data) > 0, 'Sensor grids are not loaded on'
+        ' this model. Reload them using grid options.'
+
+        try:
+            with open(json_path) as fh:
+                config = json.load(fh)
+        except json.decoder.JSONDecodeError:
+            raise TypeError(
+                'Not a valid json file.'
+            )
+        else:
+            if not data_to_show:
+                return [DataConfig.parse_obj(json_obj) for json_obj in config['data']]
+            for json_obj in config['data']:
+                if json_obj['identifier'] == data_to_show:
+                    return DataConfig.parse_obj(json_obj)
 
     def _get_grid_type(self) -> str:
         """Get the type of grid in the model
