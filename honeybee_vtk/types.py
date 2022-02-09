@@ -438,11 +438,12 @@ class ModelDataSet:
     representation.
     """
 
-    def __init__(self, name, data: List[PolyData] = None, color: Color = None) -> None:
+    def __init__(self, name, data: List[PolyData] = None, color: Color = None,
+                 display_model: DisplayMode = DisplayMode.SurfaceWithEdges) -> None:
         self.name = name
         self.data = data or []
         self.color = color
-        self.display_mode = DisplayMode.Shaded
+        self.display_mode = display_model
         self.color_by = None
 
     @ property
