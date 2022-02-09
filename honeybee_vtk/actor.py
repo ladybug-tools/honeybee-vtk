@@ -56,6 +56,27 @@ class Actor:
         return [info.legend_parameter for info in self._modeldataset.fields_info.values()
                 if info.legend_parameter]
 
+    @property
+    def bounds(self) -> List[Point3D]:
+        """Bounds of the actor."""
+
+        vtk_actor = self.to_vtk()
+        bounds = vtk_actor.GetBounds()
+        pt_min = Point3D(bounds[0], bounds[2], bounds[4])
+        pt_max = Point3D(bounds[1], bounds[3], bounds[5])
+        return [pt_min, pt_max]
+
+    @property
+    def centroid(self) -> Point3D:
+        """Centroid of the actor."""
+        points = self.bounds
+
+        x = sum([point.x for point in points]) / len(points)
+        y = sum([point.y for point in points]) / len(points)
+        z = sum([point.z for point in points]) / len(points)
+
+        return Point3D(x, y, z)
+
     def get_monochrome(self, monochrome_color: Tuple[float, float, float]) -> None:
         """Get actors in monochrome color.
 
