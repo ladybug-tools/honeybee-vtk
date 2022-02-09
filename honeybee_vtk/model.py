@@ -19,6 +19,7 @@ from honeybee.model import Model as HBModel
 from honeybee_radiance.sensorgrid import SensorGrid
 from honeybee_radiance.sensor import Sensor
 from ladybug.color import Color
+from ladybug_geometry.geometry3d.pointvector import Point3D
 
 from .actor import Actor
 from .scene import Scene
@@ -584,17 +585,16 @@ class Model(object):
         Returns:
             Path to the folder where the images are exported for each grid.
         """
-        grids: List[SensorGrid] = self._hb_model.properties.radiance.sensor_grids
-        assert grids, 'No grids found in the model.'
+        data_to_show = list(self.sensor_grids.fields_info.keys())[-1]
 
-        actors = [Actor(ModelDataSet(name=grid.identifier, data=[convert_sensor_grid(
-            grid)], color=Color(23, 125, 56))) for grid in grids]
-        cameras = _cameras_to_grids(grids)
-
-        for count, actor in enumerate(actors):
+        for grid_polydata in self.sensor_grids.data:
+            dataset = ModelDataSet(name=grid_polydata.identifier, data=[grid_polydata],
+                                   display_model=grid_display_mode)
+            dataset.color_by = data_to_show
+            actor = Actor(dataset)
             scene = Scene(background_color=background_color)
             scene.add_actors(actor)
-            scene.add_cameras(cameras[count])
+            scene.add_cameras(_camera_to_actor(actor))
             scene.export_images(folder=folder, image_type=image_type,
                                 image_width=image_width, image_height=image_height)
 
