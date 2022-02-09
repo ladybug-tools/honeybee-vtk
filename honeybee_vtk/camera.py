@@ -113,10 +113,6 @@ class Camera(View):
             identifier=identifier, position=position, direction=direction,
             up_vector=up_vector, h_size=view_angle, type=projection)
 
-        self._identifier = identifier
-        self._position = position
-        self._direction = direction
-        self._up_vector = up_vector
         self._view_angle = view_angle
         self._projection = projection
         self._reset_camera = reset_camera
@@ -140,13 +136,13 @@ class Camera(View):
         """Get a vtk camera object"""
 
         camera = vtk.vtkCamera()
-        camera.SetPosition(self._position)
+        camera.SetPosition(self.position)
         camera.ComputeViewPlaneNormal()
-        camera.SetViewUp(self._up_vector)
+        camera.SetViewUp(self.up_vector)
 
         camera.SetViewAngle(self._view_angle)
-        camera.SetFocalPoint(_get_focal_point(self._focal_point, self._position,
-                                              self._direction))
+        camera.SetFocalPoint(_get_focal_point(self._focal_point, self.position,
+                                              self.direction))
         camera = _apply_projection(camera, self._projection, self._parallel_scale,
                                    self._clipping_range)
         camera.OrthogonalizeViewUp()
