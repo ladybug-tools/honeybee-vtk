@@ -50,6 +50,56 @@ DATA_SETS = {
 }
 
 
+x, y, z = float, float, float
+center_point = Tuple[x, y, z]
+
+
+def _center_of_sensors(sensors: Tuple[Sensor]) -> center_point:
+    """Get the center point of a list of sensors."""
+    x: float = 0.0
+    y: float = 0.0
+    z: float = 0.0
+    for sensor in sensors:
+        x += sensor.pos[0]
+        y += sensor.pos[1]
+        z += sensor.pos[2]
+    return x/len(sensors), y/len(sensors), z/len(sensors)
+
+
+def _cameras_to_grids(grids: List[SensorGrid], zoom: int = 15, camera_offset: int = 100,
+                      clipping_range: Tuple[int, int] = (100, 101)) -> List[Camera]:
+    """Create a list of cameras for each sensor grid.
+
+    Args:
+        grids: A list of sensor grids.
+        zoom: The zoom level of the camera. Defaults to 15.
+        camera_offset: The distance between the camera and the sensor grid.
+            Defaults to 100.
+        clipping_range: The clipping range of the camera. Defaults to (100, 101).
+
+    Returns:
+        A list of cameras.
+    """
+    cameras: List[Camera] = []
+    for count, grid in enumerate(grids):
+        if grid.mesh:
+            center_point = grid.mesh.center
+        else:
+            center_point = _center_of_sensors(grid.sensors)
+
+        pos = (center_point[0], center_point[1], center_point[2] + camera_offset)
+        cam = Camera(identifier=f'cam_{count}',
+                     position=pos,
+                     projection='l',
+                     focal_point=center_point,
+                     clipping_range=clipping_range,
+                     parallel_scale=zoom,
+                     reset_camera=True)
+        cameras.append(cam)
+
+    return cameras
+
+
 class Model(object):
     """A honeybee-vtk model.
 
@@ -551,6 +601,31 @@ class Model(object):
         return scene.export_images(
             folder=folder, image_type=image_type,
             image_width=image_width, image_height=image_height)
+
+    def to_grid_images(self, *, folder: str = '.', config: str = None,
+                       validation: bool = False,
+                       grid_display_mode: DisplayMode = DisplayMode.SurfaceWithEdges,
+                       background_color: Tuple[int, int, int] = None,
+                       image_type: ImageTypes = ImageTypes.png,
+                       image_width: int = 0, image_height: int = 0) -> str:
+        """Export am image for each grid in the model.
+
+        Returns:
+            Path to the folder where the images are exported for each grid.
+        """
+        grids: List[SensorGrid] = self._hb_model.properties.radiance.sensor_grids
+        assert grids, 'No grids found in the model.'
+
+        actors = [Actor(ModelDataSet(name=grid.identifier, data=[convert_sensor_grid(
+            grid)], color=Color(23, 125, 56))) for grid in grids]
+        cameras = _cameras_to_grids(grids)
+
+        for count, actor in enumerate(actors):
+            scene = Scene(background_color=background_color)
+            scene.add_actors(actor)
+            scene.add_cameras(cameras[count])
+            scene.export_images(folder=folder, image_type=image_type,
+                                image_width=image_width, image_height=image_height)
 
     @ staticmethod
     def get_default_color(face_type: face_types) -> Color:
