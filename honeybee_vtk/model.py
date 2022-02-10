@@ -619,7 +619,7 @@ class Model(object):
             image_width=image_width, image_height=image_height)
 
     def to_grid_images(self, config: str, *, folder: str = '.',
-                       display_mode: DisplayMode = DisplayMode.SurfaceWithEdges,
+                       grid_display_mode: DisplayMode = DisplayMode.SurfaceWithEdges,
                        background_color: Tuple[int, int, int] = None,
                        image_type: ImageTypes = ImageTypes.png,
                        image_width: int = 0, image_height: int = 0) -> List[str]:
@@ -650,7 +650,7 @@ class Model(object):
         assert len(self.sensor_grids.data) != 0, 'No sensor grids found in the model.'
 
         if self._sensor_grids_option == SensorGridOptions.Sensors:
-            display_mode = DisplayMode.Points
+            grid_display_mode = DisplayMode.Points
 
         self.load_config(config)
         config_data, grid_filter = _get_data_from_config(config)
@@ -670,7 +670,7 @@ class Model(object):
                 for grid_polydata in grid_polydata_lst:
                     dataset = ModelDataSet(name=grid_polydata.identifier,
                                            data=[grid_polydata],
-                                           display_model=display_mode)
+                                           display_model=grid_display_mode)
                     dataset.color_by = data.identifier
                     actor = Actor(dataset, data_to_show=data.identifier)
                     scene = Scene(background_color=background_color)
