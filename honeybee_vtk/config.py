@@ -214,7 +214,13 @@ class DataConfig(BaseModel):
 
 class Config(BaseModel):
     """Config for simulation results you'd like to load on a honeybee-vtk model."""
+
     data: List[DataConfig] = Field(
         description='List of data-config objects that define the data to be loaded on'
         ' the model.'
+    )
+
+    grid_filter: conlist(item_type=str) = Field(
+        [],
+        description='List of identifiers of grids that you would like to export images for.'
     )
