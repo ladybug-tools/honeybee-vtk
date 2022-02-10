@@ -96,24 +96,24 @@ class LegendConfig(BaseModel):
     )
 
     orientation: Orientation = Field(
-        Orientation.horizontal,
+        Orientation.vertical,
         description='Choose between horizontal and vertical orientation of legend.'
     )
 
     width: confloat(ge=0.05, le=0.95) = Field(
-        0.45,
+        0.05,
         description=' A decimal number representing the fraction of viewport width'
         ' that will be used to define the width of the legend.'
     )
 
     height: confloat(ge=0.05, le=0.95) = Field(
-        0.05,
+        0.45,
         description='A decimal number representing the fraction of viewport height'
         'that will be used to define the height of the legend.'
     )
 
     position: conlist(confloat(ge=0.05, le=0.95), min_items=2, max_items=2) = Field(
-        [0.5, 0.1],
+        [0.9, 0.5],
         description='A tuple of two decimal values. The values represent the fraction'
         ' of viewport width and the fraction of viewport height.'
     )
