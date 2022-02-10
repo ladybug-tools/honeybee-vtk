@@ -1,7 +1,5 @@
-import traceback
-import pytest
+
 import os
-from traceback import TracebackException
 from click.testing import CliRunner
 from honeybee_vtk.cli.export import export
 from ladybug.futil import nukedir
