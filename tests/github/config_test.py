@@ -57,10 +57,10 @@ def test_legend_config_defaults():
     assert legend_config.min == Autocalculate()
     assert legend_config.max == Autocalculate()
     assert not legend_config.hide_legend
-    assert legend_config.orientation == Orientation.horizontal
-    assert legend_config.width == 0.45
-    assert legend_config.height == 0.05
-    assert legend_config.position == [0.5, 0.1]
+    assert legend_config.orientation == Orientation.vertical
+    assert legend_config.width == 0.05
+    assert legend_config.height == 0.45
+    assert legend_config.position == [0.9, 0.5]
     assert legend_config.color_count == Autocalculate()
     assert legend_config.label_count == Autocalculate()
     assert legend_config.decimal_count == DecimalCount.default
