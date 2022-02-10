@@ -30,7 +30,7 @@ from .to_vtk import convert_aperture, convert_face, convert_room, convert_shade,
 from .vtkjs.schema import IndexJSON, DisplayMode, SensorGridOptions
 from .vtkjs.helper import convert_directory_to_zip_file, add_data_to_viewer
 from .types import DataSetNames, VTKWriters, JoinedPolyData, ImageTypes
-from .config import DataConfig, Autocalculate
+from .config import DataConfig, Autocalculate, Config
 from .legend_parameter import Text
 
 
@@ -53,8 +53,9 @@ DATA_SETS = {
 }
 
 
-def _camera_to_actor(actor: Actor, zoom: int = 15, camera_offset: int = 100,
-                     clipping_range: Tuple[int, int] = (100, 101)) -> Camera:
+def _camera_to_grid_actor(actor: Actor, data_name: str, zoom: int = 2,
+                          auto_zoom: bool = True, camera_offset: int = 3,
+                          clipping_range: Tuple[int, int] = (0, 4), ) -> Camera:
     """Create a Camera for each grid actor.
 
     This function uses the center point of a grid actor to create a camera that is
@@ -62,7 +63,12 @@ def _camera_to_actor(actor: Actor, zoom: int = 15, camera_offset: int = 100,
 
     Args:
         actor: An Actor object.
+        data_name: name of the data being loaded on the grid. This is 
+            used in naming the image files.
         zoom: The zoom level of the camera. Defaults to 15.
+        auto_zoom: A boolean to set the camera to auto zoom. Setting this to True will
+            discard the Zoom level. Set this to False to use the zoom level. Defaults to 
+            True.
         camera_offset: The distance between the camera and the sensor grid.
             Defaults to 100.
         clipping_range: The clipping range of the camera. Defaults to (100, 101).
@@ -72,13 +78,51 @@ def _camera_to_actor(actor: Actor, zoom: int = 15, camera_offset: int = 100,
     """
 
     cent_pt = actor.centroid
-    return Camera(identifier=f'{actor.name}',
+    return Camera(identifier=f'{data_name}_{actor.name}',
                   position=(cent_pt.x, cent_pt.y, cent_pt.z + camera_offset),
                   projection='l',
                   focal_point=cent_pt,
                   clipping_range=clipping_range,
                   parallel_scale=zoom,
-                  reset_camera=True)
+                  reset_camera=auto_zoom)
+
+
+def _get_data_from_config(json_path: str) -> Tuple[List[DataConfig], List[str]]:
+    """Extract data from the Config file.
+
+    Args:
+        json_path: File path to the config json file.
+
+    Returns:
+        A tuple of two items:
+
+        -   A list of DataConfig objects or a single DataConfig object.
+
+        -   A list containing the identifiers of the grid to export images of.
+
+        -   A list containing the names of the data for which images will be exported.
+    """
+
+    config_data = []
+    try:
+        with open(json_path) as fh:
+            config = json.load(fh)
+    except json.decoder.JSONDecodeError:
+        raise TypeError(
+            'Not a valid json file.'
+        )
+    else:
+        config_data = [DataConfig.parse_obj(json_obj) for json_obj in config['data']]
+
+    # Config is being parsed to validate the grid filter.
+    # TODO: This is dirty. Need to fix this.
+    config = Config.parse_obj(config)
+    try:
+        grid_filter = config.grid_filter
+    except KeyError:
+        grid_filter = []
+
+    return config_data, grid_filter
 
 
 class Model(object):
@@ -575,33 +619,71 @@ class Model(object):
             image_width=image_width, image_height=image_height)
 
     def to_grid_images(self, config: str, *, folder: str = '.',
-                       data_to_show: str = None,
-                       legend_range: Tuple[float, float] = None,
-                       grid_display_mode: DisplayMode = DisplayMode.SurfaceWithEdges,
+                       display_mode: DisplayMode = DisplayMode.SurfaceWithEdges,
                        background_color: Tuple[int, int, int] = None,
                        image_type: ImageTypes = ImageTypes.png,
-                       image_width: int = 0, image_height: int = 0) -> str:
+                       image_width: int = 0, image_height: int = 0) -> List[str]:
         """Export am image for each grid in the model.
+
+        Use the config file to specify which grids with which data to export. For
+        instance, if the config file has DataConfig objects for 'DA' and 'UDI', and
+        'DA' is kept hidden, then all grids with 'UDI' data will be exported. Additionally,
+        images from a selected number of grids can be exported by using the by
+        specifyling the identifiers of the grids to export in the grid_filter object in
+        the config file.
+
+        Args:
+            config: Path to the config file in JSON format.
+            folder: Path to the folder where you'd like to export the images. Defaults to
+                the current working directory.
+            display_mode: Display mode for the grid. Defaults to surface with edges.
+            background_color: Background color of the image. Defaults to white.
+            image_type: Image type to be exported. Defaults to png.
+            image_width: Image width in pixels. Defaults to 0. Which will use the 
+                default radiance view's horizontal angle to derive the width.
+            image_height: Image height in pixels. Defaults to 0. Which will use the
+                default radiance view's vertical angle to derive the height.
 
         Returns:
             Path to the folder where the images are exported for each grid.
         """
-        self.load_config(config)
-        data_to_show = data_to_show if data_to_show else list(
-            self.sensor_grids.fields_info.keys())[-1]
-        data = self._get_data_from_config(config, data_to_show)
+        assert len(self.sensor_grids.data) != 0, 'No sensor grids found in the model.'
 
-        for grid_polydata in self.sensor_grids.data:
-            dataset = ModelDataSet(name=grid_polydata.identifier, data=[grid_polydata],
-                                   display_model=grid_display_mode)
-            dataset.color_by = data_to_show
-            actor = Actor(dataset, data_to_show=data_to_show)
-            scene = Scene(background_color=background_color)
-            scene.add_actors(actor)
-            scene.add_cameras(_camera_to_actor(actor))
-            self._load_legend_parameters(data, scene, legend_range)
-            scene.export_images(folder=folder, image_type=image_type,
-                                image_width=image_width, image_height=image_height)
+        if self._sensor_grids_option == SensorGridOptions.Sensors:
+            display_mode = DisplayMode.Points
+
+        self.load_config(config)
+        config_data, grid_filter = _get_data_from_config(config)
+
+        if not grid_filter:
+            grid_polydata_lst = self.sensor_grids.data
+        else:
+            grid_polydata_lst = [grid for grid in self.sensor_grids.data
+                                 if grid.name in grid_filter]
+            if not grid_polydata_lst:
+                raise ValueError('No grids found in the model that match the filter'
+                                 ' defined in the config file.')
+
+        image_paths: List[str] = []
+        for data in config_data:
+            if not data.hide:
+                for grid_polydata in grid_polydata_lst:
+                    dataset = ModelDataSet(name=grid_polydata.identifier,
+                                           data=[grid_polydata],
+                                           display_model=display_mode)
+                    dataset.color_by = data.identifier
+                    actor = Actor(dataset, data_to_show=data.identifier)
+                    scene = Scene(background_color=background_color)
+                    scene.add_actors(actor)
+                    scene.add_cameras(_camera_to_grid_actor(actor, data.identifier))
+                    legend_range = self._get_legend_range(data)
+                    self._load_legend_parameters(data, scene, legend_range)
+                    image_paths += scene.export_images(folder=folder,
+                                                       image_type=image_type,
+                                                       image_width=image_width,
+                                                       image_height=image_height)
+
+        return image_paths
 
     @ staticmethod
     def get_default_color(face_type: face_types) -> Color:
@@ -679,35 +761,6 @@ class Model(object):
                     warnings.warn(
                         f'Data for {data.identifier} is not loaded.'
                     )
-
-    def _get_data_from_config(self, json_path: str,
-                              data_to_show: str = None) -> Union[List[DataConfig],
-                                                                 DataConfig]:
-        """Extract data from the Config file.
-
-        Args:
-            json_path: File path to the config json file.
-            data_to_show: A string indicating the data to extract.
-
-        Returns:
-            A list of DataConfig objects.
-        """
-        assert len(self.sensor_grids.data) > 0, 'Sensor grids are not loaded on'
-        ' this model. Reload them using grid options.'
-
-        try:
-            with open(json_path) as fh:
-                config = json.load(fh)
-        except json.decoder.JSONDecodeError:
-            raise TypeError(
-                'Not a valid json file.'
-            )
-        else:
-            if not data_to_show:
-                return [DataConfig.parse_obj(json_obj) for json_obj in config['data']]
-            for json_obj in config['data']:
-                if json_obj['identifier'] == data_to_show:
-                    return DataConfig.parse_obj(json_obj)
 
     def _get_grid_type(self) -> str:
         """Get the type of grid in the model
@@ -874,6 +927,7 @@ class Model(object):
             legend_range: A list of min and max values of the legend parameters provided by
                 the user in the config file.
         """
+
         legend_params = data.legend_parameters
         legend = scene.legend_parameter(data.identifier)
 
@@ -886,6 +940,7 @@ class Model(object):
         legend.hide_legend = legend_params.hide_legend
         legend.orientation = legend_params.orientation
         legend.position = legend_params.position
+
         legend.width = legend_params.width
         legend.height = legend_params.height
 
