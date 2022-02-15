@@ -80,8 +80,9 @@ def export():
     show_default=True
 )
 @click.option(
-    '--grid-filter', '-gf', type=str, default=[''], help='Filter sensor grids by name.',
-    show_default=True, multiple=True
+    '--grid-filter', '-gf', type=str, default=[''], show_default=True, multiple=True,
+    help='Filter sensor grids by name. Use this option multiple times to use multiple'
+    ' grid identifiers as filters.'
 )
 def export(
         hbjson_file, folder, image_type, image_width, image_height,
@@ -150,14 +151,16 @@ def export(
         model = Model.from_hbjson(hbjson=hbjson_file, load_grids=grid_options)
 
         if not grid:
-            output = model.to_images(folder=folder, config=config, validation=validate_data,
+            output = model.to_images(folder=folder, config=config,
+                                     validation=validate_data,
                                      model_display_mode=model_display_mode,
                                      grid_display_mode=grid_display_mode,
                                      background_color=background_color, view=view,
                                      image_type=image_type, image_width=image_width,
                                      image_height=image_height,)
         else:
-            output = model.to_grid_images(config, folder=folder, grid_filter=grid_filter,
+            output = model.to_grid_images(config=config, folder=folder,
+                                          grid_filter=grid_filter,
                                           grid_display_mode=grid_display_mode,
                                           background_color=background_color,
                                           image_type=image_type,
