@@ -49,7 +49,7 @@ def test_properties():
 
     assert len(scene.actors) == 6
     for actor in scene.actors:
-        assert isinstance(actor, str)
+        assert isinstance(actor, Actor)
 
 
 def test_scene_camera():
@@ -117,20 +117,6 @@ def test_write_gltf():
     assert os.path.isfile(gltf_path)
 
     shutil.rmtree(target_folder)
-
-
-def test_remove_actor():
-    """Test removing an actor from a scene."""
-    file_path = r'tests/assets/gridbased.hbjson'
-
-    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
-    actors = model.actors()
-
-    scene = Scene()
-    scene.add_actors(actors)
-    scene.remove_actor('Shade')
-    scene.add_cameras(model.cameras)
-    assert 'Shade' not in scene.actors
 
 
 def test_adding_data():

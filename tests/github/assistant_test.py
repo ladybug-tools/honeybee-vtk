@@ -26,7 +26,7 @@ assistant = scene.assistants[0]
 
 
 def test_initialization():
-    assert isinstance(assistant._actors, dict)
+    assert isinstance(assistant._actors, list)
     assert isinstance(assistant._legend_params[0], LegendParameter)
     assert isinstance(assistant._camera, Camera)
     assert isinstance(assistant._background_color, vtk.vtkColor3d)
