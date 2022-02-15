@@ -56,7 +56,8 @@ def export():
     '--grid-display-mode', '-gdm',
     type=click.Choice(['shaded', 'surface', 'surfacewithedges',
                        'wireframe', 'points'], case_sensitive=False),
-    default='shaded', help='Set display mode for the Sensorgrids.', show_default=True
+    default='surfacewithedges', help='Set display mode for the Sensorgrids.',
+    show_default=True
 )
 @click.option(
     '--view', '-vf', help='File Path to the Radiance view file. Multiple view files are'
@@ -73,10 +74,19 @@ def export():
     help='Validate simulation data before loading on the model. This is recommended'
     ' when using this command locally.', show_default=True
 )
+@click.option(
+    '--grid', is_flag=True, default=False, help='Boolean to decide whether to export'
+    ' the images of a whole model or only the grids. Set it to True to export the grids.',
+    show_default=True
+)
+@click.option(
+    '--grid-filter', '-gf', type=str, default=[''], help='Filter sensor grids by name.',
+    show_default=True, multiple=True
+)
 def export(
         hbjson_file, folder, image_type, image_width, image_height,
         background_color, model_display_mode, grid_options, grid_display_mode, view,
-        config, validate_data):
+        config, validate_data, grid, grid_filter):
     """Export images from radiance views in a HBJSON file.
 
     \b
@@ -133,14 +143,26 @@ def export(
     elif grid_display_mode == 'points':
         grid_display_mode = DisplayMode.Points
 
+    if grid_filter[0] == '' and len(grid_filter) == 1:
+        grid_filter = None
+
     try:
         model = Model.from_hbjson(hbjson=hbjson_file, load_grids=grid_options)
-        output = model.to_images(folder=folder, config=config, validation=validate_data,
-                                 model_display_mode=model_display_mode,
-                                 grid_display_mode=grid_display_mode,
-                                 background_color=background_color, view=view,
-                                 image_type=image_type, image_width=image_width,
-                                 image_height=image_height,)
+
+        if not grid:
+            output = model.to_images(folder=folder, config=config, validation=validate_data,
+                                     model_display_mode=model_display_mode,
+                                     grid_display_mode=grid_display_mode,
+                                     background_color=background_color, view=view,
+                                     image_type=image_type, image_width=image_width,
+                                     image_height=image_height,)
+        else:
+            output = model.to_grid_images(config, folder=folder, grid_filter=grid_filter,
+                                          grid_display_mode=grid_display_mode,
+                                          background_color=background_color,
+                                          image_type=image_type,
+                                          image_width=image_width,
+                                          image_height=image_height)
 
     except Exception:
         traceback.print_exc()
