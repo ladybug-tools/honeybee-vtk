@@ -87,44 +87,6 @@ def _camera_to_grid_actor(actor: Actor, data_name: str, zoom: int = 2,
                   reset_camera=auto_zoom)
 
 
-def _get_data_from_config(json_path: str) -> Tuple[List[DataConfig], List[str]]:
-    """Extract data from the Config file.
-
-    Args:
-        json_path: File path to the config json file.
-
-    Returns:
-        A tuple of two items:
-
-        -   A list of DataConfig objects or a single DataConfig object.
-
-        -   A list containing the identifiers of the grid to export images of.
-
-        -   A list containing the names of the data for which images will be exported.
-    """
-
-    config_data = []
-    try:
-        with open(json_path) as fh:
-            config = json.load(fh)
-    except json.decoder.JSONDecodeError:
-        raise TypeError(
-            'Not a valid json file.'
-        )
-    else:
-        config_data = [DataConfig.parse_obj(json_obj) for json_obj in config['data']]
-
-    # Config is being parsed to validate the grid filter.
-    # TODO: This is dirty. Need to fix this.
-    config = Config.parse_obj(config)
-    try:
-        grid_filter = config.grid_filter
-    except KeyError:
-        grid_filter = []
-
-    return config_data, grid_filter
-
-
 class Model(object):
     """A honeybee-vtk model.
 
