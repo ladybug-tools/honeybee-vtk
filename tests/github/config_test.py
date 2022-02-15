@@ -260,6 +260,7 @@ def test_grid_display_mode():
     grids in the model."""
     model_grid_mesh = r'tests/assets/gridbased.hbjson'
     valid_json_path = r'tests/assets/config/valid.json'
+
     model_grids_loaded = Model.from_hbjson(
         model_grid_mesh, load_grids=SensorGridOptions.Mesh)
     scene_grids_loaded = Scene()
@@ -268,15 +269,17 @@ def test_grid_display_mode():
     scene_grids_loaded.add_cameras(cameras)
     scene_grids_loaded.add_actors(actors)
 
+    # Here the DisplayMode.Shaded is set when the ModelDataSet is initialized
     model_grids_loaded.load_config(valid_json_path, scene_grids_loaded)
-    assert model_grids_loaded.sensor_grids.display_mode == DisplayMode.SurfaceWithEdges
+    assert model_grids_loaded.sensor_grids.display_mode == DisplayMode.Shaded
 
     model_sensors_loaded = Model.from_hbjson(
         model_grid_mesh, load_grids=SensorGridOptions.Sensors)
 
+    # Here the DisplayMode.Shaded is set when the ModelDataSet is initialized
     model_sensors_loaded.load_config(
         valid_json_path, scene_grids_loaded)
-    assert model_sensors_loaded.sensor_grids.display_mode == DisplayMode.Points
+    assert model_sensors_loaded.sensor_grids.display_mode == DisplayMode.Shaded
 
 
 def test_get_grid_type():

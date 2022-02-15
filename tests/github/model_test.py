@@ -134,26 +134,3 @@ def test_doors():
     file_path = r'tests/assets/doors.hbjson'
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
     assert len(model.doors.data) == 2
-
-
-def test_modeldataset_display_mode():
-    """Test if display mode is correctly assigned to the actors in the scene."""
-
-    file_path = r'tests/assets/gridbased.hbjson'
-    json_path = r'tests/assets/config/valid.json'
-
-    model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
-
-    scene = Scene()
-    actors = model.actors()
-    scene.add_actors(actors)
-
-    model.update_display_mode(DisplayMode.Wireframe)
-    model.sensor_grids.display_mode = DisplayMode.SurfaceWithEdges
-    model.load_config(json_path, scene=scene, legend=True)
-
-    for actor in scene.actors:
-        if actor.name == 'Grid':
-            assert actor.modeldataset.display_mode == DisplayMode.SurfaceWithEdges
-        else:
-            assert actor.modeldataset.display_mode == DisplayMode.Wireframe
