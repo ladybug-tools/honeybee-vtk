@@ -19,16 +19,12 @@ class Actor:
 
     Args:
         modeldataset: A ModelDataSet object from a honeybee-vtk Model.
-        data_to_show: Name of the data loaded on the model. This is used in adding legends
-            for the data to the scene. If not specified all the legends are added.
-            Defaults to None.
     """
 
-    def __init__(self, modeldataset: ModelDataSet, data_to_show: str = None) -> None:
+    def __init__(self, modeldataset: ModelDataSet) -> None:
         self.modeldataset = modeldataset
         self._name = self._modeldataset.name
         self._monochrome_color = None
-        self._data_to_show = data_to_show
 
     @property
     def modeldataset(self) -> ModelDataSet:
