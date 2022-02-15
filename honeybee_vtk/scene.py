@@ -75,8 +75,7 @@ class Scene:
         """Legends in the scene that can be added to the images."""
         legends_dict = {}
         for actor in self._actors:
-            for legend_param in actor.legend_parameters:
-                legends_dict[legend_param.name] = legend_param
+            legends_dict[actor.legend_parameter.name] = actor.legend_parameter
         return legends_dict
 
     def legend_parameter(self, name: str) -> LegendParameter:
