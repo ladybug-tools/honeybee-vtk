@@ -56,7 +56,7 @@ DATA_SETS = {
 def _camera_to_grid_actor(actor: Actor, data_name: str, zoom: int = 2,
                           auto_zoom: bool = True, camera_offset: int = 3,
                           clipping_range: Tuple[int, int] = (0, 4), ) -> Camera:
-    """Create a Camera for each grid actor.
+    """Create a Camera for a grid actor.
 
     This function uses the center point of a grid actor to create a camera that is
     setup at the camera_offset distance from the center point.
@@ -74,7 +74,7 @@ def _camera_to_grid_actor(actor: Actor, data_name: str, zoom: int = 2,
         clipping_range: The clipping range of the camera. Defaults to (100, 101).
 
     Returns:
-        A list of cameras.
+        A Camera object.
     """
 
     cent_pt = actor.centroid
