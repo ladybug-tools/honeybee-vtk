@@ -33,7 +33,7 @@ class Scene:
 
     def __init__(self, background_color: Tuple[int, int, int] = None) -> None:
         self.background_color = background_color
-        self._actors = {}
+        self._actors = []
         self._cameras = []
         self._assistants = []
 
@@ -56,9 +56,9 @@ class Scene:
             )
 
     @property
-    def actors(self) -> List[str]:
-        """Name of actors in the scene."""
-        return self._actors.keys()
+    def actors(self) -> List[Actor]:
+        """Actors in the scene."""
+        return self._actors
 
     @property
     def cameras(self) -> List[Camera]:
@@ -74,7 +74,7 @@ class Scene:
     def legend_parameters(self) -> Dict[str, LegendParameter]:
         """Legends in the scene that can be added to the images."""
         legends_dict = {}
-        for actor in self._actors.values():
+        for actor in self._actors:
             for legend_param in actor.legend_parameters:
                 legends_dict[legend_param.name] = legend_param
         return legends_dict
@@ -119,36 +119,13 @@ class Scene:
             val: Either a list of Actors objects or a single Actor object.
         """
         if isinstance(val, list) and _validate_input(val, [Actor]):
-            for v in val:
-                self._actors[v.name] = v
+            self._actors += val
         elif isinstance(val, Actor):
-            self._actors[val.name] = val
+            self._actors.append(val)
         else:
             raise ValueError(
                 'Either a list of Actor objects or an Actor object is expected.'
                 f' Instead got {val}.'
-            )
-
-    def remove_actor(self, name: str) -> None:
-        """Remove an actor from scene by name.
-
-        Args:
-            name: A string representing the name of the actor you would like to remove
-                from the scene.
-        """
-        valid_names = tuple(['Aperture', 'Door', 'Shade', 'Wall', 'Floor', 'RoofCeiling',
-                             'AirBoundary', 'Grid'])
-
-        if name in valid_names:
-            try:
-                del self._actors[name]
-            except KeyError:
-                raise KeyError(
-                    f'{name} is not found in the actors in this scene.')
-        else:
-            raise ValueError(
-                'Name of the actors should be from one the following'
-                f' values {valid_names}.'
             )
 
     def update_scene(self) -> None:
