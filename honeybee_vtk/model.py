@@ -511,6 +511,7 @@ class Model(object):
 
         self.update_display_mode(model_display_mode)
         self.sensor_grids.display_mode = grid_display_mode
+
         if config:
             self.load_config(config, scene=scene, legend=True, validation=validation)
 
@@ -524,16 +525,23 @@ class Model(object):
             scene.add_cameras(aerial_cameras)
 
         else:
-            # Collection cameras from model, if the model has it
             if len(self.cameras) != 0:
                 cameras = self.cameras
                 scene.add_cameras(cameras)
 
-            # if view files are provided collect them
             if view:
                 for vf in view:
                     camera = Camera.from_view_file(file_path=vf)
                     scene.add_cameras(camera)
+
+        for actor in scene.actors:
+            if actor.name == 'Grid':
+                print('Grid display mode', actor.modeldataset.display_mode)
+                assert actor.modeldataset.display_mode == grid_display_mode, 'Grid display'\
+                    ' mode is not set correctly.'
+            else:
+                assert actor.modeldataset.display_mode == model_display_mode, 'Model display'\
+                    ' mode is not set correctly.'
 
         return scene.export_images(
             folder=folder, image_type=image_type,
@@ -736,12 +744,10 @@ class Model(object):
             ds.add_data_fields(
                 result, name=identifier, per_face=True, data_range=legend_range)
             ds.color_by = identifier
-            ds.display_mode = DisplayMode.SurfaceWithEdges
         else:
             ds.add_data_fields(
                 result, name=identifier, per_face=False, data_range=legend_range)
             ds.color_by = identifier
-            ds.display_mode = DisplayMode.Points
 
     @staticmethod
     def _get_legend_range(data: DataConfig) -> List[Union[float, int]]:
