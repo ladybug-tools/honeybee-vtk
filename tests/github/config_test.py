@@ -184,10 +184,6 @@ def test_load_legend_parameter():
     scene.add_cameras(cameras)
     scene.add_actors(actors)
 
-    # warning when loading data that is requested to be kept hidden
-    with pytest.warns(Warning):
-        model.load_config(valid_json_path, scene, validation=True, legend=True)
-
 
 def test_validate_data_invalid_json():
     """Tets if invalid json is detected."""
