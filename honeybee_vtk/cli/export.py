@@ -124,13 +124,13 @@ def export(
     # Set model's grid's display mode
     if grid_display_mode == 'shaded':
         grid_display_mode = DisplayMode.Shaded
-    elif model_display_mode == 'surface':
+    elif grid_display_mode == 'surface':
         grid_display_mode = DisplayMode.Surface
-    elif model_display_mode == 'surfacewithedges':
+    elif grid_display_mode == 'surfacewithedges':
         grid_display_mode = DisplayMode.SurfaceWithEdges
-    elif model_display_mode == 'wireframe':
+    elif grid_display_mode == 'wireframe':
         grid_display_mode = DisplayMode.Wireframe
-    elif model_display_mode == 'points':
+    elif grid_display_mode == 'points':
         grid_display_mode = DisplayMode.Points
 
     try:
