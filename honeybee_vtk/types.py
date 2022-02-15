@@ -439,11 +439,11 @@ class ModelDataSet:
     """
 
     def __init__(self, name, data: List[PolyData] = None, color: Color = None,
-                 display_model: DisplayMode = DisplayMode.Shaded) -> None:
+                 display_mode: DisplayMode = DisplayMode.Shaded) -> None:
         self.name = name
         self.data = data or []
         self.color = color
-        self.display_mode = display_model
+        self.display_mode = display_mode
         self.color_by = None
 
     @ property

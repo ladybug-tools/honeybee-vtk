@@ -641,7 +641,7 @@ class Model(object):
             for grid_polydata in grid_polydata_lst:
                 dataset = ModelDataSet(name=grid_polydata.identifier,
                                        data=[grid_polydata],
-                                       display_model=grid_display_mode)
+                                       display_mode=grid_display_mode)
                 dataset.color_by = data.identifier
                 actor = Actor(dataset)
                 scene = Scene(background_color=background_color)
