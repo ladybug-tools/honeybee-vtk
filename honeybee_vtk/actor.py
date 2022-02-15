@@ -51,12 +51,9 @@ class Actor:
         return self._monochrome_color
 
     @property
-    def legend_parameters(self) -> List[LegendParameter]:
-        """Legend parameters in the DataFieldInfo of ModelDataSet of this actor."""
-        if not self._data_to_show:
-            return [info.legend_parameter for info in self._modeldataset.fields_info.values()
-                    if info.legend_parameter]
-        return[self._modeldataset.fields_info[self._data_to_show].legend_parameter]
+    def legend_parameter(self) -> LegendParameter:
+        """Legend parameter of the last added data on the underlying Modeldataset object."""
+        return self._modeldataset.active_field_info.legend_parameter
 
     @property
     def bounds(self) -> List[Point3D]:
