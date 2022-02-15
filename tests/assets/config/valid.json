@@ -24,7 +24,7 @@
       "object_type": "grid",
       "unit": "Percentage",
       "path": "./tests/assets/udi_results",
-      "hide": true,
+      "hide": false,
       "legend_parameters": {
         "hide_legend": false,
         "min": 0,
