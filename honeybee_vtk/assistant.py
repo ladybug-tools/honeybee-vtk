@@ -5,6 +5,7 @@ import pathlib
 from typing import Tuple
 from .camera import Camera
 from .types import ImageTypes
+from .actor import Actor
 
 from typing import List
 
