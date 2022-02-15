@@ -625,8 +625,7 @@ class Model(object):
         if self._sensor_grids_option == SensorGridOptions.Sensors:
             grid_display_mode = DisplayMode.Points
 
-        self.load_config(config)
-        config_data, grid_filter = _get_data_from_config(config)
+        config_data = self.load_config(config)
 
         if not grid_filter:
             grid_polydata_lst = self.sensor_grids.data
@@ -639,22 +638,21 @@ class Model(object):
 
         image_paths: List[str] = []
         for data in config_data:
-            if not data.hide:
-                for grid_polydata in grid_polydata_lst:
-                    dataset = ModelDataSet(name=grid_polydata.identifier,
-                                           data=[grid_polydata],
-                                           display_model=grid_display_mode)
-                    dataset.color_by = data.identifier
-                    actor = Actor(dataset, data_to_show=data.identifier)
-                    scene = Scene(background_color=background_color)
-                    scene.add_actors(actor)
-                    scene.add_cameras(_camera_to_grid_actor(actor, data.identifier))
-                    legend_range = self._get_legend_range(data)
-                    self._load_legend_parameters(data, scene, legend_range)
-                    image_paths += scene.export_images(folder=folder,
-                                                       image_type=image_type,
-                                                       image_width=image_width,
-                                                       image_height=image_height)
+            for grid_polydata in grid_polydata_lst:
+                dataset = ModelDataSet(name=grid_polydata.identifier,
+                                       data=[grid_polydata],
+                                       display_model=grid_display_mode)
+                dataset.color_by = data.identifier
+                actor = Actor(dataset)
+                scene = Scene(background_color=background_color)
+                scene.add_actors(actor)
+                scene.add_cameras(_camera_to_grid_actor(actor, data.identifier))
+                legend_range = self._get_legend_range(data)
+                self._load_legend_parameters(data, scene, legend_range)
+                image_paths += scene.export_images(folder=folder,
+                                                   image_type=image_type,
+                                                   image_width=image_width,
+                                                   image_height=image_height)
 
         return image_paths
 
@@ -680,7 +678,7 @@ class Model(object):
         return data_dict
 
     def load_config(self, json_path: str, scene: Scene = None,
-                    validation: bool = False, legend: bool = False) -> Model:
+                    validation: bool = False, legend: bool = False) -> List[DataConfig]:
         """Mount data on model from config json.
 
         Args:
@@ -690,12 +688,13 @@ class Model(object):
             legend: A boolean indicating whether to load legend parameters.
 
         Returns:
-            A honeybee-vtk model with data loaded on it.
+            A list of parsed DataConfig objects.
         """
         assert len(self.sensor_grids.data) > 0, 'Sensor grids are not loaded on'
         ' this model. Reload them using grid options.'
 
         config_dir = pathlib.Path(json_path).parent
+        config_data: List[DataConfig] = []
 
         try:
             with open(json_path) as fh:
@@ -730,10 +729,12 @@ class Model(object):
                     # Load legend parameters
                     if legend:
                         self._load_legend_parameters(data, scene, legend_range)
+                    config_data.append(data)
                 else:
                     warnings.warn(
                         f'Data for {data.identifier} is not loaded.'
                     )
+            return config_data
 
     def _get_grid_type(self) -> str:
         """Get the type of grid in the model
