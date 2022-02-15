@@ -7,6 +7,8 @@ from .actor import Actor
 from .camera import Camera
 from .types import ImageTypes
 
+from typing import List
+
 
 class Assistant:
     """Initialize an Assistant object.
@@ -18,13 +20,13 @@ class Assistant:
     Args:
         background_color: A tuple of three integers that represent RGB values of the
             color that you'd like to set as the background color.
-        actors: A dictionary of actors from a Scene object
+        actors: A list of actors.
         camera: A Camera object.
         legend_parameters: A list of legend parameter objects to be added to the scene
     """
 
     def __init__(self, background_color: Tuple[int, int, int], camera: Camera,
-                 actors: dict, legend_parameters: list) -> None:
+                 actors: List[Actor], legend_parameters: list) -> None:
 
         self._background_color = background_color
         self._actors = actors
@@ -58,7 +60,7 @@ class Assistant:
         renderer = vtk.vtkRenderer()
 
         # Add actors to the window
-        for actor in self._actors.values():
+        for actor in self._actors:
             renderer.AddActor(actor.to_vtk())
 
         # Add legends to the window
