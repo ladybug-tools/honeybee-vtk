@@ -588,7 +588,8 @@ class Model(object):
             folder=folder, image_type=image_type,
             image_width=image_width, image_height=image_height)
 
-    def to_grid_images(self, config: str, *, folder: str = '.',
+    def to_grid_images(self,  *, folder: str = '.', config: str,
+                       grid_filter: List[str] = None,
                        grid_display_mode: DisplayMode = DisplayMode.SurfaceWithEdges,
                        background_color: Tuple[int, int, int] = None,
                        image_type: ImageTypes = ImageTypes.png,
@@ -603,9 +604,11 @@ class Model(object):
         the config file.
 
         Args:
-            config: Path to the config file in JSON format.
             folder: Path to the folder where you'd like to export the images. Defaults to
-                the current working directory.
+                    the current working directory.
+            config: Path to the config file in JSON format.
+            grid_filter: A list of grid identifiers to export images of those grid only.
+                Defaults to None which will export all the grids.
             display_mode: Display mode for the grid. Defaults to surface with edges.
             background_color: Background color of the image. Defaults to white.
             image_type: Image type to be exported. Defaults to png.
