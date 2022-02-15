@@ -3,7 +3,6 @@
 import click
 from .translate import translate
 from .export import export
-from .export_grid import export_grid
 from .config import config
 from honeybee.cli import main
 
@@ -20,6 +19,5 @@ def vtk():
 vtk.add_command(translate)
 vtk.add_command(export)
 vtk.add_command(config)
-vtk.add_command(export_grid)
 
 main.add_command(vtk)
