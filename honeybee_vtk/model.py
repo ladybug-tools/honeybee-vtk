@@ -32,6 +32,7 @@ from .vtkjs.helper import convert_directory_to_zip_file, add_data_to_viewer
 from .types import DataSetNames, VTKWriters, JoinedPolyData, ImageTypes
 from .config import DataConfig, Autocalculate, Config
 from .legend_parameter import Text
+from .text_actor import TextActor
 
 
 _COLORSET = {
@@ -63,11 +64,11 @@ def _camera_to_grid_actor(actor: Actor, data_name: str, zoom: int = 2,
 
     Args:
         actor: An Actor object.
-        data_name: name of the data being loaded on the grid. This is 
+        data_name: name of the data being loaded on the grid. This is
             used in naming the image files.
         zoom: The zoom level of the camera. Defaults to 15.
         auto_zoom: A boolean to set the camera to auto zoom. Setting this to True will
-            discard the Zoom level. Set this to False to use the zoom level. Defaults to 
+            discard the Zoom level. Set this to False to use the zoom level. Defaults to
             True.
         camera_offset: The distance between the camera and the sensor grid.
             Defaults to 100.
@@ -609,7 +610,8 @@ class Model(object):
                        grid_display_mode: DisplayMode = DisplayMode.SurfaceWithEdges,
                        background_color: Tuple[int, int, int] = None,
                        image_type: ImageTypes = ImageTypes.png,
-                       image_width: int = 0, image_height: int = 0) -> List[str]:
+                       image_width: int = 0, image_height: int = 0,
+                       text_actor: TextActor = None) -> List[str]:
         """Export am image for each grid in the model.
 
         Use the config file to specify which grids with which data to export. For
@@ -628,10 +630,12 @@ class Model(object):
             display_mode: Display mode for the grid. Defaults to surface with edges.
             background_color: Background color of the image. Defaults to white.
             image_type: Image type to be exported. Defaults to png.
-            image_width: Image width in pixels. Defaults to 0. Which will use the 
+            image_width: Image width in pixels. Defaults to 0. Which will use the
                 default radiance view's horizontal angle to derive the width.
             image_height: Image height in pixels. Defaults to 0. Which will use the
                 default radiance view's vertical angle to derive the height.
+            text_actor: A TextActor object that defines the properties of the text to be
+                added to the image. Defaults to None.
 
         Returns:
             Path to the folder where the images are exported for each grid.
@@ -662,6 +666,8 @@ class Model(object):
                 actor = Actor(dataset)
                 scene = Scene(background_color=background_color)
                 scene.add_actors(actor)
+                if text_actor:
+                    scene.add_text_actor(text_actor)
                 scene.add_cameras(_camera_to_grid_actor(actor, data.identifier))
                 legend_range = self._get_legend_range(data)
                 self._load_legend_parameters(data, scene, legend_range)
