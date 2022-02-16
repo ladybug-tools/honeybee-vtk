@@ -13,6 +13,7 @@ from .camera import Camera
 from .headless import try_headless
 from .legend_parameter import LegendParameter
 from .types import ImageTypes
+from .text_actor import TextActor
 
 
 class Scene:
@@ -36,6 +37,7 @@ class Scene:
         self._actors = []
         self._cameras = []
         self._assistants = []
+        self._text_actor = None
 
     @property
     def background_color(self) -> Tuple[int, int, int]:
@@ -127,6 +129,11 @@ class Scene:
                 f' Instead got {val}.'
             )
 
+    def add_text_actor(self, val: TextActor) -> None:
+        """Add a TextActor object to the scene."""
+        assert isinstance(val, TextActor), 'TextActor object is expected.'
+        self._text_actor = val
+
     def update_scene(self) -> None:
         """Update the scene.
 
@@ -143,7 +150,8 @@ class Scene:
 
             self._assistants = [
                 Assistant(background_color=self._background_color, camera=camera,
-                          actors=self._actors, legend_parameters=visible_legend_params)
+                          actors=self._actors, legend_parameters=visible_legend_params,
+                          text_actor=self._text_actor)
                 for camera in self._cameras]
         else:
             raise ValueError(
