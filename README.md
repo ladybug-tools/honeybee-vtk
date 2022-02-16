@@ -42,8 +42,12 @@ Options:
                                   Switch between html and vtkjs formats
                                   [default: html]
 
-  -dm, --display-mode [shaded|surface|surfacewithedges|wireframe|points]
+  -mdm, --model-display-mode [shaded|surface|surfacewithedges|wireframe|points]
                                   Set display mode for the model.  [default:
+                                  shaded]
+
+  -gdm, --grid-display-mode [shaded|surface|surfacewithedges|wireframe|points]
+                                  Set display mode for the grid.  [default:
                                   shaded]
 
   -go, --grid-options [ignore|points|meshes]
@@ -100,7 +104,7 @@ Options:
 
   -gdm, --grid-display-mode [shaded|surface|surfacewithedges|wireframe|points]
                                   Set display mode for the Sensorgrids.
-                                  [default: shaded]
+                                  [default: surfacewithedges]
 
   -vf, --view PATH                File Path to the Radiance view file.
                                   Multiple view files are accepted.
@@ -112,6 +116,30 @@ Options:
                                   the model. This is recommended when using
                                   this command locally.  [default: False]
 
+  --grid / --model                Boolean to decide whether to export the
+                                  images of a whole model or only the grids.
+                                  Set it to True to export the grids.
+                                  [default: False]
+
+  -gf, --grid-filter TEXT         Filter sensor grids by name. Use this option
+                                  multiple times to use multiple grid
+                                  identifiers as filters.  [default: ]
+
+  --text TEXT                     Text to be displayed on the image.
+  -th, --text-height INTEGER      Set the height of the text in pixels.
+                                  [default: 15]
+
+  -tc, --text-color <INTEGER INTEGER INTEGER>...
+                                  Set the text color.  [default: 0, 0, 0]
+  -tp, --text-position <FLOAT FLOAT>...
+                                  Set the text position in the image. The
+                                  setting is applied at the lower left point
+                                  of the text. (0,0) will give you the lower
+                                  left corner of the image. (1,1) will give
+                                  you the upper right corner of the image.
+                                  [default: 0.5, 0.0]
+
+  -tb, --text-bold                Set the text to be bold.  [default: False]
   --help                          Show this message and exit.
 ```
 
