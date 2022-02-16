@@ -16,7 +16,7 @@ def test_translate_recipe():
     # Optional arguments are deliberately capitalized or uppercased for testing
     result = runner.invoke(translate, [
         file_path, '--name', 'Model', '--folder', target_folder, '--file-type',
-        'HTML', '--display-mode', 'Shaded', '--grid-options', 'MESHES'])
+        'HTML', '--model-display-mode', 'Shaded', '--grid-options', 'MESHES'])
 
     assert result.exit_code == 0
     html_path = os.path.join(target_folder, 'Model.html')
@@ -26,7 +26,7 @@ def test_translate_recipe():
     # Optional arguments are deliberately capitalized or uppercased for testing
     result = runner.invoke(translate, [
         file_path, '--name', 'Model', '--folder', target_folder, '--file-type',
-        'VTKJS', '--display-mode', 'Shaded', '--grid-options', 'Points'])
+        'VTKJS', '--model-display-mode', 'Shaded', '--grid-options', 'Points'])
 
     assert result.exit_code == 0
     vtkjs_path = os.path.join(target_folder, 'Model.vtkjs')
@@ -36,7 +36,7 @@ def test_translate_recipe():
     # Optional arguments are deliberately capitalized or uppercased for testing
     result = runner.invoke(translate, [
         file_path, '--name', 'Model', '--folder', target_folder, '--file-type',
-        'VTK', '--display-mode', 'Shaded', '--grid-options', 'Points'])
+        'VTK', '--model-display-mode', 'Shaded', '--grid-options', 'Points'])
 
     assert result.exit_code == 0
     vtkjs_path = os.path.join(target_folder, 'Model.zip')
@@ -46,7 +46,8 @@ def test_translate_recipe():
     # Optional arguments are deliberately capitalized or uppercased for testing
     result = runner.invoke(translate, [
         file_path, '--name', 'Model', '--folder', target_folder, '--file-type',
-        'VTP', '--display-mode', 'Shaded', '--grid-options', 'Meshes'])
+        'VTP', '--model-display-mode', 'Shaded', '-gdm', 'wireframe', '--grid-options',
+        'Meshes'])
 
     assert result.exit_code == 0
     vtkjs_path = os.path.join(target_folder, 'Model.zip')
@@ -64,7 +65,8 @@ def test_translate_with_config():
     # Optional arguments are deliberately capitalized or uppercased for testing
     result = runner.invoke(translate, [
         file_path, '--name', 'Model', '--folder', target_folder, '--file-type',
-        'vtkjs', '--display-mode', 'Shaded', '--grid-options', 'MESHES', '--config',
+        'vtkjs', '--model-display-mode', 'Shaded', '--grid-display-mode', 'points',
+        '--grid-options', 'MESHES', '--config',
         json_path])
 
     assert result.exit_code == 0
