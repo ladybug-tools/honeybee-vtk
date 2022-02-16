@@ -144,8 +144,6 @@ def export(
     elif grid_display_mode == 'points':
         grid_display_mode = DisplayMode.Points
 
-    if grid_filter[0] == '' and len(grid_filter) == 1:
-        grid_filter = None
 
     try:
         model = Model.from_hbjson(hbjson=hbjson_file, load_grids=grid_options)
