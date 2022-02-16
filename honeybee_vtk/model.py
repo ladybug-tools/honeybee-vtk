@@ -358,7 +358,7 @@ class Model(object):
             validation: Boolean to indicate whether to validate the data before loading.
                 Defaults to False.
             model_display_mode: Display mode for the model. Defaults to shaded.
-            model_display_mode: Display mode for the Grids. Defaults to shaded.
+            grid_display_mode: Display mode for the Grids. Defaults to shaded.
 
         Returns:
             A text string representing the file path to the vtkjs file.
@@ -422,7 +422,8 @@ class Model(object):
     def to_html(self, *, folder: str = '.', name: str = None, show: bool = False,
                 config: str = None,
                 validation: bool = False,
-                display_mode: DisplayMode = DisplayMode.Shaded) -> str:
+                model_display_mode: DisplayMode = DisplayMode.Shaded,
+                grid_display_mode: DisplayMode = DisplayMode.Shaded) -> str:
         """Write the model to an HTML file.
 
         Write your honeybee-vtk model to an HTML file that you can open in any modern
@@ -436,12 +437,13 @@ class Model(object):
                 default browser. Defaults to False
             config: Path to the config file in JSON format. Defaults to None.
             validation: Boolean to indicate whether to validate the data before loading.
-            display_mode: Display mode for the model. Defaults to shaded.
+            model_display_mode: Display mode for the model. Defaults to shaded.
+            grid_display_mode: Display mode for the Grids. Defaults to shaded.
 
         Returns:
             A text string representing the file path to the HTML file.
         """
-        self.update_display_mode(display_mode)
+        self.update_display_mode(model_display_mode)
         # Name of the html file
         file_name = name or 'model'
         # Set the target folder
@@ -451,7 +453,8 @@ class Model(object):
         # Set temp folder to do the operation
         temp_folder = tempfile.mkdtemp()
         vtkjs_file = self.to_vtkjs(
-            folder=temp_folder, config=config, validation=validation)
+            folder=temp_folder, config=config, validation=validation,
+            model_display_mode=model_display_mode, grid_display_mode=grid_display_mode)
         temp_html_file = add_data_to_viewer(vtkjs_file)
         shutil.copy(temp_html_file, html_file)
         try:
@@ -465,7 +468,8 @@ class Model(object):
     def to_files(self, *, folder: str = '.', name: str = None,
                  writer: VTKWriters = VTKWriters.binary, config: str = None,
                  validation: bool = False,
-                 display_mode: DisplayMode = DisplayMode.Shaded) -> str:
+                 model_display_mode: DisplayMode = DisplayMode.Shaded,
+                 grid_display_mode: DisplayMode = DisplayMode.Shaded) -> str:
         """
         Write a .zip of VTK/VTP files.
 
@@ -478,16 +482,22 @@ class Model(object):
             writer: A VTkWriters object. Default is binary which will write .vtp files.
             config: Path to the config file in JSON format. Defaults to None.
             validation: Boolean to indicate whether to validate the data before loading.
-            display_mode: Display mode for the model. Defaults to shaded.
+            model_display_mode: Display mode for the model. Defaults to shaded.
+            grid_display_mode: Display mode for the Grids. Defaults to shaded.
 
         Returns:
             A text string containing the path to the .zip file with VTK/VTP files.
         """
-        # update display mode
-        self.update_display_mode(display_mode)
+        scene = Scene()
+        actors = self.actors()
+        scene.add_actors(actors)
+
+        self.update_display_mode(model_display_mode)
+        self.sensor_grids.display_mode = grid_display_mode
+
         # load data if provided
         if config:
-            self.load_config(config, validation=validation)
+            self.load_config(config, scene=scene, validation=validation, legend=True)
 
         # Name of the html file
         file_name = name or 'model'
