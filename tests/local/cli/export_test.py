@@ -48,7 +48,9 @@ def test_export_grid_images():
             '--image-width', 500, '--image-height', 500,
             '--background-color', 255, 255, 255, '--grid-options', 'Meshes',
             '--model-display-mode', 'Shaded', '--grid-display-mode', 'SurfaceWithEdges',
-            '--config', config_path, '--grid', '--grid-filter', 'TestRoom_1'])
+            '--config', config_path, '--grid', '--grid-filter', 'TestRoom_1', '--text',
+            'Test Room', '--text-height', 25, '--text-color', 51, 0, 0, '--text-position',
+            0.5, 0.5, '--text-bold'])
 
     assert result.exit_code == 0
     exported_file_names = os.listdir(target_folder)
