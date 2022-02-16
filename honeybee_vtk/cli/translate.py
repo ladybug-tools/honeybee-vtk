@@ -32,10 +32,16 @@ def translate():
     help='Switch between html and vtkjs formats', show_default=True
 )
 @click.option(
-    '--display-mode', '-dm',
+    '--model-display-mode', '-mdm',
     type=click.Choice(['shaded', 'surface', 'surfacewithedges', 'wireframe', 'points'],
                       case_sensitive=False),
     default='shaded', help='Set display mode for the model.', show_default=True
+)
+@click.option(
+    '--grid-display-mode', '-gdm',
+    type=click.Choice(['shaded', 'surface', 'surfacewithedges', 'wireframe', 'points'],
+                      case_sensitive=False),
+    default='shaded', help='Set display mode for the grid.', show_default=True
 )
 @click.option(
     '--grid-options', '-go',
@@ -58,7 +64,8 @@ def translate():
     ' when using this command locally.', show_default=True
 )
 def translate(
-        hbjson_file, name, folder, file_type, display_mode, grid_options, show_html,
+        hbjson_file, name, folder, file_type, model_display_mode, grid_display_mode,
+        grid_options, show_html,
         config, validate_data):
     """Translate a HBJSON file to an HTML or a vtkjs file.
 
@@ -79,16 +86,27 @@ def translate(
         grid_options = SensorGridOptions.Mesh
 
     # Set display style
-    if display_mode == 'shaded':
-        display_mode = DisplayMode.Shaded
-    elif display_mode == 'surface':
-        display_mode = DisplayMode.Surface
-    elif display_mode == 'surfacewithedges':
-        display_mode = DisplayMode.SurfaceWithEdges
-    elif display_mode == 'wireframe':
-        display_mode = DisplayMode.Wireframe
-    elif display_mode == 'points':
-        display_mode = DisplayMode.Points
+    if model_display_mode == 'shaded':
+        model_display_mode = DisplayMode.Shaded
+    elif model_display_mode == 'surface':
+        model_display_mode = DisplayMode.Surface
+    elif model_display_mode == 'surfacewithedges':
+        model_display_mode = DisplayMode.SurfaceWithEdges
+    elif model_display_mode == 'wireframe':
+        model_display_mode = DisplayMode.Wireframe
+    elif model_display_mode == 'points':
+        model_display_mode = DisplayMode.Points
+
+    if grid_display_mode == 'shaded':
+        grid_display_mode = DisplayMode.Shaded
+    elif grid_display_mode == 'surface':
+        grid_display_mode = DisplayMode.Surface
+    elif grid_display_mode == 'surfacewithedges':
+        grid_display_mode = DisplayMode.SurfaceWithEdges
+    elif grid_display_mode == 'wireframe':
+        grid_display_mode = DisplayMode.Wireframe
+    elif grid_display_mode == 'points':
+        grid_display_mode = DisplayMode.Points
 
     try:
         model = Model.from_hbjson(hbjson=hbjson_file, load_grids=grid_options)
@@ -96,19 +114,27 @@ def translate(
         if file_type.lower() == 'html':
             output = model.to_html(folder=folder, name=name,
                                    show=show_html, config=config,
-                                   display_mode=display_mode, validation=validate_data)
+                                   model_display_mode=model_display_mode,
+                                   grid_display_mode=grid_display_mode,
+                                   validation=validate_data)
         elif file_type.lower() == 'vtkjs':
             output = model.to_vtkjs(folder=folder, name=name,
-                                    config=config, display_mode=display_mode,
+                                    config=config,
+                                    model_display_mode=model_display_mode,
+                                    grid_display_mode=grid_display_mode,
                                     validation=validate_data)
         elif file_type.lower() == 'vtk':
             output = model.to_files(folder=folder, name=name,
                                     writer=VTKWriters.legacy, config=config,
-                                    display_mode=display_mode, validation=validate_data)
+                                    model_display_mode=model_display_mode,
+                                    grid_display_mode=grid_display_mode,
+                                    validation=validate_data)
         elif file_type.lower() == 'vtp':
             output = model.to_files(folder=folder, name=name,
                                     writer=VTKWriters.binary, config=config,
-                                    display_mode=display_mode, validation=validate_data)
+                                    model_display_mode=model_display_mode,
+                                    grid_display_mode=grid_display_mode,
+                                    validation=validate_data)
 
     except Exception as e:
         traceback.print_exc()
