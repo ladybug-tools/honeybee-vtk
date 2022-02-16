@@ -30,14 +30,20 @@ class Scene:
     Args:
         background_color: A tuple of three integers that represent RGB values of the
             color that you'd like to set as the background color. Defaults to white.
+        actors: A list of Actor objects to be added to the scene. Defaults to None.
+        cameras: A list of Camera objects to be added to the scene. Defaults to None.
+        text_actor: A TextActor object to be added to the scene. Defaults to None.
     """
 
-    def __init__(self, background_color: Tuple[int, int, int] = None) -> None:
+    def __init__(self, background_color: Tuple[int, int, int] = None,
+                 actors: List[Actor] = None, cameras: List[Camera] = None,
+                 text_actor: TextActor = None) -> None:
+
         self.background_color = background_color
-        self._actors = []
-        self._cameras = []
+        self._actors = actors or []
+        self._cameras = cameras or []
+        self._text_actor = text_actor
         self._assistants = []
-        self._text_actor = None
 
     @property
     def background_color(self) -> Tuple[int, int, int]:
@@ -104,7 +110,7 @@ class Scene:
             val: Either a list of Camera objects or a single Camera object.
         """
         if isinstance(val, list) and _validate_input(val, [Camera]):
-            self._cameras.extend(val)
+            self._cameras += val
         elif isinstance(val, Camera):
             self._cameras.append(val)
         else:
