@@ -664,11 +664,9 @@ class Model(object):
                                        display_mode=grid_display_mode)
                 dataset.color_by = data.identifier
                 actor = Actor(dataset)
-                scene = Scene(background_color=background_color)
-                scene.add_actors(actor)
-                if text_actor:
-                    scene.add_text_actor(text_actor)
-                scene.add_cameras(_camera_to_grid_actor(actor, data.identifier))
+                scene = Scene(background_color=background_color, actors=[actor],
+                              cameras=[_camera_to_grid_actor(actor, data.identifier)],
+                              text_actor=text_actor)
                 legend_range = self._get_legend_range(data)
                 self._load_legend_parameters(data, scene, legend_range)
                 image_paths += scene.export_images(folder=folder,
