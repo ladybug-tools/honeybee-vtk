@@ -8,6 +8,7 @@ import traceback
 from honeybee_vtk.model import Model
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 from honeybee_vtk.types import ImageTypes
+from honeybee_vtk.text_actor import TextActor
 
 
 @click.group()
@@ -84,10 +85,33 @@ def export():
     help='Filter sensor grids by name. Use this option multiple times to use multiple'
     ' grid identifiers as filters.'
 )
+@click.option(
+    '--text', type=str, default=None, show_default=True, help='Text to be displayed on the'
+    ' image.'
+)
+@click.option(
+    '--text-height', '-th', type=int, default=15, show_default=True,
+    help='Set the height of the text in pixels.'
+)
+@click.option(
+    '--text-color', '-tc', type=(int, int, int), default=(0, 0, 0), show_default=True,
+    help='Set the text color.',
+)
+@click.option(
+    '--text-position', '-tp', type=(float, float), default=(0.5, 0.0), show_default=True,
+    help='Set the text position in the image. The setting is applied at the lower left'
+    ' point of the text. (0,0) will give you the lower left corner of the image.'
+    ' (1,1) will give you the upper right corner of the image.'
+)
+@click.option(
+    '--text-bold', '-tb', is_flag=True, default=False, show_default=True,
+    help='Set the text to be bold.'
+)
 def export(
         hbjson_file, folder, image_type, image_width, image_height,
         background_color, model_display_mode, grid_options, grid_display_mode, view,
-        config, validate_data, grid, grid_filter):
+        config, validate_data, grid, grid_filter, text, text_height, text_color,
+        text_position, text_bold):
     """Export images from radiance views in a HBJSON file.
 
     \b
@@ -144,7 +168,6 @@ def export(
     elif grid_display_mode == 'points':
         grid_display_mode = DisplayMode.Points
 
-
     try:
         model = Model.from_hbjson(hbjson=hbjson_file, load_grids=grid_options)
 
@@ -157,13 +180,18 @@ def export(
                                      image_type=image_type, image_width=image_width,
                                      image_height=image_height,)
         else:
+            text_actor = TextActor(text=text, height=text_height, color=text_color,
+                                   position=text_position, bold=text_bold)\
+                if text else None
+
             output = model.to_grid_images(config=config, folder=folder,
                                           grid_filter=grid_filter,
                                           grid_display_mode=grid_display_mode,
                                           background_color=background_color,
                                           image_type=image_type,
                                           image_width=image_width,
-                                          image_height=image_height)
+                                          image_height=image_height,
+                                          text_actor=text_actor)
 
     except Exception:
         traceback.print_exc()
