@@ -40,9 +40,9 @@ class Scene:
                  text_actor: TextActor = None) -> None:
 
         self.background_color = background_color
-        self._actors = actors or []
-        self._cameras = cameras or []
-        self._text_actor = text_actor
+        self.actors = actors or []
+        self.cameras = cameras or []
+        self.text_actor = text_actor
         self._assistants = []
 
     @property
@@ -68,10 +68,51 @@ class Scene:
         """Actors in the scene."""
         return self._actors
 
+    @actors.setter
+    def actors(self, val: List[Actor]) -> None:
+        """Set actors for the scene."""
+        if not val:
+            self._actors = []
+        elif _validate_input(val, [Actor]):
+            self._actors = val
+        else:
+            raise ValueError(
+                'A list of Actor objects is expected.'
+                f' Instead got {val}.'
+            )
+
     @property
     def cameras(self) -> List[Camera]:
         """A list of honeybee-vtk cameras setup in the scene."""
         return self._cameras
+
+    @cameras.setter
+    def cameras(self, val: List[Camera]) -> None:
+        """Set cameras for the scene."""
+        if not val:
+            self._cameras = []
+        elif _validate_input(val, [Camera]):
+            self._cameras = val
+        else:
+            raise ValueError(
+                'A list of Camera objects is expected.'
+                f' Instead got {val}.'
+            )
+
+    @property
+    def text_actor(self) -> TextActor:
+        """TextActor object in the scene."""
+        return self._text_actor
+
+    @text_actor.setter
+    def text_actor(self, val: TextActor) -> None:
+        """Set the TextActor object in the scene."""
+        if not val:
+            self._text_actor = None
+        elif not isinstance(val, TextActor):
+            raise ValueError('TextActor object is expected.')
+        else:
+            self._text_actor = val
 
     @property
     def assistants(self) -> List[Assistant]:
