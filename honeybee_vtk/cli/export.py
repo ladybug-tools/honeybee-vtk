@@ -75,12 +75,12 @@ def export():
     ' when using this command locally.', show_default=True
 )
 @click.option(
-    '--grid', is_flag=True, default=False, help='Boolean to decide whether to export'
+    '--grid/--model', is_flag=True, default=False, help='Boolean to decide whether to export'
     ' the images of a whole model or only the grids. Set it to True to export the grids.',
     show_default=True
 )
 @click.option(
-    '--grid-filter', '-gf', type=str, default=[''], show_default=True, multiple=True,
+    '--grid-filter', '-gf', type=str, default=[], show_default=True, multiple=True,
     help='Filter sensor grids by name. Use this option multiple times to use multiple'
     ' grid identifiers as filters.'
 )
