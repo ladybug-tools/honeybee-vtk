@@ -6,6 +6,7 @@ from typing import Tuple
 from .camera import Camera
 from .types import ImageTypes
 from .actor import Actor
+from .text_actor import TextActor
 
 from typing import List
 
@@ -23,16 +24,19 @@ class Assistant:
         actors: A list of actors.
         camera: A Camera object.
         legend_parameters: A list of legend parameter objects to be added to the scene
+        text_actor: A TextActor object. Defaults to None.
 
     """
 
     def __init__(self, background_color: Tuple[int, int, int], camera: Camera,
-                 actors: List[Actor], legend_parameters: list) -> None:
+                 actors: List[Actor], legend_parameters: list,
+                 text_actor: TextActor = None) -> None:
 
         self._background_color = background_color
         self._actors = actors
         self._camera = camera
         self._legend_params = legend_parameters
+        self._text_actor = text_actor
 
     def _create_window(self) -> \
             Tuple[vtk.vtkRenderWindowInteractor, vtk.vtkRenderWindow, vtk.vtkRenderer]:
@@ -64,6 +68,10 @@ class Assistant:
         # Add actors to the window
         for actor in self._actors:
             renderer.AddActor(actor.to_vtk())
+
+        # add text actor if provided
+        if self._text_actor:
+            renderer.AddActor(self._text_actor.to_vtk())
 
         # Add legends to the window
         if self._legend_params:
