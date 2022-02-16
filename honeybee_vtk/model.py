@@ -341,7 +341,8 @@ class Model(object):
 
     def to_vtkjs(self, *, folder: str = '.', name: str = None, config: str = None,
                  validation: bool = False,
-                 display_mode: DisplayMode = DisplayMode.Shaded) -> str:
+                 model_display_mode: DisplayMode = DisplayMode.Shaded,
+                 grid_display_mode: DisplayMode = DisplayMode.Shaded) -> str:
         """Write the model to a vtkjs file.
 
         Write your honeybee-vtk model to a vtkjs file that you can open in
@@ -356,17 +357,22 @@ class Model(object):
             config: Path to the config file in JSON format. Defaults to None.
             validation: Boolean to indicate whether to validate the data before loading.
                 Defaults to False.
-            display_mode: Display mode for the model. Defaults to shaded.
+            model_display_mode: Display mode for the model. Defaults to shaded.
+            model_display_mode: Display mode for the Grids. Defaults to shaded.
 
         Returns:
             A text string representing the file path to the vtkjs file.
         """
-        # update display mode
-        self.update_display_mode(display_mode)
+        scene = Scene()
+        actors = self.actors()
+        scene.add_actors(actors)
+
+        self.update_display_mode(model_display_mode)
+        self.sensor_grids.display_mode = grid_display_mode
 
         # load data if provided
         if config:
-            self.load_config(config, validation=validation)
+            self.load_config(config, scene=scene, validation=validation, legend=True)
 
         # name of the vtkjs file
         file_name = name or 'model'
