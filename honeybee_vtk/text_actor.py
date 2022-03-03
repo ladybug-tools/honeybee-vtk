@@ -6,7 +6,7 @@ from typing import Tuple
 
 class TextActor:
 
-    """Use this object to create a vtk text actor. 
+    """Use this object to create a vtk text actor.
 
     This text actor can be used to add text to a vtk scene.
 
@@ -24,7 +24,8 @@ class TextActor:
         bold: Boolean to decide whether to make the text bold. Defaults to False.
     """
 
-    def __init__(self, text: str, height: int = 15, color: Tuple[int, int, int] = (0, 0, 0),
+    def __init__(self, text: str, height: int = 15,
+                 color: Tuple[int, int, int] = (0, 0, 0),
                  position: Tuple[float, float] = (0.5, 0.0), bold: bool = False) -> None:
         self.text = text
         self.height = height
