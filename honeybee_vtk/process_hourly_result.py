@@ -133,12 +133,15 @@ def write_res_file(res_path: pathlib.Path, data: List[int],
             f.write(f'{val}\n')
 
 
-def write_config(target_folder: pathlib.Path, data_path: pathlib.Path) -> None:
+def write_config(target_folder: pathlib.Path, data_path: pathlib.Path) -> pathlib.Path:
     """Write a config file to be consumed by honeybee-vtk.
 
     Args:
         target_folder: Path to the folder to write the config file.
         data_path: Path to folder with grids_info.json and .res files.
+
+    Returns:
+        Path to the config file.
     """
 
     config = Config(data=[
@@ -150,6 +153,8 @@ def write_config(target_folder: pathlib.Path, data_path: pathlib.Path) -> None:
     config_path = target_folder.joinpath('config.json')
     with open(config_path, 'w') as f:
         f.write(config.json())
+
+    return pathlib.Path(target_folder).joinpath('config.json')
 
 
 def create_folders(index: int) -> Tuple[pathlib.Path, pathlib.Path]:
@@ -233,8 +238,7 @@ def export_timestep_images(hbjson_path: str, time_series_folder_path: str,
         temp_folder, index_folder = create_folders(index)
         copy_grids_info(grids_info_path, index_folder)
         write_res_files(result_paths, index, index_folder)
-        write_config(temp_folder, index_folder)
-        config_path = pathlib.Path(temp_folder).joinpath('config.json')
+        config_path = write_config(temp_folder, index_folder)
         model = Model.from_hbjson(hbjson_path, SensorGridOptions.Mesh)
         images_paths += model.to_grid_images(folder=target_folder,
                                              config=config_path.as_posix(),
