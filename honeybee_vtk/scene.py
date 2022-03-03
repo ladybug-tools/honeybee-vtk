@@ -209,8 +209,8 @@ class Scene:
     def export_images(
             self, folder: str, image_type: ImageTypes = ImageTypes.png, *,
             image_scale: int = 1, image_width: int = 0, image_height: int = 0,
-            color_range: vtk.vtkLookupTable = None, rgba: bool = False,
-            show: bool = False) -> List[str]:
+            image_name: str = '', color_range: vtk.vtkLookupTable = None,
+            rgba: bool = False, show: bool = False) -> List[str]:
         """Export all the cameras in the scene as images.
 
         Reference: https://kitware.github.io/vtk-examples/site/Python/IO/ImageWriter/
@@ -225,6 +225,7 @@ class Scene:
                 Defaults to 0, which will use default radinace view's horizontal angle.
             image_height: An integer value that sets the height of image in pixels.
                 Defaults to 0, which will use default radinace view's vertical angle.
+            image_name: A text string that sets the name of the image. Defaults to ''.
             color_range: A vtk lookup table object which can be obtained
                 from the color_range mehtod of the DataFieldInfo object.
                 Defaults to None.
@@ -241,7 +242,7 @@ class Scene:
 
         return [assistant._export_image(
             folder=folder, image_type=image_type, image_scale=image_scale,
-            image_width=image_width, image_height=image_height,
+            image_width=image_width, image_height=image_height, image_name=image_name,
             color_range=color_range, rgba=rgba, show=show)
             for assistant in self._assistants]
 
