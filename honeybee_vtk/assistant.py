@@ -196,8 +196,8 @@ class Assistant:
     def _export_image(
             self, folder: str, image_type: ImageTypes = ImageTypes.png, *,
             image_scale: int = 1, image_width: int = 0, image_height: int = 0,
-            color_range: vtk.vtkLookupTable = None, rgba: bool = False,
-            show: bool = False) -> str:
+            image_name: str = '',  color_range: vtk.vtkLookupTable = None,
+            rgba: bool = False, show: bool = False) -> str:
         """Export the window as an image.
 
         Reference: https://kitware.github.io/vtk-examples/site/Python/IO/ImageWriter/
@@ -212,6 +212,7 @@ class Assistant:
                 Defaults to 0, which will use view's x dimension.
             image_height: An integer value that sets the height of image in pixels.
                 Defaults to 0, which will use view's y dimension.
+            image_name: A text string that sets the name of the image. Defaults to ''.
             color_range: A vtk lookup table object which can be obtained
                 from the color_range mehtod of the DataFieldInfo object.
                 Defaults to None.
@@ -245,8 +246,13 @@ class Assistant:
             interactor.Initialize()
             interactor.Start()
 
-        image_path = pathlib.Path(
-            folder, f'{self._camera.identifier}.{image_type.value}')
+        if not image_name:
+            image_path = pathlib.Path(
+                folder, f'{self._camera.identifier}.{image_type.value}')
+        else:
+            image_path = pathlib.Path(
+                folder, f'{image_name}_{self._camera.identifier}.{image_type.value}')
+
         writer = self._get_image_writer(image_type)
         if image_type == ImageTypes.jpg:
             writer.SetQuality(100)  # image quality
