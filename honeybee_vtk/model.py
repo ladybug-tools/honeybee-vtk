@@ -623,7 +623,7 @@ class Model(object):
                        grid_display_mode: DisplayMode = DisplayMode.SurfaceWithEdges,
                        background_color: Tuple[int, int, int] = None,
                        image_type: ImageTypes = ImageTypes.png,
-                       image_width: int = 0, image_height: int = 0,
+                       image_width: int = 0, image_height: int = 0, image_name: str = '',
                        text_actor: TextActor = None) -> List[str]:
         """Export am image for each grid in the model.
 
@@ -647,6 +647,7 @@ class Model(object):
                 default radiance view's horizontal angle to derive the width.
             image_height: Image height in pixels. Defaults to 0. Which will use the
                 default radiance view's vertical angle to derive the height.
+            image_name: A text string that sets the name of the image. Defaults to ''.
             text_actor: A TextActor object that defines the properties of the text to be
                 added to the image. Defaults to None.
 
@@ -685,7 +686,8 @@ class Model(object):
                 image_paths += scene.export_images(folder=folder,
                                                    image_type=image_type,
                                                    image_width=image_width,
-                                                   image_height=image_height)
+                                                   image_height=image_height,
+                                                   image_name=image_name)
 
         return image_paths
 
