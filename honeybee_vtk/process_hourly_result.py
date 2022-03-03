@@ -9,7 +9,7 @@ import os
 from pandas import DataFrame
 from typing import List
 from ladybug.dt import DateTime
-from ladybug.color import Colorset
+
 
 from .config import Config, DataConfig, LegendConfig
 from .model import Model, SensorGridOptions
@@ -107,7 +107,6 @@ def export_timestep_images(hbjson_path: str, time_series_folder_path: str,
 
     for index in timestamp_indexes:
         temp_folder = pathlib.Path(tempfile.mkdtemp())
-        print(f'Temp folder is {temp_folder}')
         index_folder = pathlib.Path(temp_folder).joinpath(str(index))
         os.mkdir(index_folder)
 
@@ -119,7 +118,7 @@ def export_timestep_images(hbjson_path: str, time_series_folder_path: str,
         write_config(temp_folder, index_folder)
         config_path = pathlib.Path(temp_folder).joinpath('config.json')
         model = Model.from_hbjson(hbjson_path, SensorGridOptions.Mesh)
-        model.to_grid_images(folder='.', config=config_path,
+        model.to_grid_images(folder=target_folder, config=config_path,
                              grid_display_mode=DisplayMode.Shaded,
                              text_actor=TextActor(text=f'Hour {index}'),
                              image_name=f'{index}')
