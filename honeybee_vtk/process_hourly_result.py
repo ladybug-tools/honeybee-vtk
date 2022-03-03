@@ -7,7 +7,7 @@ import shutil
 import os
 
 from pandas import DataFrame
-from typing import List
+from typing import List, Tuple
 from ladybug.dt import DateTime
 
 
@@ -18,13 +18,35 @@ from .text_actor import TextActor
 
 
 def get_datetimes(path: pathlib.Path) -> List[DateTime]:
-    """Read a .txt file with time stamps and return a list of hoys."""
+    """Read a .txt file with time stamps and return a list of Datetime object.
+
+    Here, time stamp can be HOY, MOY, or DOY.
+
+    Args:
+        path: Path to the .txt file.
+
+    Returns:
+        A list of Datetime objects.
+    """
     with open(path, 'r') as f:
         return [DateTime.from_hoy(float(line.strip())) for line in f]
 
 
 def get_timestamp_indexes(time_stamp_path: pathlib.Path, st_datetime: DateTime,
                           end_datetime: DateTime) -> List[int]:
+    """Get the indexes of the timestamps in the time stamp file between two Datetimes.
+
+    This function will give you all the Datetime objects for all the time stamps that
+    exist between the start and end Datetime objects.
+
+    Args:
+        time_stamp_path: Path to the time stamp file.
+        st_datetime: Start datetime.
+        end_datetime: End datetime.
+
+    Returns:
+        A list of indexes.
+    """
 
     time_stamp_datetimes = get_datetimes(time_stamp_path)
     return [count for count, datetime in enumerate(time_stamp_datetimes) if
@@ -32,7 +54,15 @@ def get_timestamp_indexes(time_stamp_path: pathlib.Path, st_datetime: DateTime,
 
 
 def get_res_file_extension(path: pathlib.Path, grids_info: List[dict]) -> str:
-    """Get the file extension of the result file."""
+    """Get the common file extension of the result files in the folder.
+
+    Args:
+        path: Path to the folder.
+        grids_info: A list of grids info objects.
+
+    Returns:
+        The common file extension of the result files in the folder.
+    """
 
     first_grid_id: str = grids_info[0]['identifier']
 
@@ -41,7 +71,17 @@ def get_res_file_extension(path: pathlib.Path, grids_info: List[dict]) -> str:
             return item.suffix
 
 
-def get_res_paths(path: pathlib.Path, grids_info_path: pathlib.Path) -> List[pathlib.Path]:
+def get_result_paths(path: pathlib.Path,
+                     grids_info_path: pathlib.Path) -> List[pathlib.Path]:
+    """Get file paths of the result files in the folder.
+
+    Args:
+        path: Path to the folder.
+        grids_info_path: Path to the grids info.json file.
+
+    Returns:
+        A list of file paths to the result files.
+    """
     try:
         with open(grids_info_path) as fh:
             grids_info = json.load(fh)
@@ -55,7 +95,18 @@ def get_res_paths(path: pathlib.Path, grids_info_path: pathlib.Path) -> List[pat
 
 
 def extract_column(path: pathlib.Path, index: int) -> List[int]:
-    """Extract a column from a result file."""
+    """Extract a column from a result file.
+
+    This function first turns the file into a pandas DataFrame and then extracts the
+    column at the given index.
+
+    Args:
+        path: Path to the result file.
+        index: Index of the column to extract.
+
+    Returns:
+        A list of integer values.
+    """
     with open(path, 'r') as f:
         lines = f.readlines()
         df = DataFrame([line.strip().split('\t') for line in lines])
@@ -67,15 +118,28 @@ def extract_column(path: pathlib.Path, index: int) -> List[int]:
 
 
 def write_res_file(res_path: pathlib.Path, data: List[int],
-                   target_folder: pathlib.Path = pathlib.Path('.')):
+                   target_folder: pathlib.Path = pathlib.Path('.')) -> None:
+    """Write a list of integer values to a .res file.
+
+    Args:
+        res_path: Path to the result file.
+        data: A list of integer values.
+        target_folder: Path to the folder to write the result file. 
+            Defaults to the current folder.
+    """
     file_path = pathlib.Path(target_folder).joinpath(f'{res_path.stem}.res')
     with open(file_path, 'w') as f:
         for val in data:
             f.write(f'{val}\n')
 
 
-def write_config(target_folder: pathlib.Path, data_path: pathlib.Path):
-    """Write a config file for the simulation."""
+def write_config(target_folder: pathlib.Path, data_path: pathlib.Path) -> None:
+    """Write a config file to be consumed by honeybee-vtk.
+
+    Args:
+        target_folder: Path to the folder to write the config file.
+        data_path: Path to folder with grids_info.json and .res files.
+    """
 
     config = Config(data=[
         DataConfig(identifier='sun-up-hours', path=data_path.as_posix(),
@@ -88,10 +152,68 @@ def write_config(target_folder: pathlib.Path, data_path: pathlib.Path):
         f.write(config.json())
 
 
+def create_folders(index: int) -> Tuple[pathlib.Path, pathlib.Path]:
+    """Create a temp folder and an Index folder for the current index.
+
+    Args:
+        index: Index of the time stamp in the time stamps file.
+
+    Returns:
+        A tuple of paths to the temp folder and the Index folder.
+    """
+    temp_folder = pathlib.Path(tempfile.mkdtemp())
+    index_folder = pathlib.Path(temp_folder).joinpath(str(index))
+    os.mkdir(index_folder)
+    return temp_folder, index_folder
+
+
+def copy_grids_info(grids_info_path: pathlib.Path, index_folder: pathlib.Path) -> None:
+    """Copy grids_info.json to the Index folder."""
+    index_grids_info_path = pathlib.Path(index_folder).joinpath('grids_info.json')
+    shutil.copy(grids_info_path, index_grids_info_path)
+
+
+def write_res_files(result_paths: List[pathlib.Path], index: int,
+                    index_folder: pathlib.Path) -> None:
+    """Write .res files to the Index folder.
+
+    For each Index of the time stamp in the time stamp file. Write a .res for each of
+    the result files in the folder. The number of these result files would be equal
+    to the number of grids in the grids_info.json file.
+
+    Args:
+        res_paths: List of file paths to the result files
+
+    """
+    for result_path in result_paths:
+        data = extract_column(result_path, index)
+        write_res_file(result_path, data, index_folder)
+
+
 def export_timestep_images(hbjson_path: str, time_series_folder_path: str,
                            timestamp_file_name: str,
                            st_datetime: DateTime, end_datetime: DateTime,
-                           target_folder: str = '.'):
+                           target_folder: str = '.') -> List[str]:
+    """Export images of grids for each time step in the time stamps file.
+
+    This function will find all the time stamps between the start and end datetimes
+    in the time stamps file and export images of the grids for each time step.
+
+    Args:
+        hbjson_path: Path to the HBJSON file.
+        time_series_folder_path: Path to the folder with the time stamps file.
+            grids_info.json and result files.
+        timestamp_file_name: Name of the time stamps file as a string. This is simply
+            used to find the time stamps file in the time_series_folder_path.
+        st_datetime: Start datetime of the time stamps file.
+        end_datetime: End datetime of the time stamps file.
+        target_folder: Path to the folder to write the images. Defaults to the current
+            folder.
+
+    Returns:
+        A list of paths to the exported images.
+    """
+
     path = pathlib.Path(time_series_folder_path)
     assert path.exists(), 'Path does not exist.'
 
@@ -103,22 +225,21 @@ def export_timestep_images(hbjson_path: str, time_series_folder_path: str,
                                               end_datetime)
 
     grids_info_path = path.joinpath('grids_info.json')
-    res_paths = get_res_paths(path, grids_info_path)
+    result_paths = get_result_paths(path, grids_info_path)
+
+    images_paths: List[str] = []
 
     for index in timestamp_indexes:
-        temp_folder = pathlib.Path(tempfile.mkdtemp())
-        index_folder = pathlib.Path(temp_folder).joinpath(str(index))
-        os.mkdir(index_folder)
-
-        index_grids_info_path = pathlib.Path(index_folder).joinpath('grids_info.json')
-        shutil.copy(grids_info_path, index_grids_info_path)
-        for res_path in res_paths:
-            data = extract_column(res_path, index)
-            write_res_file(res_path, data, index_folder)
+        temp_folder, index_folder = create_folders(index)
+        copy_grids_info(grids_info_path, index_folder)
+        write_res_files(result_paths, index, index_folder)
         write_config(temp_folder, index_folder)
         config_path = pathlib.Path(temp_folder).joinpath('config.json')
         model = Model.from_hbjson(hbjson_path, SensorGridOptions.Mesh)
-        model.to_grid_images(folder=target_folder, config=config_path,
-                             grid_display_mode=DisplayMode.Shaded,
-                             text_actor=TextActor(text=f'Hour {index}'),
-                             image_name=f'{index}')
+        images_paths += model.to_grid_images(folder=target_folder,
+                                             config=config_path.as_posix(),
+                                             grid_display_mode=DisplayMode.Shaded,
+                                             text_actor=TextActor(text=f'Hour {index}'),
+                                             image_name=f'{index}')
+
+    return images_paths
