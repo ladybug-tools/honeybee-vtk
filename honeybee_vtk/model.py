@@ -66,7 +66,7 @@ def _camera_to_grid_actor(actor: Actor, data_name: str, zoom: int = 2,
         actor: An Actor object.
         data_name: name of the data being loaded on the grid. This is
             used in naming the image files.
-        zoom: The zoom level of the camera. Defaults to 15.
+        zoom: The zoom level of the camera. Defaults to 2.
         auto_zoom: A boolean to set the camera to auto zoom. Setting this to True will
             discard the Zoom level. Set this to False to use the zoom level. Defaults to
             True.
@@ -666,7 +666,8 @@ class Model(object):
                 dataset.color_by = data.identifier
                 actor = Actor(dataset)
                 scene = Scene(background_color=background_color, actors=[actor],
-                              cameras=[_camera_to_grid_actor(actor, data.identifier)],
+                              cameras=[_camera_to_grid_actor(
+                                  actor, data.identifier)],
                               text_actor=text_actor)
                 legend_range = self._get_legend_range(data)
                 self._load_legend_parameters(data, scene, legend_range)
