@@ -88,6 +88,28 @@ def _camera_to_grid_actor(actor: Actor, data_name: str, zoom: int = 2,
                   reset_camera=auto_zoom)
 
 
+def filter_grids(grid_polydata_lst: List[PolyData],
+                 grid_filter: List[str]) -> List[PolyData]:
+    """Filter grids based on the grid_filter.
+
+    Args:
+        grid_polydata_lst: A list of PolyData objects for Grids.
+        grid_filter: A list of grid identifiers to filter grids.
+
+    Returns:
+        A list of PolyData objects for Grids.
+    """
+    if not grid_filter:
+        return grid_polydata_lst
+    else:
+        filtered_grid_polydata_lst = [grid for grid in grid_polydata_lst
+                                      if grid.name in grid_filter]
+        if not filtered_grid_polydata_lst:
+            raise ValueError('No grids found in the model that match the filter'
+                             ' defined in the config file.')
+        return filtered_grid_polydata_lst
+
+
 class Model(object):
     """A honeybee-vtk model.
 
