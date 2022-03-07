@@ -571,26 +571,29 @@ class Model(object):
             folder=folder, image_type=image_type,
             image_width=image_width, image_height=image_height)
 
-    def to_grid_images(self,  *, folder: str = '.', config: str,
+    def to_grid_images(self, config: str, *, folder: str = '.',
                        grid_filter: List[str] = None,
                        grid_display_mode: DisplayMode = DisplayMode.SurfaceWithEdges,
                        background_color: Tuple[int, int, int] = None,
                        image_type: ImageTypes = ImageTypes.png,
                        image_width: int = 0, image_height: int = 0, image_name: str = '',
-                       text_actor: TextActor = None) -> List[str]:
+                       text_actor: TextActor = None,
+                       grid_camera_dict: Dict[str, vtk.vtkCamera] = None,
+                       extract_camera: bool = False) -> Union[Dict[str, Camera],
+                                                              List[str]]:
         """Export am image for each grid in the model.
 
         Use the config file to specify which grids with which data to export. For
         instance, if the config file has DataConfig objects for 'DA' and 'UDI', and
-        'DA' is kept hidden, then all grids with 'UDI' data will be exported. Additionally,
-        images from a selected number of grids can be exported by using the by
-        specifyling the identifiers of the grids to export in the grid_filter object in
-        the config file.
+        'DA' is kept hidden, then all grids with 'UDI' data will be exported.
+        Additionally, images from a selected number of grids can be exported by 
+        using the by specifyling the identifiers of the grids to export in the 
+        grid_filter object in the config file.
 
         Args:
+            config: Path to the config file in JSON format.
             folder: Path to the folder where you'd like to export the images. Defaults to
                     the current working directory.
-            config: Path to the config file in JSON format.
             grid_filter: A list of grid identifiers to export images of those grid only.
                 Defaults to None which will export all the grids.
             display_mode: Display mode for the grid. Defaults to surface with edges.
@@ -603,9 +606,20 @@ class Model(object):
             image_name: A text string that sets the name of the image. Defaults to ''.
             text_actor: A TextActor object that defines the properties of the text to be
                 added to the image. Defaults to None.
+            grid_camera_dict: A dictionary of grid identifiers and vtkCamera objects.
+                If provided, the camera objects specified in the dict will be used to
+                export the images. This is useful when a camera from another run is
+                to be used in this run to export an image. Defaults to None.
+            extract_camera: Boolean to indicate whether to extract the camera from the
+                for this run to use for the next run. Defaults to False.
+
+        Note that the parameters grid_camera_dict and extract_camera are mutually
+        exclusive. If both are provided, the extract_camera will be used and the 
+        grid_camera_dict will be ignored.
 
         Returns:
-            Path to the folder where the images are exported for each grid.
+            Path to the folder where the images are exported for each grid. Or a
+            dictionary of grid identifers and camera objects.
         """
         assert len(self.sensor_grids.data) != 0, 'No sensor grids found in the model.'
 
@@ -613,17 +627,10 @@ class Model(object):
             grid_display_mode = DisplayMode.Points
 
         config_data = self.load_config(config)
+        grid_polydata_lst = filter_grids(self.sensor_grids.data, grid_filter)
 
-        if not grid_filter:
-            grid_polydata_lst = self.sensor_grids.data
-        else:
-            grid_polydata_lst = [grid for grid in self.sensor_grids.data
-                                 if grid.name in grid_filter]
-            if not grid_polydata_lst:
-                raise ValueError('No grids found in the model that match the filter'
-                                 ' defined in the config file.')
+        output: Union[Dict[str, Camera], List[str]] = {} if extract_camera else []
 
-        image_paths: List[str] = []
         for data in config_data:
             for grid_polydata in grid_polydata_lst:
                 dataset = ModelDataSet(name=grid_polydata.identifier,
@@ -631,19 +638,34 @@ class Model(object):
                                        display_mode=grid_display_mode)
                 dataset.color_by = data.identifier
                 actor = Actor(dataset)
+                camera = _camera_to_grid_actor(actor, data.identifier)
                 scene = Scene(background_color=background_color, actors=[actor],
-                              cameras=[_camera_to_grid_actor(
-                                  actor, data.identifier)],
+                              cameras=[camera],
                               text_actor=text_actor)
                 legend_range = self._get_legend_range(data)
                 self._load_legend_parameters(data, scene, legend_range)
-                image_paths += scene.export_images(folder=folder,
-                                                   image_type=image_type,
-                                                   image_width=image_width,
-                                                   image_height=image_height,
-                                                   image_name=image_name)
 
-        return image_paths
+                if extract_camera:
+                    vtk_camera = None
+                    output[grid_polydata.identifier] = scene.export_images(
+                        folder=folder, image_type=image_type, image_width=image_width,
+                        image_height=image_height, image_name=image_name,
+                        vtk_camera=vtk_camera, extract_camera=extract_camera
+                    )
+                else:
+                    if grid_camera_dict:
+                        vtk_camera = grid_camera_dict[grid_polydata.identifier]
+                    else:
+                        vtk_camera = None
+                    output.append(
+                        scene.export_images(folder=folder, image_type=image_type,
+                                            image_width=image_width,
+                                            image_height=image_height,
+                                            image_name=image_name,
+                                            vtk_camera=vtk_camera)
+                    )
+
+        return output
 
     @ staticmethod
     def get_default_color(face_type: face_types) -> Color:
