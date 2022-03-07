@@ -54,62 +54,6 @@ DATA_SETS = {
 }
 
 
-def _camera_to_grid_actor(actor: Actor, data_name: str, zoom: int = 2,
-                          auto_zoom: bool = True, camera_offset: int = 3,
-                          clipping_range: Tuple[int, int] = (0, 4), ) -> Camera:
-    """Create a Camera for a grid actor.
-
-    This function uses the center point of a grid actor to create a camera that is
-    setup at the camera_offset distance from the center point.
-
-    Args:
-        actor: An Actor object.
-        data_name: name of the data being loaded on the grid. This is
-            used in naming the image files.
-        zoom: The zoom level of the camera. Defaults to 2.
-        auto_zoom: A boolean to set the camera to auto zoom. Setting this to True will
-            discard the Zoom level. Set this to False to use the zoom level. Defaults to
-            True.
-        camera_offset: The distance between the camera and the sensor grid.
-            Defaults to 100.
-        clipping_range: The clipping range of the camera. Defaults to (100, 101).
-
-    Returns:
-        A Camera object.
-    """
-
-    cent_pt = actor.centroid
-    return Camera(identifier=f'{data_name}_{actor.name}',
-                  position=(cent_pt.x, cent_pt.y, cent_pt.z + camera_offset),
-                  projection='l',
-                  focal_point=cent_pt,
-                  clipping_range=clipping_range,
-                  parallel_scale=zoom,
-                  reset_camera=auto_zoom)
-
-
-def filter_grids(grid_polydata_lst: List[PolyData],
-                 grid_filter: List[str]) -> List[PolyData]:
-    """Filter grids based on the grid_filter.
-
-    Args:
-        grid_polydata_lst: A list of PolyData objects for Grids.
-        grid_filter: A list of grid identifiers to filter grids.
-
-    Returns:
-        A list of PolyData objects for Grids.
-    """
-    if not grid_filter:
-        return grid_polydata_lst
-    else:
-        filtered_grid_polydata_lst = [grid for grid in grid_polydata_lst
-                                      if grid.name in grid_filter]
-        if not filtered_grid_polydata_lst:
-            raise ValueError('No grids found in the model that match the filter'
-                             ' defined in the config file.')
-        return filtered_grid_polydata_lst
-
-
 class Model(object):
     """A honeybee-vtk model.
 
@@ -981,3 +925,59 @@ class Model(object):
         title_params = legend_params.title_parameters
         legend.title_parameters = Text(
             title_params.color, title_params.size, title_params.bold)
+
+
+def _camera_to_grid_actor(actor: Actor, data_name: str, zoom: int = 2,
+                          auto_zoom: bool = True, camera_offset: int = 3,
+                          clipping_range: Tuple[int, int] = (0, 4), ) -> Camera:
+    """Create a Camera for a grid actor.
+
+    This function uses the center point of a grid actor to create a camera that is
+    setup at the camera_offset distance from the center point.
+
+    Args:
+        actor: An Actor object.
+        data_name: name of the data being loaded on the grid. This is
+            used in naming the image files.
+        zoom: The zoom level of the camera. Defaults to 2.
+        auto_zoom: A boolean to set the camera to auto zoom. Setting this to True will
+            discard the Zoom level. Set this to False to use the zoom level. Defaults to
+            True.
+        camera_offset: The distance between the camera and the sensor grid.
+            Defaults to 100.
+        clipping_range: The clipping range of the camera. Defaults to (100, 101).
+
+    Returns:
+        A Camera object.
+    """
+
+    cent_pt = actor.centroid
+    return Camera(identifier=f'{data_name}_{actor.name}',
+                  position=(cent_pt.x, cent_pt.y, cent_pt.z + camera_offset),
+                  projection='l',
+                  focal_point=cent_pt,
+                  clipping_range=clipping_range,
+                  parallel_scale=zoom,
+                  reset_camera=auto_zoom)
+
+
+def filter_grids(grid_polydata_lst: List[PolyData],
+                 grid_filter: List[str]) -> List[PolyData]:
+    """Filter grids based on the grid_filter.
+
+    Args:
+        grid_polydata_lst: A list of PolyData objects for Grids.
+        grid_filter: A list of grid identifiers to filter grids.
+
+    Returns:
+        A list of PolyData objects for Grids.
+    """
+    if not grid_filter:
+        return grid_polydata_lst
+    else:
+        filtered_grid_polydata_lst = [grid for grid in grid_polydata_lst
+                                      if grid.name in grid_filter]
+        if not filtered_grid_polydata_lst:
+            raise ValueError('No grids found in the model that match the filter'
+                             ' defined in the config file.')
+        return filtered_grid_polydata_lst
