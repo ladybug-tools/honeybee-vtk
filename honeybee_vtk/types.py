@@ -69,15 +69,23 @@ class DataFieldInfo:
         per_face : A Boolean to indicate if the data is per face or per point. In
             most cases except for sensor points that are loaded as sensors the data
             are provided per face.
+        lower_threshold: Lower end of the threshold range beyond which the polydata
+            will be filtered. If None, the lower threshold will be infinite. Defaults
+            to None.
+        upper_threshold: Upper end of the threshold range beyond which the polydata
+            will be filtered. If None, the upper threshold will be infinite. Defaults
+            to None.
     """
 
     def __init__(self, name: str = 'default', range: Tuple[float, float] = None,
-                 colors: ColorSets = ColorSets.ecotect, per_face: bool = True
-                 ) -> None:
+                 colors: ColorSets = ColorSets.ecotect, per_face: bool = True,
+                 lower_threshold: float = None, upper_threshold: float = None) -> None:
         self.name = name
         self._range = range
         self.per_face = per_face
         self._legend_param = LegendParameter(name=name, colors=colors, auto_range=range)
+        self.lower_threshold = lower_threshold
+        self.upper_threshold = upper_threshold
 
     @property
     def legend_parameter(self) -> LegendParameter:
@@ -93,6 +101,26 @@ class DataFieldInfo:
         used.
         """
         return self._range
+
+    @property
+    def lower_threshold(self) -> float:
+        """Lower threshold value."""
+        return self._lower_threshold
+
+    @lower_threshold.setter
+    def lower_threshold(self, value: float) -> None:
+        """Lower threshold value."""
+        self._lower_threshold = value
+
+    @property
+    def upper_threshold(self) -> float:
+        """Upper threshold value."""
+        return self._upper_threshold
+
+    @upper_threshold.setter
+    def upper_threshold(self, value: float) -> None:
+        """Upper threshold value."""
+        self._upper_threshold = value
 
 
 def _get_data_range(
@@ -203,7 +231,7 @@ class PolyData(vtk.vtkPolyData):
         return self._fields
 
     def add_data(self, data: List, name, *, cell=True, colors=None,
-                 data_range=None):
+                 data_range=None, lower_threshold: float = None, upper_threshold: float = None) -> None:
         """Add a list of data to a vtkPolyData.
 
         Data can be added to cells or points. By default the data will be added to cells.
@@ -218,6 +246,12 @@ class PolyData(vtk.vtkPolyData):
             colors: A Colors object that defines colors for the legend.
             data_range: A list with two values for minimum and maximum values for legend
                 parameters.
+            lower_threshold: Lower end of the threshold range for the data.
+                Data beyond this threshold will be filtered. If not specified, the lower
+                threshold will be infinite. Defaults to None.
+            upper_threshold: Upper end of the threshold range for the data.
+                Data beyond this threshold will be filtered. If not specified, the upper
+                threshold will be infinite. Defaults to None.
         """
         assert name not in self._fields, \
             f'A data filed by name "{name}" already exist. Try a different name.'
@@ -257,7 +291,8 @@ class PolyData(vtk.vtkPolyData):
         if not colors:
             colors = ColorSets.ecotect
 
-        self._fields[name] = DataFieldInfo(name, data_range, colors, cell)
+        self._fields[name] = DataFieldInfo(
+            name, data_range, colors, cell, lower_threshold, upper_threshold)
 
         # if it's a string array don't publish the legend
         if isinstance(values, vtk.vtkStringArray):
@@ -469,7 +504,7 @@ class ModelDataSet:
 
     def add_data_fields(
         self, data: List[List], name: str, per_face: bool = True, colors=None,
-            data_range=None):
+            data_range=None, lower_threshold: float = None, upper_threshold: float = None):
         """Add data fields to PolyData objects in this dataset.
 
         Use this method to add data like temperature or illuminance values to PolyData
@@ -487,6 +522,12 @@ class ModelDataSet:
             colors: A Colors object that defines colors for the legend.
             data_range: A list with two values for minimum and maximum values for legend
                 parameters.
+            lower_threshold: Lower end of the threshold range for the data.
+                Data beyond this threshold will be filtered. If not specified, the lower
+                threshold will be infinite. Defaults to None.
+            upper_threshold: Upper end of the threshold range for the data.
+                Data beyond this threshold will be filtered. If not specified, the upper
+                threshold will be infinite. Defaults to None.
         """
 
         assert len(self.data) == len(data), \
@@ -495,7 +536,8 @@ class ModelDataSet:
 
         for count, d in enumerate(data):
             self.data[count].add_data(
-                d, name=name, cell=per_face, colors=colors, data_range=data_range)
+                d, name=name, cell=per_face, colors=colors, data_range=data_range,
+                lower_threshold=lower_threshold, upper_threshold=upper_threshold)
 
     @ property
     def is_empty(self):
