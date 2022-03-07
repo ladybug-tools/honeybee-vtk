@@ -185,6 +185,20 @@ class DataConfig(BaseModel):
         ' exported images or not.'
     )
 
+    lower_threshold: Union[Autocalculate, float] = Field(
+        Autocalculate(),
+        description='Lower end of the threshold range for the data. Data beyond this'
+        ' threshold will be filtered. If not specified, the lower threshold will be'
+        ' infinite. Defaults to None.'
+    )
+
+    upper_threshold: Union[Autocalculate, float] = Field(
+        Autocalculate(),
+        description='Upper end of the threshold range for the data. Data beyond this'
+        ' threshold will be filtered. If not specified, the upper threshold will be'
+        ' infinite. Defaults to None.'
+    )
+
     legend_parameters: LegendConfig = Field(
         LegendConfig(),
         description='Legend parameters to create legend out of the this dataset.'
