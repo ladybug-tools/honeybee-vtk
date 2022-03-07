@@ -37,6 +37,16 @@ class Assistant:
         self._camera = camera
         self._legend_params = legend_parameters
         self._text_actor = text_actor
+        self._vtk_camera = None
+        self._active_camera = None
+
+    @property
+    def vtk_camera(self) -> vtk.vtkCamera:
+        return self._vtk_camera
+
+    @vtk_camera.setter
+    def vtk_camera(self, vtk_camera):
+        self._vtk_camera = vtk_camera
 
     def _create_window(self) -> \
             Tuple[vtk.vtkRenderWindowInteractor, vtk.vtkRenderWindow, vtk.vtkRenderer]:
@@ -92,10 +102,13 @@ class Assistant:
         renderer.SetBackground(self._background_color)
         renderer.TwoSidedLightingOn()
 
-        renderer.SetActiveCamera(self._camera.to_vtk())
+        if self.vtk_camera:
+            renderer.SetActiveCamera(self.vtk_camera)
+        else:
+            renderer.SetActiveCamera(self._camera.to_vtk())
 
-        if self._camera.reset_camera:
-            renderer.ResetCamera()
+            if self._camera.reset_camera:
+                renderer.ResetCamera()
 
         # the order is from outside to inside
         return interactor, window, renderer
