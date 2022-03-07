@@ -719,7 +719,6 @@ class Model(object):
                         if not folder_path.is_dir():
                             raise FileNotFoundError(
                                 f'No folder found at {data.path}')
-                    identifier = data.identifier
                     grid_type = self._get_grid_type()
                     # Validate data if asked for
                     if validation:
@@ -727,7 +726,7 @@ class Model(object):
                     # get legend range if provided by the user
                     legend_range = self._get_legend_range(data)
                     # Load data
-                    self._load_data(folder_path, identifier, grid_type, legend_range)
+                    self._load_data(data, grid_type, legend_range)
                     # Load legend parameters
                     if legend:
                         self._load_legend_parameters(data, scene, legend_range)
@@ -812,22 +811,31 @@ class Model(object):
                 ' Lengths of files with following names do not match'
                 f' {tuple(names_to_report)}.')
 
-    def _load_data(self, folder_path: pathlib.Path, identifier: str,
-                   grid_type: str, legend_range: List[Union[float, int]]) -> None:
+    def _load_data(self, data: DataConfig, grid_type: str,
+                   legend_range: List[Union[float, int]]) -> None:
         """Load validated data on a honeybee-vtk model.
 
         This is a helper method to the public load_config method.
 
         Args:
-            folder_path: A valid pathlib path to the folder with grid_info.json and data.
-            identifier: A text string representing the identifier of the data in the config
-                file.
+            data (DataConfig): A Dataconfig object.
             model: A honeybee-vtk model.
             grid_type: A string indicating whether the sensor grid in the model is made of
                 points or meshes.
             legend_range: A list of min and max values of the legend parameters provided by
                 the user in the config file.
         """
+        folder_path = pathlib.Path(data.path)
+        identifier = data.identifier
+        if isinstance(data.lower_threshold, float):
+            lower_threshold = data.lower_threshold
+        else:
+            lower_threshold = None
+        if isinstance(data.upper_threshold, float):
+            upper_threshold = data.upper_threshold
+        else:
+            upper_threshold = None
+
         grids_info_json = folder_path.joinpath('grids_info.json')
         with open(grids_info_json) as fh:
             grids_info = json.load(fh)
@@ -855,12 +863,14 @@ class Model(object):
         ds = self.get_modeldataset(DataSetNames.grid)
 
         if grid_type == 'meshes':
-            ds.add_data_fields(
-                result, name=identifier, per_face=True, data_range=legend_range)
+            ds.add_data_fields(result, name=identifier, per_face=True,
+                               data_range=legend_range, lower_threshold=lower_threshold,
+                               upper_threshold=upper_threshold)
             ds.color_by = identifier
         else:
-            ds.add_data_fields(
-                result, name=identifier, per_face=False, data_range=legend_range)
+            ds.add_data_fields(result, name=identifier, per_face=False,
+                               data_range=legend_range, lower_threshold=lower_threshold,
+                               upper_threshold=upper_threshold)
             ds.color_by = identifier
 
     @ staticmethod
