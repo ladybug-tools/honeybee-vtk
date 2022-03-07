@@ -5,13 +5,14 @@ import pathlib
 import tempfile
 import shutil
 import os
+import vtk
 
 from pandas import DataFrame
-from typing import List, Tuple
+from typing import List, Tuple, Dict, Union
 from ladybug.dt import DateTime
 
 
-from .config import Config, DataConfig, LegendConfig
+from .config import Config, DataConfig, LegendConfig, Autocalculate
 from .model import Model, SensorGridOptions
 from .vtkjs.schema import DisplayMode
 from .text_actor import TextActor
@@ -133,20 +134,30 @@ def write_res_file(res_path: pathlib.Path, data: List[int],
             f.write(f'{val}\n')
 
 
-def write_config(target_folder: pathlib.Path, data_path: pathlib.Path) -> pathlib.Path:
+def write_config(target_folder: pathlib.Path, data_path: pathlib.Path,
+                 lower_threshold: float = None, upper_threshold: float = None) -> pathlib.Path:
     """Write a config file to be consumed by honeybee-vtk.
 
     Args:
         target_folder: Path to the folder to write the config file.
         data_path: Path to folder with grids_info.json and .res files.
+        lower_threshold: Lower end of the threshold range for the data.
+                Data beyond this threshold will be filtered. If not specified, the lower
+                threshold will be infinite. Defaults to None.
+        upper_threshold: Upper end of the threshold range for the data.
+            Data beyond this threshold will be filtered. If not specified, the upper
+            threshold will be infinite. Defaults to None.
 
     Returns:
         Path to the config file.
     """
+    lower_threshold = lower_threshold if lower_threshold is not None else Autocalculate()
+    upper_threshold = upper_threshold if upper_threshold is not None else Autocalculate()
 
     config = Config(data=[
         DataConfig(identifier='sun-up-hours', path=data_path.as_posix(),
                    object_type='grid', unit='hours', hide=False,
+                   lower_threshold=lower_threshold, upper_threshold=upper_threshold,
                    legend_parameters=LegendConfig(color_set='original'))
     ])
 
@@ -195,10 +206,51 @@ def write_res_files(result_paths: List[pathlib.Path], index: int,
         write_res_file(result_path, data, index_folder)
 
 
+def get_grid_camera_dict(upper_threshold: float, lower_threshold: float,
+                         temp_folder: pathlib.Path,
+                         index_folder: pathlib.Path, hbjson_path: str,
+                         target_folder: str, index: int) -> Union[
+                             None, Dict[str, vtk.vtkCamera]]:
+    """Get a dictionary of grid identifiers and vtkCameras.
+
+    A dry run is done without applying thresholds and vtkCameras are extracted from
+    this run for each of the grids.
+
+    Args:
+        upper_threshold: Upper end of the threshold range for the data.
+            Data beyond this threshold will be filtered. If not specified, the upper
+            threshold will be infinite.
+        lower_threshold: Lower end of the threshold range for the data.
+            Data beyond this threshold will be filtered. If not specified, the lower
+            threshold will be infinite.
+        temp_folder: Path to the temp folder.
+        index_folder: Path to the Index folder.
+        hbjson_path: Path to the HBJSON file.
+        target_folder: Path to the folder to write the images. Defaults to the current
+            folder.
+        index: Index of the time stamp in the time stamps file.
+
+    Returns:
+        A dictionary of grid identifiers and vtkCameras or None.
+    """
+
+    if upper_threshold is not None or lower_threshold is not None:
+        config_path = write_config(temp_folder, index_folder)
+        model = Model.from_hbjson(hbjson_path, SensorGridOptions.Mesh)
+        return model.to_grid_images(folder=target_folder,
+                                    config=config_path.as_posix(),
+                                    grid_display_mode=DisplayMode.Shaded,
+                                    text_actor=TextActor(
+                                        text=f'Hour {index}'),
+                                    image_name=f'{index}', extract_camera=True)
+
+
 def export_timestep_images(hbjson_path: str, time_series_folder_path: str,
                            timestamp_file_name: str,
                            st_datetime: DateTime, end_datetime: DateTime,
-                           target_folder: str = '.') -> List[str]:
+                           target_folder: str = '.',
+                           lower_threshold: float = None,
+                           upper_threshold: float = None) -> List[str]:
     """Export images of grids for each time step in the time stamps file.
 
     This function will find all the time stamps between the start and end datetimes
@@ -214,6 +266,12 @@ def export_timestep_images(hbjson_path: str, time_series_folder_path: str,
         end_datetime: End datetime of the time stamps file.
         target_folder: Path to the folder to write the images. Defaults to the current
             folder.
+        lower_threshold: Lower end of the threshold range for the data.
+                Data beyond this threshold will be filtered. If not specified, the lower
+                threshold will be infinite. Defaults to None.
+        upper_threshold: Upper end of the threshold range for the data.
+            Data beyond this threshold will be filtered. If not specified, the upper
+            threshold will be infinite. Defaults to None.
 
     Returns:
         A list of paths to the exported images.
@@ -235,15 +293,23 @@ def export_timestep_images(hbjson_path: str, time_series_folder_path: str,
     images_paths: List[str] = []
 
     for index in timestamp_indexes:
+
         temp_folder, index_folder = create_folders(index)
         copy_grids_info(grids_info_path, index_folder)
         write_res_files(result_paths, index, index_folder)
-        config_path = write_config(temp_folder, index_folder)
+
+        grid_camera_dict = get_grid_camera_dict(
+            upper_threshold, lower_threshold, temp_folder, index_folder, hbjson_path,
+            target_folder, index)
+
+        config_path = write_config(temp_folder, index_folder,
+                                   lower_threshold, upper_threshold)
         model = Model.from_hbjson(hbjson_path, SensorGridOptions.Mesh)
         images_paths += model.to_grid_images(folder=target_folder,
                                              config=config_path.as_posix(),
                                              grid_display_mode=DisplayMode.Shaded,
                                              text_actor=TextActor(text=f'Hour {index}'),
-                                             image_name=f'{index}')
+                                             image_name=f'{index}',
+                                             grid_camera_dict=grid_camera_dict)
 
     return images_paths
