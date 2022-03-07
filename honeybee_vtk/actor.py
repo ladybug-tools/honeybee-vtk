@@ -4,6 +4,7 @@ from __future__ import annotations
 import vtk
 from typing import List, Tuple
 from .types import JoinedPolyData, ModelDataSet
+from .filter import filter_using_thresholds
 from ._helper import _validate_input
 from ladybug_geometry.geometry3d.pointvector import Point3D
 from .legend_parameter import LegendParameter
@@ -100,9 +101,17 @@ class Actor:
         cell_to_point = vtk.vtkCellDataToPointData()
         if len(self._modeldataset.data) > 1:
             polydata = JoinedPolyData.from_polydata(self._modeldataset.data)
+            polydata = filter_using_thresholds(
+                polydata,
+                self._modeldataset.active_field_info.lower_threshold,
+                self._modeldataset.active_field_info.upper_threshold)
             cell_to_point.SetInputConnection(polydata.GetOutputPort())
         else:
             polydata = self._modeldataset.data[0]
+            polydata = filter_using_thresholds(
+                polydata,
+                self._modeldataset.active_field_info.lower_threshold,
+                self._modeldataset.active_field_info.upper_threshold)
             cell_to_point.SetInputData(polydata)
 
         mapper = vtk.vtkPolyDataMapper()
