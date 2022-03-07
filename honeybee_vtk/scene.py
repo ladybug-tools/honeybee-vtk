@@ -214,7 +214,8 @@ class Scene:
             self, folder: str, image_type: ImageTypes = ImageTypes.png, *,
             image_scale: int = 1, image_width: int = 0, image_height: int = 0,
             image_name: str = '', color_range: vtk.vtkLookupTable = None,
-            rgba: bool = False, show: bool = False) -> List[str]:
+            rgba: bool = False, show: bool = False, vtk_camera: vtk.vtkCamera = None,
+            extract_camera: bool = False) -> List[str]:
         """Export all the cameras in the scene as images.
 
         Reference: https://kitware.github.io/vtk-examples/site/Python/IO/ImageWriter/
@@ -238,11 +239,24 @@ class Scene:
                 background color. Defaults to False.
             show: A boolean value to decide if the the render window should pop up.
                 Defaults to False.
+            vtk_camera: A vtkCamera object. If specified, this vtkCamera will be used
+                to export images. Defaults to None.
+            extract_camera: A boolean value to if active camera from the renderer in the
+                assistant shall be extracted or not. Defaults to False.
+
+        Parameters vtk_camera and extract_camera are mutually exclusive and these 
+        parameters are only used by the to_grid_images method in the Model object.
 
         Returns:
             A list of text strings representing the paths to the exported images.
         """
         self.update_scene()
+
+        if vtk_camera:
+            self._assistants[0].vtk_camera = vtk_camera
+
+        if extract_camera:
+            return self._assistants[0]._create_window()[2].GetActiveCamera()
 
         return [assistant._export_image(
             folder=folder, image_type=image_type, image_scale=image_scale,
