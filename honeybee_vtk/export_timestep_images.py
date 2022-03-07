@@ -207,6 +207,7 @@ def write_res_files(result_paths: List[pathlib.Path], index: int,
 
 
 def get_grid_camera_dict(upper_threshold: float, lower_threshold: float,
+                         grid_display_mode: DisplayMode,
                          temp_folder: pathlib.Path,
                          index_folder: pathlib.Path, hbjson_path: str,
                          target_folder: str, index: int) -> Union[
@@ -223,6 +224,7 @@ def get_grid_camera_dict(upper_threshold: float, lower_threshold: float,
         lower_threshold: Lower end of the threshold range for the data.
             Data beyond this threshold will be filtered. If not specified, the lower
             threshold will be infinite.
+        grid_display_mode: Display mode of the grids. Defaults to Shaded.
         temp_folder: Path to the temp folder.
         index_folder: Path to the Index folder.
         hbjson_path: Path to the HBJSON file.
@@ -239,7 +241,7 @@ def get_grid_camera_dict(upper_threshold: float, lower_threshold: float,
         model = Model.from_hbjson(hbjson_path, SensorGridOptions.Mesh)
         return model.to_grid_images(folder=target_folder,
                                     config=config_path.as_posix(),
-                                    grid_display_mode=DisplayMode.Shaded,
+                                    grid_display_mode=grid_display_mode,
                                     text_actor=TextActor(
                                         text=f'Hour {index}'),
                                     image_name=f'{index}', extract_camera=True)
@@ -249,6 +251,7 @@ def export_timestep_images(hbjson_path: str, time_series_folder_path: str,
                            timestamp_file_name: str,
                            st_datetime: DateTime, end_datetime: DateTime,
                            target_folder: str = '.',
+                           grid_display_mode: DisplayMode = DisplayMode.Shaded,
                            lower_threshold: float = None,
                            upper_threshold: float = None) -> List[str]:
     """Export images of grids for each time step in the time stamps file.
@@ -266,6 +269,7 @@ def export_timestep_images(hbjson_path: str, time_series_folder_path: str,
         end_datetime: End datetime of the time stamps file.
         target_folder: Path to the folder to write the images. Defaults to the current
             folder.
+        grid_display_mode: Display mode of the grids. Defaults to Shaded.
         lower_threshold: Lower end of the threshold range for the data.
                 Data beyond this threshold will be filtered. If not specified, the lower
                 threshold will be infinite. Defaults to None.
@@ -290,26 +294,25 @@ def export_timestep_images(hbjson_path: str, time_series_folder_path: str,
     grids_info_path = path.joinpath('grids_info.json')
     result_paths = get_result_paths(path, grids_info_path)
 
-    images_paths: List[str] = []
+    image_paths: List[str] = []
 
     for index in timestamp_indexes:
-
         temp_folder, index_folder = create_folders(index)
         copy_grids_info(grids_info_path, index_folder)
         write_res_files(result_paths, index, index_folder)
 
         grid_camera_dict = get_grid_camera_dict(
-            upper_threshold, lower_threshold, temp_folder, index_folder, hbjson_path,
-            target_folder, index)
+            upper_threshold, lower_threshold, grid_display_mode,
+            temp_folder, index_folder, hbjson_path, target_folder, index)
 
         config_path = write_config(temp_folder, index_folder,
                                    lower_threshold, upper_threshold)
         model = Model.from_hbjson(hbjson_path, SensorGridOptions.Mesh)
-        images_paths += model.to_grid_images(folder=target_folder,
-                                             config=config_path.as_posix(),
-                                             grid_display_mode=DisplayMode.Shaded,
-                                             text_actor=TextActor(text=f'Hour {index}'),
-                                             image_name=f'{index}',
-                                             grid_camera_dict=grid_camera_dict)
+        image_paths += model.to_grid_images(folder=target_folder,
+                                            config=config_path.as_posix(),
+                                            grid_display_mode=grid_display_mode,
+                                            text_actor=TextActor(text=f'Hour {index}'),
+                                            image_name=f'{index}',
+                                            grid_camera_dict=grid_camera_dict)
 
-    return images_paths
+    return image_paths
