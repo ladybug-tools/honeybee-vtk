@@ -42,6 +42,8 @@ class Scene:
         self.background_color = background_color
         self.actors = actors or []
         self.cameras = cameras or []
+        self.legend_parameters = {actor.legend_parameter.name: actor.legend_parameter
+                                  for actor in self._actors}
         self.text_actor = text_actor
         self._assistants = []
 
@@ -122,10 +124,12 @@ class Scene:
     @property
     def legend_parameters(self) -> Dict[str, LegendParameter]:
         """Legends in the scene that can be added to the images."""
-        legends_dict = {}
-        for actor in self._actors:
-            legends_dict[actor.legend_parameter.name] = actor.legend_parameter
-        return legends_dict
+        return self._legend_parameters
+
+    @legend_parameters.setter
+    def legend_parameters(self, val: Dict[str, LegendParameter]) -> None:
+        """Set legend parameters for the scene."""
+        self._legend_parameters = val
 
     def legend_parameter(self, name: str) -> LegendParameter:
         """Get a legend parameter object by name.
