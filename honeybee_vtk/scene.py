@@ -222,6 +222,9 @@ class Scene:
         This method is able to export an image in '.png', '.jpg', '.ps', '.tiff', '.bmp',
         and '.pnm' formats.
 
+        Parameters vtk_camera and extract_camera are mutually exclusive and these 
+        parameters are only used by the to_grid_images method in the Model object.
+
         Args:
             folder: A valid path to where you'd like to write the images.
             image_type: An ImageType object.
@@ -243,9 +246,6 @@ class Scene:
                 to export images. Defaults to None.
             extract_camera: A boolean value to if active camera from the renderer in the
                 assistant shall be extracted or not. Defaults to False.
-
-        Parameters vtk_camera and extract_camera are mutually exclusive and these 
-        parameters are only used by the to_grid_images method in the Model object.
 
         Returns:
             A list of text strings representing the paths to the exported images.
