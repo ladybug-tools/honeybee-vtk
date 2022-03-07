@@ -586,9 +586,13 @@ class Model(object):
         Use the config file to specify which grids with which data to export. For
         instance, if the config file has DataConfig objects for 'DA' and 'UDI', and
         'DA' is kept hidden, then all grids with 'UDI' data will be exported.
-        Additionally, images from a selected number of grids can be exported by 
-        using the by specifyling the identifiers of the grids to export in the 
+        Additionally, images from a selected number of grids can be exported by
+        using the by specifyling the identifiers of the grids to export in the
         grid_filter object in the config file.
+
+        Note that the parameters grid_camera_dict and extract_camera are mutually
+        exclusive. If both are provided, the extract_camera will be used and the
+        grid_camera_dict will be ignored.
 
         Args:
             config: Path to the config file in JSON format.
@@ -612,10 +616,6 @@ class Model(object):
                 to be used in this run to export an image. Defaults to None.
             extract_camera: Boolean to indicate whether to extract the camera from the
                 for this run to use for the next run. Defaults to False.
-
-        Note that the parameters grid_camera_dict and extract_camera are mutually
-        exclusive. If both are provided, the extract_camera will be used and the 
-        grid_camera_dict will be ignored.
 
         Returns:
             Path to the folder where the images are exported for each grid. Or a
