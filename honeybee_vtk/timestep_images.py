@@ -279,7 +279,7 @@ def _get_grid_camera_dict(data: DataConfig,
 
 
 def export_timestep_images(hbjson_path: str, config_path: str,
-                           time_series_folder_path: str, timestamp_file_name: str,
+                           timestamp_file_name: str,
                            st_datetime: DateTime, end_datetime: DateTime,
                            grid_display_mode: DisplayMode = DisplayMode.Shaded,
                            target_folder: str = '.') -> List[str]:
@@ -291,10 +291,8 @@ def export_timestep_images(hbjson_path: str, config_path: str,
     Args:
         hbjson_path: Path to the HBJSON file.
         config_path: Path to the config file.
-        time_series_folder_path: Path to the folder with the time stamps file.
-            grids_info.json and result files.
         timestamp_file_name: Name of the time stamps file as a string. This is simply
-            used to find the time stamps file in the time_series_folder_path.
+            used to find the time stamps file.
         st_datetime: Start datetime of the time stamps file.
         end_datetime: End datetime of the time stamps file.
         grid_display_mode: Display mode of the grids. Defaults to Shaded.
@@ -304,8 +302,9 @@ def export_timestep_images(hbjson_path: str, config_path: str,
     Returns:
         A list of paths to the exported images.
     """
+    data = _validate_config(config_path)
 
-    path = pathlib.Path(time_series_folder_path)
+    path = pathlib.Path(data.path)
     assert path.exists(), 'Path does not exist.'
 
     timestamp_file_path = path.joinpath(f'{timestamp_file_name}.txt')
@@ -318,7 +317,6 @@ def export_timestep_images(hbjson_path: str, config_path: str,
     grids_info_path = path.joinpath('grids_info.json')
     result_paths = _get_result_paths(path, grids_info_path)
 
-    data = _validate_config(config_path)
     image_paths: List[str] = []
 
     for index in timestamp_indexes:
