@@ -134,38 +134,55 @@ def write_res_file(res_path: pathlib.Path, data: List[int],
             f.write(f'{val}\n')
 
 
-def write_config(target_folder: pathlib.Path, data_path: pathlib.Path,
-                 lower_threshold: float = None, upper_threshold: float = None) -> pathlib.Path:
+def validate_config(config_path: str) -> DataConfig:
+    """Validate the config file.
+
+    Args:
+        config_path: Path to the config file.
+
+    Returns:
+        A DataConfig object.
+    """
+    try:
+        with open(config_path) as fh:
+            config = json.load(fh)
+    except json.decoder.JSONDecodeError:
+        raise TypeError(
+            'Not a valid json file.'
+        )
+    else:
+        assert len(config['data']) == 1, 'Only one object is needed in the this'\
+            ' config file.'
+        data = DataConfig.parse_obj(config['data'][0])
+        assert not data.hide, 'Make sure that in the config file you have not indicated'\
+            ' the data to be hidden.'
+        return data
+
+
+def write_config(data: DataConfig, target_folder: pathlib.Path,
+                 data_path: pathlib.Path) -> pathlib.Path:
     """Write a config file to be consumed by honeybee-vtk.
 
     Args:
+        data: A DataConfig object.
         target_folder: Path to the folder to write the config file.
         data_path: Path to folder with grids_info.json and .res files.
-        lower_threshold: Lower end of the threshold range for the data.
-                Data beyond this threshold will be filtered. If not specified, the lower
-                threshold will be infinite. Defaults to None.
-        upper_threshold: Upper end of the threshold range for the data.
-            Data beyond this threshold will be filtered. If not specified, the upper
-            threshold will be infinite. Defaults to None.
+
+    this function will replace the path property in the Dataconfig object with
+    the path to the data folder.
 
     Returns:
         Path to the config file.
     """
-    lower_threshold = lower_threshold if lower_threshold is not None else Autocalculate()
-    upper_threshold = upper_threshold if upper_threshold is not None else Autocalculate()
 
-    config = Config(data=[
-        DataConfig(identifier='sun-up-hours', path=data_path.as_posix(),
-                   object_type='grid', unit='hours', hide=False,
-                   lower_threshold=lower_threshold, upper_threshold=upper_threshold,
-                   legend_parameters=LegendConfig(color_set='original'))
-    ])
+    data.path = data_path.as_posix()
+    config = Config(data=[data])
 
     config_path = target_folder.joinpath('config.json')
     with open(config_path, 'w') as f:
         f.write(config.json())
 
-    return pathlib.Path(target_folder).joinpath('config.json')
+    return config_path
 
 
 def create_folders(index: int) -> Tuple[pathlib.Path, pathlib.Path]:
@@ -206,7 +223,25 @@ def write_res_files(result_paths: List[pathlib.Path], index: int,
         write_res_file(result_path, data, index_folder)
 
 
-def get_grid_camera_dict(upper_threshold: float, lower_threshold: float,
+def get_data_without_thresholds(data: DataConfig) -> DataConfig:
+    """Remove threshold from a DataConfig object.
+
+    This is useful in the dry run where the model needs to be run without the
+    thresholds.
+
+    Args:
+        data: A DataConfig object.
+
+    Returns:
+        A DataConfig object without thresholds.
+    """
+    data_without_thresholds = data.copy(deep=True)
+    data_without_thresholds.upper_threshold = Autocalculate()
+    data_without_thresholds.lower_threshold = Autocalculate()
+    return data_without_thresholds
+
+
+def get_grid_camera_dict(data: DataConfig,
                          grid_display_mode: DisplayMode,
                          temp_folder: pathlib.Path,
                          index_folder: pathlib.Path, hbjson_path: str,
@@ -218,12 +253,7 @@ def get_grid_camera_dict(upper_threshold: float, lower_threshold: float,
     this run for each of the grids.
 
     Args:
-        upper_threshold: Upper end of the threshold range for the data.
-            Data beyond this threshold will be filtered. If not specified, the upper
-            threshold will be infinite.
-        lower_threshold: Lower end of the threshold range for the data.
-            Data beyond this threshold will be filtered. If not specified, the lower
-            threshold will be infinite.
+        data: DataConfig object from the config file.
         grid_display_mode: Display mode of the grids. Defaults to Shaded.
         temp_folder: Path to the temp folder.
         index_folder: Path to the Index folder.
@@ -235,9 +265,10 @@ def get_grid_camera_dict(upper_threshold: float, lower_threshold: float,
     Returns:
         A dictionary of grid identifiers and vtkCameras or None.
     """
-
-    if upper_threshold is not None or lower_threshold is not None:
-        config_path = write_config(temp_folder, index_folder)
+    if not isinstance(data.upper_threshold, Autocalculate) or \
+            not isinstance(data.lower_threshold, Autocalculate):
+        config_path = write_config(
+            get_data_without_thresholds(data), temp_folder, index_folder)
         model = Model.from_hbjson(hbjson_path, SensorGridOptions.Mesh)
         return model.to_grid_images(folder=target_folder,
                                     config=config_path.as_posix(),
@@ -247,13 +278,11 @@ def get_grid_camera_dict(upper_threshold: float, lower_threshold: float,
                                     image_name=f'{index}', extract_camera=True)
 
 
-def export_timestep_images(hbjson_path: str, time_series_folder_path: str,
-                           timestamp_file_name: str,
+def export_timestep_images(hbjson_path: str, config_path: str,
+                           time_series_folder_path: str, timestamp_file_name: str,
                            st_datetime: DateTime, end_datetime: DateTime,
-                           target_folder: str = '.',
                            grid_display_mode: DisplayMode = DisplayMode.Shaded,
-                           lower_threshold: float = None,
-                           upper_threshold: float = None) -> List[str]:
+                           target_folder: str = '.') -> List[str]:
     """Export images of grids for each time step in the time stamps file.
 
     This function will find all the time stamps between the start and end datetimes
@@ -261,21 +290,16 @@ def export_timestep_images(hbjson_path: str, time_series_folder_path: str,
 
     Args:
         hbjson_path: Path to the HBJSON file.
+        config_path: Path to the config file.
         time_series_folder_path: Path to the folder with the time stamps file.
             grids_info.json and result files.
         timestamp_file_name: Name of the time stamps file as a string. This is simply
             used to find the time stamps file in the time_series_folder_path.
         st_datetime: Start datetime of the time stamps file.
         end_datetime: End datetime of the time stamps file.
+        grid_display_mode: Display mode of the grids. Defaults to Shaded.
         target_folder: Path to the folder to write the images. Defaults to the current
             folder.
-        grid_display_mode: Display mode of the grids. Defaults to Shaded.
-        lower_threshold: Lower end of the threshold range for the data.
-                Data beyond this threshold will be filtered. If not specified, the lower
-                threshold will be infinite. Defaults to None.
-        upper_threshold: Upper end of the threshold range for the data.
-            Data beyond this threshold will be filtered. If not specified, the upper
-            threshold will be infinite. Defaults to None.
 
     Returns:
         A list of paths to the exported images.
@@ -294,6 +318,7 @@ def export_timestep_images(hbjson_path: str, time_series_folder_path: str,
     grids_info_path = path.joinpath('grids_info.json')
     result_paths = get_result_paths(path, grids_info_path)
 
+    data = validate_config(config_path)
     image_paths: List[str] = []
 
     for index in timestamp_indexes:
@@ -301,12 +326,11 @@ def export_timestep_images(hbjson_path: str, time_series_folder_path: str,
         copy_grids_info(grids_info_path, index_folder)
         write_res_files(result_paths, index, index_folder)
 
-        grid_camera_dict = get_grid_camera_dict(
-            upper_threshold, lower_threshold, grid_display_mode,
-            temp_folder, index_folder, hbjson_path, target_folder, index)
+        grid_camera_dict = get_grid_camera_dict(data, grid_display_mode,
+                                                temp_folder, index_folder, hbjson_path,
+                                                target_folder, index)
 
-        config_path = write_config(temp_folder, index_folder,
-                                   lower_threshold, upper_threshold)
+        config_path = write_config(data, temp_folder, index_folder)
         model = Model.from_hbjson(hbjson_path, SensorGridOptions.Mesh)
         image_paths += model.to_grid_images(folder=target_folder,
                                             config=config_path.as_posix(),
