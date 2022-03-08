@@ -12,7 +12,7 @@ from typing import List, Tuple, Dict, Union
 from ladybug.dt import DateTime
 
 
-from .config import Config, DataConfig, LegendConfig, Autocalculate
+from .config import Config, DataConfig, Autocalculate
 from .model import Model, SensorGridOptions
 from .vtkjs.schema import DisplayMode
 from .text_actor import TextActor
