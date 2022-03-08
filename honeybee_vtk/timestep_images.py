@@ -282,7 +282,8 @@ def export_timestep_images(hbjson_path: str, config_path: str,
                            timestamp_file_name: str,
                            st_datetime: DateTime, end_datetime: DateTime,
                            grid_display_mode: DisplayMode = DisplayMode.Shaded,
-                           target_folder: str = '.') -> List[str]:
+                           target_folder: str = '.',
+                           grid_filter: List[str] = None,) -> List[str]:
     """Export images of grids for each time step in the time stamps file.
 
     This function will find all the time stamps between the start and end datetimes
@@ -298,6 +299,8 @@ def export_timestep_images(hbjson_path: str, config_path: str,
         grid_display_mode: Display mode of the grids. Defaults to Shaded.
         target_folder: Path to the folder to write the images. Defaults to the current
             folder.
+        grid_filter: A list of grid identifiers to export images of those grid only.
+                Defaults to None which will export all the grids.
 
     Returns:
         A list of paths to the exported images.
@@ -335,6 +338,7 @@ def export_timestep_images(hbjson_path: str, config_path: str,
                                             grid_display_mode=grid_display_mode,
                                             text_actor=TextActor(text=f'Hour {index}'),
                                             image_name=f'{index}',
-                                            grid_camera_dict=grid_camera_dict)
+                                            grid_camera_dict=grid_camera_dict,
+                                            grid_filter=grid_filter)
 
     return image_paths
