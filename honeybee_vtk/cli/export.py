@@ -9,6 +9,8 @@ from honeybee_vtk.model import Model
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 from honeybee_vtk.types import ImageTypes
 from honeybee_vtk.text_actor import TextActor
+from honeybee_vtk.timestep_images import export_timestep_images
+from ladybug.dt import DateTime
 
 
 @click.group()
@@ -57,7 +59,7 @@ def export():
     '--grid-display-mode', '-gdm',
     type=click.Choice(['shaded', 'surface', 'surfacewithedges',
                        'wireframe', 'points'], case_sensitive=False),
-    default='surfacewithedges', help='Set display mode for the Sensorgrids.',
+    default='shaded', help='Set display mode for the Sensorgrids.',
     show_default=True
 )
 @click.option(
@@ -76,8 +78,9 @@ def export():
     ' when using this command locally.', show_default=True
 )
 @click.option(
-    '--grid/--model', is_flag=True, default=False, help='Boolean to decide whether to export'
-    ' the images of a whole model or only the grids. Set it to True to export the grids.',
+    '--selection', '-sel',
+    type=click.Choice(['model', 'grid', 'timesteps'], case_sensitive=False),
+    default='model', help='Select what to export.',
     show_default=True
 )
 @click.option(
@@ -86,8 +89,8 @@ def export():
     ' grid identifiers as filters.'
 )
 @click.option(
-    '--text', type=str, default=None, show_default=True, help='Text to be displayed on the'
-    ' image.'
+    '--text', type=str, default=None, show_default=True, help='Text to be displayed on'
+    ' the image.'
 )
 @click.option(
     '--text-height', '-th', type=int, default=15, show_default=True,
@@ -107,11 +110,23 @@ def export():
     '--text-bold', '-tb', is_flag=True, default=False, show_default=True,
     help='Set the text to be bold.'
 )
+@click.option(
+    '--time-step-file-name', '-tfn', type=str, default='', show_default=True,
+    help='Name of the time step file.'
+)
+@click.option(
+    '--start-datetime', '-sdt', type=(int, int, int), default=(12, 21, 9),
+    show_default=True, help='Set the start datetime to filter the time step file.'
+)
+@click.option(
+    '--end-datetime', '-edt', type=(int, int, int), default=(12, 21, 17),
+    show_default=True, help='Set the end datetime to filter the time step file.'
+)
 def export(
         hbjson_file, folder, image_type, image_width, image_height,
         background_color, model_display_mode, grid_options, grid_display_mode, view,
-        config, validate_data, grid, grid_filter, text, text_height, text_color,
-        text_position, text_bold):
+        config, validate_data, selection, grid_filter, text, text_height, text_color,
+        text_position, text_bold, time_step_file_name, start_datetime, end_datetime):
     """Export images from radiance views in a HBJSON file.
 
     \b
@@ -171,7 +186,7 @@ def export(
     try:
         model = Model.from_hbjson(hbjson=hbjson_file, load_grids=grid_options)
 
-        if not grid:
+        if selection.lower() == 'model':
             output = model.to_images(folder=folder, config=config,
                                      validation=validate_data,
                                      model_display_mode=model_display_mode,
@@ -179,7 +194,8 @@ def export(
                                      background_color=background_color, view=view,
                                      image_type=image_type, image_width=image_width,
                                      image_height=image_height,)
-        else:
+
+        elif selection.lower() == 'grid':
             text_actor = TextActor(text=text, height=text_height, color=text_color,
                                    position=text_position, bold=text_bold)\
                 if text else None
@@ -192,6 +208,22 @@ def export(
                                           image_width=image_width,
                                           image_height=image_height,
                                           text_actor=text_actor)
+        else:
+            text_actor = TextActor(text=text, height=text_height, color=text_color,
+                                   position=text_position, bold=text_bold)\
+                if text else None
+
+            if grid_display_mode == DisplayMode.Points:
+                print('Grids as points are not supported for image export of timesteps.')
+                grid_display_mode = DisplayMode.Shaded
+
+            output = export_timestep_images(hbjson_path=hbjson_file, config_path=config,
+                                            timestamp_file_name=time_step_file_name,
+                                            st_datetime=DateTime(*start_datetime),
+                                            end_datetime=DateTime(*end_datetime),
+                                            grid_display_mode=grid_display_mode,
+                                            target_folder=folder,
+                                            grid_filter=grid_filter)
 
     except Exception:
         traceback.print_exc()
