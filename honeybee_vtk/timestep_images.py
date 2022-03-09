@@ -283,7 +283,9 @@ def export_timestep_images(hbjson_path: str, config_path: str,
                            st_datetime: DateTime, end_datetime: DateTime,
                            grid_display_mode: DisplayMode = DisplayMode.Shaded,
                            target_folder: str = '.',
-                           grid_filter: List[str] = None,) -> List[str]:
+                           grid_filter: List[str] = None,
+                           text_actor: TextActor = None,
+                           label_images: bool = True) -> List[str]:
     """Export images of grids for each time step in the time stamps file.
 
     This function will find all the time stamps between the start and end datetimes
@@ -301,6 +303,9 @@ def export_timestep_images(hbjson_path: str, config_path: str,
             folder.
         grid_filter: A list of grid identifiers to export images of those grid only.
                 Defaults to None which will export all the grids.
+        text_actor: TextActor object to add to the images. Defaults to None.
+        label_images: Boolean to indicate whether to label images with the timestep
+            or not. Defaults to True.
 
     Returns:
         A list of paths to the exported images.
@@ -333,10 +338,12 @@ def export_timestep_images(hbjson_path: str, config_path: str,
 
         config_path = _write_config(data, temp_folder, index_folder)
         model = Model.from_hbjson(hbjson_path, SensorGridOptions.Mesh)
+        if not text_actor:
+            text_actor = TextActor(text=f'Hour {index}') if label_images else None
         image_paths += model.to_grid_images(folder=target_folder,
                                             config=config_path.as_posix(),
                                             grid_display_mode=grid_display_mode,
-                                            text_actor=TextActor(text=f'Hour {index}'),
+                                            text_actor=text_actor,
                                             image_name=f'{index}',
                                             grid_camera_dict=grid_camera_dict,
                                             grid_filter=grid_filter)
