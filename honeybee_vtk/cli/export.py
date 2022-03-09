@@ -223,7 +223,9 @@ def export(
                                             end_datetime=DateTime(*end_datetime),
                                             grid_display_mode=grid_display_mode,
                                             target_folder=folder,
-                                            grid_filter=grid_filter)
+                                            grid_filter=grid_filter,
+                                            text_actor=text_actor,
+                                            label_images=False)
 
     except Exception:
         traceback.print_exc()
