@@ -1,7 +1,7 @@
 """Functionality for image processing."""
 
 import pathlib
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from typing import List
 import tempfile
 import cv2
@@ -69,12 +69,13 @@ def write_composite_images(folder_path: pathlib.Path, target_folder: pathlib.Pat
         write_composite_png(image_path_1, image_path_2, target_folder, i)
 
 
-def write_translucent_images(folder_path: pathlib.Path, target_folder: pathlib.Path):
+def write_translucent_images(folder_path: pathlib.Path, target_folder: pathlib.Path,
+                             transparency: int = 200):
     """Create a translucent png from a folder of images."""
     for image_path in list(folder_path.iterdir()):
         im_rgb = Image.open(image_path.as_posix())
         im_rgba = im_rgb.copy()
-        im_rgba.putalpha(128)
+        im_rgba.putalpha(transparency)
         im_rgba.save(f'{target_folder}/{image_path.stem}.png')
 
 
@@ -141,6 +142,28 @@ def write_pasted_images(folder_path: pathlib.Path, target_folder: pathlib.Path):
         write_pasted_png(background_path, foreground_path, target_folder, i)
 
 
+def apply_border(image_path: str, size: int, color: str = 'black'):
+
+    img = Image.open(image_path)
+    width, height = img.size
+    edge = img.filter(ImageFilter.FIND_EDGES).load()
+    stroke = Image.new(img.mode, img.size, (0, 0, 0, 0))
+    draw = ImageDraw.Draw(stroke)
+    for x in range(width):
+        for y in range(height):
+            if edge[x, y][3] > 0:
+                draw.ellipse((x-size, y-size, x+size, y+size), fill=color)
+    stroke.paste(img, (0, 0), img)
+    return stroke
+
+
+def write_bordered_images(folder_path: pathlib.Path, target_folder: pathlib.Path):
+    """Create a pasted png from a folder of images."""
+    for image_path in list(folder_path.iterdir()):
+        image = apply_border(image_path.as_posix(), 2)
+        image.save(f'{target_folder}/{image_path.stem}.png', 'PNG')
+
+
 def get_gif(images_folder: str, target_folder: str):
     """Create a gif from a folder of images."""
 
@@ -155,22 +178,28 @@ def get_gif(images_folder: str, target_folder: str):
 
     temp_folder = pathlib.Path(tempfile.mkdtemp())
     transparent_images_folder = temp_folder.joinpath('transparent')
-    # blended_images_folder = temp_folder.joinpath('blended')
+    blended_images_folder = temp_folder.joinpath('blended')
     translucent_images_folder = temp_folder.joinpath('translucent')
     # composite_images_folder = temp_folder.joinpath('composite')
-    pasted_images_folder = temp_folder.joinpath('pasted')
+    # pasted_images_folder = temp_folder.joinpath('pasted')
+    # border_images_folder = temp_folder.joinpath('border')
 
     transparent_images_folder.mkdir()
-    # blended_images_folder.mkdir()
+    blended_images_folder.mkdir()
     translucent_images_folder.mkdir()
     # composite_images_folder.mkdir()
-    pasted_images_folder.mkdir()
+    # pasted_images_folder.mkdir()
+    # border_images_folder.mkdir()
 
     print(temp_folder)
-    write_transparent_background_images(images_path, transparent_images_folder)
+    write_translucent_images(images_path, translucent_images_folder)
+    write_transparent_background_images(
+        translucent_images_folder, transparent_images_folder)
     # write_blended_images(transparent_images_folder, blended_images_folder)
-    write_translucent_images(transparent_images_folder, translucent_images_folder)
-    # write_composite_images(translucent_images_folder, composite_images_folder)
-    # write_blended_images_cv2(transparent_images_folder, blended_images_folder)
-    write_pasted_images(translucent_images_folder, pasted_images_folder)
-    write_gif(pasted_images_folder, target_path)
+
+    # write_pasted_images(translucent_images_folder, pasted_images_folder)
+
+    # write_bordered_images(transparent_images_folder, border_images_folder)
+    write_blended_images_cv2(transparent_images_folder, blended_images_folder)
+    # write_composite_images(border_images_folder, composite_images_folder)
+    write_gif(blended_images_folder, target_path)
