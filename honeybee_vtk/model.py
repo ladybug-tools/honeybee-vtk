@@ -670,7 +670,9 @@ class Model(object):
                         vtk_camera = grid_camera_dict[grid_polydata.identifier]
                     else:
                         vtk_camera = None
-                    output += scene.export_images(folder=folder, image_type=image_type,
+                    grid_folder = pathlib.Path(folder).joinpath(grid_polydata.identifier)
+                    grid_folder.mkdir(parents=True, exist_ok=True)
+                    output += scene.export_images(folder=grid_folder, image_type=image_type,
                                                   image_width=image_width,
                                                   image_height=image_height,
                                                   image_name=image_name,
