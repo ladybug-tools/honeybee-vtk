@@ -311,9 +311,13 @@ def export_timestep_images(hbjson_path: str, config_path: str,
         A list of paths to the exported images.
     """
     data = _validate_config(config_path)
-
+    config_dir = pathlib.Path(config_path).parent
     path = pathlib.Path(data.path)
-    assert path.exists(), 'Path does not exist.'
+    if not path.is_dir():
+        path = config_dir.joinpath(path).resolve().absolute()
+        data.path = path.as_posix()
+        if not path.is_dir():
+            raise FileNotFoundError(f'No folder found at {data.path}')
 
     timestamp_file_path = path.joinpath(f'{timestamp_file_name}.txt')
     assert timestamp_file_path.exists(), f'File with name {timestamp_file_name}'
