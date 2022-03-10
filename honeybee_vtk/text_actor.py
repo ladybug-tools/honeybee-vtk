@@ -27,7 +27,7 @@ class TextActor:
     def __init__(self, text: str, height: int = 15,
                  color: Tuple[int, int, int] = (0, 0, 0),
                  position: Tuple[float, float] = (0.5, 0.0), bold: bool = False) -> None:
-        self.text = text
+        self._text = text
         self.height = height
         self.color = color
         self.position = position
@@ -75,7 +75,7 @@ class TextActor:
 
     def __repr__(self) -> str:
         """Representation of the TextActor."""
-        return f"TextActor: {self.text}"
+        return f"TextActor: {self._text}"
 
     def to_vtk(self) -> vtk.vtkTextActor:
         """Create a vtk text actor."""
