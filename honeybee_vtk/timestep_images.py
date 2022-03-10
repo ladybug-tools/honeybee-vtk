@@ -125,7 +125,7 @@ def _write_res_file(res_path: pathlib.Path, data: List[int],
     Args:
         res_path: Path to the result file.
         data: A list of integer values.
-        target_folder: Path to the folder to write the result file. 
+        target_folder: Path to the folder to write the result file.
             Defaults to the current folder.
     """
     file_path = pathlib.Path(target_folder).joinpath(f'{res_path.stem}.res')
@@ -338,8 +338,8 @@ def export_timestep_images(hbjson_path: str, config_path: str,
 
         config_path = _write_config(data, temp_folder, index_folder)
         model = Model.from_hbjson(hbjson_path, SensorGridOptions.Mesh)
-        if not text_actor:
-            text_actor = TextActor(text=f'Hour {index}') if label_images else None
+        if label_images:
+            text_actor = TextActor(text=f'Hour {index}')
         image_paths += model.to_grid_images(folder=target_folder,
                                             config=config_path.as_posix(),
                                             grid_display_mode=grid_display_mode,
