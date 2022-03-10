@@ -185,17 +185,19 @@ def _write_config(data: DataConfig, target_folder: pathlib.Path,
     return config_path
 
 
-def _create_folders(index: int) -> Tuple[pathlib.Path, pathlib.Path]:
+def _create_folders(parent_temp_folder: pathlib.Path, index: int) -> Tuple[pathlib.Path, pathlib.Path]:
     """Create a temp folder and an Index folder for the current index.
 
     Args:
+        parent_temp_folder: Path to the parent temp folder.
         index: Index of the time stamp in the time stamps file.
 
     Returns:
         A tuple of paths to the temp folder and the Index folder.
     """
-    temp_folder = pathlib.Path(tempfile.mkdtemp())
-    index_folder = pathlib.Path(temp_folder).joinpath(str(index))
+
+    temp_folder = pathlib.Path(tempfile.mkdtemp(dir=parent_temp_folder.as_posix()))
+    index_folder = temp_folder.joinpath(str(index))
     os.mkdir(index_folder)
     return temp_folder, index_folder
 
@@ -330,9 +332,10 @@ def export_timestep_images(hbjson_path: str, config_path: str,
     result_paths = _get_result_paths(path, grids_info_path)
 
     image_paths: List[str] = []
+    parent_temp_folder = pathlib.Path(tempfile.mkdtemp())
 
     for index in timestamp_indexes:
-        temp_folder, index_folder = _create_folders(index)
+        temp_folder, index_folder = _create_folders(parent_temp_folder, index)
         _copy_grids_info(grids_info_path, index_folder)
         _write_res_files(result_paths, index, index_folder)
 
@@ -351,5 +354,10 @@ def export_timestep_images(hbjson_path: str, config_path: str,
                                             image_name=f'{index}',
                                             grid_camera_dict=grid_camera_dict,
                                             grid_filter=grid_filter)
+
+    try:
+        shutil.rmtree(parent_temp_folder)
+    except Exception:
+        pass
 
     return image_paths
