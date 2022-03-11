@@ -34,7 +34,7 @@ def _get_datetimes(path: pathlib.Path) -> List[DateTime]:
 
 
 def _get_timestamp_indexes(time_stamp_path: pathlib.Path, st_datetime: DateTime,
-                           end_datetime: DateTime) -> List[int]:
+                           end_datetime: DateTime) -> Tuple[List[int], List[DateTime]]:
     """Get the indexes of the timestamps in the time stamp file between two Datetimes.
 
     This function will give you all the Datetime objects for all the time stamps that
@@ -46,12 +46,20 @@ def _get_timestamp_indexes(time_stamp_path: pathlib.Path, st_datetime: DateTime,
         end_datetime: End datetime.
 
     Returns:
-        A list of indexes.
+        A tuple of two lists.
+
+        - The first list is a list of indexes of the timestamps in the time stamp file.
+
+        - The second list is a list of corresponding Datetime objects.
     """
 
     time_stamp_datetimes = _get_datetimes(time_stamp_path)
-    return [count for count, datetime in enumerate(time_stamp_datetimes) if
-            st_datetime <= datetime <= end_datetime]
+    index, datetimes = [], []
+    for count, datetime in enumerate(time_stamp_datetimes):
+        if st_datetime <= datetime <= end_datetime:
+            index.append(count)
+            datetimes.append(datetime)
+    return index, datetimes
 
 
 def _get_res_file_extension(path: pathlib.Path, grids_info: List[dict]) -> str:
@@ -325,8 +333,8 @@ def export_timestep_images(hbjson_path: str, config_path: str,
     assert timestamp_file_path.exists(), f'File with name {timestamp_file_name}'
     ' does not exist.'
 
-    timestamp_indexes = _get_timestamp_indexes(timestamp_file_path, st_datetime,
-                                               end_datetime)
+    indexes, datetimes = _get_timestamp_indexes(timestamp_file_path, st_datetime,
+                                                end_datetime)
 
     grids_info_path = path.joinpath('grids_info.json')
     result_paths = _get_result_paths(path, grids_info_path)
@@ -334,7 +342,7 @@ def export_timestep_images(hbjson_path: str, config_path: str,
     image_paths: List[str] = []
     parent_temp_folder = pathlib.Path(tempfile.mkdtemp())
 
-    for index in timestamp_indexes:
+    for count, index in enumerate(indexes):
         temp_folder, index_folder = _create_folders(parent_temp_folder, index)
         _copy_grids_info(grids_info_path, index_folder)
         _write_res_files(result_paths, index, index_folder)
@@ -346,12 +354,12 @@ def export_timestep_images(hbjson_path: str, config_path: str,
         config_path = _write_config(data, temp_folder, index_folder)
         model = Model.from_hbjson(hbjson_path, SensorGridOptions.Mesh)
         if label_images:
-            text_actor = TextActor(text=f'Hour {index}')
+            text_actor = TextActor(text=f'{datetimes[count]}')
         image_paths += model.to_grid_images(folder=target_folder,
                                             config=config_path.as_posix(),
                                             grid_display_mode=grid_display_mode,
                                             text_actor=text_actor,
-                                            image_name=f'{index}',
+                                            image_name=f'{datetimes[count].to_simple_string()}',
                                             grid_camera_dict=grid_camera_dict,
                                             grid_filter=grid_filter)
 
