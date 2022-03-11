@@ -359,7 +359,7 @@ def export_timestep_images(hbjson_path: str, config_path: str,
                                             config=config_path.as_posix(),
                                             grid_display_mode=grid_display_mode,
                                             text_actor=text_actor,
-                                            image_name=f'{datetimes[count].to_simple_string()}',
+                                            image_name=f'{datetimes[count].hoy}',
                                             grid_camera_dict=grid_camera_dict,
                                             grid_filter=grid_filter)
 
