@@ -1,9 +1,9 @@
 """Vtk legend parameters."""
 
 import vtk
-from ladybug.color import Colorset
+from ladybug.color import Colorset, Color
 from enum import Enum, auto
-from typing import Tuple, Union
+from typing import Tuple, Union, List
 from ._helper import _validate_input
 
 
@@ -264,6 +264,7 @@ class LegendParameter:
         self.min = min
         self.max = max
         self.auto_range = auto_range
+        self._colors = ()
 
     @property
     def name(self) -> str:
@@ -571,6 +572,15 @@ class LegendParameter:
                     f' value {self._min}.'
                 )
 
+    def _assign_colors(self, colors: Tuple[Color, Color]) -> None:
+        """Assign colors instead of a colorset.
+
+        This private method is currently used in generating timestep images.
+        """
+        self._colors = colors
+        self._color_count = len(colors)
+        self.label_count = self._color_count
+
     def _to_dict(self) -> dict:
         """Get the legend parameters as a dictionary object.
 
@@ -591,7 +601,10 @@ class LegendParameter:
     def get_lookuptable(self) -> vtk.vtkLookupTable:
         """Get a vtk lookuptable."""
         minimum, maximum = self.range
-        color_values = color_set[self._colorset.value]
+        if not self._colors:
+            color_values = color_set[self._colorset.value]
+        else:
+            color_values = self._colors
         lut = vtk.vtkLookupTable()
         lut.SetRange(minimum, maximum)
         lut.SetRampToLinear()
@@ -610,10 +623,10 @@ class LegendParameter:
     def get_scalarbar(self) -> vtk.vtkScalarBarActor:
         """Get a vtk scalar bar (legend)."""
 
-        color_range = self.get_lookuptable()
+        lookup_table = self.get_lookuptable()
 
         scalar_bar = vtk.vtkScalarBarActor()
-        scalar_bar.SetLookupTable(color_range)
+        scalar_bar.SetLookupTable(lookup_table)
 
         if self._unit:
             scalar_bar.SetTitle(f'{self._name} [{self._unit}]')
