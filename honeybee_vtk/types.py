@@ -64,7 +64,7 @@ class DataFieldInfo:
         range: A tuple of min, max values as either integers or floats.
             Defaults to None which will create a range of minimum and maximum
             values in the data.
-        colors: A Colors object that defines colors for the legend.
+        colorset: A ColorSet object that defines colors for the legend.
             Defaults to Ecotect colorset.
         per_face : A Boolean to indicate if the data is per face or per point. In
             most cases except for sensor points that are loaded as sensors the data
@@ -78,12 +78,13 @@ class DataFieldInfo:
     """
 
     def __init__(self, name: str = 'default', range: Tuple[float, float] = None,
-                 colors: ColorSets = ColorSets.ecotect, per_face: bool = True,
+                 colorset: ColorSets = ColorSets.ecotect, per_face: bool = True,
                  lower_threshold: float = None, upper_threshold: float = None) -> None:
         self.name = name
         self._range = range
         self.per_face = per_face
-        self._legend_param = LegendParameter(name=name, colors=colors, auto_range=range)
+        self._legend_param = LegendParameter(
+            name=name, colorset=colorset, auto_range=range)
         self.lower_threshold = lower_threshold
         self.upper_threshold = upper_threshold
 

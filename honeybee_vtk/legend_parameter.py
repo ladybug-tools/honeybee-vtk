@@ -187,7 +187,7 @@ class LegendParameter:
                 title of the legend. Default to "Legend".
             unit: A text string representing the unit of the data that the legend
                 represents. Examples are 'celsius', 'kwn/m2', etc.
-            colors: A Colors object. Defaults to Ecotect colorset.
+            colorset: A ColorSet object. Defaults to Ecotect colorset.
             hide_legend: A boolean to set the visibility of a legend in Scene.
                 Defaults to False.
             orientation: An Orientation object that sets the orientation of the legend in
@@ -231,7 +231,7 @@ class LegendParameter:
             self,
             name: str = 'Legend',
             unit: str = '',
-            colors: ColorSets = ColorSets.ecotect,
+            colorset: ColorSets = ColorSets.ecotect,
             hide_legend: bool = False,
             orientation: Orientation = Orientation.horizontal,
             position: Tuple[float, float] = (0.5, 0.1),
@@ -249,7 +249,7 @@ class LegendParameter:
 
         self.name = name
         self.unit = unit
-        self.colorset = colors
+        self.colorset = colorset
         self.hide_legend = hide_legend
         self.orientation = orientation
         self.position = position
@@ -300,14 +300,14 @@ class LegendParameter:
     @property
     def colorset(self) -> ColorSets:
         """Colors to be used in the legend."""
-        return self._colors
+        return self._colorset
 
     @colorset.setter
     def colorset(self, val) -> None:
         if not val:
-            self._colors = ColorSets.ecotect
+            self._colorset = ColorSets.ecotect
         elif isinstance(val, ColorSets):
-            self._colors = val
+            self._colorset = val
         else:
             raise ValueError(
                 f'A ColorSet objects expected. Instead got {val}.'
@@ -591,7 +591,7 @@ class LegendParameter:
     def get_lookuptable(self) -> vtk.vtkLookupTable:
         """Get a vtk lookuptable."""
         minimum, maximum = self.range
-        color_values = color_set[self._colors.value]
+        color_values = color_set[self._colorset.value]
         lut = vtk.vtkLookupTable()
         lut.SetRange(minimum, maximum)
         lut.SetRampToLinear()
@@ -652,7 +652,7 @@ class LegendParameter:
             f'Legend name: {self._name} |'
             f' Legend title: {self._unit} |'
             f' Legend visibility: {self._hide_legend} |'
-            f' Legend color scheme: {self._colors.name} |'
+            f' Legend color scheme: {self._colorset.name} |'
             f' Legend orientation: {self._orientation} |'
             f' Legend position: {self._position} |'
             f' Legend width: {self._width} |'
