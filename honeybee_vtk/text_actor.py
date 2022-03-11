@@ -19,14 +19,14 @@ class TextActor:
             The setting is applied at the lower left point of the text. 
             (0,0) will give you the lower left corner of the image.
             (1,1) will give you the upper right corner of the image.
-            Defaults to (0.5, 0.0) which will put the text at the bottom center of 
+            Defaults to (0.45, 0.0) which will put the text at the bottom center of
             the image.
         bold: Boolean to decide whether to make the text bold. Defaults to False.
     """
 
     def __init__(self, text: str, height: int = 15,
                  color: Tuple[int, int, int] = (0, 0, 0),
-                 position: Tuple[float, float] = (0.5, 0.0), bold: bool = False) -> None:
+                 position: Tuple[float, float] = (0.45, 0.0), bold: bool = False) -> None:
         self._text = text
         self.height = height
         self.color = color
