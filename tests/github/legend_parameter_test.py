@@ -42,7 +42,7 @@ def test_legend_parameter_initialization():
     lp = LegendParameter()
 
     assert lp.name == 'Legend'
-    assert lp.colors == ColorSets.ecotect
+    assert lp.colorset == ColorSets.ecotect
     assert not lp.auto_range
     assert not lp.min
     assert not lp.max
