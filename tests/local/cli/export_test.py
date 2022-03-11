@@ -53,7 +53,7 @@ def test_export_grid_images():
             '--text-position', 0.5, 0.5, '--text-bold'])
 
     assert result.exit_code == 0
-    exported_file_names = os.listdir(target_folder)
+    exported_file_names = os.listdir(f'{target_folder}/TestRoom_1')
     file_names = ['Daylight-Factor_TestRoom_1.png', 'UDI_TestRoom_1.png']
     assert all([name in file_names for name in exported_file_names])
 
