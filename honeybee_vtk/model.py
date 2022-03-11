@@ -592,8 +592,10 @@ class Model(object):
                        image_width: int = 0, image_height: int = 0, image_name: str = '',
                        text_actor: TextActor = None,
                        grid_camera_dict: Dict[str, vtk.vtkCamera] = None,
-                       extract_camera: bool = False) -> Union[Dict[str, Camera],
-                                                              List[str]]:
+                       extract_camera: bool = False,
+                       grid_color: Color = None,
+                       sub_folder_name: str = None) -> Union[Dict[str, Camera],
+                                                             List[str]]:
         """Export am image for each grid in the model.
 
         Use the config file to specify which grids with which data to export. For
@@ -629,6 +631,13 @@ class Model(object):
                 to be used in this run to export an image. Defaults to None.
             extract_camera: Boolean to indicate whether to extract the camera from the
                 for this run to use for the next run. Defaults to False.
+            grid_color: Color of the grid. This is used to set the color of the grid
+                when exporting the time step images when the whole grid needs to be
+                of a single color. Defaults to None.
+            sub_folder_name: A text string that sets the name of the subfolder where
+                the images will be exported. This is useful when the images are to be
+                exported for multiple time periods such as whole day of June 21, and 
+                the whole day of March, 21. Defaults to None.
 
         Returns:
             Path to the folder where the images are exported for each grid. Or a
@@ -649,6 +658,9 @@ class Model(object):
                 dataset = ModelDataSet(name=grid_polydata.identifier,
                                        data=[grid_polydata],
                                        display_mode=grid_display_mode)
+                if grid_color:
+                    dataset.active_field_info.legend_parameter._assign_colors(
+                        (Color(255, 255, 255), grid_color))
                 dataset.color_by = data.identifier
                 actor = Actor(dataset)
                 camera = _camera_to_grid_actor(actor, data.identifier)
@@ -670,9 +682,17 @@ class Model(object):
                         vtk_camera = grid_camera_dict[grid_polydata.identifier]
                     else:
                         vtk_camera = None
-                    grid_folder = pathlib.Path(folder).joinpath(grid_polydata.identifier)
+
+                    if not sub_folder_name:
+                        grid_folder = pathlib.Path(
+                            f'{folder}/{grid_polydata.identifier}')
+                    else:
+                        grid_folder = pathlib.Path(
+                            f'{folder}/{grid_polydata.identifier}/{sub_folder_name}')
                     grid_folder.mkdir(parents=True, exist_ok=True)
-                    output += scene.export_images(folder=grid_folder, image_type=image_type,
+
+                    output += scene.export_images(folder=grid_folder,
+                                                  image_type=image_type,
                                                   image_width=image_width,
                                                   image_height=image_height,
                                                   image_name=image_name,
