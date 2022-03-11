@@ -43,7 +43,7 @@ def test_grid_to_images():
     file_names = ['Daylight-Factor_TestRoom_1.png', 'UDI_TestRoom_1.png']
     model.to_grid_images(config=json_path, folder=target_folder,
                          grid_filter=['TestRoom_1'])
-    for file in os.listdir(f'{target_folder}/TestRoom_1'):
+    for file in os.listdir(target_folder):
         assert file in file_names
 
     shutil.rmtree(target_folder)
