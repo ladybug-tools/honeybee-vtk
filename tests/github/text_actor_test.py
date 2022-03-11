@@ -10,7 +10,7 @@ def test_object_initialization():
     assert text_actor.text == 'Yeah'
     assert text_actor.height == 15
     assert text_actor.color == (0, 0, 0)
-    assert text_actor.position == (0.5, 0.0)
+    assert text_actor.position == (0.45, 0.0)
     assert not text_actor.bold
 
 
@@ -23,5 +23,5 @@ def test_to_vtk_translation():
     assert vtk_text_actor.GetTextProperty().GetFontFamily() == 0
     assert vtk_text_actor.GetTextProperty().GetFontSize() == 15
     assert vtk_text_actor.GetTextProperty().GetColor() == (0, 0, 0)
-    assert vtk_text_actor.GetPosition() == (0.5, 0.0)
+    assert vtk_text_actor.GetPosition() == (0.45, 0.0)
     assert not vtk_text_actor.GetTextProperty().GetBold()
