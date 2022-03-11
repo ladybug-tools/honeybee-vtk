@@ -10,6 +10,7 @@ import vtk
 from pandas import DataFrame
 from typing import List, Tuple, Dict, Union
 from ladybug.dt import DateTime
+from ladybug.color import Color
 
 
 from .config import Config, DataConfig, Autocalculate
@@ -33,8 +34,9 @@ def _get_datetimes(path: pathlib.Path) -> List[DateTime]:
         return [DateTime.from_hoy(float(line.strip())) for line in f]
 
 
-def _get_timestamp_indexes(time_stamp_path: pathlib.Path, st_datetime: DateTime,
-                           end_datetime: DateTime) -> Tuple[List[int], List[DateTime]]:
+def _get_timestamp_indexes(time_stamp_path: pathlib.Path,
+                           period: Tuple[DateTime, DateTime]) -> Tuple[
+                               List[int], List[DateTime]]:
     """Get the indexes of the timestamps in the time stamp file between two Datetimes.
 
     This function will give you all the Datetime objects for all the time stamps that
@@ -42,8 +44,7 @@ def _get_timestamp_indexes(time_stamp_path: pathlib.Path, st_datetime: DateTime,
 
     Args:
         time_stamp_path: Path to the time stamp file.
-        st_datetime: Start datetime.
-        end_datetime: End datetime.
+        period: A tuple of two Datetime objects.
 
     Returns:
         A tuple of two lists.
@@ -52,7 +53,7 @@ def _get_timestamp_indexes(time_stamp_path: pathlib.Path, st_datetime: DateTime,
 
         - The second list is a list of corresponding Datetime objects.
     """
-
+    st_datetime, end_datetime = period
     time_stamp_datetimes = _get_datetimes(time_stamp_path)
     index, datetimes = [], []
     for count, datetime in enumerate(time_stamp_datetimes):
@@ -290,7 +291,8 @@ def _get_grid_camera_dict(data: DataConfig,
 
 def export_timestep_images(hbjson_path: str, config_path: str,
                            timestamp_file_name: str,
-                           st_datetime: DateTime, end_datetime: DateTime,
+                           periods: List[Tuple[DateTime, DateTime]] = [
+                               (DateTime(6, 21, 8), DateTime(6, 21, 19))],
                            grid_display_mode: DisplayMode = DisplayMode.Shaded,
                            target_folder: str = '.',
                            grid_filter: List[str] = None,
@@ -306,8 +308,8 @@ def export_timestep_images(hbjson_path: str, config_path: str,
         config_path: Path to the config file.
         timestamp_file_name: Name of the time stamps file as a string. This is simply
             used to find the time stamps file.
-        st_datetime: Start datetime of the time stamps file.
-        end_datetime: End datetime of the time stamps file.
+        periods: A list of tuple of start and end datetimes. Defaults to a single
+            period from 8 am to 7 pm on 21st of June.
         grid_display_mode: Display mode of the grids. Defaults to Shaded.
         target_folder: Path to the folder to write the images. Defaults to the current
             folder.
@@ -333,35 +335,41 @@ def export_timestep_images(hbjson_path: str, config_path: str,
     assert timestamp_file_path.exists(), f'File with name {timestamp_file_name}'
     ' does not exist.'
 
-    indexes, datetimes = _get_timestamp_indexes(timestamp_file_path, st_datetime,
-                                                end_datetime)
-
     grids_info_path = path.joinpath('grids_info.json')
     result_paths = _get_result_paths(path, grids_info_path)
 
     image_paths: List[str] = []
     parent_temp_folder = pathlib.Path(tempfile.mkdtemp())
 
-    for count, index in enumerate(indexes):
-        temp_folder, index_folder = _create_folders(parent_temp_folder, index)
-        _copy_grids_info(grids_info_path, index_folder)
-        _write_res_files(result_paths, index, index_folder)
+    for period_count, period in enumerate(periods):
+        assert period[0] < period[1], 'The start Datetime must be earlier than the end'\
+            ' Datetime.'
+        indexes, datetimes = _get_timestamp_indexes(timestamp_file_path, period)
 
-        grid_camera_dict = _get_grid_camera_dict(data, grid_display_mode,
-                                                 temp_folder, index_folder, hbjson_path,
-                                                 target_folder, index)
+        for count, index in enumerate(indexes):
+            temp_folder, index_folder = _create_folders(parent_temp_folder, index)
+            _copy_grids_info(grids_info_path, index_folder)
+            _write_res_files(result_paths, index, index_folder)
 
-        config_path = _write_config(data, temp_folder, index_folder)
-        model = Model.from_hbjson(hbjson_path, SensorGridOptions.Mesh)
-        if label_images:
-            text_actor = TextActor(text=f'{datetimes[count]}')
-        image_paths += model.to_grid_images(folder=target_folder,
-                                            config=config_path.as_posix(),
-                                            grid_display_mode=grid_display_mode,
-                                            text_actor=text_actor,
-                                            image_name=f'{datetimes[count].hoy}',
-                                            grid_camera_dict=grid_camera_dict,
-                                            grid_filter=grid_filter)
+            grid_camera_dict = _get_grid_camera_dict(data, grid_display_mode,
+                                                     temp_folder, index_folder,
+                                                     hbjson_path,
+                                                     target_folder, index)
+
+            config_path = _write_config(data, temp_folder, index_folder)
+            model = Model.from_hbjson(hbjson_path, SensorGridOptions.Mesh)
+            if label_images:
+                text_actor = TextActor(text=f'{datetimes[count]}')
+
+            image_paths += model.to_grid_images(folder=target_folder,
+                                                config=config_path.as_posix(),
+                                                grid_display_mode=grid_display_mode,
+                                                text_actor=text_actor,
+                                                image_name=f'{datetimes[count].hoy}',
+                                                grid_camera_dict=grid_camera_dict,
+                                                grid_filter=grid_filter,
+                                                grid_color=Color(245, 180, 2),
+                                                sub_folder_name=f'{period_count}')
 
     try:
         shutil.rmtree(parent_temp_folder)
