@@ -249,7 +249,7 @@ class LegendParameter:
 
         self.name = name
         self.unit = unit
-        self.colors = colors
+        self.colorset = colors
         self.hide_legend = hide_legend
         self.orientation = orientation
         self.position = position
@@ -298,12 +298,12 @@ class LegendParameter:
             )
 
     @property
-    def colors(self) -> ColorSets:
+    def colorset(self) -> ColorSets:
         """Colors to be used in the legend."""
         return self._colors
 
-    @colors.setter
-    def colors(self, val) -> None:
+    @colorset.setter
+    def colorset(self, val) -> None:
         if not val:
             self._colors = ColorSets.ecotect
         elif isinstance(val, ColorSets):
@@ -404,12 +404,12 @@ class LegendParameter:
     def color_count(self, val) -> None:
         if not val:
             self._color_count = None
-        elif isinstance(val, int) and 0 <= val <= len(self.colors.value):
+        elif isinstance(val, int) and 0 <= val <= len(self.colorset.value):
             self._color_count = val
         else:
             raise ValueError(
                 'Color count must be a number less than or equal to the number of'
-                f' colors in the colors property, which is {len(self.colors.value)}.'
+                f' colors in the colors property, which is {len(self.colorset.value)}.'
                 f' Instead got {val}.'
             )
 
@@ -423,12 +423,12 @@ class LegendParameter:
         if not val:
             self._label_count = None
         elif not self._color_count:
-            if isinstance(val, int) and 0 <= val <= len(self.colors.value):
+            if isinstance(val, int) and 0 <= val <= len(self.colorset.value):
                 self._label_count = val
             else:
                 raise ValueError(
                     'Label count must be a number less than or equal to the number of'
-                    f' colors {len(self.colors.value)}. Instead got {val}.'
+                    f' colors {len(self.colorset.value)}. Instead got {val}.'
                 )
         elif self._color_count:
             if isinstance(val, int) and 0 <= val <= self._color_count:
@@ -579,7 +579,7 @@ class LegendParameter:
         return {
             'name': self.name,
             'unit': self.unit,
-            'colors': self.colors.value,
+            'colors': self.colorset.value,
             'hide_legend': self.hide_legend,
             'color_count': self.color_count,
             'label_count': self.label_count,

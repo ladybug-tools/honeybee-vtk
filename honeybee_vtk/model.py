@@ -936,8 +936,7 @@ class Model(object):
 
         legend_params = data.legend_parameters
         legend = scene.legend_parameter(data.identifier)
-
-        legend.colors = legend_params.color_set
+        legend.colorset = legend_params.color_set
         legend.unit = data.unit
         if legend_range:
             legend.min, legend.max = legend_range
