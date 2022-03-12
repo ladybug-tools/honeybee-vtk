@@ -293,6 +293,7 @@ def export_timestep_images(hbjson_path: str, config_path: str,
                            timestamp_file_name: str,
                            periods: List[Tuple[DateTime, DateTime]] = [
                                (DateTime(6, 21, 8), DateTime(6, 21, 19))],
+                           grid_colors: List[Color] = [Color(249, 7, 3)],
                            grid_display_mode: DisplayMode = DisplayMode.Shaded,
                            target_folder: str = '.',
                            grid_filter: List[str] = None,
@@ -341,6 +342,9 @@ def export_timestep_images(hbjson_path: str, config_path: str,
     image_paths: List[str] = []
     parent_temp_folder = pathlib.Path(tempfile.mkdtemp())
 
+    assert len(periods) == len(grid_colors), 'Number of periods and colors' \
+        ' should be equal.'
+
     for period_count, period in enumerate(periods):
         assert period[0] < period[1], 'The start Datetime must be earlier than the end'\
             ' Datetime.'
@@ -368,7 +372,7 @@ def export_timestep_images(hbjson_path: str, config_path: str,
                                                 image_name=f'{datetimes[count].hoy}',
                                                 grid_camera_dict=grid_camera_dict,
                                                 grid_filter=grid_filter,
-                                                grid_color=Color(245, 180, 2),
+                                                grid_color=grid_colors[period_count],
                                                 sub_folder_name=f'{period_count}')
 
     try:
