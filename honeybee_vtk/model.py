@@ -19,7 +19,7 @@ from honeybee.model import Model as HBModel
 from honeybee_radiance.sensorgrid import SensorGrid
 from honeybee_radiance.sensor import Sensor
 from ladybug.color import Color
-from ladybug_geometry.geometry3d.pointvector import Point3D
+from ladybug_geometry.geometry3d import Mesh3D
 
 from .actor import Actor
 from .scene import Scene
@@ -244,10 +244,23 @@ class Model(object):
             # if all the grids have the same identifier, merge them into one grid
             if len(ids) == 1:
                 id = self._hb_model.properties.radiance.sensor_grids[0].identifier
-                sensors = [
-                    sensor for grid in self._hb_model.properties.radiance.sensor_grids
-                    for sensor in grid.sensors]
-                sensor_grid = SensorGrid(id, sensors)
+
+                # if it's just one grid, use it
+                if len(self._hb_model.properties.radiance.sensor_grids) == 1:
+                    sensor_grid = self._hb_model.properties.radiance.sensor_grids[0]
+                # if there are more than one grid, merge them first
+                else:
+                    grid_meshes = [grid.mesh for grid in
+                                   self._hb_model.properties.radiance.sensor_grids]
+                    if all(grid_meshes):
+                        mesh = Mesh3D.join_meshes(grid_meshes)
+                        sensor_grid = SensorGrid.from_mesh3d(id, mesh)
+                    else:
+                        sensors = [sensor for grid in
+                                   self._hb_model.properties.radiance.sensor_grids
+                                   for sensor in grid.sensors]
+                        sensor_grid = SensorGrid(id, sensors)
+
                 self._sensor_grids.data.append(
                     convert_sensor_grid(sensor_grid, self._sensor_grids_option)
                 )
