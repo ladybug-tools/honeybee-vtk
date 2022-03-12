@@ -1,6 +1,7 @@
 """Data json schema and validation for the config file."""
 
 from __future__ import annotations
+from optparse import Values
 
 
 from typing import List, Union
@@ -188,15 +189,19 @@ class DataConfig(BaseModel):
     lower_threshold: Union[Autocalculate, float] = Field(
         Autocalculate(),
         description='Lower end of the threshold range for the data. Data beyond this'
-        ' threshold will be filtered. If not specified, the lower threshold will be'
-        ' infinite. Defaults to None.'
+        ' threshold will be filtered. This value is included in the thresholding'
+        ' operation. For example, if you want the lower threshold to filter all the'
+        ' values greater than 0 then set the value to 0.1. If not specified, the lower'
+        ' threshold will be infinite. Defaults to None.'
     )
 
     upper_threshold: Union[Autocalculate, float] = Field(
         Autocalculate(),
         description='Upper end of the threshold range for the data. Data beyond this'
-        ' threshold will be filtered. If not specified, the upper threshold will be'
-        ' infinite. Defaults to None.'
+        ' threshold will be filtered. This value is included in the thresholding'
+        ' operation. For example, if you want the threshold to filter all the Values'
+        ' less than 1 then set the value to 0.99. If not specified, the upper threshold'
+        ' will be infinite. Defaults to None.'
     )
 
     legend_parameters: LegendConfig = Field(

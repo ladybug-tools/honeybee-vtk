@@ -8,15 +8,19 @@ def filter_using_thresholds(polydata: vtk.vtkPolyData, lower_threshold: float = 
     """Apply a threshold filter to a polydata.
 
     This function will remove the cell or points of the Polydata that fall outside of
-    the given thresholds. This function first applie the vtkThreshold filter to the
-    polydata and then uses the vtkDataSetSurfaceFilter to turn the 
+    the given thresholds. This function first applies the vtkThreshold filter to the
+    polydata and then uses the vtkDataSetSurfaceFilter to turn the
     vtkUnstructuredGrid into a vtkPolyData.
 
     Args:
         polydata: A vtkPolyData object.
-        lower_threshold: The lower threshold value. If None, lower threshold will 
+        lower_threshold: The lower threshold value. This threshold value is included
+            in the thresholding operation. For example, if you want the threshold to be
+            greater than 0 then set the value 0.1. If None, lower threshold will 
             be inifinite.
-        upper_threshold: The upper threshold value. If None, upper threshold will
+        upper_threshold: The upper threshold value. This threshold value is included in
+            the thresholding operation. For example, if you wan to the threshold to be
+            lower than 1 then set the value 0.99. If None, upper threshold will
             be inifinite.
 
     Returns:
