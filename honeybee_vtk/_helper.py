@@ -1,4 +1,7 @@
 """Helper functions to be used in other modules."""
+
+import time
+from functools import wraps
 from itertools import chain
 from typing import Any, Union, List, Tuple
 
@@ -53,3 +56,25 @@ def get_line_count(file_path: str) -> int:
     with open(file_path) as fp:
         nonempty_line_count = len([line.strip("\n") for line in fp if line != "\n"])
     return nonempty_line_count
+
+
+def report_time(seconds):
+    if seconds <= 60:
+        return f'{round(seconds, 2)} seconds.'
+    elif 60 < seconds <= 3600:
+        return f'{round(seconds / 60, 2)} minutes.'
+    else:
+        return f'{round(seconds / 3600, 2)} hours.'
+
+
+def duration(func):
+    """Decorator to measure time used by a function."""
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        """This is a wrapper function."""
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        finish = time.perf_counter()
+        print(f'Finished in {report_time(finish-start)}')
+        return result
+    return wrapper
