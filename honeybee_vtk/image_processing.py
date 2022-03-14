@@ -215,10 +215,10 @@ def write_annotated_image(image_path: pathlib.Path, target_folder: pathlib.Path,
     image = Image.open(image_path)
     width, height = image.size
     image_draw = ImageDraw.Draw(image)
-    fnt = ImageFont.truetype('assets/arial.ttf', 16)
-    image_draw.rectangle(((width/2-width/9), height-20,
-                         (width/2+width/11), height), fill='white')
-    image_draw.text(((width/2-width/10), height-20),
+    fnt = ImageFont.truetype('assets/arial.ttf', 25)
+    image_draw.rectangle(((width/2-width/15), height-25,
+                         (width/2+20), height), fill='white')
+    image_draw.text(((width/2-width/15), height-25),
                     text, font=fnt, fill='black')
     if not image_name:
         image.save(f'{target_folder}/{image_path.stem}.png', 'PNG')
@@ -268,8 +268,8 @@ def write_mp4_from_images(images_folder: pathlib.Path, target_folder: pathlib.Pa
             size = (width, height)
             img_array.append(img)
 
-    file_path = f'{target_folder.as_posix()}/{file_name}.avi'
-    out = cv2.VideoWriter(file_path, cv2.VideoWriter_fourcc(*'DIVX'), 1, size)
+    file_path = f'{target_folder.as_posix()}/{file_name}.mp4'
+    out = cv2.VideoWriter(file_path, cv2.VideoWriter_fourcc(*'mp4v'), 1, size)
 
     for i in range(len(img_array)):
         out.write(img_array[i])
@@ -294,10 +294,10 @@ def get_gif(images_folder: str, target_folder: str):
     serialized_images_folder.mkdir()
 
     for grid_folder in list(images_path.iterdir()):
-        grid_gif_folder = target_path.joinpath(f'{grid_folder.stem}_images')
-        if grid_gif_folder.is_dir():
-            shutil.rmtree(grid_gif_folder)
-        grid_gif_folder.mkdir()
+        # grid_gif_folder = target_path.joinpath(f'{grid_folder.stem}_images')
+        # if grid_gif_folder.is_dir():
+        #     shutil.rmtree(grid_gif_folder)
+        # grid_gif_folder.mkdir()
 
         image_names = []
 
