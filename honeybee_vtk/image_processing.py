@@ -2,6 +2,7 @@
 
 import tempfile
 import cv2
+import glob
 import shutil
 import pathlib
 from ladybug.dt import DateTime
@@ -199,7 +200,14 @@ def write_bordered_images(folder_path: pathlib.Path, target_folder: pathlib.Path
 def hoy_to_text(image_path: pathlib.Path) -> str:
     """Convert a hoy image to text."""
     hoy = float(image_path.stem.split('_')[0])
-    return DateTime.from_hoy(hoy).to_simple_string()
+    text = DateTime.from_hoy(hoy).to_simple_string()
+    updated_text = ''
+    for count, item in enumerate(list(text.split('_'))):
+        if not count == 2:
+            updated_text += item + ' '
+        else:
+            updated_text += item + ':'
+    return updated_text.strip()
 
 
 def write_annotated_image(image_path: pathlib.Path, target_folder: pathlib.Path,
@@ -209,7 +217,7 @@ def write_annotated_image(image_path: pathlib.Path, target_folder: pathlib.Path,
     image_draw = ImageDraw.Draw(image)
     fnt = ImageFont.truetype('assets/arial.ttf', 16)
     image_draw.rectangle(((width/2-width/9), height-20,
-                         (width/2+width/9), height), fill='#e6e5e3')
+                         (width/2+width/11), height), fill='white')
     image_draw.text(((width/2-width/10), height-20),
                     text, font=fnt, fill='black')
     if not image_name:
@@ -220,7 +228,7 @@ def write_annotated_image(image_path: pathlib.Path, target_folder: pathlib.Path,
 
 def write_annotated_images(folder_path: pathlib.Path, target_folder: pathlib.Path,
                            text_on_images: List[str]):
-    assert len(text_on_images) == len(list(folder_path.iterdir())), \
+    assert len(text_on_images) == len(list(folder_path.iterdir())),\
         f'Number of images in {folder_path} does not match number of image names.'
 
     number_file_dict = {
@@ -241,6 +249,31 @@ def write_renamed_image(image_path: pathlib.Path, target_folder: pathlib.Path,
 def write_renamed_images(folder_path: pathlib.Path, target_folder: pathlib.Path):
     for count, image_path in enumerate(list(folder_path.iterdir())):
         write_renamed_image(image_path, target_folder, f'{count}')
+
+
+def write_mp4_from_images(images_folder: pathlib.Path, target_folder: pathlib.Path = None,
+                          file_name: str = 'output'):
+    """Create an mp4 video from a folder of images."""
+    target_folder = target_folder or images_folder
+
+    number_file_dict = {
+        int(file_path.stem): file_path for file_path in list(images_folder.iterdir())}
+    sorted_file_numbers: List[int] = sorted(number_file_dict.keys())
+
+    img_array = []
+    for file_path in [number_file_dict[number] for number in sorted_file_numbers]:
+        for file in glob.glob(file_path.as_posix()):
+            img = cv2.imread(file)
+            height, width, layers = img.shape
+            size = (width, height)
+            img_array.append(img)
+
+    file_path = f'{target_folder.as_posix()}/{file_name}.avi'
+    out = cv2.VideoWriter(file_path, cv2.VideoWriter_fourcc(*'DIVX'), 1, size)
+
+    for i in range(len(img_array)):
+        out.write(img_array[i])
+    out.release()
 
 
 def get_gif(images_folder: str, target_folder: str):
@@ -310,6 +343,8 @@ def get_gif(images_folder: str, target_folder: str):
 
     write_annotated_images(composite_images_folder,
                            annotated_images_folder, text_on_images)
+
+    write_mp4_from_images(annotated_images_folder, target_path)
     write_gif(annotated_images_folder, target_path)
 
     try:
