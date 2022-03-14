@@ -17,6 +17,7 @@ from .config import Config, DataConfig, Autocalculate
 from .model import Model, SensorGridOptions
 from .vtkjs.schema import DisplayMode
 from .text_actor import TextActor
+from ._helper import duration
 
 
 def _get_datetimes(path: pathlib.Path) -> List[DateTime]:
@@ -289,6 +290,7 @@ def _get_grid_camera_dict(data: DataConfig,
                                     image_name=f'{index}', extract_camera=True)
 
 
+@duration
 def export_timestep_images(hbjson_path: str, config_path: str,
                            timestamp_file_name: str,
                            periods: List[Tuple[DateTime, DateTime]] = [
@@ -298,7 +300,9 @@ def export_timestep_images(hbjson_path: str, config_path: str,
                            target_folder: str = '.',
                            grid_filter: List[str] = None,
                            text_actor: TextActor = None,
-                           label_images: bool = True) -> List[str]:
+                           label_images: bool = True,
+                           image_width: int = 1920,
+                           image_height: int = 1088) -> List[str]:
     """Export images of grids for each time step in the time stamps file.
 
     This function will find all the time stamps between the start and end datetimes
@@ -319,6 +323,8 @@ def export_timestep_images(hbjson_path: str, config_path: str,
         text_actor: TextActor object to add to the images. Defaults to None.
         label_images: Boolean to indicate whether to label images with the timestep
             or not. Defaults to True.
+        image_width: Width of the images. Defaults to 1920.
+        image_height: Height of the images. Defaults to 1088.
 
     Returns:
         A list of paths to the exported images.
@@ -373,7 +379,9 @@ def export_timestep_images(hbjson_path: str, config_path: str,
                                                 grid_camera_dict=grid_camera_dict,
                                                 grid_filter=grid_filter,
                                                 grid_color=grid_colors[period_count],
-                                                sub_folder_name=f'{period_count}')
+                                                sub_folder_name=f'{period_count}',
+                                                image_width=image_width,
+                                                image_height=image_height)
 
     try:
         shutil.rmtree(parent_temp_folder)
