@@ -8,6 +8,7 @@ import pathlib
 from ladybug.dt import DateTime
 from typing import List
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from pyparsing import rest_of_line
 
 
 def write_transparent_background_image(image_path: pathlib.Path,
@@ -111,8 +112,9 @@ def write_gif(folder_path: pathlib.Path, target_folder: pathlib.Path,
 
     images = [Image.open(number_file_dict[number]) for number in sorted_file_numbers]
     image = images[0]
+    rest_of_images = images[1:] + [images[-1]]+[images[-1]]+[images[-1]]
     image.save(f'{target_folder}/{name}.gif', save_all=True,
-               append_images=images[1:], duration=500, loop=0, transparency=0,
+               append_images=rest_of_images, duration=1000, loop=0, transparency=0,
                format='GIF', disposal=2)
 
 
@@ -133,6 +135,7 @@ def write_blended_image_cv2(image_paths: List[pathlib.Path],
         else:
             alpha = 1.0/(i + 1)
             beta = 1.0 - alpha
+            print(f'alpha: {alpha}, beta: {beta}')
             dst = cv2.addWeighted(image_data[i], alpha, dst, beta, 0.0)
 
     # Save blended image
@@ -141,17 +144,31 @@ def write_blended_image_cv2(image_paths: List[pathlib.Path],
 
 def write_blended_images_cv2(folder_path: pathlib.Path, target_folder: pathlib.Path):
 
+    temp_folder = target_folder.joinpath('temp')
+    temp_folder.mkdir()
+
     number_file_dict = {
         int(file_path.stem): file_path for file_path in list(folder_path.iterdir())}
     sorted_file_numbers: List[int] = sorted(number_file_dict.keys())
 
     image_paths = [number_file_dict[number] for number in sorted_file_numbers]
     for i in range(1, len(image_paths)+1):
-        write_blended_image_cv2(image_paths[:i], target_folder, i-1)
-    last_image_path = image_paths[-1]
-    last_blended_image_path = f'{target_folder}/{len(image_paths)-1}_blended.png'
-    write_blended_png(last_blended_image_path, last_image_path,
-                      target_folder, len(image_paths), 0.4)
+        write_blended_image_cv2(image_paths[:i], temp_folder, i-1)
+
+    number_file_dict_temp = {
+        int(file_path.stem.split('_')[0]): file_path for file_path in list(temp_folder.iterdir())}
+    sorted_file_numbers_temp: List[int] = sorted(number_file_dict_temp.keys())
+
+    temp_image_paths = [number_file_dict_temp[number]
+                        for number in sorted_file_numbers_temp]
+    for count, image_path in enumerate(temp_image_paths):
+        write_renamed_image(image_path, target_folder, str(count))
+    # last_image_path = image_paths[-1]
+    # last_blended_image_path = f'{target_folder}/{len(image_paths)-1}_blended.png'
+    # write_blended_png(last_blended_image_path, last_image_path,
+    #                   target_folder, len(image_paths), 0.4)
+
+    shutil.rmtree(temp_folder.as_posix())
 
 
 def write_pasted_png(background_path, foreground_path, target_folder: pathlib.Path,
@@ -290,6 +307,7 @@ def get_gif(images_folder: str, target_folder: str):
 
     text_on_images: List[str] = []
     temp_folder = pathlib.Path(tempfile.mkdtemp())
+    print(f'Temp folder is {temp_folder}')
     serialized_images_folder = temp_folder.joinpath('serialized')
     serialized_images_folder.mkdir()
 
@@ -315,30 +333,31 @@ def get_gif(images_folder: str, target_folder: str):
                                         f'{time_step_count}_{image_count}']))
                 text_on_images.append(hoy_to_text(image_path))
 
-    transparent_images_folder = temp_folder.joinpath('transparent')
-    # blended_images_folder = temp_folder.joinpath('blended')
     # translucent_images_folder = temp_folder.joinpath('translucent')
+    transparent_images_folder = temp_folder.joinpath('transparent')
+    blended_images_folder = temp_folder.joinpath('blended')
     composite_images_folder = temp_folder.joinpath('composite')
     # # pasted_images_folder = temp_folder.joinpath('pasted')
     # border_images_folder = temp_folder.joinpath('border')
     annotated_images_folder = temp_folder.joinpath('annotated')
 
     transparent_images_folder.mkdir()
-    # blended_images_folder.mkdir()
+    blended_images_folder.mkdir()
     # translucent_images_folder.mkdir()
     composite_images_folder.mkdir()
     # # pasted_images_folder.mkdir()
     # border_images_folder.mkdir()
     annotated_images_folder.mkdir()
 
-    # write_translucent_images(serialised_images_folder, translucent_images_folder)
+    # write_translucent_images(serialized_images_folder, translucent_images_folder, 25)
+    write_blended_images_cv2(serialized_images_folder, blended_images_folder)
     write_transparent_background_images(
         serialized_images_folder, transparent_images_folder)
     # write_blended_images(transparent_images_folder, blended_images_folder)
 
     # # write_pasted_images(translucent_images_folder, pasted_images_folder)
     # write_bordered_images(transparent_images_folder, border_images_folder)
-    # write_blended_images_cv2(transparent_images_folder, blended_images_folder)
+
     write_composite_images(transparent_images_folder, composite_images_folder)
 
     write_annotated_images(composite_images_folder,
@@ -347,10 +366,10 @@ def get_gif(images_folder: str, target_folder: str):
     write_mp4_from_images(annotated_images_folder, target_path)
     write_gif(annotated_images_folder, target_path)
 
-    try:
-        shutil.rmtree(temp_folder)
-    except Exception:
-        pass
+    # try:
+    #     shutil.rmtree(temp_folder)
+    # except Exception:
+    #     pass
 
 
 def get_transparent_images(images_folder: str, target_folder: str = None):
