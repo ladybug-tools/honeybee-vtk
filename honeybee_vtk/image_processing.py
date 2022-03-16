@@ -7,14 +7,19 @@ import glob
 import shutil
 import pathlib
 from ladybug.dt import DateTime
-from typing import List
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from typing import List, Tuple
+from PIL import Image, ImageDraw, ImageFont
 
 
-def write_transparent_background_image(image_path: pathlib.Path,
-                                       target_folder: pathlib.Path):
-    image = Image.open(image_path.as_posix())
-    image = image.convert("RGBA")
+def _transparent_background(image: Image.Image) -> Image.Image:
+    """Make a transparent background for an image.
+
+    Args:
+        image: An Image object.
+
+    Returns:
+        An Image object with a fully transparent background.
+    """
     image_data = image.getdata()
 
     new_image_data = []
@@ -25,34 +30,7 @@ def write_transparent_background_image(image_path: pathlib.Path,
             new_image_data.append(pixel)
 
     image.putdata(new_image_data)
-    image.save(f'{target_folder}/{image_path.stem}.png', 'PNG')
-
-
-def write_transparent_background_images(folder_path: pathlib.Path,
-                                        target_folder: pathlib.Path):
-    for image_path in list(folder_path.iterdir()):
-        write_transparent_background_image(image_path, target_folder)
-
-
-def write_blended_png(image_path_1, image_path_2, target_folder: pathlib.Path,
-                      number: int, alpha: float = 0.5):
-    """Create a blended png from a folder of images."""
-    image_1 = Image.open(image_path_1)
-    image_2 = Image.open(image_path_2)
-    blended = Image.blend(image_1, image_2, alpha=alpha)
-    blended.save(f'{target_folder}/{number}_blended.png', 'PNG')
-
-
-def write_blended_images(folder_path: pathlib.Path, target_folder: pathlib.Path):
-    """Create a blended png from a folder of images."""
-    files = list(folder_path.iterdir())
-    first_blended = Image.open(files[0])
-    first_blended.save(f'{target_folder}/0_blended.png', 'PNG')
-
-    for i in range(1, len(files)):
-        image_path_1 = files[i]
-        image_path_2 = f'{target_folder}/{i-1}_blended.png'
-        write_blended_png(image_path_1, image_path_2, target_folder, i)
+    return image
 
 
 def write_composite_png(image_path_1: pathlib.Path, image_path_2: pathlib.Path,
@@ -88,19 +66,21 @@ def write_composite_images(folder_path: pathlib.Path, target_folder: pathlib.Pat
     shutil.rmtree(temp_folder.as_posix())
 
 
-def write_translucent_image(image_path: pathlib.Path, target_folder: pathlib.Path,
-                            transparency: int = 200):
-    im_rgb = Image.open(image_path.as_posix())
-    im_rgba = im_rgb.copy()
-    im_rgba.putalpha(transparency)
-    im_rgba.save(f'{target_folder}/{image_path.stem}.png')
+def _translucent(image: Image.Image, transparency: int):
+    """Set uniform transparency for an image.
 
+    Args:
+        image: An Image object.
+        transparency: An integer between 0 and 255. 0 is fully transparent and 255 is 
+            fully opaque.
 
-def write_translucent_images(folder_path: pathlib.Path, target_folder: pathlib.Path,
-                             transparency: int = 200):
-    """Create a translucent png from a folder of images."""
-    for image_path in list(folder_path.iterdir()):
-        write_translucent_image(image_path, target_folder, transparency)
+    Returns:
+        An Image object with a uniform transparency.
+    """
+    image_rgba = image.copy()
+    image_rgba.putalpha(transparency)
+    print(image_rgba.info)
+    return image_rgba
 
 
 def write_gif(folder_path: pathlib.Path, target_folder: pathlib.Path,
@@ -133,14 +113,12 @@ def write_apng(folder_path: pathlib.Path, target_folder: pathlib.Path,
 
 def write_blended_image_cv2(image_paths: List[pathlib.Path],
                             target_folder: pathlib.Path, number: int):
-    # Import all image files with the .jpg extension
 
     image_data = []
     for my_file in image_paths:
         this_image = cv2.imread(my_file.as_posix(), cv2.IMREAD_UNCHANGED)
         image_data.append(this_image)
 
-    # Calculate blended image
     dst = image_data[0]
     for i in range(len(image_data)):
         if i == 0:
@@ -150,7 +128,6 @@ def write_blended_image_cv2(image_paths: List[pathlib.Path],
             beta = 1.0 - alpha
             dst = cv2.addWeighted(image_data[i], alpha, dst, beta, 0.0)
 
-    # Save blended image
     cv2.imwrite(f'{target_folder}/{number}_blended.png', dst)
 
 
@@ -175,55 +152,8 @@ def write_blended_images_cv2(folder_path: pathlib.Path, target_folder: pathlib.P
                         for number in sorted_file_numbers_temp]
     for count, image_path in enumerate(temp_image_paths):
         write_renamed_image(image_path, target_folder, str(count))
-    # last_image_path = image_paths[-1]
-    # last_blended_image_path = f'{target_folder}/{len(image_paths)-1}_blended.png'
-    # write_blended_png(last_blended_image_path, last_image_path,
-    #                   target_folder, len(image_paths), 0.4)
 
     shutil.rmtree(temp_folder.as_posix())
-
-
-def write_pasted_png(background_path, foreground_path, target_folder: pathlib.Path,
-                     number: int, alpha: float = 0.5):
-    """Create a pasted png from a folder of images."""
-    background = Image.open(background_path)
-    foreground = Image.open(foreground_path)
-    background.paste(foreground, (0, 0), foreground)
-    background.save(f'{target_folder}/{number}_pasted.png', 'PNG')
-
-
-def write_pasted_images(folder_path: pathlib.Path, target_folder: pathlib.Path):
-    """Create a pasted png from a folder of images."""
-    files = list(folder_path.iterdir())
-    first_pasted = Image.open(files[0])
-    first_pasted.save(f'{target_folder}/0_pasted.png', 'PNG')
-
-    for i in range(1, len(files)):
-        background_path = f'{target_folder}/{i-1}_pasted.png'
-        foreground_path = files[i]
-        write_pasted_png(background_path, foreground_path, target_folder, i)
-
-
-def apply_border(image_path: str, size: int, color: str = 'black'):
-
-    img = Image.open(image_path)
-    width, height = img.size
-    edge = img.filter(ImageFilter.FIND_EDGES).load()
-    stroke = Image.new(img.mode, img.size, (0, 0, 0, 0))
-    draw = ImageDraw.Draw(stroke)
-    for x in range(width):
-        for y in range(height):
-            if edge[x, y][3] > 0:
-                draw.ellipse((x-size, y-size, x+size, y+size), fill=color)
-    stroke.paste(img, (0, 0), img)
-    return stroke
-
-
-def write_bordered_images(folder_path: pathlib.Path, target_folder: pathlib.Path):
-    """Create a pasted png from a folder of images."""
-    for image_path in list(folder_path.iterdir()):
-        image = apply_border(image_path.as_posix(), 2)
-        image.save(f'{target_folder}/{image_path.stem}.png', 'PNG')
 
 
 def hoy_to_text(image_path: pathlib.Path) -> str:
@@ -305,84 +235,116 @@ def write_mp4_from_images(images_folder: pathlib.Path, target_folder: pathlib.Pa
     out.release()
 
 
-def export_gif(images_folder: str, target_folder: str):
-    """Create a gif from a folder of images."""
+def _serialized_images_and_timestamps(
+        grid_folder: pathlib.Path, temp_folder: pathlib.Path) -> Tuple[pathlib.Path,
+                                                                       List[str]]:
+    """Write serialized images and get a list of timestamp strings.
 
-    images_path = pathlib.Path(images_folder)
-    assert images_path.is_dir(), 'The images folder must be a directory.'
+    We are iterating through all the time period folders and pulling images out of them.
+    We are renaming these images based on the image count before writing to a folder
+    named 'serialized'. This helps us down the line when we need to use the images in
+    order. While translating, we're also generating the time stamp annotation to put
+    on the images later.
 
-    if not target_folder:
-        target_path = images_path
-    else:
-        target_path = pathlib.Path(target_folder)
-        assert target_path.is_dir(), 'The target folder must be a directory.'
+    Args:
+        grid_folder: The folder containing the time period folders.
+        temp_folder: The folder to write the serialized images to.
 
-    text_on_images: List[str] = []
-    temp_folder = pathlib.Path(tempfile.mkdtemp())
-    print(f'Temp folder is {temp_folder}')
+    Returns:
+        A tuple of two items:
+
+        -   The path to the folder containing the serialized images.
+        -   A list of timestamps as text strings.
+    """
+    time_stamps: List[str] = []
     serialized_images_folder = temp_folder.joinpath('serialized')
     serialized_images_folder.mkdir()
 
-    for grid_folder in list(images_path.iterdir()):
-        # grid_gif_folder = target_path.joinpath(f'{grid_folder.stem}_images')
-        # if grid_gif_folder.is_dir():
-        #     shutil.rmtree(grid_gif_folder)
-        # grid_gif_folder.mkdir()
+    image_count = 0
+    for time_step_folder in list(grid_folder.iterdir()):
+        for image_path in list(time_step_folder.iterdir()):
+            write_renamed_image(
+                image_path, serialized_images_folder, str(image_count))
+            time_stamps.append(hoy_to_text(image_path))
+            image_count += 1
 
-        image_names = []
+    return serialized_images_folder, time_stamps
 
-        for time_step_count, time_step_folder in enumerate(list(grid_folder.iterdir())):
-            for image_count, image_path in enumerate(list(time_step_folder.iterdir())):
-                image_names.append(f'{time_step_count}_{image_count}')
 
-        image_names_dict = {image_name: count for count,
-                            image_name in enumerate(list(image_names))}
+def _files_in_order(temp_folder: pathlib.Path, parent: str,
+                    number_of_images: int) -> List[pathlib.Path]:
+    """Return a list of file paths in order."""
+    return [temp_folder.joinpath(f'{parent}/{i}.png') for i in range(number_of_images)]
 
-        for time_step_count, time_step_folder in enumerate(list(grid_folder.iterdir())):
-            for image_count, image_path in enumerate(list(time_step_folder.iterdir())):
-                write_renamed_image(image_path, serialized_images_folder,
-                                    str(image_names_dict[
-                                        f'{time_step_count}_{image_count}']))
-                text_on_images.append(hoy_to_text(image_path))
 
-    translucent_images_folder = temp_folder.joinpath('translucent')
-    transparent_images_folder = temp_folder.joinpath('transparent')
-    # blended_images_folder = temp_folder.joinpath('blended')
-    composite_images_folder = temp_folder.joinpath('composite')
-    # # pasted_images_folder = temp_folder.joinpath('pasted')
-    # border_images_folder = temp_folder.joinpath('border')
-    annotated_images_folder = temp_folder.joinpath('annotated')
+def _transparent_translucent(temp_folder: pathlib.Path, images_folder: pathlib.Path,
+                             translucency: bool = True, translucency_value: int = 127):
 
-    transparent_images_folder.mkdir()
-    # blended_images_folder.mkdir()
-    translucent_images_folder.mkdir()
-    composite_images_folder.mkdir()
-    # # pasted_images_folder.mkdir()
-    # border_images_folder.mkdir()
-    annotated_images_folder.mkdir()
+    trans_folder = temp_folder.joinpath('trans')
+    trans_folder.mkdir()
 
-    write_translucent_images(serialized_images_folder, translucent_images_folder, 25)
-    # write_blended_images_cv2(serialized_images_folder, blended_images_folder)
-    write_transparent_background_images(
-        translucent_images_folder, transparent_images_folder)
-    # write_blended_images(transparent_images_folder, blended_images_folder)
+    if translucency:
+        for image_path in images_folder.iterdir():
+            image = Image.open(image_path.as_posix())
+            image = _translucent(image, translucency_value)
+            image = _transparent_background(image)
+            image.save(f'{trans_folder}/{image_path.stem}.png', 'PNG')
+    else:
+        for image_path in images_folder.iterdir():
+            image = Image.open(image_path.as_posix())
+            image = _transparent_background(image)
+            image.save(f'{trans_folder}/{image_path.stem}.png', 'PNG')
 
-    # # write_pasted_images(translucent_images_folder, pasted_images_folder)
-    # write_bordered_images(transparent_images_folder, border_images_folder)
+    return trans_folder
 
-    write_composite_images(transparent_images_folder, composite_images_folder)
 
-    write_annotated_images(composite_images_folder,
-                           annotated_images_folder, text_on_images)
+def export_gif(time_step_images_path: str, target_path: str):
+    """Write a gif from a folder of images."""
 
-    # write_mp4_from_images(annotated_images_folder, target_path)
-    write_gif(annotated_images_folder, target_path)
-    # write_apng(annotated_images_folder, target_path)
+    time_step_images_folder = pathlib.Path(time_step_images_path)
+    assert time_step_images_folder.is_dir(), 'The images folder must be a directory.'
 
-    # try:
-    #     shutil.rmtree(temp_folder)
-    # except Exception:
-    #     pass
+    if not target_path:
+        target_folder = time_step_images_folder
+    else:
+        target_folder = pathlib.Path(target_path)
+        assert target_folder.is_dir(), 'The target folder must be a directory.'
+
+    for grid_folder in list(time_step_images_folder.iterdir()):
+
+        # create a folder to save the GIF
+        grid_gif_folder = target_folder.joinpath(f'{grid_folder.stem}_gif')
+        if grid_gif_folder.is_dir():
+            shutil.rmtree(grid_gif_folder)
+        grid_gif_folder.mkdir()
+
+        temp_folder = pathlib.Path(tempfile.mkdtemp())
+
+        serialized_images_folder, time_stamp_strings = _serialized_images_and_timestamps(
+            grid_folder, temp_folder)
+
+        # blended_images_folder = temp_folder.joinpath('blended')
+        composite_images_folder = temp_folder.joinpath('composite')
+        annotated_images_folder = temp_folder.joinpath('annotated')
+
+        # blended_images_folder.mkdir()
+        composite_images_folder.mkdir()
+        annotated_images_folder.mkdir()
+
+        # write_blended_images_cv2(serialized_images_folder, blended_images_folder)
+        trans_folder = _transparent_translucent(temp_folder, serialized_images_folder)
+        # write_blended_images(transparent_images_folder, blended_images_folder)
+        write_composite_images(trans_folder,
+                               composite_images_folder)
+
+        write_annotated_images(composite_images_folder,
+                               annotated_images_folder, time_stamp_strings)
+        write_gif(annotated_images_folder, grid_gif_folder)
+
+        # try:
+        #     shutil.rmtree(temp_folder)
+        # except Exception:
+        #     pass
 
 
 def get_transparent_images(images_folder: str, target_folder: str = None):
@@ -413,10 +375,10 @@ def get_transparent_images(images_folder: str, target_folder: str = None):
 
         for time_step_count, time_step_folder in enumerate(list(grid_folder.iterdir())):
             for image_count, image_path in enumerate(list(time_step_folder.iterdir())):
-                write_translucent_image(image_path, translucent_folder)
+                _translucent(image_path, translucent_folder)
                 translucent_image_path = translucent_folder.joinpath(
                     f'{image_path.stem}.png')
-                write_transparent_background_image(
+                _transparent_background(
                     translucent_image_path, transparent_folder)
                 transparent_image_path = transparent_folder.joinpath(
                     f'{image_path.stem}.png')
