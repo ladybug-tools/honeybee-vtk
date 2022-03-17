@@ -101,7 +101,7 @@ def _translucent(image: Image.Image, transparency: float):
     Returns:
         An Image object with a uniform transparency.
     """
-    assert 0 <= transparency <= 1, 'Transparency must be between 0 and 1.'
+    assert 0 <= transparency <= 1, 'Transparency must be a between 0 and 1 inclusive.'
 
     image_rgba = image.copy()
     image_rgba.putalpha(round(transparency*255))
@@ -355,7 +355,7 @@ def _transparent_translucent(temp_folder: Path, images_folder: Path,
     if translucency:
         for image_path in images_folder.iterdir():
             image = Image.open(image_path.as_posix())
-            image = _translucent(image, 127)
+            image = _translucent(image, 0.5)
             image = _transparent_background(image)
             image.save(f'{trans_folder}/{image_path.stem}.png', 'PNG')
     else:
