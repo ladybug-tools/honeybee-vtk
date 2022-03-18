@@ -24,10 +24,10 @@ jobs:
           pip install -r dev-requirements.txt
       - name: run tests
         run: python -m pytest --cov=. tests/github
-      - name: run test coverage
-        run: |
-          coverage report
-          coveralls --service=github
+      # - name: run test coverage
+      #   run: |
+      #     coverage report
+      #     coveralls --service=github
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
