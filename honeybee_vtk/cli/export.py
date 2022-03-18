@@ -4,13 +4,15 @@ import pathlib
 import sys
 import click
 import traceback
+import tempfile
+import shutil
 
 from honeybee_vtk.model import Model
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 from honeybee_vtk.types import ImageTypes
 from honeybee_vtk.text_actor import TextActor
-from honeybee_vtk.timestep_images import export_timestep_images
-from ladybug.dt import DateTime
+from honeybee_vtk.timestep_images import export_timestep_images, _extract_periods_colors
+from honeybee_vtk.image_processing import write_gif, write_transparent_images
 
 
 @click.group()
@@ -115,18 +117,51 @@ def export():
     help='Name of the time step file.'
 )
 @click.option(
-    '--start-datetime', '-sdt', type=(int, int, int), default=(12, 21, 9),
-    show_default=True, help='Set the start datetime to filter the time step file.'
+    '--periods-file', '-pf', help='File Path to the Periods json file which can be used'
+    ' to define time periods and colors. A period is composed of two Ladybug DateTime'
+    ' objects. First is the start DateTime and second is the End DateTime. Think of'
+    ' these periods as filters of time steps. Images will be generated for these periods'
+    ' only. You can also define colors for corresponding periods.',
+    type=click.Path(exists=True), default=None, show_default=True
 )
 @click.option(
-    '--end-datetime', '-edt', type=(int, int, int), default=(12, 21, 17),
-    show_default=True, help='Set the end datetime to filter the time step file.'
+    '--flat/--gradient', default=True, show_default=True, help='Indicate'
+    ' whether to use flat transparency or gradient transparency in generating time step'
+    ' images.'
+)
+@click.option(
+    '--transparent-images', '-ti', is_flag=True, default=False, show_default=True,
+    help='Indicate whether to generate transparent images or not.'
+)
+@click.option(
+    '--gif-name', '-gn', type=str, default='output', show_default=True,
+    help='Name of the gif file.'
+)
+@click.option(
+    '--gif-duration', '-gd', type=int, default=1000, show_default=True,
+    help='Duration of the gif in milliseconds.'
+)
+@click.option(
+    '--gif-loop-count', '-glc', type=int, default=0, show_default=True,
+    help='Number of times the gif should loop. 0 means infinite.'
+)
+@click.option(
+    '-gif-linger-last-frame', '-gl', type=int, default=3, show_default=True,
+    help='An number that will make the last frame linger for longer than the duration'
+    ' by this multiple.'
+)
+@ click.option(
+    '--image-transparency', '-it', type=float, default=0.5, show_default=True,
+    help='Set the transparency of the image. 0.0 is fully transparent and 1.0 is fully'
+    ' opaque.'
 )
 def export(
         hbjson_file, folder, image_type, image_width, image_height,
         background_color, model_display_mode, grid_options, grid_display_mode, view,
         config, validate_data, selection, grid_filter, text, text_height, text_color,
-        text_position, text_bold, time_step_file_name, start_datetime, end_datetime):
+        text_position, text_bold, time_step_file_name, periods_file, flat,
+        transparent_images, gif_name, gif_duration, gif_loop_count,
+        gif_linger_last_frame, image_transparency,):
     """Export images from radiance views in a HBJSON file.
 
     \b
@@ -209,6 +244,15 @@ def export(
                                           image_height=image_height,
                                           text_actor=text_actor)
         else:
+            periods, grid_colors = _extract_periods_colors(periods_file)
+
+            if not config:
+                raise ValueError('Config file not provided.')
+            if not time_step_file_name:
+                raise ValueError('Time step file name not provided.')
+            if not periods:
+                raise ValueError('Periods file not provided.')
+
             text_actor = TextActor(text=text, height=text_height, color=text_color,
                                    position=text_position, bold=text_bold)\
                 if text else None
@@ -217,15 +261,27 @@ def export(
                 print('Grids as points are not supported for image export of timesteps.')
                 grid_display_mode = DisplayMode.Shaded
 
+            temp_folder = pathlib.Path(tempfile.mkdtemp())
             output = export_timestep_images(hbjson_path=hbjson_file, config_path=config,
                                             timestamp_file_name=time_step_file_name,
-                                            st_datetime=DateTime(*start_datetime),
-                                            end_datetime=DateTime(*end_datetime),
+                                            periods=periods, grid_colors=grid_colors,
                                             grid_display_mode=grid_display_mode,
-                                            target_folder=folder,
+                                            target_folder=temp_folder,
                                             grid_filter=grid_filter,
                                             text_actor=text_actor,
                                             label_images=False)
+            if flat:
+                write_gif(output, folder.as_posix(), False, gif_name, gif_duration,
+                          gif_loop_count, gif_linger_last_frame)
+            else:
+                write_gif(output, folder.as_posix(), True, gif_name, gif_duration,
+                          gif_loop_count, gif_linger_last_frame)
+
+            if transparent_images:
+                write_transparent_images(output, folder.as_posix(), image_transparency)
+
+            shutil.rmtree(temp_folder)
+            output = folder
 
     except Exception:
         traceback.print_exc()
