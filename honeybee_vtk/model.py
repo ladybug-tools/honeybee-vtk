@@ -692,7 +692,7 @@ class Model(object):
 
                     if grid_folder.exists():
                         shutil.rmtree(grid_folder)
-                    grid_folder.mkdir()
+                    grid_folder.mkdir(parents=True, exist_ok=True)
 
                     output += scene.export_images(folder=grid_folder,
                                                   image_type=image_type,
