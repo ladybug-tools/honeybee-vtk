@@ -9,6 +9,8 @@ from pydantic import BaseModel, validator, Field, constr, conint
 from pydantic.types import confloat, conlist
 from .types import DataSetNames
 from .legend_parameter import ColorSets, DecimalCount, Orientation
+from ladybug.dt import DateTime
+from ladybug.color import Color
 
 
 class InputFile(BaseModel):
@@ -247,4 +249,39 @@ class Config(BaseModel):
     data: List[DataConfig] = Field(
         description='List of data-config objects that define the data to be loaded on'
         ' the model.'
+    )
+
+
+class DateTimeConfig(BaseModel):
+    """A DateTime object."""
+    month: conint(ge=1, le=12) = Field(
+        description='Month of the year. Accepted values are between 1 and 12 inclusive.'
+    )
+    day: conint(ge=1, le=31) = Field(
+        description='Month of the year. Accepted values are between 1 and 31 inclusive.'
+    )
+    hour: conint(ge=0, le=23) = Field(
+        description='Hour of the day. Accepted values are between 0 and 23 inclusive.'
+    )
+
+
+class Period(BaseModel):
+    """A period of time for which to generate time step images."""
+
+    date_time: conlist(DateTimeConfig, min_items=2, max_items=2) = Field(
+        description='A list of two DateTime objects that define the start and end'
+        ' of the period. The first DateTime object is the start of the period and'
+        ' the second DateTime object is the end of the period.'
+    )
+    color: conlist((conint(ge=0, le=255)), min_items=3, max_items=3) = Field(
+        [0, 0, 0],
+        description='An array of three integer values representing R, G, and B values'
+        ' for the color of text. Values from 0 to 255 are accepted.'
+    )
+
+
+class Periods(BaseModel):
+    """Config for the peridos to be used in generating time step images."""
+    periods: List[Period] = Field(
+        description='A list of Period objects that define the periods to be used in generating time step images.'
     )
