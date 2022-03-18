@@ -13,7 +13,7 @@ from ladybug.dt import DateTime
 from ladybug.color import Color
 
 
-from .config import Config, DataConfig, Autocalculate
+from .config import Config, DataConfig, Autocalculate, Period, Periods
 from .model import Model, SensorGridOptions
 from .vtkjs.schema import DisplayMode
 from .text_actor import TextActor
@@ -195,7 +195,8 @@ def _write_config(data: DataConfig, target_folder: pathlib.Path,
     return config_path
 
 
-def _create_folders(parent_temp_folder: pathlib.Path, index: int) -> Tuple[pathlib.Path, pathlib.Path]:
+def _create_folders(parent_temp_folder: pathlib.Path,
+                    index: int) -> Tuple[pathlib.Path, pathlib.Path]:
     """Create a temp folder and an Index folder for the current index.
 
     Args:
@@ -302,11 +303,11 @@ def export_timestep_images(hbjson_path: str, config_path: str,
                            text_actor: TextActor = None,
                            label_images: bool = True,
                            image_width: int = 1920,
-                           image_height: int = 1088) -> List[str]:
+                           image_height: int = 1088) -> str:
     """Export images of grids for each time step in the time stamps file.
 
     This function will find all the time stamps between the start and end datetimes
-    in the time stamps file and export images of the grids for each time step.
+    in the time stamps file and export images of each grids for each time step.
 
     Args:
         hbjson_path: Path to the HBJSON file.
@@ -327,7 +328,7 @@ def export_timestep_images(hbjson_path: str, config_path: str,
         image_height: Height of the images. Defaults to 1088.
 
     Returns:
-        A list of paths to the exported images.
+        A path to the target folder where all the images are written.
     """
     data = _validate_config(config_path)
     config_dir = pathlib.Path(config_path).parent
@@ -388,4 +389,46 @@ def export_timestep_images(hbjson_path: str, config_path: str,
     except Exception:
         pass
 
-    return image_paths
+    return target_folder
+
+
+def _validate_periods(periods_path: str) -> Periods:
+    """Validate the periods file and get it as a Periods object."""
+    try:
+        with open(periods_path) as fh:
+            periods = json.load(fh)
+    except json.decoder.JSONDecodeError:
+        raise TypeError(
+            'Not a valid json file.'
+        )
+    else:
+        return Periods.parse_obj(periods)
+
+
+def _extract_periods_colors(periods_path: str) -> Tuple[
+        List[Tuple[DateTime, DateTime]], List[Color]
+]:
+    """Extract the periods and colors from the periods file.
+
+    Args:
+        periods_path: Path to the periods file.
+
+    Returns:
+        A tuple of two items:
+
+        -   A list of DateTime objects.
+
+        -  A list of Color objects.
+    """
+    periods = _validate_periods(periods_path)
+    lb_periods, lb_colors = [], []
+
+    for period in periods.periods:
+        start = DateTime(period.date_time[0].month, period.date_time[0].day,
+                         period.date_time[0].hour)
+        end = DateTime(period.date_time[1].month, period.date_time[1].day,
+                       period.date_time[1].hour)
+        lb_periods.append((start, end))
+        lb_colors.append(Color(*period.color))
+
+    return lb_periods, lb_colors
