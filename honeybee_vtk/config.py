@@ -1,7 +1,6 @@
 """Data json schema and validation for the config file."""
 
 from __future__ import annotations
-from optparse import Values
 
 
 from typing import List, Union
@@ -10,7 +9,6 @@ from pydantic.types import confloat, conlist
 from .types import DataSetNames
 from .legend_parameter import ColorSets, DecimalCount, Orientation
 from ladybug.dt import DateTime
-from ladybug.color import Color
 
 
 class InputFile(BaseModel):
@@ -269,7 +267,7 @@ class Period(BaseModel):
     """A period of time for which to generate time step images."""
 
     date_time: conlist(DateTimeConfig, min_items=2, max_items=2) = Field(
-        description='A list of two DateTime objects that define the start and end'
+        description='A list of two DateTimConfig objects that define the start and end'
         ' of the period. The first DateTime object is the start of the period and'
         ' the second DateTime object is the end of the period.'
     )
@@ -283,5 +281,6 @@ class Period(BaseModel):
 class Periods(BaseModel):
     """Config for the peridos to be used in generating time step images."""
     periods: List[Period] = Field(
-        description='A list of Period objects that define the periods to be used in generating time step images.'
+        description='A list of Period objects that define the periods to be used in'
+        ' generating time step images.'
     )
