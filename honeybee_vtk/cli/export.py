@@ -253,10 +253,6 @@ def export(
             if not periods:
                 raise ValueError('Periods file not provided.')
 
-            text_actor = TextActor(text=text, height=text_height, color=text_color,
-                                   position=text_position, bold=text_bold)\
-                if text else None
-
             if grid_display_mode == DisplayMode.Points:
                 print('Grids as points are not supported for image export of timesteps.')
                 grid_display_mode = DisplayMode.Shaded
@@ -268,7 +264,7 @@ def export(
                                             grid_display_mode=grid_display_mode,
                                             target_folder=temp_folder,
                                             grid_filter=grid_filter,
-                                            text_actor=text_actor,
+                                            text_actor=None,
                                             label_images=False)
             if flat:
                 write_gif(output, folder.as_posix(), False, gif_name, gif_duration,
