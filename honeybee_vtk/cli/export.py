@@ -130,7 +130,7 @@ def export():
     ' images.'
 )
 @click.option(
-    '--transparent-images', '-ti', is_flag=True, default=False, show_default=True,
+    '--transparent-images/--no-images', is_flag=True, default=False, show_default=True,
     help='Indicate whether to generate transparent images or not.'
 )
 @click.option(
