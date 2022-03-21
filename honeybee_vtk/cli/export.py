@@ -92,7 +92,7 @@ def export():
 )
 @click.option(
     '--text', type=str, default=None, show_default=True, help='Text to be displayed on'
-    ' the image.'
+    ' an image of a grid. This will put this same text on all of the images.'
 )
 @click.option(
     '--text-height', '-th', type=int, default=15, show_default=True,
@@ -109,12 +109,12 @@ def export():
     ' (1,1) will give you the upper right corner of the image.'
 )
 @click.option(
-    '--text-bold', '-tb', is_flag=True, default=False, show_default=True,
+    '--text-bold/--text-normal', is_flag=True, default=False, show_default=True,
     help='Set the text to be bold.'
 )
 @click.option(
     '--time-step-file-name', '-tfn', type=str, default='', show_default=True,
-    help='Name of the time step file.'
+    help='Name of the time step file without its extension.'
 )
 @click.option(
     '--periods-file', '-pf', help='File Path to the Periods json file which can be used'
@@ -127,11 +127,13 @@ def export():
 @click.option(
     '--flat/--gradient', default=True, show_default=True, help='Indicate'
     ' whether to use flat transparency or gradient transparency in generating time step'
-    ' images.'
+    ' images. If flat is chosen, all the images wil have the same level of transparency.'
+    ' If gradient is chosen, the transparency of an image will be lower than the'
+    ' transparency of the image coming above.'
 )
 @click.option(
     '--transparent-images/--no-images', is_flag=True, default=False, show_default=True,
-    help='Indicate whether to generate transparent images or not.'
+    help='Indicate whether to generate transparent images of each timestep or not.'
 )
 @click.option(
     '--gif-name', '-gn', type=str, default='output', show_default=True,
@@ -147,7 +149,7 @@ def export():
 )
 @click.option(
     '-gif-linger-last-frame', '-gl', type=int, default=3, show_default=True,
-    help='An number that will make the last frame linger for longer than the duration'
+    help='A number that will make the last frame linger for longer than the duration'
     ' by this multiple.'
 )
 @ click.option(
