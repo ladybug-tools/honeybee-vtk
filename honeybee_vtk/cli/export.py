@@ -96,21 +96,22 @@ def export():
 )
 @click.option(
     '--text-height', '-th', type=int, default=15, show_default=True,
-    help='Set the height of the text in pixels.'
+    help='Set the height of the text in pixels for the text that will be added to the'
+    ' image of a grid.'
 )
 @click.option(
     '--text-color', '-tc', type=(int, int, int), default=(0, 0, 0), show_default=True,
-    help='Set the text color.',
+    help='Set the text color of the text that will added to the image of a grid.'
 )
 @click.option(
     '--text-position', '-tp', type=(float, float), default=(0.5, 0.0), show_default=True,
-    help='Set the text position in the image. The setting is applied at the lower left'
-    ' point of the text. (0,0) will give you the lower left corner of the image.'
-    ' (1,1) will give you the upper right corner of the image.'
+    help='Set the text position of the text to added to the image of a grid. The setting'
+    ' is applied at the lower left point of the text. (0,0) will give you the lower'
+    ' left corner of the image. (1,1) will give you the upper right corner of the image.'
 )
 @click.option(
     '--text-bold/--text-normal', is_flag=True, default=False, show_default=True,
-    help='Set the text to be bold.'
+    help='Set the text to be bold for the text that will added to the image of a grid.'
 )
 @click.option(
     '--time-step-file-name', '-tfn', type=str, default='', show_default=True,
