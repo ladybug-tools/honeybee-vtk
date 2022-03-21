@@ -572,7 +572,7 @@ class LegendParameter:
                     f' value {self._min}.'
                 )
 
-    def _assign_colors(self, colors: Tuple[Color, Color]) -> None:
+    def _assign_colors(self, colors: Tuple[Color, ...]) -> None:
         """Assign colors instead of a colorset.
 
         This private method is currently used in generating timestep images.
