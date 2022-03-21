@@ -488,7 +488,7 @@ def write_transparent_images(time_step_images_path: str, target_path: str = '.',
                 image = _translucent(image, transparency)
                 image = _transparent_background(image)
                 text = _hoy_to_text(image_path)
-                image = _annotate_image(image, text, 18)
+                image = _annotate_image(image, text, 25)
                 image.save(f'{grid_images_folder}/{image_count}.png', 'PNG')
                 image_count += 1
         try:
