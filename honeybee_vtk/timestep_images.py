@@ -17,7 +17,6 @@ from .config import Config, DataConfig, Autocalculate, Period, Periods
 from .model import Model, SensorGridOptions
 from .vtkjs.schema import DisplayMode
 from .text_actor import TextActor
-from ._helper import duration
 
 
 def _get_datetimes(path: pathlib.Path) -> List[DateTime]:
@@ -291,7 +290,6 @@ def _get_grid_camera_dict(data: DataConfig,
                                     image_name=f'{index}', extract_camera=True)
 
 
-@duration
 def export_timestep_images(hbjson_path: str, config_path: str,
                            timestamp_file_name: str,
                            periods: List[Tuple[DateTime, DateTime]] = [
