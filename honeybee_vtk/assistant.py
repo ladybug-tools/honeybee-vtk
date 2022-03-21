@@ -38,7 +38,6 @@ class Assistant:
         self._legend_params = legend_parameters
         self._text_actor = text_actor
         self._vtk_camera = None
-        self._active_camera = None
 
     @property
     def vtk_camera(self) -> vtk.vtkCamera:
@@ -46,6 +45,8 @@ class Assistant:
 
     @vtk_camera.setter
     def vtk_camera(self, vtk_camera):
+        assert isinstance(vtk_camera, vtk.vtkCamera), \
+            'vtk_camera must be a vtkCamera object.'
         self._vtk_camera = vtk_camera
 
     def _create_window(self) -> \
@@ -209,7 +210,7 @@ class Assistant:
     def _export_image(
             self, folder: str, image_type: ImageTypes = ImageTypes.png, *,
             image_scale: int = 1, image_width: int = 0, image_height: int = 0,
-            image_name: str = '',  color_range: vtk.vtkLookupTable = None,
+            image_name: str = None,  color_range: vtk.vtkLookupTable = None,
             rgba: bool = False, show: bool = False) -> str:
         """Export the window as an image.
 
@@ -225,7 +226,7 @@ class Assistant:
                 Defaults to 0, which will use view's x dimension.
             image_height: An integer value that sets the height of image in pixels.
                 Defaults to 0, which will use view's y dimension.
-            image_name: A text string that sets the name of the image. Defaults to ''.
+            image_name: A text string that sets the name of the image. Defaults to None.
             color_range: A vtk lookup table object which can be obtained
                 from the color_range mehtod of the DataFieldInfo object.
                 Defaults to None.
