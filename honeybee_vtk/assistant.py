@@ -94,7 +94,7 @@ class Assistant:
 
         renderer.SetActiveCamera(self._camera.to_vtk())
 
-        if self._camera.reset_camera:
+        if self._camera.needs_reset:
             renderer.ResetCamera()
 
         # the order is from outside to inside

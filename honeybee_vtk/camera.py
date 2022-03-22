@@ -12,50 +12,6 @@ from ladybug_geometry.geometry3d import Point3D, LineSegment3D
 T = TypeVar('T', bound='Camera')
 
 
-def _get_focal_point(focal_point: Union[Tuple[float, float, float], None],
-                     position: Tuple[float, float, float],
-                     direction: Tuple[float, float, float]) -> Tuple[float, float, float]:
-    """Set the focal point of the camera.
-
-    Args:
-        focal_point: x, y, z coordinates of the focal point. If not set, the focal
-            point will be set by moving the point of camera position in the direction
-            of the camera direction.
-        position: x, y, z coordinates of the camera position.
-        direction: x, y, z components of the camera direction.
-
-    Returns:
-        x, y, z coordinates of the focal point.
-    """
-    if not focal_point:
-        return (position[0] + direction[0], position[1] + direction[1], position[2] +
-                direction[2])
-    return focal_point
-
-
-def _apply_projection(camera: Type[T], projection: str, parallel_scale: int,
-                      clipping_range: Tuple[float, float]) -> vtk.vtkCamera:
-    """Set the parallel projection camera.
-
-    Args:
-        camera: A VTK camera object.
-        projection: The projection type. 'v' or 'l'
-        parallel_scale: The parallel scale of the camera.
-        clipping_range: The clipping range of the camera.
-
-    Returns:
-        A VTK camera object.
-    """
-    if projection == 'l':
-        camera.ParallelProjectionOn()
-        if parallel_scale:
-            camera.SetParallelScale(parallel_scale)
-        if clipping_range:
-            camera.SetClippingRange(clipping_range)
-        return camera
-    return camera
-
-
 class Camera(View):
     """Create a vtk camera object.
 
@@ -67,35 +23,35 @@ class Camera(View):
         position: x, y, z coordinates of the camera in a 3D space. Defaults to (0, 0, 100)
             which puts the camera 100 meters off of the XY plane (ground).
         direction: x, y, and z components of a vector that represents the view direction
-            (aim) of the camera. Defaults to (0, 0, -1). Which means the camera will look 
+            (aim) of the camera. Defaults to (0, 0, -1). Which means the camera will look
             towards the XY plane (ground).
-        up_vector: x, y, and z component of the vector that represents where the top 
+        up_vector: x, y, and z component of the vector that represents where the top
             of the camera is. Defaults to (0, 1, 0).
-        view_angle: The angular hight of the camera view in degrees. You can think of 
+        view_angle: The angular hight of the camera view in degrees. You can think of
             this as the vertical view angle. Defaults to 60
         projection: Choose between a perspective and parallel view type. 'v' will set
             the perspective view and 'l' will set the parallel view. Defaults to 'v'.
         reset_camera: A boolean that indicates whether the camera should be reset.
-            Resetting the camera is helpful when you want to capture an image of a 
-            model from outside the model. This will make sure that the camera is far 
+            Resetting the camera is helpful when you want to capture an image of a
+            model from outside the model. This will make sure that the camera is far
             away from the model and the whole model is captured. This should be set
-            to false in case of the intention is to take snapshots inside the model. 
+            to false in case of the intention is to take snapshots inside the model.
             A use case is taking the snapshots of the grids in the model.
             Defaults to True.
         focal_point: x, y, and z coordinates of the point where the camera is looking at.
-            Defaults to None which means the camera will look towards the XY plane 
+            Defaults to None which means the camera will look towards the XY plane
             (ground).
         clipping_range: A range of two numbers that define the near plane and the far
             plane respectively. Both of these planes are perpendicular to the camera
-            direction and are effective only in when the view type is parallel. The 
+            direction and are effective only in when the view type is parallel. The
             distance from the camera to the near plane is the closest distance that
             an object can be to the camera and still remain in the view. The distance
             from the camera to the far plane is the farthest distance that an object
             can be from the camera and still remain in the view. Defaults to None.
-        parallel_scale: Set the parallel scale for the camera. Note, that this parameters 
+        parallel_scale: Set the parallel scale for the camera. Note, that this parameters
             works as an inverse scale. So larger numbers produce smaller images.This can
-            be thought of as the zoom in and zoom out control. This parameter is effective
-            only when the view type is parallel. Defaults to None.
+            be thought of as the zoom in and zoom out control. This parameter is
+            effective only when the view type is parallel. Defaults to None.
         """
 
     def __init__(self, identifier: str = 'camera',
@@ -121,16 +77,22 @@ class Camera(View):
         self._parallel_scale = parallel_scale
 
     @property
-    def reset_camera(self) -> bool:
-        """Get a boolean that indicates whether the camera should be reset."""
+    def needs_reset(self) -> bool:
+        """A boolean to indicate whether the camera needs a reset or not."""
         return self._reset_camera
 
-    @reset_camera.setter
-    def reset_camera(self, reset_camera: bool) -> None:
-        """Set a boolean that indicates whether the camera should be reset. This is
-            helpful in case of the intention is to take snapshots inside the model.
+    @needs_reset.setter
+    def needs_reset(self, val: bool) -> None:
+        """Set a boolean to indicate whether the camera needs a reset. 
+
+        This is helpful in case of the intention is to take snapshots inside the model.
+        In such a case, the camera should not be reset. Resetting the camera essentially
+        creates a zoom extent effect where the camera is moved away from the actors in
+        such a way that all the actors can be captured.
         """
-        self._reset_camera = reset_camera
+        assert isinstance(val, bool), \
+            f'reset_camera should be a boolean value. Instead got {type(val)}'
+        self._reset_camera = val
 
     def to_vtk(self) -> vtk.vtkCamera:
         """Get a vtk camera object"""
@@ -241,8 +203,53 @@ class Camera(View):
         for i in range(len(camera_points)):
             point = camera_points[i]
             direction = directions[i]
-            default_cameras.append(cls(identifier=names[i], position=(point.x, point.y, point.z),
+            default_cameras.append(cls(identifier=names[i], position=(point.x, point.y,
+                                                                      point.z),
                                        direction=(direction.x, direction.y, direction.z),
                                        up_vector=(0, 0, 1)))
 
         return default_cameras
+
+
+def _get_focal_point(focal_point: Union[Tuple[float, float, float], None],
+                     position: Tuple[float, float, float],
+                     direction: Tuple[float, float, float]) -> Tuple[float, float, float]:
+    """Set the focal point of the camera.
+
+    Args:
+        focal_point: x, y, z coordinates of the focal point. If not set, the focal
+            point will be set by moving the point of camera position in the direction
+            of the camera direction.
+        position: x, y, z coordinates of the camera position.
+        direction: x, y, z components of the camera direction.
+
+    Returns:
+        x, y, z coordinates of the focal point.
+    """
+    if not focal_point:
+        return (position[0] + direction[0], position[1] + direction[1], position[2] +
+                direction[2])
+    return focal_point
+
+
+def _apply_projection(camera: Type[T], projection: str, parallel_scale: int,
+                      clipping_range: Tuple[float, float]) -> vtk.vtkCamera:
+    """Set the parallel projection camera.
+
+    Args:
+        camera: A VTK camera object.
+        projection: The projection type. 'v' or 'l'
+        parallel_scale: The parallel scale of the camera.
+        clipping_range: The clipping range of the camera.
+
+    Returns:
+        A VTK camera object.
+    """
+    if projection == 'l':
+        camera.ParallelProjectionOn()
+        if parallel_scale:
+            camera.SetParallelScale(parallel_scale)
+        if clipping_range:
+            camera.SetClippingRange(clipping_range)
+        return camera
+    return camera
