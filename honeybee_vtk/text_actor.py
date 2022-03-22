@@ -6,7 +6,7 @@ from typing import Tuple
 
 class TextActor:
 
-    """Use this object to create a vtk text actor. 
+    """Use this object to create a vtk text actor.
 
     This text actor can be used to add text to a vtk scene.
 
