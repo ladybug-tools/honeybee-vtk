@@ -209,16 +209,6 @@ class DataConfig(BaseModel):
         description='Legend parameters to create legend out of the this dataset.'
     )
 
-    @validator('identifier')
-    def check_space(cls, v: str) -> str:
-        """Check that identifier does not contain spaces.
-
-        This check is needed to make the identifier compliant with Radiance.
-        """
-        if ' ' in v:
-            raise ValueError('Identifier cannot have a blank space.')
-        return v
-
     @validator('legend_parameters')
     def check_pos_against_width_height(cls, v: LegendConfig, values) -> LegendConfig:
         id = values['identifier']
