@@ -402,8 +402,8 @@ def write_gif(time_step_images_path: str, target_path: str = '.',
 
     time_step_images_folder = Path(time_step_images_path)
     assert time_step_images_folder.is_dir(), 'The images folder must be a directory.'
-    assert len(time_step_images_folder.iterdir()) > 0, 'The images folder must not'\
-        ' be empty.'
+    assert len(list(time_step_images_folder.iterdir())) > 0, 'The images folder must'
+    ' not be empty.'
 
     target_folder = Path(target_path)
     assert target_folder.is_dir(), 'The target folder must be a directory.'
@@ -470,8 +470,8 @@ def write_transparent_images(time_step_images_path: str, target_path: str = '.',
 
     time_step_images_folder = Path(time_step_images_path)
     assert time_step_images_folder.is_dir(), 'The images folder must be a directory.'
-    assert len(time_step_images_folder.iterdir()) > 0, 'The images folder must not'\
-        ' be empty.'
+    assert len(list(time_step_images_folder.iterdir())) > 0, 'The images folder must'
+    ' not be empty.'
 
     target_folder = Path(target_path)
     assert target_folder.is_dir(), 'The target folder must be a directory.'
