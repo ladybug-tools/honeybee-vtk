@@ -234,7 +234,11 @@ def _annotate_image(image: Image.Image, text: str, text_height: int):
     #     fnt = ImageFont.truetype(
     #         BytesIO(open('../assets/fonts/arial.ttf', "rb").read()), text_height)
     # else:
-    fnt = ImageFont.truetype(font_path.as_posix(), text_height)
+    try:
+        fnt = ImageFont.truetype(font_path.as_posix(), text_height)
+    except OSError:
+        fnt = ImageFont.truetype(
+            BytesIO(open(font_path.as_posix(), "rb").read()), text_height)
 
     image_draw.rectangle(((width/2-width/15), height-text_height,
                          (width/2+20), height), fill='white')
