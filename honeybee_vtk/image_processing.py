@@ -228,11 +228,13 @@ def _annotate_image(image: Image.Image, text: str, text_height: int):
     width, height = image.size
     image_draw = ImageDraw.Draw(image)
 
-    if sys.platform == 'linux':
-        fnt = ImageFont.truetype(
-            BytesIO(open('../assets/fonts/arial.ttf', "rb").read()), text_height)
-    else:
-        fnt = ImageFont.truetype('../assets/fonts/arial.ttf', text_height)
+    font_path = Path('../assets/fonts/arial.ttf')
+    # if sys.platform == 'linux':
+    #     font_path =
+    #     fnt = ImageFont.truetype(
+    #         BytesIO(open('../assets/fonts/arial.ttf', "rb").read()), text_height)
+    # else:
+    fnt = ImageFont.truetype(font_path.as_posix(), text_height)
 
     image_draw.rectangle(((width/2-width/15), height-text_height,
                          (width/2+20), height), fill='white')
