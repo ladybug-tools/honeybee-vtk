@@ -1,0 +1,51 @@
+{
+  "periods": [
+    {
+      "date_time": [
+        {
+          "month": 12,
+          "day": 21,
+          "hour": 8
+        },
+        {
+          "month": 12,
+          "day": 21,
+          "hour": 9
+        }
+      ],
+      "color": [230, 236, 15]
+    },
+
+    {
+      "date_time": [
+        {
+          "month": 3,
+          "day": 21,
+          "hour": 8
+        },
+        {
+          "month": 3,
+          "day": 21,
+          "hour": 9
+        }
+      ],
+      "color": [248, 174, 5]
+    },
+
+    {
+      "date_time": [
+        {
+          "month": 6,
+          "day": 21,
+          "hour": 8
+        },
+        {
+          "month": 6,
+          "day": 21,
+          "hour": 9
+        }
+      ],
+      "color": [249, 7, 3]
+    }
+  ]
+}
