@@ -4,6 +4,7 @@
 import tempfile
 import cv2
 import shutil
+from io import BytesIO
 from pathlib import Path
 from ladybug.dt import DateTime
 from typing import List, Tuple
@@ -224,7 +225,8 @@ def _annotate_image(image: Image.Image, text: str, text_height: int):
 
     width, height = image.size
     image_draw = ImageDraw.Draw(image)
-    fnt = ImageFont.truetype('assets\\arial.ttf', text_height)
+    # fnt = ImageFont.truetype('assets\\arial.ttf', text_height)
+    fnt = ImageFont.truetype(BytesIO(open('assets/arial.ttf', "rb").read()), text_height)
     image_draw.rectangle(((width/2-width/15), height-text_height,
                          (width/2+20), height), fill='white')
     image_draw.text(((width/2-width/15), height-text_height),
