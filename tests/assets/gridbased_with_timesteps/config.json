@@ -1,0 +1,20 @@
+{
+  "data": [
+    {
+      "identifier": "sun-up-hours",
+      "object_type": "grid",
+      "unit": "hours",
+      "lower_threshold": 1,
+      "path": "outputs/direct-sun-hours",
+      "legend_parameters": {
+        "hide_legend": true,
+        "min": 0,
+        "max": 1,
+        "decimal_count": "decimal_two",
+        "color_count": 2,
+        "label_count": 2,
+        "color_set": "original"
+      }
+    }
+  ]
+}
