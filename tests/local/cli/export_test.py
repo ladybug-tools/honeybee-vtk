@@ -50,7 +50,7 @@ def test_export_grid_images():
             '--background-color', 255, 255, 255, '--grid-options', 'Meshes',
             '--model-display-mode', 'Shaded', '--grid-display-mode', 'SurfaceWithEdges',
             '--config', config_path, '--selection', 'grid', '--grid-filter', 'TestRoom_1',
-            '--text', 'Test Room', '--text-height', 25, '--text-color', 51, 0, 0,
+            '--text-content', 'Test Room', '--text-height', 25, '--text-color', 51, 0, 0,
             '--text-position', 0.5, 0.5, '--text-bold'])
 
     assert result.exit_code == 0

@@ -91,8 +91,8 @@ def export():
     ' grid identifiers as filters.'
 )
 @click.option(
-    '--text', type=str, default=None, show_default=True, help='Text to be displayed on'
-    ' an image of a grid. This will put this same text on all of the images.'
+    '--text-content', type=str, default=None, show_default=True, help='Text to be '
+    'displayed on an image of a grid. This will put this same text on all of the images.'
 )
 @click.option(
     '--text-height', '-th', type=int, default=15, show_default=True,
@@ -161,8 +161,8 @@ def export():
 def export(
         hbjson_file, folder, image_type, image_width, image_height,
         background_color, model_display_mode, grid_options, grid_display_mode, view,
-        config, validate_data, selection, grid_filter, text, text_height, text_color,
-        text_position, text_bold, time_step_file_name, periods_file, flat,
+        config, validate_data, selection, grid_filter, text_content, text_height,
+        text_color, text_position, text_bold, time_step_file_name, periods_file, flat,
         transparent_images, gif_name, gif_duration, gif_loop_count,
         gif_linger_last_frame, image_transparency,):
     """Export images from radiance views in a HBJSON file.
@@ -234,9 +234,9 @@ def export(
                                      image_height=image_height,)
 
         elif selection.lower() == 'grid':
-            text_actor = TextActor(text=text, height=text_height, color=text_color,
+            text_actor = TextActor(text=text_content, height=text_height, color=text_color,
                                    position=text_position, bold=text_bold)\
-                if text else None
+                if text_content else None
 
             output = model.to_grid_images(config=config, folder=folder,
                                           grid_filter=grid_filter,

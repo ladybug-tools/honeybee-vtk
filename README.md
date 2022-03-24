@@ -125,7 +125,7 @@ Options:
                                   multiple times to use multiple grid
                                   identifiers as filters.  [default: ]
 
-  --text TEXT                     Text to be displayed on the image.
+  --text-content TEXT             Text to be displayed on the image.
   -th, --text-height INTEGER      Set the height of the text in pixels.
                                   [default: 15]
 
