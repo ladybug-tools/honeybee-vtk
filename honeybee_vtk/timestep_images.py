@@ -297,7 +297,8 @@ def export_timestep_images(hbjson_path: str, config_path: str,
                            grid_colors: List[Color] = [Color(249, 7, 3)],
                            grid_display_mode: DisplayMode = DisplayMode.Shaded,
                            target_folder: str = '.',
-                           grid_filter: List[str] = None,
+                           grids_filter: Union[str, List[str]] = None,
+                           full_match: bool = False,
                            text_actor: TextActor = None,
                            label_images: bool = True,
                            image_width: int = 1920,
@@ -317,8 +318,10 @@ def export_timestep_images(hbjson_path: str, config_path: str,
         grid_display_mode: Display mode of the grids. Defaults to Shaded.
         target_folder: Path to the folder to write the images. Defaults to the current
             folder.
-        grid_filter: A list of grid identifiers to export images of those grid only.
-                Defaults to None which will export all the grids.
+        grids_filter: A list of grid identifiers or a regex pattern as a string to
+                filter the grids. Defaults to None.
+        full_match: A boolean to filter grids by their identifiers as full matches.
+            Defaults to False.
         text_actor: TextActor object to add to the images. Defaults to None.
         label_images: Boolean to indicate whether to label images with the timestep
             or not. Defaults to True.
@@ -376,7 +379,8 @@ def export_timestep_images(hbjson_path: str, config_path: str,
                                                 text_actor=text_actor,
                                                 image_name=f'{datetimes[count].hoy}',
                                                 grid_camera_dict=grid_camera_dict,
-                                                grid_filter=grid_filter,
+                                                grids_filter=grids_filter,
+                                                full_match=full_match,
                                                 grid_color=grid_colors[period_count],
                                                 sub_folder_name=f'{period_count}',
                                                 image_width=image_width,

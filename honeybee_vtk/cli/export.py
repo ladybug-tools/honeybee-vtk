@@ -86,9 +86,17 @@ def export():
     show_default=True
 )
 @click.option(
-    '--grid-filter', '-gf', type=str, default=[], show_default=True, multiple=True,
-    help='Filter sensor grids by name. Use this option multiple times to use multiple'
-    ' grid identifiers as filters.'
+    '--grids-filter', '-gf', type=str, help='A regex pattern to filter the grids. Say you'
+    ' wish to select gris for only the first_floor_* will simulate only the sensor grids'
+    ' that have an identifier that starts with first_floor_. By default, all grids in'
+    ' the model will be simulated.',
+    default='*', show_default=True
+)
+@click.option(
+    '--full-match/--no-full-match', help='Flag to note whether the grids'
+    ' should be filtered by their identifiers as full matches. Setting '
+    'this to True indicates that wildcard symbols will not be used in the '
+    'filtering of grids and views.', default=False, show_default=True
 )
 @click.option(
     '--text-content', type=str, default=None, show_default=True, help='Text to be '
@@ -149,7 +157,7 @@ def export():
     help='Number of times the gif should loop. 0 means infinite.'
 )
 @click.option(
-    '-gif-linger-last-frame', '-gl', type=int, default=3, show_default=True,
+    '--gif-linger-last-frame', '-gl', type=int, default=3, show_default=True,
     help='A number that will make the last frame linger for longer than the duration'
     ' by this multiple.'
 )
@@ -161,9 +169,9 @@ def export():
 def export(
         hbjson_file, folder, image_type, image_width, image_height,
         background_color, model_display_mode, grid_options, grid_display_mode, view,
-        config, validate_data, selection, grid_filter, text_content, text_height,
-        text_color, text_position, text_bold, time_step_file_name, periods_file, flat,
-        transparent_images, gif_name, gif_duration, gif_loop_count,
+        config, validate_data, selection, grids_filter, full_match, text_content,
+        text_height, text_color, text_position, text_bold, time_step_file_name,
+        periods_file, flat, transparent_images, gif_name, gif_duration, gif_loop_count,
         gif_linger_last_frame, image_transparency,):
     """Export images from radiance views in a HBJSON file.
 
@@ -239,7 +247,8 @@ def export(
                 if text_content else None
 
             output = model.to_grid_images(config=config, folder=folder,
-                                          grid_filter=grid_filter,
+                                          grids_filter=grids_filter,
+                                          full_match=full_match,
                                           grid_display_mode=grid_display_mode,
                                           background_color=background_color,
                                           image_type=image_type,
@@ -260,16 +269,14 @@ def export(
                 print('Grids as points are not supported for image export of timesteps.')
                 grid_display_mode = DisplayMode.Shaded
 
-            if len(grid_filter) == 1 and grid_filter[0] == '[]':
-                grid_filter = None
-
             temp_folder = pathlib.Path(tempfile.mkdtemp())
             output = export_timestep_images(hbjson_path=hbjson_file, config_path=config,
                                             timestamp_file_name=time_step_file_name,
                                             periods=periods, grid_colors=grid_colors,
                                             grid_display_mode=grid_display_mode,
                                             target_folder=temp_folder,
-                                            grid_filter=grid_filter,
+                                            grids_filter=grids_filter,
+                                            full_match=full_match,
                                             text_actor=None,
                                             label_images=False)
             if flat:
