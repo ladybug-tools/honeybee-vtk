@@ -1,13 +1,11 @@
 """A VTK representation of HBModel."""
 
 from __future__ import annotations
-from json.decoder import JSONDecodeError
 import pathlib
 import shutil
 import webbrowser
 import tempfile
 import os
-import tempfile
 import json
 import warnings
 
@@ -17,7 +15,7 @@ from typing import Dict, List, Union, Tuple
 from honeybee.facetype import face_types
 from honeybee.model import Model as HBModel
 from honeybee_radiance.sensorgrid import SensorGrid
-from honeybee_radiance.sensor import Sensor
+from honeybee_radiance.writer import _filter_by_pattern
 from ladybug.color import Color
 from ladybug_geometry.geometry3d import Mesh3D
 
@@ -30,7 +28,7 @@ from .to_vtk import convert_aperture, convert_face, convert_room, convert_shade,
 from .vtkjs.schema import IndexJSON, DisplayMode, SensorGridOptions
 from .vtkjs.helper import convert_directory_to_zip_file, add_data_to_viewer
 from .types import DataSetNames, VTKWriters, JoinedPolyData, ImageTypes
-from .config import DataConfig, Autocalculate, Config
+from .config import DataConfig, Autocalculate
 from .legend_parameter import Text
 from .text_actor import TextActor
 
@@ -585,7 +583,8 @@ class Model(object):
             image_width=image_width, image_height=image_height)
 
     def to_grid_images(self, config: str, *, folder: str = '.',
-                       grid_filter: List[str] = None,
+                       grids_filter: Union[str, List[str]] = None,
+                       full_match: bool = False,
                        grid_display_mode: DisplayMode = DisplayMode.SurfaceWithEdges,
                        background_color: Tuple[int, int, int] = None,
                        image_type: ImageTypes = ImageTypes.png,
@@ -613,8 +612,10 @@ class Model(object):
             config: Path to the config file in JSON format.
             folder: Path to the folder where you'd like to export the images. Defaults to
                     the current working directory.
-            grid_filter: A list of grid identifiers to export images of those grid only.
-                Defaults to None which will export all the grids.
+            grids_filter: A list of grid identifiers or a regex pattern as a string to
+                filter the grids. Defaults to None.
+            full_match: A boolean to filter grids by their identifiers as full matches.
+                Defaults to False.
             display_mode: Display mode for the grid. Defaults to surface with edges.
             background_color: Background color of the image. Defaults to white.
             image_type: Image type to be exported. Defaults to png.
@@ -649,7 +650,8 @@ class Model(object):
             grid_display_mode = DisplayMode.Points
 
         config_data = self.load_config(config)
-        grid_polydata_lst = filter_grids(self.sensor_grids.data, grid_filter)
+        grid_polydata_lst = _filter_grid_polydata(
+            self.sensor_grids.data, self._hb_model, grids_filter, full_match)
 
         output: Union[Dict[str, Camera], List[str]] = {} if extract_camera else []
 
@@ -1030,23 +1032,31 @@ def _camera_to_grid_actor(actor: Actor, data_name: str, zoom: int = 2,
                   reset_camera=auto_zoom)
 
 
-def filter_grids(grid_polydata_lst: List[PolyData],
-                 grid_filter: List[str]) -> List[PolyData]:
-    """Filter grids based on the grid_filter.
+def _filter_grid_polydata(grid_polydata_lst: List[PolyData], model: HBModel,
+                          grids_filter: Union[str, List[str]],
+                          full_match) -> List[PolyData]:
+    """Filter grid polydata based on sensor grids.
 
     Args:
-        grid_polydata_lst: A list of PolyData objects for Grids.
-        grid_filter: A list of grid identifiers to filter grids.
+        grid_polydata_lst: A list of grid polydata objects.
+        model: A honeybee model object.
+        grids_filter: A list of grid identifiers or a regex pattern as a string to filter
+            the grid polydata.
+        full_match: A boolean to filter grids by their identifiers as full matches.
 
     Returns:
         A list of PolyData objects for Grids.
     """
-    if not grid_filter:
+    if not grids_filter or grids_filter == '*':
         return grid_polydata_lst
     else:
+        filtered_sensor_grids = _filter_by_pattern(
+            model.properties.radiance.sensor_grids, grids_filter, full_match)
+        sensorgrid_full_identifiers = [
+            grid.full_identifier for grid in filtered_sensor_grids]
         filtered_grid_polydata_lst = [grid for grid in grid_polydata_lst
-                                      if grid.name in grid_filter]
+                                      if grid.name in sensorgrid_full_identifiers]
         if not filtered_grid_polydata_lst:
-            raise ValueError('No grids found in the model that match the filter'
-                             ' defined in the config file.')
+            raise ValueError('No grids found in the model that match the'
+                             f' filter {grids_filter}.')
         return filtered_grid_polydata_lst
