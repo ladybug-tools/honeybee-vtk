@@ -260,6 +260,9 @@ def export(
                 print('Grids as points are not supported for image export of timesteps.')
                 grid_display_mode = DisplayMode.Shaded
 
+            if len(grid_filter) == 1 and grid_filter[0] == '[]':
+                grid_filter = None
+
             temp_folder = pathlib.Path(tempfile.mkdtemp())
             output = export_timestep_images(hbjson_path=hbjson_file, config_path=config,
                                             timestamp_file_name=time_step_file_name,
