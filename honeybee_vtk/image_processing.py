@@ -312,11 +312,22 @@ def _serialized_images_and_timestamps(grid_folder: Path,
     serialized_images_folder = temp_folder.joinpath('serialized')
     serialized_images_folder.mkdir()
 
+    dec, mar, jun = [], [], []
+
+    for image_path in list(grid_folder.iterdir()):
+        if 1416 <= float(image_path.stem.split('_')[0]) <= 2156:
+            mar.append(image_path)
+        elif 3624 <= float(image_path.stem.split('_')[0]) <= 4343:
+            jun.append(image_path)
+        else:
+            dec.append(image_path)
+
+    grouped_images: List[List[Path]] = [dec, mar, jun]
+
     image_count = 0
-    for time_step_folder in list(grid_folder.iterdir()):
-        for image_path in list(time_step_folder.iterdir()):
-            _rename_image(
-                image_path, serialized_images_folder, str(image_count))
+    for month in grouped_images:
+        for image_path in month:
+            _rename_image(image_path, serialized_images_folder, str(image_count))
             time_stamps.append(_hoy_to_text(image_path))
             image_count += 1
 
