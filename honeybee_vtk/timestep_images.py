@@ -20,10 +20,10 @@ from .vtkjs.schema import DisplayMode
 from .text_actor import TextActor
 
 
-def _validate_periods(periods_path: str) -> Periods:
+def _validate_periods(periods_file_path: str) -> Periods:
     """Validate the periods file and get it as a Periods object."""
     try:
-        with open(periods_path) as fh:
+        with open(periods_file_path) as fh:
             periods = json.load(fh)
     except json.decoder.JSONDecodeError:
         raise TypeError(
@@ -33,7 +33,7 @@ def _validate_periods(periods_path: str) -> Periods:
         return Periods.parse_obj(periods)
 
 
-def _extract_periods_colors(periods_path: Path) -> Tuple[
+def _extract_periods_colors(periods_file_path: Path) -> Tuple[
         List[Tuple[DateTime, DateTime]], List[Color]
 ]:
     """Extract the periods and colors from the periods file.
@@ -48,7 +48,7 @@ def _extract_periods_colors(periods_path: Path) -> Tuple[
 
         -  A list of Color objects.
     """
-    periods = _validate_periods(periods_path)
+    periods = _validate_periods(periods_file_path)
     lb_periods, lb_colors = [], []
 
     for period in periods.periods:
@@ -355,12 +355,14 @@ def _get_data_without_thresholds(data: DataConfig) -> DataConfig:
     return data_without_thresholds
 
 
-def _get_grid_camera_dict(data: DataConfig,
-                          grid_display_mode: DisplayMode,
-                          temp_folder: Path,
-                          index_folder: Path, hbjson_path: str,
-                          target_folder: str, index: int) -> Union[
-        None, Dict[str, vtk.vtkCamera]]:
+def _get_grid_camera_dict(
+        data: DataConfig,
+        grid_display_mode: DisplayMode,
+        temp_folder: Path,
+        index_folder: Path,
+        hbjson_path: str,
+        target_folder: str,
+        index: int) -> Union[None, Dict[str, vtk.vtkCamera]]:
     """Get a dictionary of grid identifiers and vtkCameras.
 
     A dry run is done without applying thresholds and vtkCameras are extracted from
@@ -393,13 +395,11 @@ def _get_grid_camera_dict(data: DataConfig,
 
 
 def export_timestep_images(hbjson_path: str, config_path: str,
-                           index: int,
-                           grid_colors: List[Color] = [Color(249, 7, 3)],
+                           time_step: TimeStepConfig,
                            grid_display_mode: DisplayMode = DisplayMode.Shaded,
                            target_folder: str = '.',
                            grids_filter: Union[str, List[str]] = None,
                            full_match: bool = False,
-                           text_actor: TextActor = None,
                            label_images: bool = True,
                            image_width: int = 1920,
                            image_height: int = 1088) -> str:
@@ -432,32 +432,37 @@ def export_timestep_images(hbjson_path: str, config_path: str,
         A path to the target folder where all the images are written.
     """
 
-    # TODO _process_config should not have to be called each time this function is called.
+    # TODO _process_config should not have to be called each time the function is called.
     data, grids_info_path, result_paths = _process_config(config_path)
 
     parent_temp_folder = Path(tempfile.mkdtemp())
-    temp_folder, index_folder = _create_folders(parent_temp_folder, index)
+    temp_folder, index_folder = _create_folders(parent_temp_folder, time_step.index)
     _copy_grids_info(grids_info_path, index_folder)
-    _write_res_files(result_paths, index, index_folder)
+    _write_res_files(result_paths, time_step.index, index_folder)
 
     grid_camera_dict = _get_grid_camera_dict(data, grid_display_mode,
                                              temp_folder, index_folder,
                                              hbjson_path,
-                                             target_folder, index)
+                                             target_folder, time_step.index)
 
     config_path = _write_config(data, temp_folder, index_folder)
     model = Model.from_hbjson(hbjson_path, SensorGridOptions.Mesh)
+
+    if label_images:
+        text_actor = TextActor(text=f'{DateTime.from_hoy(time_step.hoy)}')
+    else:
+        text_actor = None
 
     model.to_grid_images(folder=target_folder,
                          config=config_path.as_posix(),
                          grid_display_mode=grid_display_mode,
                          text_actor=text_actor,
-                         image_name=f'{datetimes[count].hoy}',
+                         image_name=f'{time_step.hoy}',
                          grid_camera_dict=grid_camera_dict,
                          grids_filter=grids_filter,
                          full_match=full_match,
-                         grid_color=grid_colors[period_count],
-                         sub_folder_name=f'{period_count}',
+                         grid_color=Color(
+                             time_step.color[0], time_step.color[1], time_step.color[2]),
                          image_width=image_width,
                          image_height=image_height)
 
@@ -465,109 +470,3 @@ def export_timestep_images(hbjson_path: str, config_path: str,
         shutil.rmtree(parent_temp_folder)
     except Exception:
         pass
-
-    return target_folder
-
-
-def _export_timestep_images(hbjson_path: str, config_path: str,
-                            timestamp_file_name: str,
-                            periods: List[Tuple[DateTime, DateTime]] = [
-                                (DateTime(6, 21, 8), DateTime(6, 21, 19))],
-                            grid_colors: List[Color] = [Color(249, 7, 3)],
-                            grid_display_mode: DisplayMode = DisplayMode.Shaded,
-                            target_folder: str = '.',
-                            grids_filter: Union[str, List[str]] = None,
-                            full_match: bool = False,
-                            text_actor: TextActor = None,
-                            label_images: bool = True,
-                            image_width: int = 1920,
-                            image_height: int = 1088) -> str:
-    """Export images of grids for each time step in the time stamps file.
-
-    This function will find all the time stamps between the start and end datetimes
-    in the time stamps file and export images of each grids for each time step.
-
-    Args:
-        hbjson_path: Path to the HBJSON file.
-        config_path: Path to the config file.
-        timestamp_file_name: Name of the time stamps file as a string. This is simply
-            used to find the time stamps file.
-        periods: A list of tuple of start and end datetimes. Defaults to a single
-            period from 8 am to 7 pm on 21st of June.
-        grid_display_mode: Display mode of the grids. Defaults to Shaded.
-        target_folder: Path to the folder to write the images. Defaults to the current
-            folder.
-        grids_filter: A list of grid identifiers or a regex pattern as a string to
-                filter the grids. Defaults to None.
-        full_match: A boolean to filter grids by their identifiers as full matches.
-            Defaults to False.
-        text_actor: TextActor object to add to the images. Defaults to None.
-        label_images: Boolean to indicate whether to label images with the timestep
-            or not. Defaults to True.
-        image_width: Width of the images. Defaults to 1920.
-        image_height: Height of the images. Defaults to 1088.
-
-    Returns:
-        A path to the target folder where all the images are written.
-    """
-    data = _validate_config(config_path)
-    config_dir = Path(config_path).parent
-    path = Path(data.path)
-    if not path.is_dir():
-        path = config_dir.joinpath(path).resolve().absolute()
-        data.path = path.as_posix()
-        if not path.is_dir():
-            raise FileNotFoundError(f'No folder found at {data.path}')
-
-    timestamp_file_path = path.joinpath(f'{timestamp_file_name}.txt')
-    assert timestamp_file_path.exists(), f'File with name {timestamp_file_name}'
-    ' does not exist.'
-
-    grids_info_path = path.joinpath('grids_info.json')
-    result_paths = _get_result_paths(path, grids_info_path)
-
-    image_paths: List[str] = []
-    parent_temp_folder = Path(tempfile.mkdtemp())
-
-    assert len(periods) == len(grid_colors), 'Number of periods and colors' \
-        ' should be equal.'
-
-    for period_count, period in enumerate(periods):
-        assert period[0] < period[1], 'The start Datetime must be earlier than the end'\
-            ' Datetime.'
-        indexes, datetimes = write_timestep_data(timestamp_file_path, period)
-
-        for count, index in enumerate(indexes):
-            temp_folder, index_folder = _create_folders(parent_temp_folder, index)
-            _copy_grids_info(grids_info_path, index_folder)
-            _write_res_files(result_paths, index, index_folder)
-
-            grid_camera_dict = _get_grid_camera_dict(data, grid_display_mode,
-                                                     temp_folder, index_folder,
-                                                     hbjson_path,
-                                                     target_folder, index)
-
-            config_path = _write_config(data, temp_folder, index_folder)
-            model = Model.from_hbjson(hbjson_path, SensorGridOptions.Mesh)
-            if label_images:
-                text_actor = TextActor(text=f'{datetimes[count]}')
-
-            image_paths += model.to_grid_images(folder=target_folder,
-                                                config=config_path.as_posix(),
-                                                grid_display_mode=grid_display_mode,
-                                                text_actor=text_actor,
-                                                image_name=f'{datetimes[count].hoy}',
-                                                grid_camera_dict=grid_camera_dict,
-                                                grids_filter=grids_filter,
-                                                full_match=full_match,
-                                                grid_color=grid_colors[period_count],
-                                                sub_folder_name=f'{period_count}',
-                                                image_width=image_width,
-                                                image_height=image_height)
-
-    # try:
-    #     shutil.rmtree(parent_temp_folder)
-    # except Exception:
-    #     pass
-
-    return target_folder
