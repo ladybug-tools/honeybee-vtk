@@ -4,8 +4,6 @@
 import tempfile
 import cv2
 import shutil
-import sys
-from io import BytesIO
 
 from pathlib import Path
 from ladybug.dt import DateTime
@@ -297,7 +295,7 @@ def _serialized_images_and_timestamps(grid_folder: Path,
     We are iterating through all the time period folders and pulling images out of them.
     We are renaming these images based on the image count before writing to a folder
     named 'serialized'. This helps us down the line when we need to use the images in
-    order. While translating, we're also generating the time stamp annotation to put
+    order. While translating, we're also generating the time step annotation to put
     on the images later.
 
     Args:
@@ -494,15 +492,14 @@ def write_transparent_images(time_step_images_path: str, target_path: str = '.',
         temp_folder = Path(tempfile.mkdtemp())
 
         image_count = 0
-        for time_step_folder in grid_folder.iterdir():
-            for image_path in time_step_folder.iterdir():
-                image = Image.open(image_path.as_posix())
-                image = _translucent(image, transparency)
-                image = _transparent_background(image)
-                text = _hoy_to_text(image_path)
-                image = _annotate_image(image, text, 25)
-                image.save(f'{grid_images_folder}/{image_count}.png', 'PNG')
-                image_count += 1
+        for image_path in grid_folder.iterdir():
+            image = Image.open(image_path.as_posix())
+            image = _translucent(image, transparency)
+            image = _transparent_background(image)
+            text = _hoy_to_text(image_path)
+            image = _annotate_image(image, text, 25)
+            image.save(f'{grid_images_folder}/{image_count}.png', 'PNG')
+            image_count += 1
         try:
             shutil.rmtree(temp_folder)
         except Exception:
