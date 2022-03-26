@@ -279,3 +279,28 @@ class Periods(BaseModel):
         description='A list of Period objects that define the periods to be used in'
         ' generating time step images.'
     )
+
+
+class TimeStepConfig(BaseModel):
+    """Data to be used in generating an image for the time step."""
+    index: int = Field(
+        description='The index of the time step in the time step file.'
+        ' Example of such a file is sun-up-hours.txt'
+    )
+    hoy: float = Field(
+        description='The hour of the year for the time step.'
+    )
+    color: conlist((conint(ge=0, le=255)), min_items=3, max_items=3) = Field(
+        description='An array of three integer values representing R, G, and B values'
+        ' for the color that will be used to color the grid in expoted time step image.'
+        ' Values from 0 to 255 are accepted.'
+    )
+
+
+class TimeStepDataConfig(BaseModel):
+    """A list of TimeStepData objects."""
+
+    time_step_data: List[TimeStepConfig] = Field(
+        description='A list of TimeStepData objects that define data to be used in'
+        ' generating an image for that timestep.'
+    )
