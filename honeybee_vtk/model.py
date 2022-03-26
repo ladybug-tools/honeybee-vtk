@@ -692,9 +692,8 @@ class Model(object):
                         grid_folder = pathlib.Path(
                             f'{folder}/{grid_polydata.identifier}/{sub_folder_name}')
 
-                    if grid_folder.exists():
-                        shutil.rmtree(grid_folder)
-                    grid_folder.mkdir(parents=True, exist_ok=True)
+                    if not grid_folder.exists():
+                        grid_folder.mkdir(parents=True, exist_ok=True)
 
                     output += scene.export_images(folder=grid_folder,
                                                   image_type=image_type,
