@@ -802,8 +802,8 @@ class Model(object):
         """Match result data with the sensor grids in the model.
 
         It will be checked if the number of data files and the names of the
-        data files match with the grid identifiers. This function does not support validating
-        result data for other than sensor grids as of now.
+        data files match with the grid identifiers. This function does not support
+        validating result data for other than sensor grids as of now.
 
         This is a helper method to the public load_config method.
 
@@ -844,7 +844,8 @@ class Model(object):
             num_sensors = [polydata.GetNumberOfCells()
                            for polydata in self.sensor_grids.data]
 
-        # lastly check if the length of a file matches the number of sensors or meshes on grid
+        # lastly check if the length of a file matches the number of sensors or
+        # meshes on grid
         if file_lengths != num_sensors:
             length_matching = {
                 grids_info_identifiers[i]: file_lengths[i] == num_sensors[i] for i in
@@ -866,10 +867,10 @@ class Model(object):
         Args:
             data (DataConfig): A Dataconfig object.
             model: A honeybee-vtk model.
-            grid_type: A string indicating whether the sensor grid in the model is made of
-                points or meshes.
-            legend_range: A list of min and max values of the legend parameters provided by
-                the user in the config file.
+            grid_type: A string indicating whether the sensor grid in the model is
+                made of points or meshes.
+            legend_range: A list of min and max values of the legend parameters
+                provided by the user in the config file.
         """
         folder_path = pathlib.Path(data.path)
         folder_path = folder_path.as_posix()
