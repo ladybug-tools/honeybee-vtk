@@ -13,6 +13,7 @@ from collections import defaultdict
 from typing import Dict, List, Union, Tuple
 
 from honeybee.facetype import face_types
+from honeybee.typing import clean_string
 from honeybee.model import Model as HBModel
 from honeybee_radiance.sensorgrid import SensorGrid
 from honeybee_radiance.writer import _filter_by_pattern
@@ -826,7 +827,7 @@ class Model(object):
 
         # match identifiers of the grids with the identifiers of the result files
         grids_model_identifiers = [grid.identifier for grid in self.sensor_grids.data]
-        grids_info_identifiers = [grid['full_id'] for grid in grids_info]
+        grids_info_identifiers = [grid['identifier'] for grid in grids_info]
         assert grids_model_identifiers == grids_info_identifiers, 'The identifiers of'\
             ' the sensor grids in the model do not match the identifiers of the grids'\
             f' in the grids_info.json for {data.identifier}.'
@@ -886,23 +887,10 @@ class Model(object):
         else:
             upper_threshold = None
 
-        grids_info_json = folder_path.joinpath('grids_info.json')
-        with open(grids_info_json) as fh:
-            grids_info = json.load(fh)
-
-        # finding file extension for grid results
-        # This could have been avoided if the file extension was provided in the
-        # grids_info.json file.
-        for path in folder_path.rglob('*'):
-            path.stem == grids_info[0]['identifier']
-            extension = path.suffix
-
-        # result file paths
-        res_file_paths = [folder_path.joinpath(f"{grid['full_id']}{extension}")
-                          for grid in grids_info]
+        result_file_paths = _get_result_file_paths(folder_path)
 
         result = []
-        for res_file_path in res_file_paths:
+        for res_file_path in result_file_paths:
             grid_res = [float(v)
                         for v in res_file_path.read_text().splitlines()]
             result.append(grid_res)
@@ -1021,7 +1009,6 @@ def _camera_to_grid_actor(actor: Actor, data_name: str, zoom: int = 2,
     Returns:
         A Camera object.
     """
-
     cent_pt = actor.centroid
     return Camera(identifier=f'{data_name}_{actor.name}',
                   position=(cent_pt.x, cent_pt.y, cent_pt.z + camera_offset),
@@ -1052,11 +1039,32 @@ def _filter_grid_polydata(grid_polydata_lst: List[PolyData], model: HBModel,
     else:
         filtered_sensor_grids = _filter_by_pattern(
             model.properties.radiance.sensor_grids, grids_filter, full_match)
-        sensorgrid_full_identifiers = [
-            grid.full_identifier for grid in filtered_sensor_grids]
+        sensorgrid_identifiers = [
+            grid.identifier for grid in filtered_sensor_grids]
         filtered_grid_polydata_lst = [grid for grid in grid_polydata_lst
-                                      if grid.name in sensorgrid_full_identifiers]
+                                      if grid.name in sensorgrid_identifiers]
         if not filtered_grid_polydata_lst:
             raise ValueError('No grids found in the model that match the'
                              f' filter {grids_filter}.')
         return filtered_grid_polydata_lst
+
+
+def _get_result_file_paths(folder_path: Union[str, pathlib.Path]):
+
+    if not isinstance(folder_path, pathlib.Path):
+        folder_path = pathlib.Path(folder_path)
+
+    grids_info_json = folder_path.joinpath('grids_info.json')
+    with open(grids_info_json) as fh:
+        grids_info = json.load(fh)
+
+    # finding file extension for grid results
+    # This could have been avoided if the file extension was provided in the
+    # grids_info.json file.
+    for path in folder_path.rglob('*'):
+        path.stem == grids_info[0]['identifier']
+        extension = path.suffix
+
+    # result file paths
+    return [folder_path.joinpath(f"{grid['full_id']}{extension}")
+            for grid in grids_info]
