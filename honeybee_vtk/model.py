@@ -637,7 +637,7 @@ class Model(object):
                 of a single color. Defaults to None.
             sub_folder_name: A text string that sets the name of the subfolder where
                 the images will be exported. This is useful when the images are to be
-                exported for multiple time periods such as whole day of June 21, and 
+                exported for multiple time periods such as whole day of June 21, and
                 the whole day of March, 21. Defaults to None.
 
         Returns:
@@ -872,6 +872,9 @@ class Model(object):
                 the user in the config file.
         """
         folder_path = pathlib.Path(data.path)
+        folder_path = folder_path.as_posix()
+        folder_path = pathlib.Path(folder_path)
+
         identifier = data.identifier
         if isinstance(data.lower_threshold, float):
             lower_threshold = data.lower_threshold
@@ -886,24 +889,21 @@ class Model(object):
         with open(grids_info_json) as fh:
             grids_info = json.load(fh)
 
-        # grid identifier from grids_info.json
-        file_names = [grid['identifier'] for grid in grids_info]
-
         # finding file extension for grid results
-        for path in folder_path.iterdir():
-            if path.stem == file_names[0]:
-                extension = path.suffix
-                break
+        # This could have been avoided if the file extension was provided in the
+        # grids_info.json file.
+        for path in folder_path.rglob('*'):
+            path.stem == grids_info[0]['identifier']
+            extension = path.suffix
 
-        # file paths to the result files
-        file_paths = [folder_path.joinpath(name+extension)
-                      for name in file_names]
+        # result file paths
+        res_file_paths = [folder_path.joinpath(f"{grid['full_id']}{extension}")
+                          for grid in grids_info]
 
         result = []
-        for file_path in file_paths:
-            res_file = pathlib.Path(file_path)
+        for res_file_path in res_file_paths:
             grid_res = [float(v)
-                        for v in res_file.read_text().splitlines()]
+                        for v in res_file_path.read_text().splitlines()]
             result.append(grid_res)
 
         ds = self.get_modeldataset(DataSetNames.grid)
