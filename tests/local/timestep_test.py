@@ -1,9 +1,11 @@
 """Unit test for exporting timestep images and image processing."""
 
 import tempfile
+import json
 from pathlib import Path
 from ladybug.dt import DateTime
-from honeybee_vtk.timestep_images import export_timestep_images
+from honeybee_vtk.config import TimeStepConfig, TimeStepDataConfig
+from honeybee_vtk.timestep_images import export_timestep_images, write_timestep_data
 from honeybee_vtk.image_processing import write_gif, write_transparent_images
 from ladybug.color import Color
 
@@ -12,16 +14,27 @@ def test_timestep_images_export(temp_folder):
     """Test if timestep images are exported."""
     hbjson_path = r'tests/assets/gridbased_with_timesteps/inputs/model/gridbased.hbjson'
     config_path = r'tests/assets/gridbased_with_timesteps/config.json'
+    time_step_file_path = r'tests/assets/gridbased_with_timesteps/outputs/direct-sun-hours/sun-up-hours.txt'
+    periods_file_path = r'tests/assets/gridbased_with_timesteps/periods.json'
 
-    periods = [
-        (DateTime(12, 21, 8), DateTime(12, 21, 9)),
-        (DateTime(3, 21, 8), DateTime(3, 21, 9)),
-        (DateTime(6, 21, 8), DateTime(6, 21, 9))
-    ]
-    grid_colors = [Color(230, 236, 15), Color(248, 174, 5), Color(249, 7, 3)]
+    time_step_data_json_path = write_timestep_data(
+        time_step_file_path, periods_file_path, target_folder=temp_folder.as_posix())
 
-    export_timestep_images(hbjson_path, config_path, 'sun-up-hours',
-                           periods, grid_colors,
+    try:
+        with open(time_step_data_json_path) as fh:
+            config = json.load(fh)
+    except json.decoder.JSONDecodeError:
+        raise TypeError(
+            'Not a valid json file.'
+        )
+    else:
+        data = TimeStepDataConfig.parse_obj(config)
+        for time_step_data in data.time_step_data:
+            export_timestep_images(hbjson_path, config_path, time_step_data,
+                                   target_folder=temp_folder.as_posix(),
+                                   label_images=False)
+
+    export_timestep_images(hbjson_path, config_path, time_step_data,
                            target_folder=temp_folder.as_posix(),
                            label_images=False)
 
