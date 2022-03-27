@@ -2,6 +2,7 @@
 
 import os
 import shutil
+import pathlib
 import pytest
 from honeybee_vtk.model import Model
 from honeybee_vtk.vtkjs.schema import SensorGridOptions
@@ -19,16 +20,22 @@ def test_grid_to_images():
         shutil.rmtree(target_folder)
     os.mkdir(target_folder)
 
-    file_names = ['Daylight-Factor_TestRoom_1.png', 'Daylight-Factor_TestRoom_2.png',
-                  'UDI_TestRoom_1.png', 'UDI_TestRoom_2.png', ]
+    target_folder = pathlib.Path(target_folder)
+    grid_1_images = ['Daylight-Factor_TestRoom_1.png', 'UDI_TestRoom_1.png', ]
+
+    grid_2_images = ['Daylight-Factor_TestRoom_2.png', 'UDI_TestRoom_2.png', ]
+
     model.to_grid_images(config=json_path, folder=target_folder)
-    for file in os.listdir(target_folder):
-        assert file in file_names
+
+    for file in target_folder.joinpath('TestRoom_1').iterdir():
+        assert file.name in grid_1_images
+    for file in target_folder.joinpath('TestRoom_2').iterdir():
+        assert file.name in grid_2_images
 
     shutil.rmtree(target_folder)
 
 
-def test_grid_to_images():
+def test_grid_to_images_filter():
     """Test if grids selected grids are being exported."""
     file_path = r'tests/assets/gridbased.hbjson'
     json_path = r'tests/assets/config/valid.json'

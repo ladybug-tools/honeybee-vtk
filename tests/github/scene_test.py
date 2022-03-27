@@ -7,7 +7,7 @@ import os
 import shutil
 import vtk
 import csv
-from honeybee_vtk.model import Model
+from honeybee_vtk.model import Model, _get_result_file_paths
 from honeybee_vtk.scene import Scene
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 from honeybee_vtk.camera import Camera
@@ -89,10 +89,11 @@ def test_write_gltf():
     target_folder = r'tests/assets/temp'
 
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
+    result_file_paths = _get_result_file_paths(results_folder)
 
+    # Get results
     daylight_factor = []
-    for grid in model.sensor_grids.data:
-        res_file = pathlib.Path(results_folder, f'{grid.identifier}.res')
+    for res_file in result_file_paths:
         grid_res = [float(v) for v in res_file.read_text().splitlines()]
         daylight_factor.append(grid_res)
 
@@ -125,11 +126,11 @@ def test_adding_data():
     results_folder = r'tests/assets/df_results'
 
     model = Model.from_hbjson(file_path, load_grids=SensorGridOptions.Mesh)
+    result_file_paths = _get_result_file_paths(results_folder)
 
     # Get results
     daylight_factor = []
-    for grid in model.sensor_grids.data:
-        res_file = pathlib.Path(results_folder, f'{grid.identifier}.res')
+    for res_file in result_file_paths:
         grid_res = [float(v) for v in res_file.read_text().splitlines()]
         daylight_factor.append(grid_res)
 
