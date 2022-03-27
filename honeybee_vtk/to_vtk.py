@@ -95,7 +95,7 @@ def convert_sensor_grid(
             )
         grid_data = convert_mesh(sensor_grid.mesh)
 
-    grid_data.identifier = sensor_grid.full_identifier
+    grid_data.identifier = sensor_grid.identifier
     grid_data.name = sensor_grid.display_name
     grid_data.type = 'Grid'
     return grid_data
