@@ -17,8 +17,11 @@ def test_timestep_images_export(temp_folder):
     time_step_file_path = r'tests/assets/gridbased_with_timesteps/outputs/direct-sun-hours/sun-up-hours.txt'
     periods_file_path = r'tests/assets/gridbased_with_timesteps/periods.json'
 
+    time_step_config_folder = temp_folder.joinpath('time_step_data')
+    images_folder = temp_folder.joinpath('images')
+
     time_step_data_json_path = write_timestep_data(
-        time_step_file_path, periods_file_path, target_folder=temp_folder.as_posix())
+        time_step_file_path, periods_file_path, time_step_config_folder.as_posix())
 
     try:
         with open(time_step_data_json_path) as fh:
@@ -31,11 +34,11 @@ def test_timestep_images_export(temp_folder):
         data = TimeStepDataConfig.parse_obj(config)
         for time_step_data in data.time_step_data:
             export_timestep_images(hbjson_path, config_path, time_step_data,
-                                   target_folder=temp_folder.as_posix(),
+                                   target_folder=temp_folder,
                                    label_images=False)
 
     export_timestep_images(hbjson_path, config_path, time_step_data,
-                           target_folder=temp_folder.as_posix(),
+                           target_folder=images_folder.as_posix(),
                            label_images=False)
 
     assert len(list(temp_folder.iterdir())) > 0
@@ -55,8 +58,10 @@ def test_timestep_images_export(temp_folder):
 def test_gif_export(temp_folder):
     """Test if GIFs are being created correctly."""
 
+    images_folder = temp_folder.joinpath('images')
+
     gif_folder = Path(tempfile.mkdtemp())
-    write_gif(temp_folder, gif_folder.as_posix())
+    write_gif(images_folder.as_posix(), gif_folder.as_posix())
 
     parent_folder_names = ('TestRoom_1_gif', 'TestRoom_2_gif')
 
@@ -67,8 +72,11 @@ def test_gif_export(temp_folder):
 def test_transparent_images_export(temp_folder):
     """Test if GIFs are being created correctly."""
 
+    images_folder = temp_folder.joinpath('images')
+
     transparent_images_folder = Path(tempfile.mkdtemp())
-    write_transparent_images(temp_folder, transparent_images_folder.as_posix())
+    write_transparent_images(images_folder.as_posix(),
+                             transparent_images_folder.as_posix())
 
     parent_folder_names = ('TestRoom_1_images', 'TestRoom_2_images')
     image_names = ('0', '1', '2')
