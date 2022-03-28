@@ -304,7 +304,7 @@ def export_grid_images(
         return sys.exit(0)
 
 
-@export.command('timestep-images')
+@export.command('time-step-images')
 @click.argument('hbjson-file')
 @click.option(
     '--config', '-cf', help='File Path to the config json file which can be used to'

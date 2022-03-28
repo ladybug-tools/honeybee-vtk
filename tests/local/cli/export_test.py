@@ -75,7 +75,7 @@ def test_export_timestep_images():
 
     result = runner.invoke(
         export, [
-            'timestep-images',
+            'time-step-images',
             file_path, '--config', config_path, '--time-step-file', time_step_path,
             '--folder', target_folder, '--grids-filter', 'TestRoom_1'])
 
