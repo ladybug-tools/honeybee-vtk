@@ -20,7 +20,8 @@ def post_process():
     default='.', show_default=True, help='Path to target folder.',
 )
 @click.option(
-    '--gradient-transparency/--no-gradient-transparency', default=False, show_default=True,
+    '--gradient-transparency/--no-gradient-transparency', default=False,
+    show_default=True,
     help='Whether to use a gradient transparency. or not. If chosen a gradient of'
     ' transparency will be used. Which will make the image in the back more transparent'
     ' compared to the image in the front. Defaults to False which will use a flat'
@@ -49,11 +50,11 @@ def export_gif(images_folder, folder, gradient_transparency, gif_duration,
     Args:
         images_folder: Path to the folder containing images to create GIF from.
         folder: Path to target folder where the GIF will be written.
-        gradient_transparency: Whether to use a gradient transparency. or not. If chosen a
-            gradient of transparency will be used. Which will make the image in the back
-            more transparent compared to the image in the front. Defaults to False which
-            will use a flat transparency. which means the all images will have same 
-            amount of transparency. Defaults to using a flat transparency.
+        gradient_transparency: Whether to use a gradient transparency. or not. If
+            chosen a gradient of transparency will be used. Which will make the image 
+            in the back more transparent compared to the image in the front. Defaults 
+            to False which will use a flat transparency. which means the all images 
+            will have same amount of transparency. Defaults to using a flat transparency.
         gif_duration: Duration of each frame in milliseconds. Default is 1000.
         gif_loop_count: Number of times to loop the gif. Default is 0 which means loop
             forever.
