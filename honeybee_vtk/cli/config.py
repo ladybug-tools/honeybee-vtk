@@ -1,4 +1,5 @@
-"""Command to write a config file to be consumed by honeybee-vtk."""
+"""Honeybee-vtk command to write a config file to be consumed by honeybee-vtk."""
+
 import click
 import json
 import sys
