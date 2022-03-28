@@ -4,6 +4,7 @@ import click
 from .translate import translate
 from .export import export
 from .config import config
+from .timestepdata import timestepdata
 from honeybee.cli import main
 
 # command group for all radiance extension commands.
@@ -19,5 +20,6 @@ def vtk():
 vtk.add_command(translate)
 vtk.add_command(export)
 vtk.add_command(config)
+vtk.add_command(timestepdata)
 
 main.add_command(vtk)
