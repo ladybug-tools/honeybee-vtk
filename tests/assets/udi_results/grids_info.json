@@ -1,1 +1,16 @@
-[{"name": "TestRoom_1", "identifier": "TestRoom_1", "count": 416, "group": "", "full_id": "TestRoom_1"}, {"name": "TestRoom_2", "identifier": "TestRoom_2", "count": 468, "group": "", "full_id": "TestRoom_2"}]
+[
+  {
+    "name": "TestRoom_1",
+    "identifier": "TestRoom_1",
+    "count": 416,
+    "group": "room_1",
+    "full_id": "room_1/TestRoom_1"
+  },
+  {
+    "name": "TestRoom_2",
+    "identifier": "TestRoom_2",
+    "count": 468,
+    "group": "room_2",
+    "full_id": "room_2/TestRoom_2"
+  }
+]
