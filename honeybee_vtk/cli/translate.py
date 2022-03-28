@@ -1,4 +1,4 @@
-"""honeybee-vtk command line interface."""
+"""honeybee-vtk command to translate HBJSON to different formats."""
 
 import sys
 import pathlib

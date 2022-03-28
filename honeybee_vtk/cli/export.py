@@ -1,4 +1,4 @@
-
+"""Honeybee-vtk command to export media from an HBJSON file."""
 
 import pathlib
 import sys
