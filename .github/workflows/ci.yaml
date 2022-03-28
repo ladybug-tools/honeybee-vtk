@@ -42,7 +42,7 @@ jobs:
 
       - name: docker test
         run:
-          docker run hbvtk:latest python -m pytest tests/github
+          docker run hbvtk:latest python -m pytest tests
 
   deploy:
     name: Deploy to GitHub and PyPI
