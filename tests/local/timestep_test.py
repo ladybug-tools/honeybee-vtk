@@ -40,10 +40,6 @@ def test_timestep_images_export(temp_folder):
                                    target_folder=temp_folder,
                                    label_images=False)
 
-    export_timestep_images(hbjson_path, config_path, time_step_data,
-                           target_folder=images_folder.as_posix(),
-                           label_images=False)
-
     assert len(list(temp_folder.iterdir())) > 0
 
     image_names = (
