@@ -62,10 +62,10 @@ def test_gif_export(temp_folder):
     gif_folder = Path(tempfile.mkdtemp())
     write_gif(images_folder.as_posix(), gif_folder.as_posix())
 
-    parent_folder_names = ('TestRoom_1_gif', 'TestRoom_2_gif')
+    gif_names = ('TestRoom_1', 'TestRoom_2')
 
-    for item in gif_folder.rglob('*.gif'):
-        assert item.parent.stem in parent_folder_names and item.stem == 'output'
+    for file_path in gif_folder.rglob('*.gif'):
+        assert file_path.stem in gif_names
 
 
 def test_transparent_images_export(temp_folder):
