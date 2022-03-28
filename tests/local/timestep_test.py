@@ -18,7 +18,9 @@ def test_timestep_images_export(temp_folder):
     periods_file_path = r'tests/assets/gridbased_with_timesteps/periods.json'
 
     time_step_config_folder = temp_folder.joinpath('time_step_data')
+    time_step_config_folder.mkdir()
     images_folder = temp_folder.joinpath('images')
+    images_folder.mkdir()
 
     time_step_data_json_path = write_timestep_data(
         time_step_file_path, periods_file_path, time_step_config_folder.as_posix())
