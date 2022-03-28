@@ -14,7 +14,7 @@ def timestepdata():
     pass
 
 
-@timestepdata.command('timestep-data')
+@timestepdata.command('time-step-data')
 @click.option(
     '--time-step-file', '-tsf', type=click.Path(exists=True), default=None,
     show_default=True, required=True, help='Path to the time step file such as,'
