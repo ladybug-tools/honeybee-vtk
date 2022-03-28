@@ -386,7 +386,6 @@ def _transparent_translucent(temp_folder: Path, images_folder: Path,
 
 def write_gif(time_step_images_path: str, target_path: str = '.',
               gradient_transparency: bool = False,
-              gif_name: str = 'output',
               gif_duration: int = 1000,
               gif_loop_count: int = 0,
               linger_last_frame: int = 3) -> str:
@@ -404,7 +403,6 @@ def write_gif(time_step_images_path: str, target_path: str = '.',
             the image in the back more transparent compared to the image in the front.
             Defaults to False which will use a flat transparency. which means the
             all images will have same amount of transparency.
-        gif_name: The name of the gif. Defaults to 'output'.
         gif_duration: The duration of the gif in milliseconds. Defaults to 1000.
         gif_loop_count: The number of times to loop the gif. Defaults to 0 which will
             loop infinitely.
@@ -426,11 +424,6 @@ def write_gif(time_step_images_path: str, target_path: str = '.',
     assert target_folder.is_dir(), 'The target folder must be a directory.'
 
     for grid_folder in time_step_images_folder.iterdir():
-
-        grid_gif_folder = target_folder.joinpath(f'{grid_folder.stem}_gif')
-        if grid_gif_folder.is_dir():
-            shutil.rmtree(grid_gif_folder)
-        grid_gif_folder.mkdir()
 
         temp_folder = Path(tempfile.mkdtemp())
 
@@ -455,7 +448,7 @@ def write_gif(time_step_images_path: str, target_path: str = '.',
                                              len(time_stamp_strings))
 
         _gif(temp_folder, annotated_folder,
-             grid_gif_folder, len(time_stamp_strings), gif_name,
+             target_folder, len(time_stamp_strings), grid_folder.stem,
              gif_duration, gif_loop_count, linger_last_frame)
 
         try:
