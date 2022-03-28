@@ -89,7 +89,7 @@ def write_timestep_data(
     that contains data required to generate image of each time step.
 
     Args:
-        time_step_file_path: Path to the time step file.
+        time_step_file_path: Path to the time step file such as sun-up-hours.txt.
         periods_file_path: Path to the periods file.
         file_name: Name of the JSON file. Defaults to 'timestep_data'.
         target_folder: Path to the folder where the JSON file will be saved.
