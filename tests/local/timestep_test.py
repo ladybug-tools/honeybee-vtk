@@ -77,8 +77,9 @@ def test_transparent_images_export(temp_folder):
     write_transparent_images(images_folder.as_posix(),
                              transparent_images_folder.as_posix())
 
-    parent_folder_names = ('TestRoom_1_images', 'TestRoom_2_images')
+    parent_folder_names = ('TestRoom_1_trans_images', 'TestRoom_2_trans_images')
     image_names = ('0', '1', '2')
 
-    for item in transparent_images_folder.rglob('*.png'):
-        assert item.parent.stem in parent_folder_names and item.stem in image_names
+    for file_path in transparent_images_folder.rglob('*.png'):
+        assert file_path.parent.stem in parent_folder_names and \
+            file_path.stem in image_names
