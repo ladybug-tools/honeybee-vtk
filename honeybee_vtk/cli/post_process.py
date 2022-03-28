@@ -7,12 +7,12 @@ from honeybee_vtk.image_processing import write_gif, write_transparent_images
 
 
 @click.group()
-def postprocess():
+def post_process():
     """Honeybee VTK command entry point."""
     pass
 
 
-@postprocess.command('gif')
+@post_process.command('gif')
 @click.argument('images-folder')
 @click.option(
     '--folder', '-f', type=click.Path(exists=False, file_okay=False, resolve_path=True,
@@ -73,7 +73,7 @@ def export_gif(images_folder, folder, gradient_transparency, gif_duration,
         return sys.exit(0)
 
 
-@postprocess.command('transparent-images')
+@post_process.command('transparent-images')
 @click.argument('images-folder')
 @click.option(
     '--folder', '-f', type=click.Path(exists=False, file_okay=False, resolve_path=True,

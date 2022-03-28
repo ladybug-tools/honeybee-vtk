@@ -3,7 +3,7 @@
 
 from pathlib import Path
 from click.testing import CliRunner
-from honeybee_vtk.cli.post_process import postprocess
+from honeybee_vtk.cli.post_process import post_process
 from ladybug.futil import nukedir
 
 
@@ -18,7 +18,7 @@ def test_gif():
         target_folder.mkdir()
 
     result = runner.invoke(
-        postprocess, [
+        post_process, [
             'gif', images_folder, '--folder', target_folder,
             '--gradient-transparency', '--gif-duration', 1000,
             '--gif-loop-count', 0, '--gif-linger-last-frame', 3])
@@ -43,7 +43,7 @@ def test_transparent_images():
         target_folder.mkdir()
 
     result = runner.invoke(
-        postprocess, [
+        post_process, [
             'transparent-images', images_folder, '--folder', target_folder,
             '--transparency', 0.6])
 
