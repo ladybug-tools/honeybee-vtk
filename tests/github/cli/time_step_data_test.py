@@ -20,7 +20,7 @@ def test_time_step_data():
 
     result = runner.invoke(
         timestepdata, [
-            'timestep-data',
+            'time-step-data',
             '--time-step-file', time_step_file_path,
             '--periods-file', periods_file_path, '--file-name', 'timestep_data',
             '--folder', target_folder])
