@@ -63,62 +63,33 @@ def test_export_grid_images():
     nukedir(target_folder, True)
 
 
-# def test_export_timestep_gif():
-#     """"Test exporting a gif for the timesteps."""
-#     runner = CliRunner()
-#     target_folder = r'tests/assets/target'
-#     file_path = r'tests/assets/gridbased_with_timesteps/inputs/model/gridbased.hbjson'
-#     config_path = r'tests/assets/gridbased_with_timesteps/config.json'
-#     peridos_path = r'tests/assets/gridbased_with_timesteps/periods.json'
+def test_export_timestep_images():
+    """"Test exporting a gif for the timesteps."""
+    runner = CliRunner()
+    target_folder = r'tests/assets/target'
+    file_path = r'tests/assets/gridbased_with_timesteps/inputs/model/gridbased.hbjson'
+    config_path = r'tests/assets/gridbased_with_timesteps/config.json'
+    time_step_path = r'tests/assets/gridbased_with_timesteps/time_steps.json'
 
-#     nukedir(target_folder, True)
+    nukedir(target_folder, True)
 
-#     result = runner.invoke(
-#         export, [
-#             file_path, '--folder', target_folder, '-go', 'meshes', '--config',
-#             config_path, '-sel', 'timesteps', '-tfn', 'sun-up-hours', '-pf',
-#             peridos_path])
+    result = runner.invoke(
+        export, [
+            'timestep-images',
+            file_path, '--config', config_path, '--time-step-file', time_step_path,
+            '--folder', target_folder, '--grids-filter', 'TestRoom_1'])
 
-#     assert result.exit_code == 0
+    assert result.exit_code == 0
 
-#     parent_folder_names = ('TestRoom_1_gif', 'TestRoom_2_gif')
+    target_folder = Path(target_folder)
 
-#     target_folder = Path(target_folder)
-#     for item in target_folder.rglob('*.gif'):
-#         assert item.parent.stem in parent_folder_names and item.stem == 'output'
+    file_names = (
+        '1904.5_sun-up-hours_TestRoom_1',
+        '4112.5_sun-up-hours_TestRoom_1',
+        '8504.5_sun-up-hours_TestRoom_1'
+    )
 
-#     nukedir(target_folder, True)
+    for file_path in target_folder.rglob('*.png'):
+        assert file_path.parent.stem == 'TestRoom_1' and file_path.stem in file_names
 
-
-# def test_export_timestep_gif_and_images():
-#     """"Test exporting a gif and transparent images for the timesteps."""
-#     runner = CliRunner()
-#     target_folder = r'tests/assets/target'
-#     file_path = r'tests/assets/gridbased_with_timesteps/inputs/model/gridbased.hbjson'
-#     config_path = r'tests/assets/gridbased_with_timesteps/config.json'
-#     peridos_path = r'tests/assets/gridbased_with_timesteps/periods.json'
-
-#     nukedir(target_folder, True)
-
-#     result = runner.invoke(
-#         export, [
-#             file_path, '--folder', target_folder, '-go', 'meshes', '--config',
-#             config_path, '-sel', 'timesteps', '-tfn', 'sun-up-hours', '-pf',
-#             peridos_path, '--transparent-images'])
-
-#     assert result.exit_code == 0
-
-#     gif_parent_folder_names = ('TestRoom_1_gif', 'TestRoom_2_gif')
-
-#     target_folder = Path(target_folder)
-#     for item in target_folder.rglob('*.gif'):
-#         assert item.parent.stem in gif_parent_folder_names and item.stem == 'output'
-
-#     images_parent_folder_names = ('TestRoom_1_images', 'TestRoom_2_images')
-#     image_names = ('0', '1', '2')
-
-#     for item in target_folder.rglob('*.png'):
-#         assert item.parent.stem in images_parent_folder_names and \
-#             item.stem in image_names
-
-#     nukedir(target_folder, True)
+    nukedir(target_folder, True)
