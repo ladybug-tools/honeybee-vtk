@@ -1061,9 +1061,11 @@ def _get_result_file_paths(folder_path: Union[str, pathlib.Path]):
     # finding file extension for grid results
     # This could have been avoided if the file extension was provided in the
     # grids_info.json file.
+    extension = None
     for path in folder_path.rglob('*'):
-        path.stem == grids_info[0]['identifier']
-        extension = path.suffix
+        if path.stem == grids_info[0]['identifier']:
+            extension = path.suffix
+            break
 
     # result file paths
     return [folder_path.joinpath(f"{grid['full_id']}{extension}")
