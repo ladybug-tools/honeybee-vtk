@@ -479,7 +479,8 @@ def write_transparent_images(time_step_images_path: str, target_path: str = '.',
     """
 
     time_step_images_folder = Path(time_step_images_path)
-    assert time_step_images_folder.is_dir(), 'The images folder must be a directory.'
+    assert time_step_images_folder.is_dir(), 'The images folder must be a directory.' \
+        f' Make sure the path is correct. Given path is {time_step_images_path}'
     assert len(list(time_step_images_folder.glob('*'))) > 0, 'The images folder must'
     ' not be empty.'
 
@@ -488,7 +489,7 @@ def write_transparent_images(time_step_images_path: str, target_path: str = '.',
 
     for grid_folder in time_step_images_folder.iterdir():
 
-        grid_images_folder = target_folder.joinpath(f'{grid_folder.stem}_images')
+        grid_images_folder = target_folder.joinpath(f'{grid_folder.stem}_trans_images')
         if grid_images_folder.is_dir():
             shutil.rmtree(grid_images_folder)
         grid_images_folder.mkdir()
