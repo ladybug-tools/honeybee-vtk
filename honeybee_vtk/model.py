@@ -888,9 +888,9 @@ class Model(object):
             upper_threshold = None
 
         result_file_paths = _get_result_file_paths(folder_path)
-
         result = []
         for res_file_path in result_file_paths:
+            assert res_file_path.exists(), f'No file found at {res_file_path}'
             grid_res = [float(v)
                         for v in res_file_path.read_text().splitlines()]
             result.append(grid_res)
