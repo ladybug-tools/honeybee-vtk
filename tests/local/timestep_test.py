@@ -23,7 +23,8 @@ def test_timestep_images_export(temp_folder):
     images_folder.mkdir()
 
     time_step_data_json_path = write_timestep_data(
-        time_step_file_path, periods_file_path, time_step_config_folder.as_posix())
+        time_step_file_path, periods_file_path,
+        target_folder=time_step_config_folder.as_posix())
 
     try:
         with open(time_step_data_json_path) as fh:
