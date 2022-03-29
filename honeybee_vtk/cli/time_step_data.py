@@ -8,13 +8,13 @@ from honeybee_vtk.timestep_images import write_timestep_data
 
 
 @click.group()
-def timestepdata():
+def time_step_data():
     """Honeybee-vtk command to write a JSON file that contains data to generate
     images of each time step."""
     pass
 
 
-@timestepdata.command('time-step-data')
+@time_step_data.command('time-step-data')
 @click.option(
     '--time-step-file', '-tsf', type=click.Path(exists=True), default=None,
     show_default=True, required=True, help='Path to the time step file such as,'

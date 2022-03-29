@@ -3,7 +3,7 @@
 
 from pathlib import Path
 from click.testing import CliRunner
-from honeybee_vtk.cli.timestepdata import timestepdata
+from honeybee_vtk.cli.time_step_data import time_step_data
 from ladybug.futil import nukedir
 
 
@@ -19,7 +19,7 @@ def test_time_step_data():
         target_folder.mkdir()
 
     result = runner.invoke(
-        timestepdata, [
+        time_step_data, [
             'time-step-data',
             '--time-step-file', time_step_file_path,
             '--periods-file', periods_file_path, '--file-name', 'timestep_data',
