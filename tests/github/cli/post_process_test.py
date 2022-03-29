@@ -20,8 +20,8 @@ def test_gif():
     result = runner.invoke(
         post_process, [
             'gif', images_folder, '--folder', target_folder,
-            '--gradient-transparency', '--gif-duration', 1000,
-            '--gif-loop-count', 0, '--gif-linger-last-frame', 3])
+            '--gradient-transparency', '--duration', 1000,
+            '--loop-count', 0, '--linger-last-frame', 3])
 
     assert result.exit_code == 0
 
