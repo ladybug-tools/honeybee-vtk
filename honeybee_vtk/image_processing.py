@@ -386,8 +386,8 @@ def _transparent_translucent(temp_folder: Path, images_folder: Path,
 
 def write_gif(time_step_images_path: str, target_path: str = '.',
               gradient_transparency: bool = False,
-              gif_duration: int = 1000,
-              gif_loop_count: int = 0,
+              duration: int = 1000,
+              loop_count: int = 0,
               linger_last_frame: int = 3) -> str:
     """Export a GIF from a time step images.
 
@@ -403,8 +403,8 @@ def write_gif(time_step_images_path: str, target_path: str = '.',
             the image in the back more transparent compared to the image in the front.
             Defaults to False which will use a flat transparency. which means the
             all images will have same amount of transparency.
-        gif_duration: The duration of the gif in milliseconds. Defaults to 1000.
-        gif_loop_count: The number of times to loop the gif. Defaults to 0 which will
+        duration: The duration of the gif in milliseconds. Defaults to 1000.
+        loop_count: The number of times to loop the gif. Defaults to 0 which will
             loop infinitely.
         linger_last_frame: An integer that will make the last frame linger for longer
             than the duration. If set to 0, the last frame will not linger. Setting it
@@ -449,7 +449,7 @@ def write_gif(time_step_images_path: str, target_path: str = '.',
 
         _gif(temp_folder, annotated_folder,
              target_folder, len(time_stamp_strings), grid_folder.stem,
-             gif_duration, gif_loop_count, linger_last_frame)
+             duration, loop_count, linger_last_frame)
 
         try:
             shutil.rmtree(temp_folder)
