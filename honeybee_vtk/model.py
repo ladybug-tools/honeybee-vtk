@@ -213,33 +213,37 @@ class Model(object):
         """Load sensor grids."""
         if self._sensor_grids_option == SensorGridOptions.Ignore:
             return
-        if hasattr(self._hb_model.properties, 'radiance'):
+        if hasattr(self._hb_model.properties, 'radiance') and \
+                self._hb_model.properties.radiance.sensor_grids:
 
-            filtered_grids = _filter_by_pattern(
-                self._hb_model.properties.radiance.sensor_grids, grids_filter,
-                full_match)
+            if not grids_filter or grids_filter == '*':
+                grids = self._hb_model.properties.radiance.sensor_grids
+            else:
+                grids = _filter_by_pattern(
+                    self._hb_model.properties.radiance.sensor_grids, grids_filter,
+                    full_match)
 
-            assert len(filtered_grids) > 0, 'No sensor grids found in the model with'\
-                ' that grids filter.'
+            assert len(grids) > 0, 'No sensor grids found in the model with'\
+                f' the grids filter {grids_filter}.'
 
             # list of unique sensor_grid identifiers in the model
-            ids = set([grid.identifier for grid in filtered_grids])
+            ids = set([grid.identifier for grid in grids])
 
             # if all the grids have the same identifier, merge them into one grid
             if len(ids) == 1:
-                id = filtered_grids[0].identifier
+                id = grids[0].identifier
 
                 # if it's just one grid, use it
-                if len(filtered_grids) == 1:
-                    sensor_grid = filtered_grids[0]
+                if len(grids) == 1:
+                    sensor_grid = grids[0]
                 # if there are more than one grid, merge them first
                 else:
-                    grid_meshes = [grid.mesh for grid in filtered_grids]
+                    grid_meshes = [grid.mesh for grid in grids]
                     if all(grid_meshes):
                         mesh = Mesh3D.join_meshes(grid_meshes)
                         sensor_grid = SensorGrid.from_mesh3d(id, mesh)
                     else:
-                        sensors = [sensor for grid in filtered_grids for sensor
+                        sensors = [sensor for grid in grids for sensor
                                    in grid.sensors]
                         sensor_grid = SensorGrid(id, sensors)
 
@@ -248,7 +252,7 @@ class Model(object):
                 )
             # else add them as separate grids
             else:
-                for sensor_grid in filtered_grids:
+                for sensor_grid in grids:
                     self._sensor_grids.data.append(
                         convert_sensor_grid(sensor_grid, self._sensor_grids_option)
                     )
