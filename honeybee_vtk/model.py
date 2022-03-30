@@ -209,22 +209,14 @@ class Model(object):
         ):
             yield dataset
 
-    def _load_grids(self, grids_filter, full_match) -> None:
+    def _load_grids(self) -> None:
         """Load sensor grids."""
         if self._sensor_grids_option == SensorGridOptions.Ignore:
             return
         if hasattr(self._hb_model.properties, 'radiance') and \
                 self._hb_model.properties.radiance.sensor_grids:
 
-            if not grids_filter or grids_filter == '*':
-                grids = self._hb_model.properties.radiance.sensor_grids
-            else:
-                grids = _filter_by_pattern(
-                    self._hb_model.properties.radiance.sensor_grids, grids_filter,
-                    full_match)
-
-            assert len(grids) > 0, 'No sensor grids found in the model with'\
-                f' the grids filter {grids_filter}.'
+            grids = self._hb_model.properties.radiance.sensor_grids
 
             # list of unique sensor_grid identifiers in the model
             ids = set([grid.identifier for grid in grids])
@@ -247,15 +239,30 @@ class Model(object):
                                    in grid.sensors]
                         sensor_grid = SensorGrid(id, sensors)
 
-                self._sensor_grids.data.append(
+                # TODO extract this to a function
+                try:
                     convert_sensor_grid(sensor_grid, self._sensor_grids_option)
-                )
+                except ValueError:
+                    warnings.warn(f'Grid {id} does not have mesh information. Hence, '
+                                  'it will not be converted to a sensor grid. Try with'
+                                  ' SensorGridOptions.Sensors.')
+                else:
+                    self._sensor_grids.data.append(convert_sensor_grid(
+                        sensor_grid, self._sensor_grids_option))
             # else add them as separate grids
             else:
                 for sensor_grid in grids:
-                    self._sensor_grids.data.append(
+                    # TODO extract this to a function
+                    try:
                         convert_sensor_grid(sensor_grid, self._sensor_grids_option)
-                    )
+                    except ValueError:
+                        warnings.warn(f'Grid {sensor_grid.identifier} does not have'
+                                      ' mesh information. Hence, it will not be'
+                                      ' converted to a sensor grid. Try with'
+                                      ' SensorGridOptions.Sensors.')
+                    else:
+                        self._sensor_grids.data.append(convert_sensor_grid(
+                            sensor_grid, self._sensor_grids_option))
 
     def _load_cameras(self) -> None:
         """Load radiance views."""
