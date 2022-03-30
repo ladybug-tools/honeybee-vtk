@@ -630,6 +630,7 @@ class LegendParameter:
                 color_values.reverse()
         else:
             color_values = self._colors
+
         lut = vtk.vtkLookupTable()
         lut.SetRange(minimum, maximum)
         lut.SetRampToLinear()
@@ -658,6 +659,7 @@ class LegendParameter:
         else:
             scalar_bar.SetTitle(self._name)
 
+        scalar_bar.SetTextPad(2)
         scalar_bar.SetPosition(self._position)
         scalar_bar.SetWidth(self._width)
         scalar_bar.SetHeight(self._height)
@@ -680,6 +682,7 @@ class LegendParameter:
         # Setting whether the labels and title should precede the legend
         scalar_bar.SetTextPosition(self._preceding_labels)
 
+        self._label_parameters.size = round(self._title_parameters.size * 0.8)
         scalar_bar.SetLabelTextProperty(self._label_parameters.to_vtk())
         scalar_bar.SetTitleTextProperty(self._title_parameters.to_vtk())
 
