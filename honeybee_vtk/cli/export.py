@@ -342,7 +342,7 @@ def export_grid_images(
     show_default=True, is_flag=True
 )
 @click.option(
-    '--label-images/--do-not-label-images', '-li', help='Flag to indicate whether to'
+    '--label/--no-label', '-li', help='Flag to indicate whether to'
     ' label images or not. A label is a timestep information that is added to the bottom'
     ' center of the image. If the exported images are going to be post-processed, it is'
     ' advised to not label the images.', default=False, show_default=True, is_flag=True
@@ -357,7 +357,7 @@ def export_grid_images(
 )
 def export_time_step_images(
         hbjson_file, config, time_step_file, folder,
-        grids_filter, full_match, label_images, image_width, image_height):
+        grids_filter, full_match, label, image_width, image_height):
     """Export images of the grids for the Honeybee Model created from the HBJSON file.
 
     \b
@@ -383,7 +383,7 @@ def export_time_step_images(
                                    target_folder=folder.as_posix(),
                                    grids_filter=grids_filter,
                                    full_match=full_match,
-                                   label_images=label_images,
+                                   label_images=label,
                                    image_width=image_width,
                                    image_height=image_height)
         output = folder
