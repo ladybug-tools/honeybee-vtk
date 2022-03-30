@@ -592,11 +592,12 @@ class LegendParameter:
                     f' value {self._min}.'
                 )
 
-    def _assign_colors(self, colors: Tuple[Color, ...]) -> None:
+    def _assign_colors(self, val: List[Color]) -> None:
         """Assign colors instead of a colorset.
 
-        This private method is currently used in generating timestep images.
+        This private method is currently used in to_grid_images method of vtk Model.
         """
+        colors = tuple(val)
         self._colors = colors
         self._color_count = len(colors)
         self.label_count = self._color_count
