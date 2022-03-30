@@ -461,7 +461,7 @@ def export_timestep_images(hbjson_path: str, config_path: str,
                          grid_camera_dict=grid_camera_dict,
                          grids_filter=grids_filter,
                          full_match=full_match,
-                         grid_color=Color(
+                         grid_colors=Color(
                              time_step.color[0], time_step.color[1], time_step.color[2]),
                          image_width=image_width,
                          image_height=image_height)
