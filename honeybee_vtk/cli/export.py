@@ -287,8 +287,7 @@ def export_grid_images(
         grid_display_mode = DisplayMode.Points
 
     try:
-        model = Model.from_hbjson(hbjson=hbjson_file, load_grids=grid_option,
-                                  grids_filter=grids_filter, full_match=full_match)
+        model = Model.from_hbjson(hbjson=hbjson_file, load_grids=grid_option)
 
         text_actor = TextActor(text=text_content, height=text_height, color=text_color,
                                position=text_position, bold=text_bold)\
@@ -298,6 +297,7 @@ def export_grid_images(
             grid_colors = [Color(r, g, b) for r, g, b in grid_colors]
 
         output = model.to_grid_images(config=config, folder=folder,
+                                      grids_filter=grids_filter, full_match=full_match,
                                       grid_display_mode=grid_display_mode,
                                       background_color=background_color,
                                       image_type=image_type,
