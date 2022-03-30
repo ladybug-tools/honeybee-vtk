@@ -73,9 +73,7 @@ class Model(object):
 
     def __init__(
             self, hb_model: HBModel,
-            grid_options: SensorGridOptions = SensorGridOptions.Ignore,
-            grids_filter: Union[str, List[str]] = '*',
-            full_match: bool = False) -> None:
+            grid_options: SensorGridOptions = SensorGridOptions.Ignore) -> None:
         """Instantiate a honeybee-vtk model object.
 
         Args:
@@ -83,10 +81,6 @@ class Model(object):
             load_grids: A SensorGridOptions object. Defaults to SensorGridOptions.Ignore
                 which will ignore the grids in hbjson and will not load them in the
                 honeybee-vtk model.
-            grids_filter: A list of grid identifiers or a regex pattern as a string to
-                filter the grids. Defaults to None.
-            full_match: A boolean to filter grids by their identifiers as full matches.
-                Defaults to False.
         """
         super().__init__()
 
@@ -105,7 +99,7 @@ class Model(object):
         self._sensor_grids = ModelDataSet('Grid', color=self.get_default_color('Grid'))
         self._cameras = []
         self._convert_model()
-        self._load_grids(grids_filter, full_match)
+        self._load_grids()
         self._load_cameras()
 
     @classmethod
@@ -120,10 +114,6 @@ class Model(object):
             load_grids: A SensorGridOptions object. Defaults to SensorGridOptions.Ignore
                 which will ignore the grids in hbjson and will not load them in the
                 honeybee-vtk model.
-            grids_filter: A list of grid identifiers or a regex pattern as a string to
-                filter the grids. Defaults to None.
-            full_match: A boolean to filter grids by their identifiers as full matches.
-                Defaults to False.
 
         Returns:
             A honeybee-vtk model object.
@@ -131,7 +121,7 @@ class Model(object):
         hb_file = pathlib.Path(hbjson)
         assert hb_file.is_file(), f'{hbjson} doesn\'t exist.'
         model = HBModel.from_hbjson(hb_file.as_posix())
-        return cls(model, load_grids, grids_filter, full_match)
+        return cls(model, load_grids)
 
     @property
     def walls(self) -> ModelDataSet:
@@ -611,6 +601,8 @@ class Model(object):
             image_width=image_width, image_height=image_height)
 
     def to_grid_images(self, config: str, *, folder: str = '.',
+                       grids_filter: Union[str, List[str]] = '*',
+                       full_match: bool = False,
                        grid_display_mode: DisplayMode = DisplayMode.SurfaceWithEdges,
                        background_color: Tuple[int, int, int] = None,
                        image_type: ImageTypes = ImageTypes.png,
@@ -638,6 +630,10 @@ class Model(object):
             config: Path to the config file in JSON format.
             folder: Path to the folder where you'd like to export the images. Defaults to
                     the current working directory.
+            grids_filter: A list of grid identifiers or a regex pattern as a string to
+                filter the grids. Defaults to None.
+            full_match: A boolean to filter grids by their identifiers as full matches.
+                Defaults to False.
             display_mode: Display mode for the grid. Defaults to surface with edges.
             background_color: Background color of the image. Defaults to white.
             image_type: Image type to be exported. Defaults to png.
@@ -672,10 +668,14 @@ class Model(object):
             grid_display_mode = DisplayMode.Points
 
         config_data = self.load_config(config)
+
+        grid_polydata_lst = _filter_grid_polydata(
+            self.sensor_grids.data, self._hb_model, grids_filter, full_match)
+
         output: Union[Dict[str, Camera], List[str]] = {} if extract_camera else []
 
         for data in config_data:
-            for grid_polydata in self.sensor_grids.data:
+            for grid_polydata in grid_polydata_lst:
                 dataset = ModelDataSet(name=grid_polydata.identifier,
                                        data=[grid_polydata],
                                        display_mode=grid_display_mode)
@@ -1063,3 +1063,33 @@ def _get_result_file_paths(folder_path: Union[str, pathlib.Path]):
     # result file paths
     return [folder_path.joinpath(f"{grid['full_id']}{extension}")
             for grid in grids_info]
+
+
+def _filter_grid_polydata(grid_polydata_lst: List[PolyData], model: HBModel,
+                          grids_filter: Union[str, List[str]],
+                          full_match) -> List[PolyData]:
+    """Filter grid polydata based on sensor grids.
+
+    Args:
+        grid_polydata_lst: A list of grid polydata objects.
+        model: A honeybee model object.
+        grids_filter: A list of grid identifiers or a regex pattern as a string to filter
+            the grid polydata.
+        full_match: A boolean to filter grids by their identifiers as full matches.
+
+    Returns:
+        A list of PolyData objects for Grids.
+    """
+    if not grids_filter or grids_filter == '*':
+        return grid_polydata_lst
+    else:
+        filtered_sensor_grids = _filter_by_pattern(
+            model.properties.radiance.sensor_grids, grids_filter, full_match)
+        sensorgrid_identifiers = [
+            grid.identifier for grid in filtered_sensor_grids]
+        filtered_grid_polydata_lst = [grid for grid in grid_polydata_lst
+                                      if grid.name in sensorgrid_identifiers]
+        if not filtered_grid_polydata_lst:
+            raise ValueError('No grids found in the model that match the'
+                             f' filter {grids_filter}.')
+        return filtered_grid_polydata_lst
