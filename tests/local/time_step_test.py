@@ -3,11 +3,10 @@
 import tempfile
 import json
 from pathlib import Path
-from ladybug.dt import DateTime
-from honeybee_vtk.config import TimeStepConfig, TimeStepDataConfig
-from honeybee_vtk.timestep_images import export_timestep_images, write_timestep_data
+
+from honeybee_vtk.config import TimeStepDataConfig
+from honeybee_vtk.time_step_images import export_time_step_images, write_time_step_data
 from honeybee_vtk.image_processing import write_gif, write_transparent_images
-from ladybug.color import Color
 
 
 def test_timestep_images_export(temp_folder):
@@ -22,7 +21,7 @@ def test_timestep_images_export(temp_folder):
     images_folder = temp_folder.joinpath('images')
     images_folder.mkdir()
 
-    time_step_data_json_path = write_timestep_data(
+    time_step_data_json_path = write_time_step_data(
         time_step_file_path, periods_file_path,
         target_folder=time_step_config_folder.as_posix())
 
@@ -36,9 +35,9 @@ def test_timestep_images_export(temp_folder):
     else:
         data = TimeStepDataConfig.parse_obj(config)
         for time_step_data in data.time_step_data:
-            export_timestep_images(hbjson_path, config_path, time_step_data,
-                                   target_folder=images_folder.as_posix(),
-                                   label_images=False)
+            export_time_step_images(hbjson_path, config_path, time_step_data,
+                                    target_folder=images_folder.as_posix(),
+                                    label_images=False)
 
     assert len(list(temp_folder.iterdir())) > 0
 

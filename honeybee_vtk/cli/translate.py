@@ -12,7 +12,7 @@ from honeybee_vtk.types import VTKWriters
 
 @click.group()
 def translate():
-    """Honeybee VTK commands entry point."""
+    """Command to translate a honeybee-vtk model into other formats."""
     pass
 
 
