@@ -79,7 +79,7 @@ def _get_datetimes(path: Path) -> List[DateTime]:
         return [DateTime.from_hoy(float(line.strip())) for line in f]
 
 
-def write_timestep_data(
+def write_time_step_data(
         time_step_file_path: str, periods_file_path: str,
         file_name: str = 'timestep_data',
         target_folder: str = '.') -> Path:
@@ -394,15 +394,15 @@ def _get_grid_camera_dict(
                                     image_name=f'{index}', extract_camera=True)
 
 
-def export_timestep_images(hbjson_path: str, config_path: str,
-                           time_step: TimeStepConfig,
-                           grid_display_mode: DisplayMode = DisplayMode.Shaded,
-                           target_folder: str = '.',
-                           grids_filter: Union[str, List[str]] = None,
-                           full_match: bool = False,
-                           label_images: bool = True,
-                           image_width: int = 1920,
-                           image_height: int = 1088) -> str:
+def export_time_step_images(hbjson_path: str, config_path: str,
+                            time_step: TimeStepConfig,
+                            grid_display_mode: DisplayMode = DisplayMode.Shaded,
+                            target_folder: str = '.',
+                            grids_filter: Union[str, List[str]] = None,
+                            full_match: bool = False,
+                            label_images: bool = True,
+                            image_width: int = 1920,
+                            image_height: int = 1088) -> str:
     """Export images of grids for each time step in the time stamps file.
 
     This function will find all the time stamps between the start and end datetimes

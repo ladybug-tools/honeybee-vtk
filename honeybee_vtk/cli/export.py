@@ -4,7 +4,6 @@ import pathlib
 import sys
 import click
 import traceback
-import tempfile
 import json
 
 from ladybug.color import Color
@@ -13,12 +12,12 @@ from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 from honeybee_vtk.types import ImageTypes
 from honeybee_vtk.text_actor import TextActor
 from honeybee_vtk.config import TimeStepDataConfig
-from honeybee_vtk.timestep_images import export_timestep_images
+from honeybee_vtk.time_step_images import export_time_step_images
 
 
 @click.group()
 def export():
-    """Export images of an HBJSON file."""
+    """Command to export media from a honeybee-vtk model."""
     pass
 
 
@@ -80,7 +79,7 @@ def export():
     help='Validate simulation data before loading on the model. This is recommended'
     ' when using this command locally.', show_default=True
 )
-def export_model_images(
+def model_images(
         hbjson_file, folder, image_type, image_width, image_height,
         background_color, model_display_mode, grid_options, grid_display_mode,
         view, config, validate_data,):
@@ -240,7 +239,7 @@ def export_model_images(
     ' this is useful when you do not want to use the ladyug colorset defined in the'
     ' config.'
 )
-def export_grid_images(
+def grid_images(
         hbjson_file, folder, image_type, image_width, image_height,
         background_color, grid_options, grid_display_mode,
         config, grids_filter, full_match, text_content, text_height, text_color,
@@ -355,7 +354,7 @@ def export_grid_images(
     '--image-height', '-ih', type=int, default=1088, help='Height of images in pixels.'
     'If not set, Radiance default y dimension of view will be used.', show_default=True
 )
-def export_time_step_images(
+def time_step_images(
         hbjson_file, config, time_step_file, folder,
         grids_filter, full_match, label, image_width, image_height):
     """Export images of the grids for the Honeybee Model created from the HBJSON file.
@@ -379,13 +378,13 @@ def export_time_step_images(
     try:
         data = TimeStepDataConfig.parse_obj(time_step_data_config)
         for time_step_data in data.time_step_data:
-            export_timestep_images(hbjson_file, config, time_step_data,
-                                   target_folder=folder.as_posix(),
-                                   grids_filter=grids_filter,
-                                   full_match=full_match,
-                                   label_images=label,
-                                   image_width=image_width,
-                                   image_height=image_height)
+            export_time_step_images(hbjson_file, config, time_step_data,
+                                    target_folder=folder.as_posix(),
+                                    grids_filter=grids_filter,
+                                    full_match=full_match,
+                                    label_images=label,
+                                    image_width=image_width,
+                                    image_height=image_height)
         output = folder
     except Exception:
         traceback.print_exc()
