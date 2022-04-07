@@ -2,8 +2,8 @@
 
 import vtk
 from ladybug.color import Colorset, Color
-from enum import Enum, auto
-from typing import Tuple, Union, List
+from enum import Enum
+from typing import Tuple, Union
 from ._helper import _validate_input
 
 
@@ -37,10 +37,10 @@ class ColorSets(Enum):
     black_to_white = 'black_to_white'
     blue_green_red = 'blue_green_red'
     cloud_cover = 'cloud_cover'
-    cold_sensation = 'cloud_sensation'
+    cold_sensation = 'cold_sensation'
     ecotect = 'ecotect'
     energy_balance = 'energy_balance'
-    energy_balance_storage = 'energy_balance_storag'
+    energy_balance_storage = 'energy_balance_storage'
     glare_study = 'glare_study'
     harm = 'harm'
     heat_sensation = 'heat_sensation'
@@ -213,7 +213,7 @@ class LegendParameter:
             decimal_count: A DecimalCount object that specifies the number of decimals
                 on each label of the legend. Defaults to the type of data. For data
                 with integer values this will default to integer. Similarly, for data
-                with decimal values, this will default to decimal point numbers. 
+                with decimal values, this will default to decimal point numbers.
             preceding_labels: A boolean value to indicate whether the title and the
                 labels should precede the legend or not. Defaults to False.
             label_parameters: A Text object. Defaults to size 30 black text.
@@ -222,7 +222,7 @@ class LegendParameter:
                 Defaults to None.
             min: A number that will be set as the upper bound of the legend.
                 Defaults to None.
-            auto_range: A tuple of minimum and maximum values for legend. This is 
+            auto_range: A tuple of minimum and maximum values for legend. This is
                 auto set when Data is loaded on a model. Use min and max arguments to
                 customize this auto calculated range.
         """
@@ -511,7 +511,7 @@ class LegendParameter:
 
     @min.setter
     def min(self, val):
-        if val == None:
+        if val is None:
             self._min = None
         elif isinstance(val, (int, float)):
             self._min = val
@@ -526,7 +526,7 @@ class LegendParameter:
 
     @max.setter
     def max(self, val):
-        if val == None:
+        if val is None:
             self._max = None
         elif isinstance(val, (int, float)):
             self._max = val
@@ -537,10 +537,10 @@ class LegendParameter:
 
     @property
     def range(self) -> Tuple[float, float]:
-        if self._min == None and self._max == None:
+        if self._min is None and self._max is None:
             return self.auto_range
 
-        elif self._min and self._max == None:
+        elif self._min and self._max is None:
             if self._min < self.auto_range[1]:
                 return (self._min, self.auto_range[1])
             else:
@@ -551,7 +551,7 @@ class LegendParameter:
                     ' provide a max value.'
                 )
 
-        elif self._min == None and self._max:
+        elif self._min is None and self._max:
             if self._max > self.auto_range[0]:
                 return (self.auto_range[0], self._max)
             else:
