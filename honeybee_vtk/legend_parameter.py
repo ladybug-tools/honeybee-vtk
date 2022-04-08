@@ -607,14 +607,15 @@ class LegendParameter:
         This method is only used in the 'translate' command.
         """
         return {
-            'name': self.name,
-            'unit': self.unit,
-            'colors': self.colorset.value,
-            'hide_legend': self.hide_legend,
-            'color_count': self.color_count,
-            'label_count': self.label_count,
-            'min': self.min,
-            'max': self.max,
+            'name': self._name,
+            'unit': self._unit,
+            'colors': self._colorset.value,
+            'reverse_colorset': self._reverse_colorset,
+            'hide_legend': self._hide_legend,
+            'color_count': self._color_count,
+            'label_count': self._label_count,
+            'min': self._min,
+            'max': self._max,
             'range': self.range
         }
 
