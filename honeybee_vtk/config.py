@@ -76,6 +76,11 @@ class LegendConfig(BaseModel):
         ' only uses Ladybug color sets. Defaults to using ecotect colorset.'
     )
 
+    reverse_color_set: bool = Field(
+        False,
+        description='Boolean value to indicate whether to reverse the color set.'
+    )
+
     min: Union[Autocalculate, float] = Field(
         Autocalculate(),
         description='Minimum value for the legend. Also known as the lower end of the'
