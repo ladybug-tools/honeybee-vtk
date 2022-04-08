@@ -188,6 +188,8 @@ class LegendParameter:
             unit: A text string representing the unit of the data that the legend
                 represents. Examples are 'celsius', 'kwn/m2', etc.
             colorset: A ColorSet object. Defaults to Ecotect colorset.
+            reverse_colorset: A boolean to specify whether the colorset should be
+                reversed. Defaults to False.
             hide_legend: A boolean to set the visibility of a legend in Scene.
                 Defaults to False.
             orientation: An Orientation object that sets the orientation of the legend in
@@ -232,6 +234,7 @@ class LegendParameter:
             name: str = 'Legend',
             unit: str = '',
             colorset: ColorSets = ColorSets.ecotect,
+            reverse_colorset: bool = False,
             hide_legend: bool = False,
             orientation: Orientation = Orientation.horizontal,
             position: Tuple[float, float] = (0.5, 0.1),
@@ -250,6 +253,7 @@ class LegendParameter:
         self.name = name
         self.unit = unit
         self.colorset = colorset
+        self.reverse_colorset = reverse_colorset
         self.hide_legend = hide_legend
         self.orientation = orientation
         self.position = position
@@ -312,6 +316,22 @@ class LegendParameter:
         else:
             raise ValueError(
                 f'A ColorSet objects expected. Instead got {val}.'
+            )
+
+    @property
+    def reverse_colorset(self) -> bool:
+        """A boolean to specify whether the colorset should be reversed."""
+        return self._reverse_colorset
+
+    @reverse_colorset.setter
+    def reverse_colorset(self, val) -> None:
+        if not val:
+            self._reverse_colorset = False
+        elif isinstance(val, bool):
+            self._reverse_colorset = val
+        else:
+            raise ValueError(
+                f'A boolean value expected. Instead got {val}.'
             )
 
     @property
@@ -603,6 +623,9 @@ class LegendParameter:
         minimum, maximum = self.range
         if not self._colors:
             color_values = color_set[self._colorset.value]
+            if self._reverse_colorset:
+                color_values = list(color_values)
+                color_values.reverse()
         else:
             color_values = self._colors
         lut = vtk.vtkLookupTable()
