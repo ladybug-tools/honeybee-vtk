@@ -7,7 +7,7 @@ from honeybee_vtk.cli.translate import translate
 from ladybug.futil import nukedir
 
 
-def test_translate_recipe():
+def test_translate():
     """Test cli command."""
     runner = CliRunner()
     file_path = r'tests/assets/unnamed.hbjson'
@@ -71,5 +71,22 @@ def test_translate_with_config():
 
     assert result.exit_code == 0
     html_path = os.path.join(target_folder, 'Model.vtkjs')
+    assert os.path.isfile(html_path)
+    nukedir(target_folder, True)
+
+
+def test_translate_raidal_grid():
+    """Test translating a model with radial-grid added by honeybee-vtk."""
+    runner = CliRunner()
+    file_path = r'tests/assets/radial_grid/hb_sample_model_grid.hbjson'
+    target_folder = r'tests/assets/target'
+    config_path = r'tests/assets/radial_grid/config.json'
+
+    result = runner.invoke(translate, [
+        file_path, '--name', 'Model', '--folder', target_folder, '--grid-options',
+        'radial-grid', '--config', config_path])
+
+    assert result.exit_code == 0
+    html_path = os.path.join(target_folder, 'Model.html')
     assert os.path.isfile(html_path)
     nukedir(target_folder, True)

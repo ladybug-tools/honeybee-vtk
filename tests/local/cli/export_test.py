@@ -35,6 +35,29 @@ def test_export_images():
     nukedir(target_folder, True)
 
 
+def test_export_images_with_radial_grid():
+    """Test exporting images for the model with radial-grids."""
+
+    runner = CliRunner()
+    file_path = r'tests/assets/radial_grid/hb_sample_model_grid.hbjson'
+    target_folder = r'tests/assets/target'
+    config_path = r'tests/assets/radial_grid/config.json'
+
+    nukedir(target_folder, True)
+
+    result = runner.invoke(
+        export, [file_path, '--folder', target_folder, '--grid-options', 'radial-grid',
+                 '--config', config_path, '-mdm', 'wireframe'])
+
+    assert result.exit_code == 0
+    exported_file_names = os.listdir(target_folder)
+    file_names = ['45_degrees.jpg', '135_degrees.jpg', '225_degrees.jpg',
+                  '315_degrees.jpg', 'plan.jpg']
+    assert all([name in file_names for name in exported_file_names])
+
+    nukedir(target_folder, True)
+
+
 def test_export_grid_images():
     """Test exporting images for the grids."""
     runner = CliRunner()
