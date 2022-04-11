@@ -53,7 +53,8 @@ def export():
 )
 @click.option(
     '--grid-options', '-go',
-    type=click.Choice(['ignore', 'points', 'meshes'], case_sensitive=False),
+    type=click.Choice(['ignore', 'points', 'meshes', 'radial-grid'],
+                      case_sensitive=False),
     default='ignore', help='Export sensor grids as either points or meshes.',
     show_default=True,
 )
@@ -267,12 +268,15 @@ def grid_images(
     elif image_type.lower() == 'pnm':
         image_type == ImageTypes.pnm
 
-    if grid_options.lower() == 'ignore':
-        grid_option = SensorGridOptions.Ignore
-    elif grid_options.lower() == 'points':
-        grid_option = SensorGridOptions.Sensors
-    elif grid_options.lower() == 'meshes':
-        grid_option = SensorGridOptions.Mesh
+    # Set Sensor grids
+    if grid_options == 'ignore':
+        grid_options = SensorGridOptions.Ignore
+    elif grid_options == 'points':
+        grid_options = SensorGridOptions.Sensors
+    elif grid_options == 'meshes':
+        grid_options = SensorGridOptions.Mesh
+    elif grid_options == 'radial-grid':
+        grid_options = SensorGridOptions.RadialGrid
 
     if grid_display_mode.lower() == 'shaded':
         grid_display_mode = DisplayMode.Shaded
