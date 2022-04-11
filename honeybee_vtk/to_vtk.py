@@ -27,6 +27,7 @@ from honeybee_radiance.sensorgrid import SensorGrid
 
 from .types import PolyData, JoinedPolyData
 from .vtkjs.schema import SensorGridOptions
+from .geometry import radial_grid
 
 
 def convert_face_3d(face: Face3D) -> PolyData:
@@ -83,9 +84,10 @@ def convert_sensor_grid(
 ) -> PolyData:
     """Convert a honeybee-radiance sensor grid to a vtkPolyData."""
     if load_option == SensorGridOptions.Sensors:
-        # load sensors
         points = [ap.pos for ap in sensor_grid.sensors]
         grid_data = convert_points(points)
+    elif load_option == SensorGridOptions.RadialGrid:
+        grid_data = convert_mesh(radial_grid(sensor_grid))
     else:
         mesh = sensor_grid.mesh
         if mesh is None:
