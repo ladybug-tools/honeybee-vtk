@@ -45,7 +45,8 @@ def translate():
 )
 @click.option(
     '--grid-options', '-go',
-    type=click.Choice(['ignore', 'points', 'meshes'], case_sensitive=False),
+    type=click.Choice(['ignore', 'points', 'meshes', 'radial-grid'],
+                      case_sensitive=False),
     default='ignore', help='Export sensor grids as either points or meshes.',
     show_default=True,
 )
@@ -84,6 +85,8 @@ def translate(
         grid_options = SensorGridOptions.Sensors
     elif grid_options == 'meshes':
         grid_options = SensorGridOptions.Mesh
+    elif grid_options == 'radial-grid':
+        grid_options = SensorGridOptions.RadialGrid
 
     # Set display style
     if model_display_mode == 'shaded':
