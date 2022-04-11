@@ -21,6 +21,7 @@ class SensorGridOptions(enum.Enum):
     Ignore = 0  # no loading
     Sensors = 1  # load them as sensor points
     Mesh = 2  # load them as mesh
+    RadialGrid = 3  # Create a mesh to display the results of imageless recipe
 
 
 class Camera(BaseModel):
