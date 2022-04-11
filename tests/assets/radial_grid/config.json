@@ -1,0 +1,23 @@
+{
+  "data": [
+    {
+      "identifier": "Glare autonomy",
+      "object_type": "grid",
+      "unit": "Percentage",
+      "path": "ga",
+      "hide": false,
+      "legend_parameters": {
+        "hide_legend": false,
+        "min": 0,
+        "max": 100,
+        "color_set": "glare_study",
+        "reverse_color_set": true,
+        "label_parameters": {
+          "color": [34, 247, 10],
+          "size": 0,
+          "bold": true
+        }
+      }
+    }
+  ]
+}
