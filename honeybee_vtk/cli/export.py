@@ -9,7 +9,7 @@ import json
 from ladybug.color import Color
 from honeybee_vtk.model import Model
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
-from honeybee_vtk.types import ImageTypes
+from honeybee_vtk.types import ImageTypes, RadialSensor
 from honeybee_vtk.text_actor import TextActor
 from honeybee_vtk.config import TimeStepDataConfig
 from honeybee_vtk.time_step_images import export_time_step_images
@@ -66,6 +66,16 @@ def export():
     show_default=True
 )
 @click.option(
+    '--triangle-angle', '-ta', type=int, default=45, help='Set the internal angle of the'
+    'triangles in the grid in case radial-grid is selected from grid options',
+    show_default=True
+)
+@click.option(
+    '--triangle-radius', '-tr', type=float, default=None, help='Set the radial height of'
+    'the triangles in the grid in case radial-grid is selected from grid options',
+    show_default=True
+)
+@click.option(
     '--view', '-vf', help='File Path to the Radiance view file. Multiple view files are'
     ' accepted.', type=click.Path(exists=True), default=None,
     show_default=True, multiple=True
@@ -83,7 +93,7 @@ def export():
 def model_images(
         hbjson_file, folder, image_type, image_width, image_height,
         background_color, model_display_mode, grid_options, grid_display_mode,
-        view, config, validate_data,):
+        triangle_angle, triangle_radius, view, config, validate_data,):
     """Export images of the Honeybee Model created from the HBJSON file.
 
     \b
@@ -139,7 +149,9 @@ def model_images(
         grid_display_mode = DisplayMode.Points
 
     try:
-        model = Model.from_hbjson(hbjson=hbjson_file, load_grids=grid_options)
+        model = Model.from_hbjson(hbjson=hbjson_file, load_grids=grid_options,
+                                  radial_sensor=RadialSensor(triangle_angle,
+                                                             triangle_radius))
 
         output = model.to_images(
             folder=folder.as_posix(),

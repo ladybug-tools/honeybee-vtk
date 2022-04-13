@@ -7,7 +7,7 @@ import click
 
 from honeybee_vtk.model import Model
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
-from honeybee_vtk.types import VTKWriters
+from honeybee_vtk.types import VTKWriters, RadialSensor
 
 
 @click.group()
@@ -51,6 +51,16 @@ def translate():
     show_default=True,
 )
 @click.option(
+    '--triangle-angle', '-ta', type=int, default=45, help='Set the internal angle of the'
+    'triangles in the grid in case radial-grid is selected from grid options',
+    show_default=True
+)
+@click.option(
+    '--triangle-radius', '-tr', type=float, default=None, help='Set the radial height of'
+    'the triangles in the grid in case radial-grid is selected from grid options',
+    show_default=True
+)
+@click.option(
     '--show-html', '--show', '-sh', is_flag=True, default=False,
     help='Open the generated HTML file in a browser.', show_default=True
 )
@@ -66,8 +76,7 @@ def translate():
 )
 def translate(
         hbjson_file, name, folder, file_type, model_display_mode, grid_display_mode,
-        grid_options, show_html,
-        config, validate_data):
+        grid_options, show_html, triangle_angle, triangle_radius, config, validate_data):
     """Translate a HBJSON file to an HTML or a vtkjs file.
 
     \b
@@ -112,7 +121,9 @@ def translate(
         grid_display_mode = DisplayMode.Points
 
     try:
-        model = Model.from_hbjson(hbjson=hbjson_file, load_grids=grid_options)
+        model = Model.from_hbjson(hbjson=hbjson_file, load_grids=grid_options,
+                                  radial_sensor=RadialSensor(triangle_angle,
+                                                             triangle_radius))
 
         if file_type.lower() == 'html':
             output = model.to_html(folder=folder, name=name,
