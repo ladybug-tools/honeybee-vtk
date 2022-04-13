@@ -46,8 +46,10 @@ def test_export_images_with_radial_grid():
     nukedir(target_folder, True)
 
     result = runner.invoke(
-        export, [file_path, '--folder', target_folder, '--grid-options', 'radial-grid',
-                 '--config', config_path, '-mdm', 'wireframe'])
+        export, [
+            'model-images',
+            file_path, '--folder', target_folder, '--grid-options', 'radial-grid',
+            '--config', config_path, '-mdm', 'wireframe'])
 
     assert result.exit_code == 0
     exported_file_names = os.listdir(target_folder)
