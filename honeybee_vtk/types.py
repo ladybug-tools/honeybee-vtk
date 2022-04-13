@@ -52,6 +52,39 @@ class ImageTypes(Enum):
     pnm = 'pnm'
 
 
+class RadialSensor:
+    """Object to customize the triangle to be created at each sensor of the grid.
+
+    This method is only used when radial-grid is selected from grid options.
+
+    Args:
+        angle: A value in degrees to define the internal angle of the triangle.
+                Defaults to 45 degrees.
+        radius: Radial height of the triangle. If not provided, the magnitude of
+            direction vector of the sensor will be used. Defaults to None.
+    """
+
+    def __init__(self, angle: int = 45, radius: float = None) -> None:
+        self._angle = angle
+        self._radius = radius
+
+    @property
+    def angle(self):
+        return self._angle
+
+    @angle.setter
+    def angle(self, value):
+        self._angle = value
+
+    @property
+    def radius(self):
+        return self._radius
+
+    @radius.setter
+    def radius(self, value):
+        self._radius = value
+
+
 class DataFieldInfo:
     """Data info for metadata that is added to Polydata.
 
