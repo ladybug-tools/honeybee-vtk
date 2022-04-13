@@ -7,8 +7,8 @@ from typing import List
 
 
 def _radial_grid(sensorgrid: SensorGrid,
-                 angle: float = 22.5,
-                 height: float = None) -> Mesh3D:
+                 angle: float = 45,
+                 radius: float = None) -> Mesh3D:
     """Create a radial grid from a SensorGrid.
 
     This function will create a triangle from each sensor in the grid using the
@@ -16,9 +16,11 @@ def _radial_grid(sensorgrid: SensorGrid,
 
     Args:
         sensorgrid: A SensorGrid object.
-        angle: Angle between the two sides of a triangle in degrees.
-        height: Height of the triangle in meters. If None, the height of the triangle
-            will be decided based on the magnitude of the sensor's direction vector.
+        angle: Angle between the two sides of a triangle in degrees. If not
+            provided, the default value will be 45 degrees.
+        radius: Height of the triangle in meters. If None, the height of the 
+            triangle will be decided based on the magnitude of the sensor's direction 
+            vector.
 
     Returns:
         A Mesh3D object that has a triangle as a mesh face for each sensor in the grid.
@@ -28,15 +30,15 @@ def _radial_grid(sensorgrid: SensorGrid,
 
     for sensor in sensorgrid.sensors:
         vec = Vector3D(*sensor.dir).normalize()
-        vec_1 = vec.rotate_xy(angle=radians(angle*-1))
-        vec_2 = vec.rotate_xy(angle=radians(angle))
+        vec_1 = vec.rotate_xy(angle=radians((angle/2)*-1))
+        vec_2 = vec.rotate_xy(angle=radians(angle/2))
         origin = Point3D(*sensor.pos)
-        if height is None:
+        if radius is None:
             corner_1 = origin.move(vec_1)
             corner_2 = origin.move(vec_2)
         else:
-            corner_1 = origin.move(vec_1*height)
-            corner_2 = origin.move(vec_2*height)
+            corner_1 = origin.move(vec_1*radius)
+            corner_2 = origin.move(vec_2*radius)
         face = Face3D(boundary=[origin, corner_1, corner_2])
         faces.append(face)
 
