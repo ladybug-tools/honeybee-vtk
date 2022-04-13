@@ -84,7 +84,7 @@ def test_translate_raidal_grid():
 
     result = runner.invoke(translate, [
         file_path, '--name', 'Model', '--folder', target_folder, '--grid-options',
-        'radial-grid', '--config', config_path])
+        'radial-grid', '-ta', 30, '-tr', 0.6, '--config', config_path])
 
     assert result.exit_code == 0
     html_path = os.path.join(target_folder, 'Model.html')
