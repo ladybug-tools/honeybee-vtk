@@ -80,14 +80,16 @@ def convert_mesh(mesh: Mesh3D) -> PolyData:
 
 
 def convert_sensor_grid(
-    sensor_grid: SensorGrid, load_option: SensorGridOptions = SensorGridOptions.Mesh
-) -> PolyData:
+        sensor_grid: SensorGrid,
+        load_option: SensorGridOptions = SensorGridOptions.Mesh,
+        angle: int = None,
+        radius: float = None) -> PolyData:
     """Convert a honeybee-radiance sensor grid to a vtkPolyData."""
     if load_option == SensorGridOptions.Sensors:
         points = [ap.pos for ap in sensor_grid.sensors]
         grid_data = convert_points(points)
     elif load_option == SensorGridOptions.RadialGrid:
-        grid_data = convert_mesh(_radial_grid(sensor_grid))
+        grid_data = convert_mesh(_radial_grid(sensor_grid, angle, radius))
     else:
         mesh = sensor_grid.mesh
         if mesh is None:
