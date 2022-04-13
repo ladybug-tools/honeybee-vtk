@@ -23,7 +23,7 @@ from ladybug_geometry.geometry3d import Mesh3D
 from .actor import Actor
 from .scene import Scene
 from .camera import Camera
-from .types import ModelDataSet, PolyData
+from .types import ModelDataSet, PolyData, RadialSensor
 from .to_vtk import convert_aperture, convert_face, convert_room, convert_shade, \
     convert_sensor_grid, convert_door
 from .vtkjs.schema import IndexJSON, DisplayMode, SensorGridOptions
@@ -73,7 +73,8 @@ class Model(object):
 
     def __init__(
             self, hb_model: HBModel,
-            grid_options: SensorGridOptions = SensorGridOptions.Ignore) -> None:
+            grid_options: SensorGridOptions = SensorGridOptions.Ignore,
+            radial_sensor: RadialSensor = RadialSensor()) -> None:
         """Instantiate a honeybee-vtk model object.
 
         Args:
@@ -81,6 +82,9 @@ class Model(object):
             load_grids: A SensorGridOptions object. Defaults to SensorGridOptions.Ignore
                 which will ignore the grids in hbjson and will not load them in the
                 honeybee-vtk model.
+            radial_sensor: A RadialSensor object to customize the triangles to be 
+                created in the radial sensor grid in case the radial grid is selected
+                from the sensor grid options.
         """
         super().__init__()
 
@@ -98,6 +102,7 @@ class Model(object):
                                             color=self.get_default_color('AirBoundary'))
         self._sensor_grids = ModelDataSet('Grid', color=self.get_default_color('Grid'))
         self._cameras = []
+        self._radial_sensor = radial_sensor
         self._convert_model()
         self._load_grids()
         self._load_cameras()
@@ -105,8 +110,7 @@ class Model(object):
     @classmethod
     def from_hbjson(cls, hbjson: str,
                     load_grids: SensorGridOptions = SensorGridOptions.Ignore,
-                    grids_filter: Union[str, List[str]] = '*',
-                    full_match: bool = False) -> Model:
+                    radial_sensor: RadialSensor = RadialSensor()) -> Model:
         """Translate hbjson to a honeybee-vtk model.
 
         Args:
@@ -114,6 +118,9 @@ class Model(object):
             load_grids: A SensorGridOptions object. Defaults to SensorGridOptions.Ignore
                 which will ignore the grids in hbjson and will not load them in the
                 honeybee-vtk model.
+            radial_sensor: A RadialSensor object to customize the triangles to be 
+                created in the radial sensor grid in case the radial grid is selected
+                from the sensor grid options.
 
         Returns:
             A honeybee-vtk model object.
@@ -121,7 +128,7 @@ class Model(object):
         hb_file = pathlib.Path(hbjson)
         assert hb_file.is_file(), f'{hbjson} doesn\'t exist.'
         model = HBModel.from_hbjson(hb_file.as_posix())
-        return cls(model, load_grids)
+        return cls(model, load_grids, radial_sensor)
 
     @property
     def walls(self) -> ModelDataSet:
@@ -231,20 +238,24 @@ class Model(object):
 
                 # TODO extract this to a function
                 try:
-                    convert_sensor_grid(sensor_grid, self._sensor_grids_option)
+                    convert_sensor_grid(sensor_grid, self._sensor_grids_option,
+                                        self._angle, self._radius)
                 except ValueError:
                     warnings.warn(f'Grid {id} does not have mesh information. Hence, '
                                   'it will not be converted to a sensor grid. Try with'
                                   ' SensorGridOptions.Sensors.')
                 else:
                     self._sensor_grids.data.append(convert_sensor_grid(
-                        sensor_grid, self._sensor_grids_option))
+                        sensor_grid, self._sensor_grids_option, self._radial_sensor.angle,
+                        self._radial_sensor.radius))
             # else add them as separate grids
             else:
                 for sensor_grid in grids:
                     # TODO extract this to a function
                     try:
-                        convert_sensor_grid(sensor_grid, self._sensor_grids_option)
+                        convert_sensor_grid(sensor_grid, self._sensor_grids_option,
+                                            self._radial_sensor.angle,
+                                            self._radial_sensor.radius)
                     except ValueError:
                         warnings.warn(f'Grid {sensor_grid.identifier} does not have'
                                       ' mesh information. Hence, it will not be'
@@ -252,7 +263,8 @@ class Model(object):
                                       ' SensorGridOptions.Sensors.')
                     else:
                         self._sensor_grids.data.append(convert_sensor_grid(
-                            sensor_grid, self._sensor_grids_option))
+                            sensor_grid, self._sensor_grids_option,
+                            self._radial_sensor.angle, self._radial_sensor.radius))
 
     def _load_cameras(self) -> None:
         """Load radiance views."""
