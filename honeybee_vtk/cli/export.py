@@ -108,11 +108,13 @@ def model_images(
         image_type == ImageTypes.pnm
 
     if grid_options.lower() == 'ignore':
-        grid_option = SensorGridOptions.Ignore
+        grid_options = SensorGridOptions.Ignore
     elif grid_options.lower() == 'points':
-        grid_option = SensorGridOptions.Sensors
+        grid_options = SensorGridOptions.Sensors
     elif grid_options.lower() == 'meshes':
-        grid_option = SensorGridOptions.Mesh
+        grid_options = SensorGridOptions.Mesh
+    elif grid_options.lower() == 'radial-grid':
+        grid_options = SensorGridOptions.RadialGrid
 
     if model_display_mode.lower() == 'shaded':
         model_display_mode = DisplayMode.Shaded
@@ -137,7 +139,7 @@ def model_images(
         grid_display_mode = DisplayMode.Points
 
     try:
-        model = Model.from_hbjson(hbjson=hbjson_file, load_grids=grid_option)
+        model = Model.from_hbjson(hbjson=hbjson_file, load_grids=grid_options)
 
         output = model.to_images(
             folder=folder.as_posix(),
@@ -275,8 +277,6 @@ def grid_images(
         grid_options = SensorGridOptions.Sensors
     elif grid_options == 'meshes':
         grid_options = SensorGridOptions.Mesh
-    elif grid_options == 'radial-grid':
-        grid_options = SensorGridOptions.RadialGrid
 
     if grid_display_mode.lower() == 'shaded':
         grid_display_mode = DisplayMode.Shaded
@@ -290,7 +290,7 @@ def grid_images(
         grid_display_mode = DisplayMode.Points
 
     try:
-        model = Model.from_hbjson(hbjson=hbjson_file, load_grids=grid_option)
+        model = Model.from_hbjson(hbjson=hbjson_file, load_grids=grid_options)
 
         text_actor = TextActor(text=text_content, height=text_height, color=text_color,
                                position=text_position, bold=text_bold)\
