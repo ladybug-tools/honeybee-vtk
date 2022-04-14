@@ -85,19 +85,25 @@ def convert_sensor_grid(
         angle: int = None,
         radius: float = None) -> PolyData:
     """Convert a honeybee-radiance sensor grid to a vtkPolyData."""
+    # Change the mode from mesh to point if mesh is not provided.
+    # This will allow to keep the mesh option as default and avoid failure with
+    # models that only provide the sensor points.
+    if load_option == SensorGridOptions.Mesh and sensor_grid.mesh is None:
+        print(
+            f'{sensor_grid.display_name} sensor grid does not include mesh faces. '
+            'The sensor grid will be loaded as points.'
+        )
+        load_option == SensorGridOptions.Sensors
+
     if load_option == SensorGridOptions.Sensors:
         points = [ap.pos for ap in sensor_grid.sensors]
         grid_data = convert_points(points)
     elif load_option == SensorGridOptions.RadialGrid:
         grid_data = convert_mesh(_radial_grid(sensor_grid, angle, radius))
-    else:
-        mesh = sensor_grid.mesh
-        if mesh is None:
-            raise ValueError(
-                f'{sensor_grid.display_name} does not include mesh information. '
-                'Try again with SensorGridOptions.Sensors'
-            )
+    elif load_option == SensorGridOptions.Mesh:
         grid_data = convert_mesh(sensor_grid.mesh)
+    else:
+        raise ValueError(f'{load_option} is not a valid SensorGridOption.')
 
     grid_data.identifier = sensor_grid.identifier
     grid_data.name = sensor_grid.display_name
