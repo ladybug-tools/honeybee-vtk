@@ -239,7 +239,8 @@ class Model(object):
                 # TODO extract this to a function
                 try:
                     convert_sensor_grid(sensor_grid, self._sensor_grids_option,
-                                        self._angle, self._radius)
+                                        self._radial_sensor.angle, 
+                                        self._radial_sensor.radius)
                 except ValueError:
                     warnings.warn(f'Grid {id} does not have mesh information. Hence, '
                                   'it will not be converted to a sensor grid. Try with'
