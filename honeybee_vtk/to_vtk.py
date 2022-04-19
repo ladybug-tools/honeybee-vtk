@@ -93,7 +93,7 @@ def convert_sensor_grid(
             f'{sensor_grid.display_name} sensor grid does not include mesh faces. '
             'The sensor grid will be loaded as points.'
         )
-        load_option == SensorGridOptions.Sensors
+        load_option = SensorGridOptions.Sensors
 
     if load_option == SensorGridOptions.Sensors:
         points = [ap.pos for ap in sensor_grid.sensors]
