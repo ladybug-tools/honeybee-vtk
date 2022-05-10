@@ -13,8 +13,7 @@ from ladybug.dt import DateTime
 from ladybug.color import Color
 
 
-from .config import Config, DataConfig, Autocalculate, Periods, TimeStepConfig, \
-    TimeStepDataConfig
+from .config import Config, DataConfig, Autocalculate, Periods, TimeStepConfig
 from .model import Model, SensorGridOptions
 from .vtkjs.schema import DisplayMode
 from .text_actor import TextActor
@@ -117,14 +116,14 @@ def write_time_step_data(
             if st_datetime <= datetime <= end_datetime:
                 color = lb_colors[period_count]
                 time_step_data.append(
-                    TimeStepConfig(index=count,
-                                   hoy=datetime.hoy,
-                                   color=[color.r, color.g, color.b]))
+                    {
+                        'index': count, 'hoy': datetime.hoy,
+                        'color': [color.r, color.g, color.b]
+                    }
+                )
 
-    time_step_file_path = Path(f'{target_folder}/{file_name}.json')
-    with open(time_step_file_path, 'w') as f:
-        data = TimeStepDataConfig(time_step_data=time_step_data)
-        f.write(data.json())
+    time_step_file_path = Path(target_folder, f'{file_name}.json')
+    time_step_file_path.write_text(json.dumps(time_step_data))
 
     return time_step_file_path
 

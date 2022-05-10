@@ -673,7 +673,7 @@ class Model(object):
 
         Returns:
             Path to the folder where the images are exported for each grid. Or a
-            dictionary of grid identifers and camera objects.
+            dictionary of grid identifiers and camera objects.
         """
         assert len(self.sensor_grids.data) != 0, 'No sensor grids found in the model.'
 

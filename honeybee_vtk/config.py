@@ -8,7 +8,6 @@ from pydantic import BaseModel, validator, Field, constr, conint
 from pydantic.types import confloat, conlist
 from .types import DataSetNames
 from .legend_parameter import ColorSets, DecimalCount, Orientation
-from ladybug.dt import DateTime
 
 
 class InputFile(BaseModel):
