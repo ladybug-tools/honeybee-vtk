@@ -214,6 +214,17 @@ class DataConfig(BaseModel):
         description='Legend parameters to create legend out of the this dataset.'
     )
 
+    grid_colors: List = Field(
+        None,
+        description='A list of RGB values for colors to be used to color the grids.'
+        ' this is useful when you do not want to use the ladybug colorset defined in the'
+        ' config.'
+    )
+
+    @validator('grid_colors')
+    def set_default_value(cls, v):
+        return v if v else []
+
     @validator('legend_parameters')
     def check_pos_against_width_height(cls, v: LegendConfig, values) -> LegendConfig:
         id = values['identifier']

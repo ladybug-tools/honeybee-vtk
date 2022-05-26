@@ -17,11 +17,11 @@ def filter_using_thresholds(polydata: vtk.vtkPolyData, lower_threshold: float = 
         lower_threshold: The lower threshold value. This threshold value is included
             in the thresholding operation. For example, if you want the threshold to be
             greater than 0 then set the value 0.1. If None, lower threshold will 
-            be inifinite.
+            be infinite.
         upper_threshold: The upper threshold value. This threshold value is included in
             the thresholding operation. For example, if you wan to the threshold to be
             lower than 1 then set the value 0.99. If None, upper threshold will
-            be inifinite.
+            be infinite.
 
     Returns:
         A vtkPolyData object.

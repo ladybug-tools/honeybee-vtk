@@ -13,7 +13,6 @@ from collections import defaultdict
 from typing import Dict, List, Union, Tuple
 
 from honeybee.facetype import face_types
-from honeybee.typing import clean_string
 from honeybee.model import Model as HBModel
 from honeybee_radiance.sensorgrid import SensorGrid
 from honeybee_radiance.writer import _filter_by_pattern
@@ -663,9 +662,6 @@ class Model(object):
                 to be used in this run to export an image. Defaults to None.
             extract_camera: Boolean to indicate whether to extract the camera from the
                 for this run to use for the next run. Defaults to False.
-            grid_colors: Colors used to color the grid. Provide only one color in the
-                list to color the grid with the same color. This is useful in exporting
-                time step images. Defaults to None.
             sub_folder_name: A text string that sets the name of the subfolder where
                 the images will be exported. This is useful when the images are to be
                 exported for multiple time periods such as whole day of June 21, and
@@ -673,7 +669,7 @@ class Model(object):
 
         Returns:
             Path to the folder where the images are exported for each grid. Or a
-            dictionary of grid identifers and camera objects.
+            dictionary of grid identifiers and camera objects.
         """
         assert len(self.sensor_grids.data) != 0, 'No sensor grids found in the model.'
 
@@ -687,12 +683,14 @@ class Model(object):
 
         output: Union[Dict[str, Camera], List[str]] = {} if extract_camera else []
 
+
         for data in config_data:
             for grid_polydata in grid_polydata_lst:
                 dataset = ModelDataSet(name=grid_polydata.identifier,
                                        data=[grid_polydata],
                                        display_mode=grid_display_mode)
-                if grid_colors:
+                if data.grid_colors:
+                    grid_colors = [Color(r, g, b) for r, g, b in data.grid_colors]
                     if len(grid_colors) == 1:
                         dataset.active_field_info.legend_parameter._assign_colors(
                             [Color(255, 255, 255), grid_colors[0]])
@@ -1093,7 +1091,7 @@ def _filter_grid_polydata(grid_polydata_lst: List[PolyData], model: HBModel,
     Returns:
         A list of PolyData objects for Grids.
     """
-    if not grids_filter or grids_filter == '*':
+    if not grids_filter or grids_filter[0] == '*':
         return grid_polydata_lst
     else:
         filtered_sensor_grids = _filter_by_pattern(

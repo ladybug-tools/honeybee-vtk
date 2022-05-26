@@ -421,6 +421,8 @@ def write_gif(time_step_images_path: str, target_path: str = '.',
     ' not be empty.'
 
     target_folder = Path(target_path)
+    if not target_folder.exists():
+        target_folder.mkdir(parents=True, exist_ok=True)
     assert target_folder.is_dir(), 'The target folder must be a directory.'
 
     for grid_folder in time_step_images_folder.iterdir():
@@ -485,6 +487,8 @@ def write_transparent_images(time_step_images_path: str, target_path: str = '.',
     ' not be empty.'
 
     target_folder = Path(target_path)
+    if not target_folder.exists():
+        target_folder.mkdir(parents=True, exist_ok=True)
     assert target_folder.is_dir(), 'The target folder must be a directory.'
 
     for grid_folder in time_step_images_folder.iterdir():
