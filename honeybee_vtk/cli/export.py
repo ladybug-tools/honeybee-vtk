@@ -6,7 +6,6 @@ import click
 import traceback
 import json
 
-from ladybug.color import Color
 from honeybee_vtk.model import Model
 from honeybee_vtk.vtkjs.schema import SensorGridOptions, DisplayMode
 from honeybee_vtk.types import ImageTypes, RadialSensor
@@ -248,17 +247,12 @@ def model_images(
     '--text-bold/--text-normal', is_flag=True, default=False, show_default=True,
     help='Set the text to be bold for the text that will added to the image of a grid.'
 )
-@click.option(
-    '--grid-colors', '-gc', type=(int, int, int), default=None, show_default=True,
-    multiple=True, help='A list of RGB values for colors to be used to color the grids.'
-    ' this is useful when you do not want to use the ladyug colorset defined in the'
-    ' config.'
-)
+
 def grid_images(
         hbjson_file, folder, image_type, image_width, image_height,
         background_color, grid_options, grid_display_mode,
         config, grids_filter, full_match, text_content, text_height, text_color,
-        text_position, text_bold, grid_colors):
+        text_position, text_bold):
     """Export images of the grids for the Honeybee Model created from the HBJSON file.
 
     \b
@@ -308,9 +302,6 @@ def grid_images(
                                position=text_position, bold=text_bold)\
             if text_content else None
 
-        if grid_colors:
-            grid_colors = [Color(r, g, b) for r, g, b in grid_colors]
-
         output = model.to_grid_images(config=config, folder=folder,
                                       grids_filter=grids_filter, full_match=full_match,
                                       grid_display_mode=grid_display_mode,
@@ -318,8 +309,7 @@ def grid_images(
                                       image_type=image_type,
                                       image_width=image_width,
                                       image_height=image_height,
-                                      text_actor=text_actor,
-                                      grid_colors=grid_colors)
+                                      text_actor=text_actor)
 
     except Exception:
         traceback.print_exc()
