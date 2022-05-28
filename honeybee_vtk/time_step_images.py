@@ -1,6 +1,7 @@
 """Function to generate images from time series data."""
 
 import json
+import pathlib
 import tempfile
 import shutil
 import os
@@ -141,10 +142,13 @@ def _get_res_file_extension(path: Path, grids_info: List[dict]) -> str:
     """
 
     first_grid_id: str = grids_info[0]['identifier']
-
-    for item in list(path.iterdir()):
+    first_grid_full_id: str = grids_info[0]['full_id']
+    folder = path.joinpath(first_grid_full_id).parent
+    for item in list(folder.iterdir()):
         if item.stem == first_grid_id:
             return item.suffix
+    else:
+        raise ValueError('Failed to find the extension for result files')
 
 
 def _get_result_paths(path: Path,
@@ -192,22 +196,6 @@ def _extract_column(path: Path, index: int) -> List[int]:
         return [int(val) for val in df[index].values]
     except KeyError:
         raise KeyError(f'Column {index} does not exist.')
-
-
-def _write_res_file(res_path: Path, data: List[int],
-                    target_folder: Path = Path('.')) -> None:
-    """Write a list of integer values to a .res file.
-
-    Args:
-        res_path: Path to the result file.
-        data: A list of integer values.
-        target_folder: Path to the folder to write the result file.
-            Defaults to the current folder.
-    """
-    file_path = Path(target_folder).joinpath(f'{res_path.stem}.res')
-    with open(file_path, 'w') as f:
-        for val in data:
-            f.write(f'{val}\n')
 
 
 def _validate_config(config_path: str) -> DataConfig:
@@ -264,7 +252,7 @@ def _process_config(config_path: str) -> Tuple[DataConfig, Path, List[Path]]:
     """Process the config file.
 
     This function takes a path to the config file and extracts the DataConfig object
-    from the config file. Aditionally, based on the path property found in the
+    from the config file. Additionally, based on the path property found in the
     Dataconfig, it maps a path to the grids_info.json file and also the paths to the
     actual result files such as .ill or .res files.
 
@@ -318,23 +306,6 @@ def _copy_grids_info(grids_info_path: Path, index_folder: Path) -> None:
     """Copy grids_info.json to the Index folder."""
     index_grids_info_path = Path(index_folder).joinpath('grids_info.json')
     shutil.copy(grids_info_path, index_grids_info_path)
-
-
-def _write_res_files(result_paths: List[Path], index: int,
-                     index_folder: Path) -> None:
-    """Write .res files to the Index folder.
-
-    For each Index of the time stamp in the time stamp file. Write a .res for each of
-    the result files in the folder. The number of these result files would be equal
-    to the number of grids in the grids_info.json file.
-
-    Args:
-        res_paths: List of file paths to the result files
-
-    """
-    for result_path in result_paths:
-        data = _extract_column(result_path, index)
-        _write_res_file(result_path, data, index_folder)
 
 
 def _get_data_without_thresholds(data: DataConfig) -> DataConfig:
@@ -398,7 +369,7 @@ def export_time_step_images(hbjson_path: str, config_path: str,
                             time_step: TimeStepConfig,
                             grid_display_mode: DisplayMode = DisplayMode.Shaded,
                             target_folder: str = '.',
-                            grids_filter: Union[str, List[str]] = None,
+                            grid_filter: Union[str, List[str]] = None,
                             full_match: bool = False,
                             label_images: bool = True,
                             image_width: int = 1920,
@@ -418,7 +389,7 @@ def export_time_step_images(hbjson_path: str, config_path: str,
         grid_display_mode: Display mode of the grids. Defaults to Shaded.
         target_folder: Path to the folder to write the images. Defaults to the current
             folder.
-        grids_filter: A list of grid identifiers or a regex pattern as a string to
+        grid_filter: A list of grid identifiers or a regex pattern as a string to
                 filter the grids. Defaults to None.
         full_match: A boolean to filter grids by their identifiers as full matches.
             Defaults to False.
@@ -434,11 +405,19 @@ def export_time_step_images(hbjson_path: str, config_path: str,
 
     # TODO _process_config should not have to be called each time the function is called.
     data, grids_info_path, result_paths = _process_config(config_path)
-
     parent_temp_folder = Path(tempfile.mkdtemp())
     temp_folder, index_folder = _create_folders(parent_temp_folder, time_step.index)
     _copy_grids_info(grids_info_path, index_folder)
-    _write_res_files(result_paths, time_step.index, index_folder)
+
+    # use full id to support sensor grids with group identifier
+    grid_info = json.loads(grids_info_path.read_text())
+    for info, result_path in zip(grid_info, result_paths):
+        values = _extract_column(result_path, time_step.index)
+        file_path = Path(index_folder).joinpath(f'{info["full_id"]}.res')
+        file_path.parent.mkdir(parents=True, exist_ok=True)
+        with file_path.open('w') as f:
+            for val in values:
+                f.write(f'{val}\n')
 
     grid_camera_dict = _get_grid_camera_dict(data, grid_display_mode,
                                              temp_folder, index_folder,
@@ -459,7 +438,7 @@ def export_time_step_images(hbjson_path: str, config_path: str,
                          text_actor=text_actor,
                          image_name=f'{time_step.hoy}',
                          grid_camera_dict=grid_camera_dict,
-                         grids_filter=grids_filter,
+                         grid_filter=grid_filter,
                          full_match=full_match,
                          grid_colors=[
                              Color(time_step.color[0], time_step.color[1],

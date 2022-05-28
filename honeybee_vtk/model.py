@@ -613,7 +613,7 @@ class Model(object):
             image_width=image_width, image_height=image_height)
 
     def to_grid_images(self, config: str, *, folder: str = '.',
-                       grids_filter: Union[str, List[str]] = '*',
+                       grid_filter: Union[str, List[str]] = '*',
                        full_match: bool = False,
                        grid_display_mode: DisplayMode = DisplayMode.SurfaceWithEdges,
                        background_color: Tuple[int, int, int] = None,
@@ -631,7 +631,7 @@ class Model(object):
         instance, if the config file has DataConfig objects for 'DA' and 'UDI', and
         'DA' is kept hidden, then all grids with 'UDI' data will be exported.
         Additionally, images from a selected number of grids can be exported by
-        using the by specifyling the identifiers of the grids to export in the
+        using the by specifying the identifiers of the grids to export in the
         grid_filter object in the config file.
 
         Note that the parameters grid_camera_dict and extract_camera are mutually
@@ -642,7 +642,7 @@ class Model(object):
             config: Path to the config file in JSON format.
             folder: Path to the folder where you'd like to export the images. Defaults to
                     the current working directory.
-            grids_filter: A list of grid identifiers or a regex pattern as a string to
+            grid_filter: A list of grid identifiers or a regex pattern as a string to
                 filter the grids. Defaults to None.
             full_match: A boolean to filter grids by their identifiers as full matches.
                 Defaults to False.
@@ -679,7 +679,7 @@ class Model(object):
         config_data = self.load_config(config)
 
         grid_polydata_lst = _filter_grid_polydata(
-            self.sensor_grids.data, self._hb_model, grids_filter, full_match)
+            self.sensor_grids.data, self._hb_model, grid_filter, full_match)
 
         output: Union[Dict[str, Camera], List[str]] = {} if extract_camera else []
 
@@ -689,8 +689,11 @@ class Model(object):
                 dataset = ModelDataSet(name=grid_polydata.identifier,
                                        data=[grid_polydata],
                                        display_mode=grid_display_mode)
-                if data.grid_colors:
+
+                if not grid_colors and data.grid_colors:
                     grid_colors = [Color(r, g, b) for r, g, b in data.grid_colors]
+
+                if grid_colors:
                     if len(grid_colors) == 1:
                         dataset.active_field_info.legend_parameter._assign_colors(
                             [Color(255, 255, 255), grid_colors[0]])
@@ -720,6 +723,9 @@ class Model(object):
                     else:
                         vtk_camera = None
 
+                    # this is not a good design but it takes too much refactoring to
+                    # remove it. I'm writing this down for whenever we get a chance
+                    # to refactor honeybee-vtk.
                     if not sub_folder_name:
                         grid_folder = pathlib.Path(
                             f'{folder}/{grid_polydata.identifier}')
@@ -1066,10 +1072,13 @@ def _get_result_file_paths(folder_path: Union[str, pathlib.Path]):
     # This could have been avoided if the file extension was provided in the
     # grids_info.json file.
     extension = None
+    match = pathlib.Path(grids_info[0]['full_id']).stem
     for path in folder_path.rglob('*'):
-        if path.stem == grids_info[0]['identifier']:
+        if path.stem == match:
             extension = path.suffix
             break
+    else:
+        raise ValueError(f'Failed to find the extension from {path}')
 
     # result file paths
     return [folder_path.joinpath(f"{grid['full_id']}{extension}")
@@ -1077,30 +1086,30 @@ def _get_result_file_paths(folder_path: Union[str, pathlib.Path]):
 
 
 def _filter_grid_polydata(grid_polydata_lst: List[PolyData], model: HBModel,
-                          grids_filter: Union[str, List[str]],
+                          grid_filter: Union[str, List[str]],
                           full_match) -> List[PolyData]:
     """Filter grid polydata based on sensor grids.
 
     Args:
         grid_polydata_lst: A list of grid polydata objects.
         model: A honeybee model object.
-        grids_filter: A list of grid identifiers or a regex pattern as a string to filter
+        grid_filter: A list of grid identifiers or a regex pattern as a string to filter
             the grid polydata.
         full_match: A boolean to filter grids by their identifiers as full matches.
 
     Returns:
         A list of PolyData objects for Grids.
     """
-    if not grids_filter or grids_filter[0] == '*':
+    if not grid_filter or grid_filter[0] == '*':
         return grid_polydata_lst
     else:
         filtered_sensor_grids = _filter_by_pattern(
-            model.properties.radiance.sensor_grids, grids_filter, full_match)
+            model.properties.radiance.sensor_grids, grid_filter, full_match)
         sensorgrid_identifiers = [
             grid.identifier for grid in filtered_sensor_grids]
         filtered_grid_polydata_lst = [grid for grid in grid_polydata_lst
                                       if grid.name in sensorgrid_identifiers]
         if not filtered_grid_polydata_lst:
             raise ValueError('No grids found in the model that match the'
-                             f' filter {grids_filter}.')
+                             f' filter {grid_filter}.')
         return filtered_grid_polydata_lst
