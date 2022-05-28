@@ -215,7 +215,7 @@ def model_images(
     show_default=True
 )
 @click.option(
-    '--grids-filter', '-gf', type=str, default='*', show_default=True, multiple=True,
+    '--grid-filter', '-gf', type=str, default='*', show_default=True, multiple=True,
     help='A regex pattern as a string to filter the grids. Defaults to *'
     ' which will export all the grids.'
 )
@@ -251,7 +251,7 @@ def model_images(
 def grid_images(
         hbjson_file, folder, image_type, image_width, image_height,
         background_color, grid_options, grid_display_mode,
-        config, grids_filter, full_match, text_content, text_height, text_color,
+        config, grid_filter, full_match, text_content, text_height, text_color,
         text_position, text_bold):
     """Export images of the grids for the Honeybee Model created from the HBJSON file.
 
@@ -303,7 +303,7 @@ def grid_images(
             if text_content else None
 
         output = model.to_grid_images(config=config, folder=folder,
-                                      grids_filter=grids_filter, full_match=full_match,
+                                      grid_filter=grid_filter, full_match=full_match,
                                       grid_display_mode=grid_display_mode,
                                       background_color=background_color,
                                       image_type=image_type,
@@ -337,7 +337,7 @@ def grid_images(
                     dir_okay=True), default='.', show_default=True
 )
 @click.option(
-    '--grids-filter', '-gf', type=str, default='*', show_default=True, multiple=True,
+    '--grid-filter', '-gf', type=str, default='*', show_default=True, multiple=True,
     help='A regex pattern as a string to filter the grids. Defaults to *'
     ' which will export all the grids.'
 )
@@ -362,7 +362,7 @@ def grid_images(
 )
 def time_step_images(
         hbjson_file, config, time_step_file, folder,
-        grids_filter, full_match, label, image_width, image_height):
+        grid_filter, full_match, label, image_width, image_height):
     """Export images of the grids for the Honeybee Model created from the HBJSON file.
 
     \b
@@ -386,7 +386,7 @@ def time_step_images(
         for time_step_data in data.time_step_data:
             export_time_step_images(hbjson_file, config, time_step_data,
                                     target_folder=folder.as_posix(),
-                                    grids_filter=grids_filter,
+                                    grid_filter=grid_filter,
                                     full_match=full_match,
                                     label_images=label,
                                     image_width=image_width,

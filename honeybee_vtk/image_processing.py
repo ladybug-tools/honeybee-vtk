@@ -471,7 +471,7 @@ def write_transparent_images(time_step_images_path: str, target_path: str = '.',
         time_step_images_path: The path to the folder containing the images.
             for time steps.
         target_path: The path to the folder where the transparent images will be
-            writtend to. Defaults to current working directory.
+            written to. Defaults to current working directory.
         transparency: The transparency value to use. Acceptable values are decimal
             point numbers between 0 and 1 inclusive. 0 is completely transparent and 1
              is completely opaque. Defaults to 0.5.
@@ -492,13 +492,10 @@ def write_transparent_images(time_step_images_path: str, target_path: str = '.',
     assert target_folder.is_dir(), 'The target folder must be a directory.'
 
     for grid_folder in time_step_images_folder.iterdir():
-
         grid_images_folder = target_folder.joinpath(f'{grid_folder.stem}_trans_images')
         if grid_images_folder.is_dir():
             shutil.rmtree(grid_images_folder)
         grid_images_folder.mkdir()
-
-        temp_folder = Path(tempfile.mkdtemp())
 
         image_count = 0
         for image_path in grid_folder.iterdir():
@@ -509,9 +506,5 @@ def write_transparent_images(time_step_images_path: str, target_path: str = '.',
             image = _annotate_image(image, text, 25)
             image.save(f'{grid_images_folder}/{image_count}.png', 'PNG')
             image_count += 1
-        try:
-            shutil.rmtree(temp_folder)
-        except Exception:
-            continue
 
     return target_folder.as_posix()

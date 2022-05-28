@@ -76,7 +76,7 @@ def test_export_grid_images():
             '--image-width', 500, '--image-height', 500,
             '--background-color', 255, 255, 255, '--grid-options', 'Meshes',
             '--grid-display-mode', 'SurfaceWithEdges',
-            '--config', config_path, '--grids-filter', 'TestRoom_1',
+            '--config', config_path, '--grid-filter', 'TestRoom_1',
             '--text-content', 'Test Room', '--text-height', 25,
             '--text-color', 51, 0, 0, '--text-position', 0.5, 0.5, '--text-bold'])
 
@@ -102,7 +102,7 @@ def test_export_timestep_images():
         export, [
             'time-step-images',
             file_path, '--config', config_path, '--time-step-file', time_step_path,
-            '--folder', target_folder, '--grids-filter', 'TestRoom_1'])
+            '--folder', target_folder, '--grid-filter', 'TestRoom_1'])
 
     assert result.exit_code == 0
 

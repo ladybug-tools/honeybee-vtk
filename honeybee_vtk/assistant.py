@@ -228,7 +228,7 @@ class Assistant:
                 Defaults to 0, which will use view's y dimension.
             image_name: A text string that sets the name of the image. Defaults to None.
             color_range: A vtk lookup table object which can be obtained
-                from the color_range mehtod of the DataFieldInfo object.
+                from the color_range method of the DataFieldInfo object.
                 Defaults to None.
             rgba: A boolean value to set the type of buffer. A True value sets
                 an the background color to black. A False value uses the Scene object's

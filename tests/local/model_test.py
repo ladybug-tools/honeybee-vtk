@@ -49,7 +49,7 @@ def test_grid_to_images_filter():
 
     file_names = ['Daylight-Factor_TestRoom_1.png', 'UDI_TestRoom_1.png']
     model.to_grid_images(config=json_path, folder=target_folder,
-                         grids_filter=['TestRoom_1'])
+                         grid_filter=['TestRoom_1'])
     for file in os.listdir(f'{target_folder}/TestRoom_1'):
         assert file in file_names
 
@@ -86,6 +86,6 @@ def test_grid_to_images_value_error():
 
     with pytest.raises(ValueError):
         model.to_grid_images(config=json_path, folder=target_folder,
-                             grids_filter=['abc'],)
+                             grid_filter=['abc'],)
 
     shutil.rmtree(target_folder)
