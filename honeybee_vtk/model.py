@@ -683,15 +683,17 @@ class Model(object):
 
         output: Union[Dict[str, Camera], List[str]] = {} if extract_camera else []
 
-
+        grid_colors_supplied = True if grid_colors else False
         for data in config_data:
             for grid_polydata in grid_polydata_lst:
                 dataset = ModelDataSet(name=grid_polydata.identifier,
                                        data=[grid_polydata],
                                        display_mode=grid_display_mode)
 
-                if not grid_colors and data.grid_colors:
+                if not grid_colors_supplied and data.grid_colors:
                     grid_colors = [Color(r, g, b) for r, g, b in data.grid_colors]
+
+                dataset.color_by = data.identifier
 
                 if grid_colors:
                     if len(grid_colors) == 1:
@@ -701,7 +703,6 @@ class Model(object):
                         dataset.active_field_info.legend_parameter._assign_colors(
                             grid_colors)
 
-                dataset.color_by = data.identifier
                 actor = Actor(dataset)
                 camera = _camera_to_grid_actor(actor, data.identifier)
                 scene = Scene(background_color=background_color, actors=[actor],
