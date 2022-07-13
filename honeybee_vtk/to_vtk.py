@@ -123,9 +123,19 @@ def convert_aperture(aperture: Aperture) -> List[PolyData]:
     metadata = polydata._get_metadata(aperture)
     polydata._add_metadata(metadata)
     data = [polydata]
-    for shade in aperture.outdoor_shades:
-        polydata = convert_shade(shade)
-        data.append(polydata)
+
+    shades = []
+    if aperture.outdoor_shades:
+        shades.extend(aperture.outdoor_shades)
+
+    if aperture.indoor_shades:
+        shades.extend(aperture.indoor_shades)
+
+    if shades:
+        for shade in shades:
+            polydata = convert_shade(shade)
+            data.append(polydata)
+
     return data
 
 
