@@ -25,3 +25,4 @@ tox.ini
 #generate html model
 model.html
 
+venv/*
