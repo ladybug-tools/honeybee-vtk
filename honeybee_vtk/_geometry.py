@@ -7,8 +7,8 @@ from typing import List
 
 
 def _radial_grid(sensorgrid: SensorGrid,
-                 angle: float = 45,
-                 radius: float = None) -> Mesh3D:
+                 angle: float,
+                 radius: float) -> Mesh3D:
     """Create a radial grid from a SensorGrid.
 
     This function will create a triangle from each sensor in the grid using the
@@ -16,18 +16,19 @@ def _radial_grid(sensorgrid: SensorGrid,
 
     Args:
         sensorgrid: A SensorGrid object.
-        angle: Angle between the two sides of a triangle in degrees. If not
-            provided, the default value will be 45 degrees.
+        angle: Angle between the two sides of a triangle in degrees.
         radius: Height of the triangle in meters. If None, the height of the 
-            triangle will be decided based on the magnitude of the sensor's direction 
+            triangle will be decided based on the magnitude of the sensor's direction
             vector.
 
     Returns:
         A Mesh3D object that has a triangle as a mesh face for each sensor in the grid.
     """
 
-    faces: List[Face3D] = []
+    assert sensorgrid.sensors[0].dir[-1] != 1, 'For radial-grid generation, no sensor'\
+        ' should be directed in the direction of +z.'
 
+    faces: List[Face3D] = []
     for sensor in sensorgrid.sensors:
         vec = Vector3D(*sensor.dir).normalize()
         vec_1 = vec.rotate_xy(angle=radians((angle/2)*-1))
