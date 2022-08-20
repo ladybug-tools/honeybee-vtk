@@ -25,8 +25,8 @@ def _radial_grid(sensorgrid: SensorGrid,
         A Mesh3D object that has a triangle as a mesh face for each sensor in the grid.
     """
 
-    assert sensorgrid.sensors[0].dir[-1] != 1, 'For radial-grid generation, no sensor'\
-        ' should be directed in the direction of +z.'
+    assert sensorgrid.sensors[0].dir[-1] == 0, 'For radial-grid generation, the sensors'\
+        ' direction vector must be in the XY plane.'
 
     faces: List[Face3D] = []
     for sensor in sensorgrid.sensors:
