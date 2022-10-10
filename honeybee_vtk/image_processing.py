@@ -1,6 +1,7 @@
 """Functionality for image processing."""
 
 
+import math
 import tempfile
 import cv2
 import shutil
@@ -11,11 +12,13 @@ from typing import List, Tuple
 from PIL import Image, ImageDraw, ImageFont
 
 
-def _transparent_background(image: Image.Image) -> Image.Image:
+def _transparent_background(image: Image.Image, tolerance=200) -> Image.Image:
     """Make a transparent background for an image.
 
     Args:
         image: An Image object.
+        tolerance: A max distance for the color from 255, 255, 255. Default is set
+            to 200.
 
     Returns:
         An Image object with a fully transparent background.
@@ -24,8 +27,12 @@ def _transparent_background(image: Image.Image) -> Image.Image:
     image_data = image.getdata()
 
     new_image_data = []
+
     for pixel in image_data:
-        if pixel[0] == 255 and pixel[1] == 255 and pixel[2] == 255:
+        dis = math.sqrt(
+            (255 - pixel[0]) ** 2 + (255 - pixel[1]) ** 2 + (255 - pixel[2]) ** 2
+        )
+        if dis < tolerance:
             new_image_data.append((255, 255, 255, 0))
         else:
             new_image_data.append(pixel)
@@ -105,7 +112,7 @@ def _translucent(image: Image.Image, transparency: float):
     assert 0 <= transparency <= 1, 'Transparency must be a between 0 and 1 inclusive.'
 
     image_rgba = image.copy()
-    image_rgba.putalpha(round(transparency*255))
+    image_rgba.putalpha(round(transparency * 255))
     return image_rgba
 
 
@@ -231,10 +238,14 @@ def _annotate_image(image: Image.Image, text: str, text_height: int):
     except OSError:
         fnt = ImageFont.load_default()
 
-    image_draw.rectangle(((width/2-width/15), height-text_height,
-                         (width/2+20), height), fill='white')
-    image_draw.text(((width/2-width/15), height-text_height),
-                    text, font=fnt, fill='black')
+    padding = 5
+    x_1 = width - (6.5 * text_height)
+    x_2 = width
+    y_1 = height - text_height - padding
+    y_2 = height - padding
+
+    image_draw.rectangle((x_1 - padding, y_1, x_2, y_2), fill='white')
+    image_draw.text((x_1, y_1), text, font=fnt, fill='black')
     return image
 
 
@@ -446,7 +457,7 @@ def write_gif(time_step_images_path: str, target_path: str = '.',
                                                   len(time_stamp_strings))
 
         annotated_folder = _annotated_folder(temp_folder, gif_images_folder,
-                                             time_stamp_strings, 25,
+                                             time_stamp_strings, 20,
                                              len(time_stamp_strings))
 
         _gif(temp_folder, annotated_folder,
@@ -503,7 +514,7 @@ def write_transparent_images(time_step_images_path: str, target_path: str = '.',
             image = _translucent(image, transparency)
             image = _transparent_background(image)
             text = _hoy_to_text(image_path)
-            image = _annotate_image(image, text, 25)
+            image = _annotate_image(image, text, 20)
             image.save(f'{grid_images_folder}/{image_count}.png', 'PNG')
             image_count += 1
 
