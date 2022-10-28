@@ -1,4 +1,4 @@
-lbt-honeybee>=0.5.482
+lbt-honeybee>=0.6.120
 vtk==9.1.0
 pandas >= 1.1.5
 opencv-python >= 4.5.5.64
