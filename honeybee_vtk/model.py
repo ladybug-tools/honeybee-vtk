@@ -550,7 +550,9 @@ class Model(object):
                   background_color: Tuple[int, int, int] = None,
                   view: List[str] = None,
                   image_type: ImageTypes = ImageTypes.png,
-                  image_width: int = 0, image_height: int = 0) -> List[str]:
+                  image_width: int = 0, image_height: int = 0,
+                  image_scale: int = 1
+                  ) -> List[str]:
         """Export images from model.
 
         Args:
@@ -567,6 +569,7 @@ class Model(object):
                 view's horizontal angle.
             image_height: Image height. Defaults to 0. Which will use the default radiance
                 view's vertical angle.
+            image_scale: An integer value as a scale factor. Defaults to 1.
 
         Returns:
             A list of text strings representing the file paths to the images.
@@ -610,7 +613,9 @@ class Model(object):
 
         return scene.export_images(
             folder=folder, image_type=image_type,
-            image_width=image_width, image_height=image_height)
+            image_width=image_width, image_height=image_height,
+            image_scale=image_scale
+            )
 
     def to_grid_images(self, config: str, *, folder: str = '.',
                        grid_filter: Union[str, List[str]] = '*',
@@ -618,7 +623,8 @@ class Model(object):
                        grid_display_mode: DisplayMode = DisplayMode.SurfaceWithEdges,
                        background_color: Tuple[int, int, int] = None,
                        image_type: ImageTypes = ImageTypes.png,
-                       image_width: int = 0, image_height: int = 0, image_name: str = '',
+                       image_width: int = 0, image_height: int = 0,
+                       image_name: str = '', image_scale: int = 1,
                        text_actor: TextActor = None,
                        grid_camera_dict: Dict[str, vtk.vtkCamera] = None,
                        extract_camera: bool = False,
@@ -654,6 +660,7 @@ class Model(object):
             image_height: Image height in pixels. Defaults to 0. Which will use the
                 default radiance view's vertical angle to derive the height.
             image_name: A text string that sets the name of the image. Defaults to ''.
+            image_scale: An integer value as a scale factor. Defaults to 1.
             text_actor: A TextActor object that defines the properties of the text to be
                 added to the image. Defaults to None.
             grid_camera_dict: A dictionary of grid identifiers and vtkCamera objects.
@@ -716,6 +723,7 @@ class Model(object):
                     output[grid_polydata.identifier] = scene.export_images(
                         folder=folder, image_type=image_type, image_width=image_width,
                         image_height=image_height, image_name=image_name,
+                        image_scale=image_scale,
                         vtk_camera=vtk_camera, extract_camera=extract_camera
                     )
                 else:
@@ -742,6 +750,7 @@ class Model(object):
                                                   image_width=image_width,
                                                   image_height=image_height,
                                                   image_name=image_name,
+                                                  image_scale=image_scale,
                                                   vtk_camera=vtk_camera)
 
         return output
