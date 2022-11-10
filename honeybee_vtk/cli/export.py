@@ -193,6 +193,10 @@ def model_images(
     ' Defaults to 1088 pixels.', show_default=True
 )
 @click.option(
+    '--image-scale', '-is', type=int, default=1, help='Scale of the image. Default '
+    ' is set to 1.', show_default=True
+)
+@click.option(
     '--background-color', '-bc', type=(int, int, int), default=(255, 255, 255),
     help='Set background color for images', show_default=True
 )
@@ -249,7 +253,7 @@ def model_images(
 )
 
 def grid_images(
-        hbjson_file, folder, image_type, image_width, image_height,
+        hbjson_file, folder, image_type, image_width, image_height, image_scale,
         background_color, grid_options, grid_display_mode,
         config, grid_filter, full_match, text_content, text_height, text_color,
         text_position, text_bold):
@@ -309,6 +313,7 @@ def grid_images(
                                       image_type=image_type,
                                       image_width=image_width,
                                       image_height=image_height,
+                                      image_scale=image_scale,
                                       text_actor=text_actor)
 
     except Exception:
