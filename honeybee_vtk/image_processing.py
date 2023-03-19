@@ -139,7 +139,7 @@ def _gif(temp_folder: Path, images_folder: Path, target_folder: Path,
     image_paths = _files_in_order(temp_folder, images_folder.stem, number_of_images)
     images = [Image.open(image_path) for image_path in image_paths]
     image = images[0]
-    rest_of_images = images[1:] + [images[-1]]*linger_last_frame
+    rest_of_images = images[1:] + [images[-1]] * linger_last_frame
     image.save(f'{target_folder}/{gif_name}.gif', save_all=True,
                append_images=rest_of_images, duration=gif_duration, loop=gif_loop_count,
                transparency=0, format='GIF', disposal=2)
@@ -205,7 +205,7 @@ def _hoy_to_text(image_path: Path) -> str:
         image_path: A path to a hoy image.
 
     Returns:
-        A text that is the HOY converted into a humand readable form.
+        A text that is the HOY converted into a human readable form.
     """
     hoy = float(image_path.stem.split('_')[0])
     text = DateTime.from_hoy(hoy).to_simple_string()
@@ -365,11 +365,11 @@ def _files_in_order(temp_folder: Path, parent: str,
 
 def _transparent_translucent(temp_folder: Path, images_folder: Path,
                              translucency: bool = True) -> Path:
-    """Appply transparency to images and make the background translucent.
+    """Apply transparency to images and make the background translucent.
 
     Args:
         temp_folder: Path to the temp folder.
-        images_folder: The folder containing the images to appply transparency to.
+        images_folder: The folder containing the images to apply transparency to.
         translucency: A boolean to determine if the transparency should be applied.
             Defaults to True.
 
@@ -399,7 +399,8 @@ def write_gif(time_step_images_path: str, target_path: str = '.',
               gradient_transparency: bool = False,
               duration: int = 1000,
               loop_count: int = 0,
-              linger_last_frame: int = 3) -> str:
+              linger_last_frame: int = 3,
+              text_height: int = 20) -> str:
     """Export a GIF from a time step images.
 
     This function will generate one folder for each grid found in the model.
@@ -421,6 +422,7 @@ def write_gif(time_step_images_path: str, target_path: str = '.',
             than the duration. If set to 0, the last frame will not linger. Setting it
             to 3 will make the last frame linger for 3 times the duration. Defaults to
             3.
+        text_height: An integer to set the text height in pixels. Default is set to 20.
 
     Returns:
         The path to the folder where GIFs are exported.
@@ -457,7 +459,7 @@ def write_gif(time_step_images_path: str, target_path: str = '.',
                                                   len(time_stamp_strings))
 
         annotated_folder = _annotated_folder(temp_folder, gif_images_folder,
-                                             time_stamp_strings, 20,
+                                             time_stamp_strings, text_height,
                                              len(time_stamp_strings))
 
         _gif(temp_folder, annotated_folder,

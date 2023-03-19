@@ -373,7 +373,8 @@ def export_time_step_images(hbjson_path: str, config_path: str,
                             full_match: bool = False,
                             label_images: bool = True,
                             image_width: int = 1920,
-                            image_height: int = 1088) -> str:
+                            image_height: int = 1088,
+                            image_scale=1) -> str:
     """Export images of grids for each time step in the time stamps file.
 
     This function will find all the time stamps between the start and end datetimes
@@ -398,6 +399,7 @@ def export_time_step_images(hbjson_path: str, config_path: str,
             or not. Defaults to True.
         image_width: Width of the images. Defaults to 1920.
         image_height: Height of the images. Defaults to 1088.
+        image_scale: An integer value as a scale factor. Defaults to 1.
 
     Returns:
         A path to the target folder where all the images are written.
@@ -445,7 +447,8 @@ def export_time_step_images(hbjson_path: str, config_path: str,
                                    time_step.color[2])
                          ],
                          image_width=image_width,
-                         image_height=image_height)
+                         image_height=image_height,
+                         image_scale=image_scale)
 
     try:
         shutil.rmtree(parent_temp_folder)
