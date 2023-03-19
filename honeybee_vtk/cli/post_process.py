@@ -42,8 +42,13 @@ def post_process():
     ' duration. If set to 0, the last frame will not linger. Setting it to 3 will make'
     ' the last frame linger for 3 times the duration. Defaults to 3.'
 )
+@click.option(
+    '--text-height', '-th', type=int, default=20, show_default=True,
+    help='An integer to set the text height for date and time on the image.'
+    ' Default is set to 20.'
+)
 def export_gif(images_folder, folder, gradient_transparency, duration,
-               loop_count, linger_last_frame):
+               loop_count, linger_last_frame, text_height):
     """Write a gif from a set of images.
 
     \b
@@ -65,7 +70,7 @@ def export_gif(images_folder, folder, gradient_transparency, duration,
     """
     try:
         output = write_gif(images_folder, folder, gradient_transparency,
-                           duration, loop_count, linger_last_frame)
+                           duration, loop_count, linger_last_frame, text_height)
     except Exception:
         traceback.print_exc()
         sys.exit(1)

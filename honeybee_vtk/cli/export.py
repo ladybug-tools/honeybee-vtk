@@ -365,9 +365,13 @@ def grid_images(
     '--image-height', '-ih', type=int, default=1088, help='Height of images in pixels.'
     'If not set, Radiance default y dimension of view will be used.', show_default=True
 )
+@click.option(
+    '--image-scale', '-is', type=int, default=1, help='Scale of the image. Default '
+    ' is set to 1.', show_default=True
+)
 def time_step_images(
         hbjson_file, config, time_step_file, folder,
-        grid_filter, full_match, label, image_width, image_height):
+        grid_filter, full_match, label, image_width, image_height, image_scale):
     """Export images of the grids for the Honeybee Model created from the HBJSON file.
 
     \b
@@ -395,7 +399,8 @@ def time_step_images(
                                     full_match=full_match,
                                     label_images=label,
                                     image_width=image_width,
-                                    image_height=image_height)
+                                    image_height=image_height,
+                                    image_scale=image_scale)
         output = folder
     except Exception:
         traceback.print_exc()
