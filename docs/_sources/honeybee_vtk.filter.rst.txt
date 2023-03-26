@@ -1,0 +1,7 @@
+honeybee\_vtk.filter module
+===========================
+
+.. automodule:: honeybee_vtk.filter
+   :members:
+   :undoc-members:
+   :show-inheritance:

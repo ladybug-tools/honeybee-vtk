@@ -1,0 +1,7 @@
+honeybee\_vtk.text\_actor module
+================================
+
+.. automodule:: honeybee_vtk.text_actor
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,7 @@
+honeybee\_vtk.cli.translate module
+==================================
+
+.. automodule:: honeybee_vtk.cli.translate
+   :members:
+   :undoc-members:
+   :show-inheritance:

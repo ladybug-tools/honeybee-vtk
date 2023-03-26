@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>honeybee_vtk.config &#8212; honeybee-vtk  documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          honeybee-vtk</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/main.html">main</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/main.html#honeybee-vtk">honeybee-vtk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/post_process.html">post_process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/post_process.html#honeybee-vtk-post-process">honeybee-vtk post_process</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/post_process.html#honeybee-vtk-post-process-gif">gif</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/post_process.html#honeybee-vtk-post-process-transparent-images">transparent-images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/config.html">config</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/config.html#honeybee-vtk-config">honeybee-vtk config</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/config.html#honeybee-vtk-config-time-step-data">time-step-data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/translate.html#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/export.html">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/export.html#honeybee-vtk-export">honeybee-vtk export</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/export.html#honeybee-vtk-export-grid-images">grid-images</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/export.html#honeybee-vtk-export-model-images">model-images</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/export.html#honeybee-vtk-export-time-step-images">time-step-images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../honeybee_vtk.html">honeybee_vtk package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.cli.html">honeybee_vtk.cli package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.cli.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.cli.config.html">honeybee_vtk.cli.config module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.cli.export.html">honeybee_vtk.cli.export module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.cli.post_process.html">honeybee_vtk.cli.post_process module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.cli.translate.html">honeybee_vtk.cli.translate module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.cli.html#module-honeybee_vtk.cli">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.filter.html">honeybee_vtk.filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.image_processing.html">honeybee_vtk.image_processing module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.text_actor.html">honeybee_vtk.text_actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.time_step_images.html">honeybee_vtk.time_step_images module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <h1>Source code for honeybee_vtk.config</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Data json schema and validation for the config file.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">constr</span><span class="p">,</span> <span class="n">conint</span>
+<span class="kn">from</span> <span class="nn">pydantic.types</span> <span class="kn">import</span> <span class="n">confloat</span><span class="p">,</span> <span class="n">conlist</span>
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">DataSetNames</span>
+<span class="kn">from</span> <span class="nn">.legend_parameter</span> <span class="kn">import</span> <span class="n">ColorSets</span><span class="p">,</span> <span class="n">DecimalCount</span><span class="p">,</span> <span class="n">Orientation</span>
+<span class="kn">from</span> <span class="nn">ladybug.dt</span> <span class="kn">import</span> <span class="n">DateTime</span>
+
+
+<div class="viewcode-block" id="InputFile"><a class="viewcode-back" href="../../honeybee_vtk.config.html#honeybee_vtk.config.InputFile">[docs]</a><span class="k">class</span> <span class="nc">InputFile</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Config for the input file to be consumed by the config command.&quot;&quot;&quot;</span>
+    <span class="n">paths</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Paths to the result folders.&#39;</span><span class="p">)</span>
+
+    <span class="n">identifiers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Identifiers for the simulation data that will be mounted on the&#39;</span>
+        <span class="s1">&#39; model. The length of this list must match the length of paths.&#39;</span><span class="p">)</span>
+
+    <span class="n">units</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Units for the simulation data that will be mounted on the&#39;</span>
+        <span class="s1">&#39; model. The length of this list must match the length of paths.&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="InputFile.check_length"><a class="viewcode-back" href="../../honeybee_vtk.config.html#honeybee_vtk.config.InputFile.check_length">[docs]</a>    <span class="nd">@validator</span><span class="p">(</span><span class="s1">&#39;identifiers&#39;</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">check_length</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check that the length of identifiers and units match the length of paths.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;paths&#39;</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The length of paths, identifiers, and units must match.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span></div></div>
+
+
+<div class="viewcode-block" id="Autocalculate"><a class="viewcode-back" href="../../honeybee_vtk.config.html#honeybee_vtk.config.Autocalculate">[docs]</a><span class="k">class</span> <span class="nc">Autocalculate</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+
+    <span class="nb">type</span><span class="p">:</span> <span class="n">constr</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s1">&#39;^Autocalculate$&#39;</span><span class="p">)</span> <span class="o">=</span> <span class="s1">&#39;Autocalculate&#39;</span></div>
+
+
+<div class="viewcode-block" id="TextConfig"><a class="viewcode-back" href="../../honeybee_vtk.config.html#honeybee_vtk.config.TextConfig">[docs]</a><span class="k">class</span> <span class="nc">TextConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Config for the text to be used in a legend.</span>
+
+<span class="sd">    This object applies to text for legend title and legend labels as well.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="TextConfig.Config"><a class="viewcode-back" href="../../honeybee_vtk.config.html#honeybee_vtk.config.TextConfig.Config">[docs]</a>    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+        <span class="n">validate_all</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">validate_assignment</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+    <span class="n">color</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">conint</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">255</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;An array of three integer values representing R, G, and B values&#39;</span>
+        <span class="s1">&#39; for the color of text. Values from 0 to 255 are accepted.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">size</span><span class="p">:</span> <span class="n">conint</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Text size in points.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">bold</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Boolean value to indicate whether to make the text bold or not.&#39;</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LegendConfig"><a class="viewcode-back" href="../../honeybee_vtk.config.html#honeybee_vtk.config.LegendConfig">[docs]</a><span class="k">class</span> <span class="nc">LegendConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Config for the legend to be created from a dataset.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="LegendConfig.Config"><a class="viewcode-back" href="../../honeybee_vtk.config.html#honeybee_vtk.config.LegendConfig.Config">[docs]</a>    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+        <span class="n">validate_all</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">validate_assignment</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+    <span class="n">color_set</span><span class="p">:</span> <span class="n">ColorSets</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">ColorSets</span><span class="o">.</span><span class="n">ecotect</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Color set to be used on data and legend. Currently, this field&#39;</span>
+        <span class="s1">&#39; only uses Ladybug color sets. Defaults to using ecotect colorset.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">reverse_color_set</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Boolean value to indicate whether to reverse the color set.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="nb">min</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Autocalculate</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">Autocalculate</span><span class="p">(),</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Minimum value for the legend. Also known as the lower end of the&#39;</span>
+        <span class="s1">&#39; legend. If min and max values are not specified, autocalculated min and max&#39;</span>
+        <span class="s1">&#39; values will be used from data.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="nb">max</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Autocalculate</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">Autocalculate</span><span class="p">(),</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Maximum value for the legend. Also known as the higher end of the&#39;</span>
+        <span class="s1">&#39; legend. If min and max values are not specified, autocalculated min and max&#39;</span>
+        <span class="s1">&#39; values will be used from data.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">hide_legend</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A bool value to indicate whether to show legend in the exported&#39;</span>
+        <span class="s1">&#39; images or not.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">orientation</span><span class="p">:</span> <span class="n">Orientation</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">Orientation</span><span class="o">.</span><span class="n">vertical</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Choose between horizontal and vertical orientation of legend.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">width</span><span class="p">:</span> <span class="n">confloat</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39; A decimal number representing the fraction of viewport width&#39;</span>
+        <span class="s1">&#39; that will be used to define the width of the legend.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">height</span><span class="p">:</span> <span class="n">confloat</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mf">0.45</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A decimal number representing the fraction of viewport height&#39;</span>
+        <span class="s1">&#39;that will be used to define the height of the legend.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">position</span><span class="p">:</span> <span class="n">conlist</span><span class="p">(</span><span class="n">confloat</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mf">0.95</span><span class="p">),</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A tuple of two decimal values. The values represent the fraction&#39;</span>
+        <span class="s1">&#39; of viewport width and the fraction of viewport height.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">color_count</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Autocalculate</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">Autocalculate</span><span class="p">(),</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;An integer representing the number of colors in a legend. If not&#39;</span>
+        <span class="s1">&#39; specified, it defaults to the number of colors in a Ladybug color set.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">label_count</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Autocalculate</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">Autocalculate</span><span class="p">(),</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;An integer representing the number of text labels on a legend.&#39;</span>
+        <span class="s1">&#39; Label count will have to be less than or equal to color count. It defaults&#39;</span>
+        <span class="s1">&#39; to vtk scalarbar default setting.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">decimal_count</span><span class="p">:</span> <span class="n">DecimalCount</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">DecimalCount</span><span class="o">.</span><span class="n">default</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Controlling the number of decimals on each label of the legend.&#39;</span>
+        <span class="s1">&#39;Accepted values are &quot;default&quot;, &quot;integer&quot;, &quot;decimal_two&quot;, and &quot;decimal_three&quot;.&#39;</span>
+        <span class="s1">&#39;Defaults to VTKs default settings.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">preceding_labels</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Boolean value to decide whether the legend title and the&#39;</span>
+        <span class="s1">&#39; legend labels will precede the legend or not.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">label_parameters</span><span class="p">:</span> <span class="n">TextConfig</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">TextConfig</span><span class="p">(),</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Text parameters for the labels on the legend.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">title_parameters</span><span class="p">:</span> <span class="n">TextConfig</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">TextConfig</span><span class="p">(</span><span class="n">bold</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Text parameters for the title of the legend.&#39;</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DataConfig"><a class="viewcode-back" href="../../honeybee_vtk.config.html#honeybee_vtk.config.DataConfig">[docs]</a><span class="k">class</span> <span class="nc">DataConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;data-config for simulation results you&#39;d like to load on a honeybee-vtk model.&quot;&quot;&quot;</span>
+
+    <span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;identifier to be given to data. Example, &quot;Daylight-Factor&quot;.&#39;</span>
+        <span class="s1">&#39; This identifier needs to be unique in each of the DataConfig objects&#39;</span>
+        <span class="s1">&#39; one introduces using a config file. Having multiple DataConfig objects with&#39;</span>
+        <span class="s1">&#39; same modifier will raise an error.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">object_type</span><span class="p">:</span> <span class="n">DataSetNames</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The name of the model object on which you would like to map this&#39;</span>
+        <span class="s1">&#39; data.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39; The unit of the data being loaded.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Valid path to the folder with result files and the json file that&#39;</span>
+        <span class="s1">&#39; catalogues the results.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">hide</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Boolean value to indicate if this data should be visible in the&#39;</span>
+        <span class="s1">&#39; exported images or not.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">lower_threshold</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Autocalculate</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">Autocalculate</span><span class="p">(),</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Lower end of the threshold range for the data. Data beyond this&#39;</span>
+        <span class="s1">&#39; threshold will be filtered. This value is included in the thresholding&#39;</span>
+        <span class="s1">&#39; operation. For example, if you want the lower threshold to filter all the&#39;</span>
+        <span class="s1">&#39; values greater than 0 then set the value to 0.1. If not specified, the lower&#39;</span>
+        <span class="s1">&#39; threshold will be infinite. Defaults to None.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">upper_threshold</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Autocalculate</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">Autocalculate</span><span class="p">(),</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Upper end of the threshold range for the data. Data beyond this&#39;</span>
+        <span class="s1">&#39; threshold will be filtered. This value is included in the thresholding&#39;</span>
+        <span class="s1">&#39; operation. For example, if you want the threshold to filter all the Values&#39;</span>
+        <span class="s1">&#39; less than 1 then set the value to 0.99. If not specified, the upper threshold&#39;</span>
+        <span class="s1">&#39; will be infinite. Defaults to None.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">legend_parameters</span><span class="p">:</span> <span class="n">LegendConfig</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">LegendConfig</span><span class="p">(),</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Legend parameters to create legend out of the this dataset.&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">grid_colors</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of RGB values for colors to be used to color the grids.&#39;</span>
+        <span class="s1">&#39; this is useful when you do not want to use the ladybug colorset defined in the&#39;</span>
+        <span class="s1">&#39; config.&#39;</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="DataConfig.set_default_value"><a class="viewcode-back" href="../../honeybee_vtk.config.html#honeybee_vtk.config.DataConfig.set_default_value">[docs]</a>    <span class="nd">@validator</span><span class="p">(</span><span class="s1">&#39;grid_colors&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">set_default_value</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">v</span> <span class="k">if</span> <span class="n">v</span> <span class="k">else</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="DataConfig.check_pos_against_width_height"><a class="viewcode-back" href="../../honeybee_vtk.config.html#honeybee_vtk.config.DataConfig.check_pos_against_width_height">[docs]</a>    <span class="nd">@validator</span><span class="p">(</span><span class="s1">&#39;legend_parameters&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">check_pos_against_width_height</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">LegendConfig</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LegendConfig</span><span class="p">:</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s1">&#39;identifier&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">width</span> <span class="o">&gt;=</span> <span class="mf">0.5</span> <span class="ow">and</span> <span class="n">v</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.5</span> <span class="ow">and</span> <span class="n">v</span><span class="o">.</span><span class="n">width</span> <span class="o">&gt;</span> <span class="n">v</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Width of legend </span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">width</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39; cannot be greater than the position of legend in X direction&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39; </span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.&#39;</span>
+                <span class="s1">&#39; Either update the position in X direction or update the&#39;</span>
+                <span class="s1">&#39; width of the legend. </span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">height</span> <span class="o">&gt;=</span> <span class="mf">0.5</span> <span class="ow">and</span> <span class="n">v</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.5</span> <span class="ow">and</span> <span class="n">v</span><span class="o">.</span><span class="n">height</span> <span class="o">&gt;</span> <span class="n">v</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Height of legend </span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">height</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39; cannot be greater than the position of legend in Y direction&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39; </span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">.&#39;</span>
+                <span class="s1">&#39; Either update the position in Y direction or update the&#39;</span>
+                <span class="s1">&#39; height of the legend. </span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span></div></div>
+
+
+<div class="viewcode-block" id="Config"><a class="viewcode-back" href="../../honeybee_vtk.config.html#honeybee_vtk.config.Config">[docs]</a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Config for simulation results you&#39;d like to load on a honeybee-vtk model.&quot;&quot;&quot;</span>
+
+    <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">DataConfig</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;List of data-config objects that define the data to be loaded on&#39;</span>
+        <span class="s1">&#39; the model.&#39;</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DateTimeConfig"><a class="viewcode-back" href="../../honeybee_vtk.config.html#honeybee_vtk.config.DateTimeConfig">[docs]</a><span class="k">class</span> <span class="nc">DateTimeConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A DateTime object.&quot;&quot;&quot;</span>
+    <span class="n">month</span><span class="p">:</span> <span class="n">conint</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Month of the year. Accepted values are between 1 and 12 inclusive.&#39;</span>
+    <span class="p">)</span>
+    <span class="n">day</span><span class="p">:</span> <span class="n">conint</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">31</span><span class="p">)</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Month of the year. Accepted values are between 1 and 31 inclusive.&#39;</span>
+    <span class="p">)</span>
+    <span class="n">hour</span><span class="p">:</span> <span class="n">conint</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">23</span><span class="p">)</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Hour of the day. Accepted values are between 0 and 23 inclusive.&#39;</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Period"><a class="viewcode-back" href="../../honeybee_vtk.config.html#honeybee_vtk.config.Period">[docs]</a><span class="k">class</span> <span class="nc">Period</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A period of time for which to generate time step images.&quot;&quot;&quot;</span>
+
+    <span class="n">date_time</span><span class="p">:</span> <span class="n">conlist</span><span class="p">(</span><span class="n">DateTimeConfig</span><span class="p">,</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of two DateTimConfig objects that define the start and end&#39;</span>
+        <span class="s1">&#39; of the period. The first DateTime object is the start of the period and&#39;</span>
+        <span class="s1">&#39; the second DateTime object is the end of the period.&#39;</span>
+    <span class="p">)</span>
+    <span class="n">color</span><span class="p">:</span> <span class="n">conlist</span><span class="p">((</span><span class="n">conint</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">255</span><span class="p">)),</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;An array of three integer values representing R, G, and B values&#39;</span>
+        <span class="s1">&#39; for the color of text. Values from 0 to 255 are accepted.&#39;</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Periods"><a class="viewcode-back" href="../../honeybee_vtk.config.html#honeybee_vtk.config.Periods">[docs]</a><span class="k">class</span> <span class="nc">Periods</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Config for the peridos to be used in generating time step images.&quot;&quot;&quot;</span>
+    <span class="n">periods</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Period</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of Period objects that define the periods to be used in&#39;</span>
+        <span class="s1">&#39; generating time step images.&#39;</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TimeStepConfig"><a class="viewcode-back" href="../../honeybee_vtk.config.html#honeybee_vtk.config.TimeStepConfig">[docs]</a><span class="k">class</span> <span class="nc">TimeStepConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Data to be used in generating an image for the time step.&quot;&quot;&quot;</span>
+    <span class="n">index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The index of the time step in the time step file.&#39;</span>
+        <span class="s1">&#39; Example of such a file is sun-up-hours.txt&#39;</span>
+    <span class="p">)</span>
+    <span class="n">hoy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The hour of the year for the time step.&#39;</span>
+    <span class="p">)</span>
+    <span class="n">color</span><span class="p">:</span> <span class="n">conlist</span><span class="p">((</span><span class="n">conint</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">255</span><span class="p">)),</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;An array of three integer values representing R, G, and B values&#39;</span>
+        <span class="s1">&#39; for the color that will be used to color the grid in expoted time step image.&#39;</span>
+        <span class="s1">&#39; Values from 0 to 255 are accepted.&#39;</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TimeStepDataConfig"><a class="viewcode-back" href="../../honeybee_vtk.config.html#honeybee_vtk.config.TimeStepDataConfig">[docs]</a><span class="k">class</span> <span class="nc">TimeStepDataConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A list of TimeStepData objects.&quot;&quot;&quot;</span>
+
+    <span class="n">time_step_data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">TimeStepConfig</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of TimeStepData objects that define data to be used in&#39;</span>
+        <span class="s1">&#39; generating an image for that timestep.&#39;</span>
+    <span class="p">)</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2023, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

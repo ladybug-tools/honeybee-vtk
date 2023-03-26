@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>translate &#8212; honeybee-vtk  documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="export" href="export.html" />
+    <link rel="prev" title="config" href="config.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          honeybee-vtk</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CLI Docs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#installation">Installation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#commands">Commands</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="main.html">main</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="main.html#honeybee-vtk">honeybee-vtk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="post_process.html">post_process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="post_process.html#honeybee-vtk-post-process">honeybee-vtk post_process</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="post_process.html#honeybee-vtk-post-process-gif">gif</a></li>
+<li class="toctree-l5"><a class="reference internal" href="post_process.html#honeybee-vtk-post-process-transparent-images">transparent-images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">config</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="config.html#honeybee-vtk-config">honeybee-vtk config</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="config.html#honeybee-vtk-config-time-step-data">time-step-data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="export.html">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="export.html#honeybee-vtk-export">honeybee-vtk export</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="export.html#honeybee-vtk-export-grid-images">grid-images</a></li>
+<li class="toctree-l5"><a class="reference internal" href="export.html#honeybee-vtk-export-model-images">model-images</a></li>
+<li class="toctree-l5"><a class="reference internal" href="export.html#honeybee-vtk-export-time-step-images">time-step-images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">honeybee_vtk</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../honeybee_vtk.html">honeybee_vtk package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.cli.html">honeybee_vtk.cli package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../honeybee_vtk.cli.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../honeybee_vtk.cli.config.html">honeybee_vtk.cli.config module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../honeybee_vtk.cli.export.html">honeybee_vtk.cli.export module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../honeybee_vtk.cli.post_process.html">honeybee_vtk.cli.post_process module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../honeybee_vtk.cli.translate.html">honeybee_vtk.cli.translate module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../honeybee_vtk.cli.html#module-honeybee_vtk.cli">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../honeybee_vtk.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.filter.html">honeybee_vtk.filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.image_processing.html">honeybee_vtk.image_processing module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.text_actor.html">honeybee_vtk.text_actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.time_step_images.html">honeybee_vtk.time_step_images module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CLI Docs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#installation">Installation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#commands">Commands</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l3"><a class="reference internal" href="post_process.html">post_process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">config</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="export.html">export</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">honeybee_vtk</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="config.html" title="Previous Chapter: config"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; config</span>
+    </a>
+  </li>
+  <li>
+    <a href="export.html" title="Next Chapter: export"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">export &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/cli/translate.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CLI Docs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#installation">Installation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#commands">Commands</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l3"><a class="reference internal" href="post_process.html">post_process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">config</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="export.html">export</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">honeybee_vtk</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <section id="translate">
+<h1>translate<a class="headerlink" href="#translate" title="Permalink to this headline">¶</a></h1>
+<section id="honeybee-vtk-translate">
+<h2>honeybee-vtk translate<a class="headerlink" href="#honeybee-vtk-translate" title="Permalink to this headline">¶</a></h2>
+<p>Translate a HBJSON file to an HTML or a vtkjs file.</p>
+<div class="line-block">
+<div class="line">Args:</div>
+<div class="line-block">
+<div class="line">hbjson-file: Path to an HBJSON file.</div>
+</div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>honeybee-vtk<span class="w"> </span>translate<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>HBJSON_FILE
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-translate-n">
+<span id="cmdoption-honeybee-vtk-translate-name"></span><code class="sig-name descname">-n</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--name</code><code class="sig-prename descclassname"> &lt;name&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-translate-n" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the output file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-translate-f">
+<span id="cmdoption-honeybee-vtk-translate-folder"></span><code class="sig-name descname">-f</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--folder</code><code class="sig-prename descclassname"> &lt;folder&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-translate-f" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to target folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-translate-ft">
+<span id="cmdoption-honeybee-vtk-translate-file-type"></span><code class="sig-name descname">-ft</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--file-type</code><code class="sig-prename descclassname"> &lt;file_type&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-translate-ft" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switch between html and vtkjs formats</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>html</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p>html | vtkjs | vtp | vtk</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-translate-mdm">
+<span id="cmdoption-honeybee-vtk-translate-model-display-mode"></span><code class="sig-name descname">-mdm</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--model-display-mode</code><code class="sig-prename descclassname"> &lt;model_display_mode&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-translate-mdm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set display mode for the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>shaded</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p>shaded | surface | surfacewithedges | wireframe | points</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-translate-gdm">
+<span id="cmdoption-honeybee-vtk-translate-grid-display-mode"></span><code class="sig-name descname">-gdm</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--grid-display-mode</code><code class="sig-prename descclassname"> &lt;grid_display_mode&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-translate-gdm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set display mode for the grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>shaded</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p>shaded | surface | surfacewithedges | wireframe | points</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-translate-go">
+<span id="cmdoption-honeybee-vtk-translate-grid-options"></span><code class="sig-name descname">-go</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--grid-options</code><code class="sig-prename descclassname"> &lt;grid_options&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-translate-go" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export sensor grids as either points or meshes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>ignore</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p>ignore | points | meshes | radial-grid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-translate-ta">
+<span id="cmdoption-honeybee-vtk-translate-triangle-angle"></span><code class="sig-name descname">-ta</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--triangle-angle</code><code class="sig-prename descclassname"> &lt;triangle_angle&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-translate-ta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the internal angle of thetriangles in the grid in case radial-grid is selected from grid options</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>45</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-translate-tr">
+<span id="cmdoption-honeybee-vtk-translate-triangle-radius"></span><code class="sig-name descname">-tr</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--triangle-radius</code><code class="sig-prename descclassname"> &lt;triangle_radius&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-translate-tr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the radial height ofthe triangles in the grid in case radial-grid is selected from grid options</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-translate-sh">
+<span id="cmdoption-honeybee-vtk-translate-show-html"></span><span id="cmdoption-honeybee-vtk-translate-show"></span><code class="sig-name descname">-sh</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--show-html</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--show</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-honeybee-vtk-translate-sh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open the generated HTML file in a browser.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-translate-cf">
+<span id="cmdoption-honeybee-vtk-translate-config"></span><code class="sig-name descname">-cf</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--config</code><code class="sig-prename descclassname"> &lt;config&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-translate-cf" title="Permalink to this definition">¶</a></dt>
+<dd><p>File Path to the config json file which can be used to mount simulation data on HBJSON.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-translate-vd">
+<span id="cmdoption-honeybee-vtk-translate-validate-data"></span><code class="sig-name descname">-vd</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--validate-data</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-honeybee-vtk-translate-vd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate simulation data before loading on the model. This is recommended when using this command locally.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-translate-arg-HBJSON_FILE">
+<span id="cmdoption-honeybee-vtk-translate-arg-hbjson-file"></span><code class="sig-name descname">HBJSON_FILE</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-honeybee-vtk-translate-arg-HBJSON_FILE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2023, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

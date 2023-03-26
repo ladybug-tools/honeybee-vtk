@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>post_process &#8212; honeybee-vtk  documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="config" href="config.html" />
+    <link rel="prev" title="main" href="main.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          honeybee-vtk</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CLI Docs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#installation">Installation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#commands">Commands</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="main.html">main</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="main.html#honeybee-vtk">honeybee-vtk</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">post_process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#honeybee-vtk-post-process">honeybee-vtk post_process</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#honeybee-vtk-post-process-gif">gif</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#honeybee-vtk-post-process-transparent-images">transparent-images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">config</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="config.html#honeybee-vtk-config">honeybee-vtk config</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="config.html#honeybee-vtk-config-time-step-data">time-step-data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="translate.html#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="export.html">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="export.html#honeybee-vtk-export">honeybee-vtk export</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="export.html#honeybee-vtk-export-grid-images">grid-images</a></li>
+<li class="toctree-l5"><a class="reference internal" href="export.html#honeybee-vtk-export-model-images">model-images</a></li>
+<li class="toctree-l5"><a class="reference internal" href="export.html#honeybee-vtk-export-time-step-images">time-step-images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">honeybee_vtk</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../honeybee_vtk.html">honeybee_vtk package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.cli.html">honeybee_vtk.cli package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../honeybee_vtk.cli.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../honeybee_vtk.cli.config.html">honeybee_vtk.cli.config module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../honeybee_vtk.cli.export.html">honeybee_vtk.cli.export module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../honeybee_vtk.cli.post_process.html">honeybee_vtk.cli.post_process module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../honeybee_vtk.cli.translate.html">honeybee_vtk.cli.translate module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../honeybee_vtk.cli.html#module-honeybee_vtk.cli">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../honeybee_vtk.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.filter.html">honeybee_vtk.filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.image_processing.html">honeybee_vtk.image_processing module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.text_actor.html">honeybee_vtk.text_actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.time_step_images.html">honeybee_vtk.time_step_images module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CLI Docs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#installation">Installation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#commands">Commands</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">post_process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#honeybee-vtk-post-process">honeybee-vtk post_process</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#honeybee-vtk-post-process-gif">gif</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#honeybee-vtk-post-process-transparent-images">transparent-images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="translate.html">translate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="export.html">export</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">honeybee_vtk</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="main.html" title="Previous Chapter: main"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; main</span>
+    </a>
+  </li>
+  <li>
+    <a href="config.html" title="Next Chapter: config"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">config &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/cli/post_process.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CLI Docs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#installation">Installation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#commands">Commands</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">post_process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#honeybee-vtk-post-process">honeybee-vtk post_process</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#honeybee-vtk-post-process-gif">gif</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#honeybee-vtk-post-process-transparent-images">transparent-images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="translate.html">translate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="export.html">export</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">honeybee_vtk</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <section id="post-process">
+<h1>post_process<a class="headerlink" href="#post-process" title="Permalink to this headline">¶</a></h1>
+<section id="honeybee-vtk-post-process">
+<h2>honeybee-vtk post_process<a class="headerlink" href="#honeybee-vtk-post-process" title="Permalink to this headline">¶</a></h2>
+<p>Command to post-process media generated by honeybee-vtk.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>honeybee-vtk<span class="w"> </span>post_process<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<section id="honeybee-vtk-post-process-gif">
+<h3>gif<a class="headerlink" href="#honeybee-vtk-post-process-gif" title="Permalink to this headline">¶</a></h3>
+<p>Write a gif from a set of images.</p>
+<div class="line-block">
+<div class="line">Args:</div>
+<div class="line-block">
+<div class="line">images_folder: Path to the folder containing images to create GIF from.</div>
+<div class="line">folder: Path to target folder where the GIF will be written.</div>
+<div class="line">gradient_transparency: Whether to use a gradient transparency. or not. If</div>
+<div class="line-block">
+<div class="line">chosen a gradient of transparency will be used. Which will make the image</div>
+<div class="line">in the back more transparent compared to the image in the front. Defaults</div>
+<div class="line">to False which will use a flat transparency. which means the all images</div>
+<div class="line">will have same amount of transparency. Defaults to using a flat transparency.</div>
+</div>
+<div class="line">duration: Duration of each frame in milliseconds. Default is 1000.</div>
+<div class="line">loop_count: Number of times to loop the gif. Default is 0 which means loop</div>
+<div class="line-block">
+<div class="line">forever.</div>
+</div>
+<div class="line">linger_last_frame: An integer that will make the last frame linger for</div>
+<div class="line-block">
+<div class="line">longer than the duration. If set to 0, the last frame will not linger.</div>
+<div class="line">Setting it to 3 will make the last frame linger for 3 times the duration.</div>
+<div class="line">Defaults to 3.</div>
+</div>
+</div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>honeybee-vtk<span class="w"> </span>post_process<span class="w"> </span>gif<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>IMAGES_FOLDER
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-post_process-gif-f">
+<span id="cmdoption-honeybee-vtk-post-process-gif-f"></span><span id="cmdoption-honeybee-vtk-post_process-gif-folder"></span><span id="cmdoption-honeybee-vtk-post-process-gif-folder"></span><code class="sig-name descname">-f</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--folder</code><code class="sig-prename descclassname"> &lt;folder&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-post_process-gif-f" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to target folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-post_process-gif-gradient-transparency">
+<span id="cmdoption-honeybee-vtk-post-process-gif-gradient-transparency"></span><span id="cmdoption-honeybee-vtk-post_process-gif-no-gradient-transparency"></span><span id="cmdoption-honeybee-vtk-post-process-gif-no-gradient-transparency"></span><code class="sig-name descname">--gradient-transparency</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--no-gradient-transparency</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-honeybee-vtk-post_process-gif-gradient-transparency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether to use a gradient transparency. or not. If chosen a gradient of transparency will be used. Which will make the image in the back more transparent compared to the image in the front. Defaults to False which will use a flat transparency. which means the all images will have same amount of transparency. Defaults to using a flat transparency.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-post_process-gif-d">
+<span id="cmdoption-honeybee-vtk-post-process-gif-d"></span><span id="cmdoption-honeybee-vtk-post_process-gif-duration"></span><span id="cmdoption-honeybee-vtk-post-process-gif-duration"></span><code class="sig-name descname">-d</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--duration</code><code class="sig-prename descclassname"> &lt;duration&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-post_process-gif-d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Duration of each frame in milliseconds. Default is 1000.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>1000</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-post_process-gif-lc">
+<span id="cmdoption-honeybee-vtk-post-process-gif-lc"></span><span id="cmdoption-honeybee-vtk-post_process-gif-loop-count"></span><span id="cmdoption-honeybee-vtk-post-process-gif-loop-count"></span><code class="sig-name descname">-lc</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--loop-count</code><code class="sig-prename descclassname"> &lt;loop_count&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-post_process-gif-lc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of times to loop the gif. Default is 0 which means loop forever.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>0</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-post_process-gif-llf">
+<span id="cmdoption-honeybee-vtk-post-process-gif-llf"></span><span id="cmdoption-honeybee-vtk-post_process-gif-linger-last-frame"></span><span id="cmdoption-honeybee-vtk-post-process-gif-linger-last-frame"></span><code class="sig-name descname">-llf</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--linger-last-frame</code><code class="sig-prename descclassname"> &lt;linger_last_frame&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-post_process-gif-llf" title="Permalink to this definition">¶</a></dt>
+<dd><p>An integer that will make the last frame linger for longer than the duration. If set to 0, the last frame will not linger. Setting it to 3 will make the last frame linger for 3 times the duration. Defaults to 3.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>3</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-post_process-gif-th">
+<span id="cmdoption-honeybee-vtk-post-process-gif-th"></span><span id="cmdoption-honeybee-vtk-post_process-gif-text-height"></span><span id="cmdoption-honeybee-vtk-post-process-gif-text-height"></span><code class="sig-name descname">-th</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--text-height</code><code class="sig-prename descclassname"> &lt;text_height&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-post_process-gif-th" title="Permalink to this definition">¶</a></dt>
+<dd><p>An integer to set the text height for date and time on the image. Default is set to 20.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>20</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-post_process-gif-arg-IMAGES_FOLDER">
+<span id="cmdoption-honeybee-vtk-post-process-gif-arg-images-folder"></span><code class="sig-name descname">IMAGES_FOLDER</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-honeybee-vtk-post_process-gif-arg-IMAGES_FOLDER" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</section>
+<section id="honeybee-vtk-post-process-transparent-images">
+<h3>transparent-images<a class="headerlink" href="#honeybee-vtk-post-process-transparent-images" title="Permalink to this headline">¶</a></h3>
+<p>Write an overlappable transparent image for each images in the images folder.</p>
+<div class="line-block">
+<div class="line">Args:</div>
+<div class="line-block">
+<div class="line">images_folder: Path to the folder containing images to transform.</div>
+<div class="line">folder: Path to target folder where the transparent images will be written.</div>
+<div class="line">transparency: The transparency value to use. Acceptable values are decimal point</div>
+<div class="line-block">
+<div class="line">numbers between 0 and 1 inclusive. 0 is completely transparent and 1 is</div>
+<div class="line">completely opaque. Defaults to 0.5.</div>
+</div>
+</div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>honeybee-vtk<span class="w"> </span>post_process<span class="w"> </span>transparent-images<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>IMAGES_FOLDER
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-post_process-transparent-images-f">
+<span id="cmdoption-honeybee-vtk-post-process-transparent-images-f"></span><span id="cmdoption-honeybee-vtk-post_process-transparent-images-folder"></span><span id="cmdoption-honeybee-vtk-post-process-transparent-images-folder"></span><code class="sig-name descname">-f</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--folder</code><code class="sig-prename descclassname"> &lt;folder&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-post_process-transparent-images-f" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to target folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-post_process-transparent-images-t">
+<span id="cmdoption-honeybee-vtk-post-process-transparent-images-t"></span><span id="cmdoption-honeybee-vtk-post_process-transparent-images-transparency"></span><span id="cmdoption-honeybee-vtk-post-process-transparent-images-transparency"></span><code class="sig-name descname">-t</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--transparency</code><code class="sig-prename descclassname"> &lt;transparency&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-post_process-transparent-images-t" title="Permalink to this definition">¶</a></dt>
+<dd><p>The transparency value to use. Acceptable values are decimal point numbers between 0 and 1 inclusive. 0 is completely transparent and 1 is completely opaque. Defaults to 0.5.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>0.5</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-post_process-transparent-images-arg-IMAGES_FOLDER">
+<span id="cmdoption-honeybee-vtk-post-process-transparent-images-arg-images-folder"></span><code class="sig-name descname">IMAGES_FOLDER</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-honeybee-vtk-post_process-transparent-images-arg-IMAGES_FOLDER" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2023, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

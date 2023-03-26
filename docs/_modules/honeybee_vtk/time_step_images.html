@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>honeybee_vtk.time_step_images &#8212; honeybee-vtk  documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          honeybee-vtk</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/main.html">main</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/main.html#honeybee-vtk">honeybee-vtk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/post_process.html">post_process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/post_process.html#honeybee-vtk-post-process">honeybee-vtk post_process</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/post_process.html#honeybee-vtk-post-process-gif">gif</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/post_process.html#honeybee-vtk-post-process-transparent-images">transparent-images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/config.html">config</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/config.html#honeybee-vtk-config">honeybee-vtk config</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/config.html#honeybee-vtk-config-time-step-data">time-step-data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/translate.html#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/export.html">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/export.html#honeybee-vtk-export">honeybee-vtk export</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/export.html#honeybee-vtk-export-grid-images">grid-images</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/export.html#honeybee-vtk-export-model-images">model-images</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/export.html#honeybee-vtk-export-time-step-images">time-step-images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../honeybee_vtk.html">honeybee_vtk package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.cli.html">honeybee_vtk.cli package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.cli.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.cli.config.html">honeybee_vtk.cli.config module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.cli.export.html">honeybee_vtk.cli.export module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.cli.post_process.html">honeybee_vtk.cli.post_process module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.cli.translate.html">honeybee_vtk.cli.translate module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.cli.html#module-honeybee_vtk.cli">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.filter.html">honeybee_vtk.filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.image_processing.html">honeybee_vtk.image_processing module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.text_actor.html">honeybee_vtk.text_actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.time_step_images.html">honeybee_vtk.time_step_images module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <h1>Source code for honeybee_vtk.time_step_images</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Function to generate images from time series data.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">vtk</span>
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">ladybug.dt</span> <span class="kn">import</span> <span class="n">DateTime</span>
+<span class="kn">from</span> <span class="nn">ladybug.color</span> <span class="kn">import</span> <span class="n">Color</span>
+
+
+<span class="kn">from</span> <span class="nn">.config</span> <span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">DataConfig</span><span class="p">,</span> <span class="n">Autocalculate</span><span class="p">,</span> <span class="n">Periods</span><span class="p">,</span> <span class="n">TimeStepConfig</span><span class="p">,</span> \
+    <span class="n">TimeStepDataConfig</span>
+<span class="kn">from</span> <span class="nn">.model</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">SensorGridOptions</span>
+<span class="kn">from</span> <span class="nn">.vtkjs.schema</span> <span class="kn">import</span> <span class="n">DisplayMode</span>
+<span class="kn">from</span> <span class="nn">.text_actor</span> <span class="kn">import</span> <span class="n">TextActor</span>
+
+
+<span class="k">def</span> <span class="nf">_validate_periods</span><span class="p">(</span><span class="n">periods_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Periods</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate the periods file and get it as a Periods object.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">periods_file_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="n">periods</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="s1">&#39;Not a valid json file.&#39;</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Periods</span><span class="o">.</span><span class="n">parse_obj</span><span class="p">(</span><span class="n">periods</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_extract_periods_colors</span><span class="p">(</span><span class="n">periods_file_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span>
+        <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">DateTime</span><span class="p">,</span> <span class="n">DateTime</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="n">Color</span><span class="p">]</span>
+<span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract the periods and colors from the periods file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        periods_path: Path to the periods file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A tuple of two items:</span>
+
+<span class="sd">        -   A list of tuple of Datetime objects.</span>
+
+<span class="sd">        -  A list of Color objects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">periods</span> <span class="o">=</span> <span class="n">_validate_periods</span><span class="p">(</span><span class="n">periods_file_path</span><span class="p">)</span>
+    <span class="n">lb_periods</span><span class="p">,</span> <span class="n">lb_colors</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">periods</span><span class="o">.</span><span class="n">periods</span><span class="p">:</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">period</span><span class="o">.</span><span class="n">date_time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">period</span><span class="o">.</span><span class="n">date_time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">day</span><span class="p">,</span>
+                         <span class="n">period</span><span class="o">.</span><span class="n">date_time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">(</span><span class="n">period</span><span class="o">.</span><span class="n">date_time</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">period</span><span class="o">.</span><span class="n">date_time</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">day</span><span class="p">,</span>
+                       <span class="n">period</span><span class="o">.</span><span class="n">date_time</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span>
+        <span class="n">lb_periods</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">))</span>
+        <span class="n">lb_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Color</span><span class="p">(</span><span class="o">*</span><span class="n">period</span><span class="o">.</span><span class="n">color</span><span class="p">))</span>
+
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">lb_periods</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">lb_colors</span><span class="p">),</span> <span class="s1">&#39;The number of periods and colors&#39;</span>\
+        <span class="s1">&#39; must be the same.&#39;</span>
+    <span class="k">return</span> <span class="n">lb_periods</span><span class="p">,</span> <span class="n">lb_colors</span>
+
+
+<span class="k">def</span> <span class="nf">_get_datetimes</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">DateTime</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a .txt file with time stamps and return a list of Datetime object.</span>
+
+<span class="sd">    Here, time stamp can be HOY, MOY, or DOY.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path: Path to the .txt file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A list of Datetime objects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="write_time_step_data"><a class="viewcode-back" href="../../honeybee_vtk.time_step_images.html#honeybee_vtk.time_step_images.write_time_step_data">[docs]</a><span class="k">def</span> <span class="nf">write_time_step_data</span><span class="p">(</span>
+        <span class="n">time_step_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">periods_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;timestep_data&#39;</span><span class="p">,</span>
+        <span class="n">target_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create time step data to loop over.</span>
+
+<span class="sd">    This function reads the time step file and the periods file to generate JSON file</span>
+<span class="sd">    that contains data required to generate image of each time step.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        time_step_file_path: Path to the time step file such as sun-up-hours.txt.</span>
+<span class="sd">        periods_file_path: Path to the periods file.</span>
+<span class="sd">        file_name: Name of the JSON file. Defaults to &#39;timestep_data&#39;.</span>
+<span class="sd">        target_folder: Path to the folder where the JSON file will be saved.</span>
+<span class="sd">            Defaults to &#39;.&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">        A path to the timestep JSON file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">time_step_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">time_step_file_path</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">time_step_path</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span> <span class="s1">&#39;Time step file does not exist.&#39;</span>
+
+    <span class="n">periods_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">periods_file_path</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">periods_path</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span> <span class="s1">&#39;Periods file does not exist.&#39;</span>
+
+    <span class="n">lb_periods</span><span class="p">,</span> <span class="n">lb_colors</span> <span class="o">=</span> <span class="n">_extract_periods_colors</span><span class="p">(</span><span class="n">periods_path</span><span class="p">)</span>
+
+    <span class="n">time_step_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">period_count</span><span class="p">,</span> <span class="n">period</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lb_periods</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">period</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">period</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;The start Datetime must be earlier than&#39;</span>\
+            <span class="s1">&#39; the end Datetime.&#39;</span>
+        <span class="n">st_datetime</span><span class="p">,</span> <span class="n">end_datetime</span> <span class="o">=</span> <span class="n">period</span>
+        <span class="n">time_stamp_datetimes</span> <span class="o">=</span> <span class="n">_get_datetimes</span><span class="p">(</span><span class="n">time_step_path</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="n">datetime</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">time_stamp_datetimes</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">st_datetime</span> <span class="o">&lt;=</span> <span class="n">datetime</span> <span class="o">&lt;=</span> <span class="n">end_datetime</span><span class="p">:</span>
+                <span class="n">color</span> <span class="o">=</span> <span class="n">lb_colors</span><span class="p">[</span><span class="n">period_count</span><span class="p">]</span>
+                <span class="n">time_step_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">TimeStepConfig</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">count</span><span class="p">,</span>
+                                   <span class="n">hoy</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">hoy</span><span class="p">,</span>
+                                   <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="n">color</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">b</span><span class="p">]))</span>
+
+    <span class="n">time_step_file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">target_folder</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s1">.json&#39;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">time_step_file_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">TimeStepDataConfig</span><span class="p">(</span><span class="n">time_step_data</span><span class="o">=</span><span class="n">time_step_data</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">time_step_file_path</span></div>
+
+
+<span class="k">def</span> <span class="nf">_get_res_file_extension</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">grids_info</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the common file extension of the result files in the folder.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path: Path to the folder.</span>
+<span class="sd">        grids_info: A list of grids info objects.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The common file extension of the result files in the folder.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">first_grid_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">grids_info</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;identifier&#39;</span><span class="p">]</span>
+    <span class="n">first_grid_full_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">grids_info</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;full_id&#39;</span><span class="p">]</span>
+    <span class="n">folder</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">first_grid_full_id</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">folder</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">stem</span> <span class="o">==</span> <span class="n">first_grid_id</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">item</span><span class="o">.</span><span class="n">suffix</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Failed to find the extension for result files&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_get_result_paths</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+                      <span class="n">grids_info_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get file paths of the result files in the data folder.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path: Path to the data folder.</span>
+<span class="sd">        grids_info_path: Path to the grids info.json file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A list of file paths to the result files such as .ill files or .res files.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">grids_info_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="n">grids_info</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="s1">&#39;Not a valid json file.&#39;</span>
+        <span class="p">)</span>
+
+    <span class="n">res_extension</span> <span class="o">=</span> <span class="n">_get_res_file_extension</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">grids_info</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">path</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">grid</span><span class="p">[</span><span class="s2">&quot;full_id&quot;</span><span class="p">]</span><span class="si">}{</span><span class="n">res_extension</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span>
+            <span class="n">grid</span> <span class="ow">in</span> <span class="n">grids_info</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_extract_column</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract a column from a result file.</span>
+
+<span class="sd">    This function first turns the file into a pandas DataFrame and then extracts the</span>
+<span class="sd">    column at the given index.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path: Path to the result file.</span>
+<span class="sd">        index: Index of the column to extract.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A list of integer values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">([</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">])</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Column </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s1"> does not exist.&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_validate_config</span><span class="p">(</span><span class="n">config_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate the config file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config_path: Path to the config file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A DataConfig object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="s1">&#39;Not a valid json file.&#39;</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Only one object is needed in the this&#39;</span>\
+            <span class="s1">&#39; config file.&#39;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">DataConfig</span><span class="o">.</span><span class="n">parse_obj</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">data</span><span class="o">.</span><span class="n">hide</span><span class="p">,</span> <span class="s1">&#39;Make sure that in the config file you have not indicated&#39;</span>\
+            <span class="s1">&#39; the data to be hidden.&#39;</span>
+        <span class="k">return</span> <span class="n">data</span>
+
+
+<span class="k">def</span> <span class="nf">_write_config</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">DataConfig</span><span class="p">,</span> <span class="n">target_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">data_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write a config file to be consumed by honeybee-vtk.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data: A DataConfig object.</span>
+<span class="sd">        target_folder: Path to the folder to write the config file.</span>
+<span class="sd">        data_path: Path to folder with grids_info.json and result files.</span>
+
+<span class="sd">    this function will replace the path property in the Dataconfig object with</span>
+<span class="sd">    data_path.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Path to the config file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">data</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">data_path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">data</span><span class="p">])</span>
+
+    <span class="n">config_path</span> <span class="o">=</span> <span class="n">target_folder</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;config.json&#39;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">config_path</span>
+
+
+<span class="k">def</span> <span class="nf">_process_config</span><span class="p">(</span><span class="n">config_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">DataConfig</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process the config file.</span>
+
+<span class="sd">    This function takes a path to the config file and extracts the DataConfig object</span>
+<span class="sd">    from the config file. Additionally, based on the path property found in the</span>
+<span class="sd">    Dataconfig, it maps a path to the grids_info.json file and also the paths to the</span>
+<span class="sd">    actual result files such as .ill or .res files.</span>
+
+
+<span class="sd">    Args:</span>
+<span class="sd">        config_path: Path to the config file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A tuple of three items:</span>
+
+<span class="sd">        -   A DataConfig object.</span>
+
+<span class="sd">        -   Path to the grids_info.json file.</span>
+
+<span class="sd">        -   List of paths to the result files.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">_validate_config</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span>
+    <span class="n">config_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">config_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No folder found at </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">grids_info_path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;grids_info.json&#39;</span><span class="p">)</span>
+    <span class="n">result_paths</span> <span class="o">=</span> <span class="n">_get_result_paths</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">grids_info_path</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">grids_info_path</span><span class="p">,</span> <span class="n">result_paths</span>
+
+
+<span class="k">def</span> <span class="nf">_create_folders</span><span class="p">(</span><span class="n">parent_temp_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+                    <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="n">Path</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a temp folder and an Index folder for the current index.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        parent_temp_folder: Path to the parent temp folder.</span>
+<span class="sd">        index: Index of the time stamp in the time stamps file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A tuple of paths to the temp folder and the Index folder.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">temp_folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="nb">dir</span><span class="o">=</span><span class="n">parent_temp_folder</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()))</span>
+    <span class="n">index_folder</span> <span class="o">=</span> <span class="n">temp_folder</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">index_folder</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">temp_folder</span><span class="p">,</span> <span class="n">index_folder</span>
+
+
+<span class="k">def</span> <span class="nf">_copy_grids_info</span><span class="p">(</span><span class="n">grids_info_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">index_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Copy grids_info.json to the Index folder.&quot;&quot;&quot;</span>
+    <span class="n">index_grids_info_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">index_folder</span><span class="p">)</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;grids_info.json&#39;</span><span class="p">)</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">grids_info_path</span><span class="p">,</span> <span class="n">index_grids_info_path</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_get_data_without_thresholds</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">DataConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove threshold from a DataConfig object.</span>
+
+<span class="sd">    This is useful in the dry run where the model needs to be run without the</span>
+<span class="sd">    thresholds.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data: A DataConfig object.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A DataConfig object without thresholds.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data_without_thresholds</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">data_without_thresholds</span><span class="o">.</span><span class="n">upper_threshold</span> <span class="o">=</span> <span class="n">Autocalculate</span><span class="p">()</span>
+    <span class="n">data_without_thresholds</span><span class="o">.</span><span class="n">lower_threshold</span> <span class="o">=</span> <span class="n">Autocalculate</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">data_without_thresholds</span>
+
+
+<span class="k">def</span> <span class="nf">_get_grid_camera_dict</span><span class="p">(</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">DataConfig</span><span class="p">,</span>
+        <span class="n">grid_display_mode</span><span class="p">:</span> <span class="n">DisplayMode</span><span class="p">,</span>
+        <span class="n">temp_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+        <span class="n">index_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+        <span class="n">hbjson_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">target_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkCamera</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a dictionary of grid identifiers and vtkCameras.</span>
+
+<span class="sd">    A dry run is done without applying thresholds and vtkCameras are extracted from</span>
+<span class="sd">    this run for each of the grids.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data: DataConfig object from the config file.</span>
+<span class="sd">        grid_display_mode: Display mode of the grids. Defaults to Shaded.</span>
+<span class="sd">        temp_folder: Path to the temp folder.</span>
+<span class="sd">        index_folder: Path to the Index folder.</span>
+<span class="sd">        hbjson_path: Path to the HBJSON file.</span>
+<span class="sd">        target_folder: Path to the folder to write the images. Defaults to the current</span>
+<span class="sd">            folder.</span>
+<span class="sd">        index: Index of the time stamp in the time stamps file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A dictionary of grid identifiers and vtkCameras or None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">upper_threshold</span><span class="p">,</span> <span class="n">Autocalculate</span><span class="p">)</span> <span class="ow">or</span>\
+            <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">lower_threshold</span><span class="p">,</span> <span class="n">Autocalculate</span><span class="p">):</span>
+        <span class="n">config_path</span> <span class="o">=</span> <span class="n">_write_config</span><span class="p">(</span>
+            <span class="n">_get_data_without_thresholds</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">temp_folder</span><span class="p">,</span> <span class="n">index_folder</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">from_hbjson</span><span class="p">(</span><span class="n">hbjson_path</span><span class="p">,</span> <span class="n">SensorGridOptions</span><span class="o">.</span><span class="n">Mesh</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">to_grid_images</span><span class="p">(</span><span class="n">folder</span><span class="o">=</span><span class="n">target_folder</span><span class="p">,</span>
+                                    <span class="n">config</span><span class="o">=</span><span class="n">config_path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">(),</span>
+                                    <span class="n">grid_display_mode</span><span class="o">=</span><span class="n">grid_display_mode</span><span class="p">,</span>
+                                    <span class="n">text_actor</span><span class="o">=</span><span class="n">TextActor</span><span class="p">(</span>
+                                        <span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Hour </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">),</span>
+                                    <span class="n">image_name</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">extract_camera</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="export_time_step_images"><a class="viewcode-back" href="../../honeybee_vtk.time_step_images.html#honeybee_vtk.time_step_images.export_time_step_images">[docs]</a><span class="k">def</span> <span class="nf">export_time_step_images</span><span class="p">(</span><span class="n">hbjson_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">config_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                            <span class="n">time_step</span><span class="p">:</span> <span class="n">TimeStepConfig</span><span class="p">,</span>
+                            <span class="n">grid_display_mode</span><span class="p">:</span> <span class="n">DisplayMode</span> <span class="o">=</span> <span class="n">DisplayMode</span><span class="o">.</span><span class="n">Shaded</span><span class="p">,</span>
+                            <span class="n">target_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span>
+                            <span class="n">grid_filter</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                            <span class="n">full_match</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                            <span class="n">label_images</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                            <span class="n">image_width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1920</span><span class="p">,</span>
+                            <span class="n">image_height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1088</span><span class="p">,</span>
+                            <span class="n">image_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Export images of grids for each time step in the time stamps file.</span>
+
+<span class="sd">    This function will find all the time stamps between the start and end datetimes</span>
+<span class="sd">    in the time stamps file and export images of each grids for each time step.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        hbjson_path: Path to the HBJSON file.</span>
+<span class="sd">        config_path: Path to the config file.</span>
+<span class="sd">        timestamp_file_name: Name of the time stamps file as a string. This is simply</span>
+<span class="sd">            used to find the time stamps file.</span>
+<span class="sd">        periods: A list of tuple of start and end datetimes. Defaults to a single</span>
+<span class="sd">            period from 8 am to 7 pm on 21st of June.</span>
+<span class="sd">        grid_display_mode: Display mode of the grids. Defaults to Shaded.</span>
+<span class="sd">        target_folder: Path to the folder to write the images. Defaults to the current</span>
+<span class="sd">            folder.</span>
+<span class="sd">        grid_filter: A list of grid identifiers or a regex pattern as a string to</span>
+<span class="sd">                filter the grids. Defaults to None.</span>
+<span class="sd">        full_match: A boolean to filter grids by their identifiers as full matches.</span>
+<span class="sd">            Defaults to False.</span>
+<span class="sd">        text_actor: TextActor object to add to the images. Defaults to None.</span>
+<span class="sd">        label_images: Boolean to indicate whether to label images with the timestep</span>
+<span class="sd">            or not. Defaults to True.</span>
+<span class="sd">        image_width: Width of the images. Defaults to 1920.</span>
+<span class="sd">        image_height: Height of the images. Defaults to 1088.</span>
+<span class="sd">        image_scale: An integer value as a scale factor. Defaults to 1.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A path to the target folder where all the images are written.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># TODO _process_config should not have to be called each time the function is called.</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">grids_info_path</span><span class="p">,</span> <span class="n">result_paths</span> <span class="o">=</span> <span class="n">_process_config</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span>
+    <span class="n">parent_temp_folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">())</span>
+    <span class="n">temp_folder</span><span class="p">,</span> <span class="n">index_folder</span> <span class="o">=</span> <span class="n">_create_folders</span><span class="p">(</span><span class="n">parent_temp_folder</span><span class="p">,</span> <span class="n">time_step</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">_copy_grids_info</span><span class="p">(</span><span class="n">grids_info_path</span><span class="p">,</span> <span class="n">index_folder</span><span class="p">)</span>
+
+    <span class="c1"># use full id to support sensor grids with group identifier</span>
+    <span class="n">grid_info</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">grids_info_path</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">info</span><span class="p">,</span> <span class="n">result_path</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">grid_info</span><span class="p">,</span> <span class="n">result_paths</span><span class="p">):</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">_extract_column</span><span class="p">(</span><span class="n">result_path</span><span class="p">,</span> <span class="n">time_step</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">index_folder</span><span class="p">)</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;full_id&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">.res&#39;</span><span class="p">)</span>
+        <span class="n">file_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">file_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">grid_camera_dict</span> <span class="o">=</span> <span class="n">_get_grid_camera_dict</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">grid_display_mode</span><span class="p">,</span>
+                                             <span class="n">temp_folder</span><span class="p">,</span> <span class="n">index_folder</span><span class="p">,</span>
+                                             <span class="n">hbjson_path</span><span class="p">,</span>
+                                             <span class="n">target_folder</span><span class="p">,</span> <span class="n">time_step</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+    <span class="n">config_path</span> <span class="o">=</span> <span class="n">_write_config</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">temp_folder</span><span class="p">,</span> <span class="n">index_folder</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">from_hbjson</span><span class="p">(</span><span class="n">hbjson_path</span><span class="p">,</span> <span class="n">SensorGridOptions</span><span class="o">.</span><span class="n">Mesh</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">label_images</span><span class="p">:</span>
+        <span class="n">text_actor</span> <span class="o">=</span> <span class="n">TextActor</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="n">time_step</span><span class="o">.</span><span class="n">hoy</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">text_actor</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">model</span><span class="o">.</span><span class="n">to_grid_images</span><span class="p">(</span><span class="n">folder</span><span class="o">=</span><span class="n">target_folder</span><span class="p">,</span>
+                         <span class="n">config</span><span class="o">=</span><span class="n">config_path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">(),</span>
+                         <span class="n">grid_display_mode</span><span class="o">=</span><span class="n">grid_display_mode</span><span class="p">,</span>
+                         <span class="n">text_actor</span><span class="o">=</span><span class="n">text_actor</span><span class="p">,</span>
+                         <span class="n">image_name</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">time_step</span><span class="o">.</span><span class="n">hoy</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+                         <span class="n">grid_camera_dict</span><span class="o">=</span><span class="n">grid_camera_dict</span><span class="p">,</span>
+                         <span class="n">grid_filter</span><span class="o">=</span><span class="n">grid_filter</span><span class="p">,</span>
+                         <span class="n">full_match</span><span class="o">=</span><span class="n">full_match</span><span class="p">,</span>
+                         <span class="n">grid_colors</span><span class="o">=</span><span class="p">[</span>
+                             <span class="n">Color</span><span class="p">(</span><span class="n">time_step</span><span class="o">.</span><span class="n">color</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">time_step</span><span class="o">.</span><span class="n">color</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                   <span class="n">time_step</span><span class="o">.</span><span class="n">color</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                         <span class="p">],</span>
+                         <span class="n">image_width</span><span class="o">=</span><span class="n">image_width</span><span class="p">,</span>
+                         <span class="n">image_height</span><span class="o">=</span><span class="n">image_height</span><span class="p">,</span>
+                         <span class="n">image_scale</span><span class="o">=</span><span class="n">image_scale</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">parent_temp_folder</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2023, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

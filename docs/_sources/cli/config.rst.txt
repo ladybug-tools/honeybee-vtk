@@ -1,0 +1,6 @@
+config
+======
+
+.. click:: honeybee_vtk.cli.config:config
+   :prog: honeybee-vtk config
+   :show-nested:

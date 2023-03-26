@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>honeybee_vtk.assistant module &#8212; honeybee-vtk  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="honeybee_vtk.camera module" href="honeybee_vtk.camera.html" />
+    <link rel="prev" title="honeybee_vtk.actor module" href="honeybee_vtk.actor.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          honeybee-vtk</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli/main.html">main</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli/main.html#honeybee-vtk">honeybee-vtk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli/post_process.html">post_process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli/post_process.html#honeybee-vtk-post-process">honeybee-vtk post_process</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="cli/post_process.html#honeybee-vtk-post-process-gif">gif</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cli/post_process.html#honeybee-vtk-post-process-transparent-images">transparent-images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli/config.html">config</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli/config.html#honeybee-vtk-config">honeybee-vtk config</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="cli/config.html#honeybee-vtk-config-time-step-data">time-step-data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli/translate.html#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli/export.html">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli/export.html#honeybee-vtk-export">honeybee-vtk export</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="cli/export.html#honeybee-vtk-export-grid-images">grid-images</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cli/export.html#honeybee-vtk-export-model-images">model-images</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cli/export.html#honeybee-vtk-export-time-step-images">time-step-images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">honeybee_vtk</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee_vtk.html">honeybee_vtk package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.cli.html">honeybee_vtk.cli package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="honeybee_vtk.cli.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="honeybee_vtk.cli.config.html">honeybee_vtk.cli.config module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="honeybee_vtk.cli.export.html">honeybee_vtk.cli.export module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="honeybee_vtk.cli.post_process.html">honeybee_vtk.cli.post_process module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="honeybee_vtk.cli.translate.html">honeybee_vtk.cli.translate module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="honeybee_vtk.cli.html#module-honeybee_vtk.cli">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="reference internal" href="honeybee_vtk.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.filter.html">honeybee_vtk.filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.image_processing.html">honeybee_vtk.image_processing module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.text_actor.html">honeybee_vtk.text_actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.time_step_images.html">honeybee_vtk.time_step_images module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="cli/index.html">CLI Docs</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">honeybee_vtk</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee_vtk.html">honeybee_vtk package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#subpackages">Subpackages</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="honeybee_vtk.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.filter.html">honeybee_vtk.filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.image_processing.html">honeybee_vtk.image_processing module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.text_actor.html">honeybee_vtk.text_actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.time_step_images.html">honeybee_vtk.time_step_images module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="honeybee_vtk.actor.html" title="Previous Chapter: honeybee_vtk.actor module"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; honeybee_vtk....</span>
+    </a>
+  </li>
+  <li>
+    <a href="honeybee_vtk.camera.html" title="Next Chapter: honeybee_vtk.camera module"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">honeybee_vtk.... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="_sources/honeybee_vtk.assistant.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="cli/index.html">CLI Docs</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">honeybee_vtk</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee_vtk.html">honeybee_vtk package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#subpackages">Subpackages</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="honeybee_vtk.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.filter.html">honeybee_vtk.filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.image_processing.html">honeybee_vtk.image_processing module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.text_actor.html">honeybee_vtk.text_actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.time_step_images.html">honeybee_vtk.time_step_images module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <section id="module-honeybee_vtk.assistant">
+<span id="honeybee-vtk-assistant-module"></span><h1>honeybee_vtk.assistant module<a class="headerlink" href="#module-honeybee_vtk.assistant" title="Permalink to this headline">¶</a></h1>
+<p>An assistant class to the Scene object.</p>
+<dl class="py class">
+<dt id="honeybee_vtk.assistant.Assistant">
+<em class="property">class </em><code class="sig-prename descclassname">honeybee_vtk.assistant.</code><code class="sig-name descname">Assistant</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">background_color</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">camera</span><span class="p">:</span> <span class="n"><a class="reference internal" href="honeybee_vtk.camera.html#honeybee_vtk.camera.Camera" title="honeybee_vtk.camera.Camera">honeybee_vtk.camera.Camera</a></span></em>, <em class="sig-param"><span class="n">actors</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference internal" href="honeybee_vtk.actor.html#honeybee_vtk.actor.Actor" title="honeybee_vtk.actor.Actor">honeybee_vtk.actor.Actor</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">legend_parameters</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">text_actor</span><span class="p">:</span> <span class="n"><a class="reference internal" href="honeybee_vtk.text_actor.html#honeybee_vtk.text_actor.TextActor" title="honeybee_vtk.text_actor.TextActor">honeybee_vtk.text_actor.TextActor</a></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee_vtk/assistant.html#Assistant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee_vtk.assistant.Assistant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Initialize an Assistant object.</p>
+<p>This is more of a helper class and the interface for this class is the Scene object.
+This class takes a camera and a list of actors to assemble a vtk interactor, a vtk
+renderWindow, and a vtk renderer objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>background_color</strong> – A tuple of three integers that represent RGB values of the
+color that you’d like to set as the background color.</p></li>
+<li><p><strong>actors</strong> – A list of actors.</p></li>
+<li><p><strong>camera</strong> – A Camera object.</p></li>
+<li><p><strong>legend_parameters</strong> – A list of legend parameter objects to be added to the scene</p></li>
+<li><p><strong>text_actor</strong> – A TextActor object. Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="honeybee_vtk.assistant.Assistant.auto_image_dimension">
+<code class="sig-name descname">auto_image_dimension</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_width</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">image_height</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>int<span class="p">]</span><a class="reference internal" href="_modules/honeybee_vtk/assistant.html#Assistant.auto_image_dimension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee_vtk.assistant.Assistant.auto_image_dimension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate image dimension.</p>
+<p>If image width and image height are not specified by the user, Camera’s x and y
+dimension are used instead. Note that a Camera object gets x and y dimension from
+its parent Radiance View object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_width</strong> – Image width in pixels set by the user. Defaults to 0, which
+will use view’s x dimension.</p></li>
+<li><p><strong>image_height</strong> – Image height in pixels set by the user. Defaults to 0, which
+will use view’s y dimension.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>A tuple with two elements</p>
+<ul class="simple">
+<li><p>image_width: Image width in pixels.</p></li>
+<li><p>image_height: Image height in pixels.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.assistant.Assistant.auto_text_height">
+<code class="sig-name descname">auto_text_height</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image_width</span></em>, <em class="sig-param"><span class="n">image_height</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/honeybee_vtk/assistant.html#Assistant.auto_text_height"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee_vtk.assistant.Assistant.auto_text_height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate text height based on image dimension.</p>
+<p>If a user has not specified the text height in legend parameters, it will be
+calculated based on the average of image width and image height. 2.5% of this
+average is used as the text height.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_width</strong> – Image width in pixels set by the user.</p></li>
+<li><p><strong>image_height</strong> – Image height in pixels set by the user.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.assistant.Assistant.vtk_camera">
+<em class="property">property </em><code class="sig-name descname">vtk_camera</code><a class="headerlink" href="#honeybee_vtk.assistant.Assistant.vtk_camera" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2023, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

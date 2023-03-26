@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>honeybee_vtk.image_processing &#8212; honeybee-vtk  documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          honeybee-vtk</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/main.html">main</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/main.html#honeybee-vtk">honeybee-vtk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/post_process.html">post_process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/post_process.html#honeybee-vtk-post-process">honeybee-vtk post_process</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/post_process.html#honeybee-vtk-post-process-gif">gif</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/post_process.html#honeybee-vtk-post-process-transparent-images">transparent-images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/config.html">config</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/config.html#honeybee-vtk-config">honeybee-vtk config</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/config.html#honeybee-vtk-config-time-step-data">time-step-data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/translate.html#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../cli/export.html">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../cli/export.html#honeybee-vtk-export">honeybee-vtk export</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/export.html#honeybee-vtk-export-grid-images">grid-images</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/export.html#honeybee-vtk-export-model-images">model-images</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../cli/export.html#honeybee-vtk-export-time-step-images">time-step-images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../honeybee_vtk.html">honeybee_vtk package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.cli.html">honeybee_vtk.cli package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.cli.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.cli.config.html">honeybee_vtk.cli.config module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.cli.export.html">honeybee_vtk.cli.export module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.cli.post_process.html">honeybee_vtk.cli.post_process module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.cli.translate.html">honeybee_vtk.cli.translate module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.cli.html#module-honeybee_vtk.cli">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../../honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../../honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.filter.html">honeybee_vtk.filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.image_processing.html">honeybee_vtk.image_processing module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.text_actor.html">honeybee_vtk.text_actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.time_step_images.html">honeybee_vtk.time_step_images module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli/index.html">CLI Docs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">honeybee_vtk</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <h1>Source code for honeybee_vtk.image_processing</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Functionality for image processing.&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">ladybug.dt</span> <span class="kn">import</span> <span class="n">DateTime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">ImageFont</span>
+
+
+<span class="k">def</span> <span class="nf">_transparent_background</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Make a transparent background for an image.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image: An Image object.</span>
+<span class="sd">        tolerance: A max distance for the color from 255, 255, 255. Default is set</span>
+<span class="sd">            to 200.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        An Image object with a fully transparent background.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGBA&quot;</span><span class="p">)</span>
+    <span class="n">image_data</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">getdata</span><span class="p">()</span>
+
+    <span class="n">new_image_data</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">pixel</span> <span class="ow">in</span> <span class="n">image_data</span><span class="p">:</span>
+        <span class="n">dis</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+            <span class="p">(</span><span class="mi">255</span> <span class="o">-</span> <span class="n">pixel</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="mi">255</span> <span class="o">-</span> <span class="n">pixel</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="mi">255</span> <span class="o">-</span> <span class="n">pixel</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">dis</span> <span class="o">&lt;</span> <span class="n">tolerance</span><span class="p">:</span>
+            <span class="n">new_image_data</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_image_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pixel</span><span class="p">)</span>
+
+    <span class="n">image</span><span class="o">.</span><span class="n">putdata</span><span class="p">(</span><span class="n">new_image_data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">image</span>
+
+
+<span class="k">def</span> <span class="nf">_composite</span><span class="p">(</span><span class="n">image_path_1</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">image_path_2</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+               <span class="n">temp_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+               <span class="n">target_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write a composite png from a two images.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image_path_1: A pathlib.Path object for the first image.</span>
+<span class="sd">        image_path_2: A pathlib.Path object for the second image.</span>
+<span class="sd">        temp_folder: A pathlib.Path object for the temporary folder.</span>
+<span class="sd">        target_folder: A pathlib.Path object for the folder to write the composite</span>
+<span class="sd">            image to.</span>
+<span class="sd">        name: A string for the name of the composite image.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">image_1</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image_path_1</span><span class="p">)</span>
+    <span class="n">image_2</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image_path_2</span><span class="p">)</span>
+    <span class="n">composite</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">alpha_composite</span><span class="p">(</span><span class="n">image_2</span><span class="p">,</span> <span class="n">image_1</span><span class="p">)</span>
+    <span class="n">composite</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">temp_folder</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">_composite.png&#39;</span><span class="p">,</span> <span class="s1">&#39;PNG&#39;</span><span class="p">)</span>
+    <span class="n">composite</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">target_folder</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">image_path_1</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">,</span> <span class="s1">&#39;PNG&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_composite_folder</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">images_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+                      <span class="n">number_of_images</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write a folder of composite images.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        temp_folder: A pathlib.Path object for the temporary folder.</span>
+<span class="sd">        images_folder: A pathlib.Path object to the folder to read images from.</span>
+<span class="sd">        number_of_images: An integer for the number of images in the folder.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A pathlib.Path object for the folder of the composite images.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">composite_images_folder</span> <span class="o">=</span> <span class="n">temp_folder</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;composite&#39;</span><span class="p">)</span>
+    <span class="n">composite_images_folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+
+    <span class="n">temp_composite_folder</span> <span class="o">=</span> <span class="n">composite_images_folder</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;temp&#39;</span><span class="p">)</span>
+    <span class="n">temp_composite_folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+
+    <span class="n">image_paths</span> <span class="o">=</span> <span class="n">_files_in_order</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">,</span> <span class="n">images_folder</span><span class="o">.</span><span class="n">stem</span><span class="p">,</span> <span class="n">number_of_images</span><span class="p">)</span>
+
+    <span class="n">image_path_0</span> <span class="o">=</span> <span class="n">image_paths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">first_composite</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image_path_0</span><span class="p">)</span>
+    <span class="n">first_composite</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">temp_composite_folder</span><span class="si">}</span><span class="s1">/0_composite.png&#39;</span><span class="p">,</span> <span class="s1">&#39;PNG&#39;</span><span class="p">)</span>
+    <span class="n">first_composite</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">composite_images_folder</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">image_path_0</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">,</span> <span class="s1">&#39;PNG&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_paths</span><span class="p">)):</span>
+        <span class="n">image_path_1</span> <span class="o">=</span> <span class="n">image_paths</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">image_path_2</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">temp_composite_folder</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="si">}</span><span class="s1">_composite.png&#39;</span><span class="p">)</span>
+        <span class="n">_composite</span><span class="p">(</span><span class="n">image_path_1</span><span class="p">,</span> <span class="n">image_path_2</span><span class="p">,</span>
+                   <span class="n">temp_composite_folder</span><span class="p">,</span> <span class="n">composite_images_folder</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">temp_composite_folder</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">composite_images_folder</span>
+
+
+<span class="k">def</span> <span class="nf">_translucent</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">transparency</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set uniform transparency for an image.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image: An Image object.</span>
+<span class="sd">        transparency: An integer between 0 and 1. 0 is fully transparent and 1 is</span>
+<span class="sd">            fully opaque.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        An Image object with a uniform transparency.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">transparency</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Transparency must be a between 0 and 1 inclusive.&#39;</span>
+
+    <span class="n">image_rgba</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">image_rgba</span><span class="o">.</span><span class="n">putalpha</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">transparency</span> <span class="o">*</span> <span class="mi">255</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">image_rgba</span>
+
+
+<span class="k">def</span> <span class="nf">_gif</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">images_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">target_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+         <span class="n">number_of_images</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">gif_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+         <span class="n">gif_duration</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">gif_loop_count</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">linger_last_frame</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write a gif from a folder of images.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        temp_folder: A pathlib.Path object for the temporary folder.</span>
+<span class="sd">        images_folder: A pathlib.Path object to the folder to read images from.</span>
+<span class="sd">        target_folder: A pathlib.Path object for the folder to write the GIF to.</span>
+<span class="sd">        number_of_images: An integer for the number of images in the folder.</span>
+<span class="sd">        gif_name: A string for the name of the GIF.</span>
+<span class="sd">        gif_duration: An integer for the duration of each frame in the GIF in </span>
+<span class="sd">            milliseconds.</span>
+<span class="sd">        gif_loop_count: An integer for the number of times to loop the GIF.</span>
+<span class="sd">        linger_last_frame: An integer that will make the last frame linger for longer</span>
+<span class="sd">            than the duration. If set to 0, the last frame will not linger. Setting it</span>
+<span class="sd">            to 3 will make the last frame linger for 3 times the duration. Defaults to</span>
+<span class="sd">            3.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">image_paths</span> <span class="o">=</span> <span class="n">_files_in_order</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">,</span> <span class="n">images_folder</span><span class="o">.</span><span class="n">stem</span><span class="p">,</span> <span class="n">number_of_images</span><span class="p">)</span>
+    <span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">image_path</span> <span class="ow">in</span> <span class="n">image_paths</span><span class="p">]</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">rest_of_images</span> <span class="o">=</span> <span class="n">images</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="p">[</span><span class="n">images</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="n">linger_last_frame</span>
+    <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">target_folder</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">gif_name</span><span class="si">}</span><span class="s1">.gif&#39;</span><span class="p">,</span> <span class="n">save_all</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+               <span class="n">append_images</span><span class="o">=</span><span class="n">rest_of_images</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="n">gif_duration</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="n">gif_loop_count</span><span class="p">,</span>
+               <span class="n">transparency</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;GIF&#39;</span><span class="p">,</span> <span class="n">disposal</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_blended_image</span><span class="p">(</span><span class="n">image_paths</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span>
+                   <span class="n">target_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write a blended image.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image_paths: A list of pathlib.Path objects for the images to blend into one.</span>
+<span class="sd">        target_folder: A pathlib.Path object for the folder to write the blended image </span>
+<span class="sd">            to.</span>
+<span class="sd">        number: A text representing the name of the image to write.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">image_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">my_file</span> <span class="ow">in</span> <span class="n">image_paths</span><span class="p">:</span>
+        <span class="n">this_image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">my_file</span><span class="o">.</span><span class="n">as_posix</span><span class="p">(),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">IMREAD_UNCHANGED</span><span class="p">)</span>
+        <span class="n">image_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_image</span><span class="p">)</span>
+
+    <span class="n">dst</span> <span class="o">=</span> <span class="n">image_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">image_data</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">beta</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">alpha</span>
+            <span class="n">dst</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">addWeighted</span><span class="p">(</span><span class="n">image_data</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">target_folder</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_blended_folder</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">images_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+                    <span class="n">number_of_images</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write a folder of blended images.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        temp_folder: A pathlib.Path object for the temporary folder.</span>
+<span class="sd">        images_folder: A pathlib.Path object to the folder to read images from.</span>
+<span class="sd">        number_of_images: An integer for the number of images in the folder.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A pathlib.Path object for the folder of blended images.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">blended_images_folder</span> <span class="o">=</span> <span class="n">temp_folder</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;blended&#39;</span><span class="p">)</span>
+    <span class="n">blended_images_folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+
+    <span class="n">image_paths</span> <span class="o">=</span> <span class="n">_files_in_order</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">,</span> <span class="n">images_folder</span><span class="o">.</span><span class="n">stem</span><span class="p">,</span> <span class="n">number_of_images</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_paths</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">_blended_image</span><span class="p">(</span><span class="n">image_paths</span><span class="p">[:</span><span class="n">i</span><span class="p">],</span> <span class="n">blended_images_folder</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">blended_images_folder</span>
+
+
+<span class="k">def</span> <span class="nf">_hoy_to_text</span><span class="p">(</span><span class="n">image_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a hoy image to text.</span>
+
+<span class="sd">    This function reads the HOY from the image name and converts it to a text.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image_path: A path to a hoy image.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A text that is the HOY converted into a human readable form.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">hoy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">image_path</span><span class="o">.</span><span class="n">stem</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">DateTime</span><span class="o">.</span><span class="n">from_hoy</span><span class="p">(</span><span class="n">hoy</span><span class="p">)</span><span class="o">.</span><span class="n">to_simple_string</span><span class="p">()</span>
+    <span class="n">updated_text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">))):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">updated_text</span> <span class="o">+=</span> <span class="n">item</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">updated_text</span> <span class="o">+=</span> <span class="n">item</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span>
+    <span class="k">return</span> <span class="n">updated_text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">_annotate_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">text_height</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add text to an image object.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image: An Image object.</span>
+<span class="sd">        text: A string.</span>
+<span class="sd">        text_height: An integer.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        An Image object with text added.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">image_draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">fnt</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="s1">&#39;arial.ttf&#39;</span><span class="p">,</span> <span class="n">text_height</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># ubuntu</span>
+            <span class="n">fnt</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="s1">&#39;DejaVuSans.ttf&#39;</span><span class="p">,</span> <span class="n">text_height</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="c1"># load a default font</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Failed to find the font. Loading the default font.&#39;</span><span class="p">)</span>
+            <span class="n">fnt</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">load_default</span><span class="p">()</span>
+
+    <span class="n">padding</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">x_1</span> <span class="o">=</span> <span class="n">width</span> <span class="o">-</span> <span class="p">(</span><span class="mf">6.5</span> <span class="o">*</span> <span class="n">text_height</span><span class="p">)</span>
+    <span class="n">x_2</span> <span class="o">=</span> <span class="n">width</span>
+    <span class="n">y_1</span> <span class="o">=</span> <span class="n">height</span> <span class="o">-</span> <span class="n">text_height</span> <span class="o">-</span> <span class="n">padding</span>
+    <span class="n">y_2</span> <span class="o">=</span> <span class="n">height</span> <span class="o">-</span> <span class="n">padding</span>
+
+    <span class="n">image_draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">((</span><span class="n">x_1</span> <span class="o">-</span> <span class="n">padding</span><span class="p">,</span> <span class="n">y_1</span><span class="p">,</span> <span class="n">x_2</span><span class="p">,</span> <span class="n">y_2</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+    <span class="n">image_draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">x_1</span><span class="p">,</span> <span class="n">y_1</span><span class="p">),</span> <span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">fnt</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">image</span>
+
+
+<span class="k">def</span> <span class="nf">_annotated_folder</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">images_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+                      <span class="n">text_on_images</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+                      <span class="n">text_height</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                      <span class="n">number_of_images</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Annotate images with text.</span>
+
+<span class="sd">    This function reads all the images in the images_folder and annotates them with</span>
+<span class="sd">    the text in text_on_images.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        temp_folder: A path to the temp folder.</span>
+<span class="sd">        images_folder: A path to the folder from which images are read.</span>
+<span class="sd">        text_on_images: A list of strings to be added to the images as annotation.</span>
+<span class="sd">        text_height: The height of the text.</span>
+<span class="sd">        number_of_images: The number of images in the images_folder.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A path to the folder with annotated images.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">text_on_images</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">images_folder</span><span class="o">.</span><span class="n">iterdir</span><span class="p">())),</span>\
+        <span class="sa">f</span><span class="s1">&#39;Number of images in </span><span class="si">{</span><span class="n">images_folder</span><span class="si">}</span><span class="s1"> does not match number of image names.&#39;</span>
+
+    <span class="n">annotated_images_folder</span> <span class="o">=</span> <span class="n">temp_folder</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;annotated&#39;</span><span class="p">)</span>
+    <span class="n">annotated_images_folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+
+    <span class="n">image_paths</span> <span class="o">=</span> <span class="n">_files_in_order</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">,</span> <span class="n">images_folder</span><span class="o">.</span><span class="n">stem</span><span class="p">,</span> <span class="n">number_of_images</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="n">image_path</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">image_paths</span><span class="p">):</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">_annotate_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">text_on_images</span><span class="p">[</span><span class="n">count</span><span class="p">],</span> <span class="n">text_height</span><span class="p">)</span>
+        <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">annotated_images_folder</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">image_path</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">,</span> <span class="s1">&#39;PNG&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">annotated_images_folder</span>
+
+
+<span class="k">def</span> <span class="nf">_rename_image</span><span class="p">(</span><span class="n">image_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">target_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+                  <span class="n">image_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rename an image.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image_path: A pathlib.Path object for path to the image.</span>
+<span class="sd">        target_folder: A pathlib.Path object for the target folder where the renamed</span>
+<span class="sd">            image will be written.</span>
+<span class="sd">        image_name: A string to be used as the name of the image.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+    <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">target_folder</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">image_name</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">,</span> <span class="s1">&#39;PNG&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_serialized_images_and_timestamps</span><span class="p">(</span><span class="n">grid_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+                                      <span class="n">temp_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span>
+                                                                  <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write serialized images and get a list of timestamp strings.</span>
+
+<span class="sd">    We are iterating through all the time period folders and pulling images out of them.</span>
+<span class="sd">    We are renaming these images based on the image count before writing to a folder</span>
+<span class="sd">    named &#39;serialized&#39;. This helps us down the line when we need to use the images in</span>
+<span class="sd">    order. While translating, we&#39;re also generating the time step annotation to put</span>
+<span class="sd">    on the images later.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        grid_folder: The folder containing the time period folders.</span>
+<span class="sd">        temp_folder: The folder to write the serialized images to.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A tuple of two items:</span>
+
+<span class="sd">        -   The path to the folder containing the serialized images.</span>
+<span class="sd">        -   A list of timestamps as text strings.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">time_stamps</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">serialized_images_folder</span> <span class="o">=</span> <span class="n">temp_folder</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;serialized&#39;</span><span class="p">)</span>
+    <span class="n">serialized_images_folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+
+    <span class="n">dec</span><span class="p">,</span> <span class="n">mar</span><span class="p">,</span> <span class="n">jun</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">image_path</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">grid_folder</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="mi">1416</span> <span class="o">&lt;=</span> <span class="nb">float</span><span class="p">(</span><span class="n">image_path</span><span class="o">.</span><span class="n">stem</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">2156</span><span class="p">:</span>
+            <span class="n">mar</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="mi">3624</span> <span class="o">&lt;=</span> <span class="nb">float</span><span class="p">(</span><span class="n">image_path</span><span class="o">.</span><span class="n">stem</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">4343</span><span class="p">:</span>
+            <span class="n">jun</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+
+    <span class="n">grouped_images</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="n">dec</span><span class="p">,</span> <span class="n">mar</span><span class="p">,</span> <span class="n">jun</span><span class="p">]</span>
+
+    <span class="n">image_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">month</span> <span class="ow">in</span> <span class="n">grouped_images</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">image_path</span> <span class="ow">in</span> <span class="n">month</span><span class="p">:</span>
+            <span class="n">_rename_image</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="n">serialized_images_folder</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">image_count</span><span class="p">))</span>
+            <span class="n">time_stamps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_hoy_to_text</span><span class="p">(</span><span class="n">image_path</span><span class="p">))</span>
+            <span class="n">image_count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">serialized_images_folder</span><span class="p">,</span> <span class="n">time_stamps</span>
+
+
+<span class="k">def</span> <span class="nf">_files_in_order</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                    <span class="n">number_of_images</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a list of file paths in order.</span>
+
+<span class="sd">    This function helps you read files in order from a folder. When ordering the strings</span>
+<span class="sd">    11 will come after 1 in stead of 2. This function helps you bypass that and read</span>
+<span class="sd">    the files in order.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        temp_folder: Path to the temp folder.</span>
+<span class="sd">        parent: The name of the folder to read from.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A list of file paths in order.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">temp_folder</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_of_images</span><span class="p">)]</span>
+
+
+<span class="k">def</span> <span class="nf">_transparent_translucent</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">images_folder</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+                             <span class="n">translucency</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply transparency to images and make the background translucent.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        temp_folder: Path to the temp folder.</span>
+<span class="sd">        images_folder: The folder containing the images to apply transparency to.</span>
+<span class="sd">        translucency: A boolean to determine if the transparency should be applied.</span>
+<span class="sd">            Defaults to True.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The path to the folder containing the images with transparency applied and </span>
+<span class="sd">        background made transparent.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">trans_folder</span> <span class="o">=</span> <span class="n">temp_folder</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;trans&#39;</span><span class="p">)</span>
+    <span class="n">trans_folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">translucency</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">image_path</span> <span class="ow">in</span> <span class="n">images_folder</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image_path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">_translucent</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">_transparent_background</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+            <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">trans_folder</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">image_path</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">,</span> <span class="s1">&#39;PNG&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">image_path</span> <span class="ow">in</span> <span class="n">images_folder</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image_path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">_transparent_background</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+            <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">trans_folder</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">image_path</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">,</span> <span class="s1">&#39;PNG&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">trans_folder</span>
+
+
+<div class="viewcode-block" id="write_gif"><a class="viewcode-back" href="../../honeybee_vtk.image_processing.html#honeybee_vtk.image_processing.write_gif">[docs]</a><span class="k">def</span> <span class="nf">write_gif</span><span class="p">(</span><span class="n">time_step_images_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span>
+              <span class="n">gradient_transparency</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+              <span class="n">duration</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+              <span class="n">loop_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+              <span class="n">linger_last_frame</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+              <span class="n">text_height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Export a GIF from a time step images.</span>
+
+<span class="sd">    This function will generate one folder for each grid found in the model.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        time_step_images_path: The path to the folder containing the images.</span>
+<span class="sd">            for time steps.</span>
+<span class="sd">        target_path: The path to the folder to write the GIF to. Defaults to current</span>
+<span class="sd">            working directory.</span>
+<span class="sd">        gradient_transparency: Whether to use a gradient transparency.</span>
+<span class="sd">            or not. If chosen a gradient of transparency will be used. Which will make</span>
+<span class="sd">            the image in the back more transparent compared to the image in the front.</span>
+<span class="sd">            Defaults to False which will use a flat transparency. which means the</span>
+<span class="sd">            all images will have same amount of transparency.</span>
+<span class="sd">        duration: The duration of the gif in milliseconds. Defaults to 1000.</span>
+<span class="sd">        loop_count: The number of times to loop the gif. Defaults to 0 which will</span>
+<span class="sd">            loop infinitely.</span>
+<span class="sd">        linger_last_frame: An integer that will make the last frame linger for longer</span>
+<span class="sd">            than the duration. If set to 0, the last frame will not linger. Setting it</span>
+<span class="sd">            to 3 will make the last frame linger for 3 times the duration. Defaults to</span>
+<span class="sd">            3.</span>
+<span class="sd">        text_height: An integer to set the text height in pixels. Default is set to 20.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The path to the folder where GIFs are exported.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">time_step_images_folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">time_step_images_path</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">time_step_images_folder</span><span class="o">.</span><span class="n">is_dir</span><span class="p">(),</span> <span class="s1">&#39;The images folder must be a directory.&#39;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">time_step_images_folder</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">)))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;The images folder must&#39;</span>
+    <span class="s1">&#39; not be empty.&#39;</span>
+
+    <span class="n">target_folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">target_path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">target_folder</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">target_folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">target_folder</span><span class="o">.</span><span class="n">is_dir</span><span class="p">(),</span> <span class="s1">&#39;The target folder must be a directory.&#39;</span>
+
+    <span class="k">for</span> <span class="n">grid_folder</span> <span class="ow">in</span> <span class="n">time_step_images_folder</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+
+        <span class="n">temp_folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">())</span>
+
+        <span class="n">serialized_images_folder</span><span class="p">,</span> <span class="n">time_stamp_strings</span> <span class="o">=</span> <span class="n">_serialized_images_and_timestamps</span><span class="p">(</span>
+            <span class="n">grid_folder</span><span class="p">,</span> <span class="n">temp_folder</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">gradient_transparency</span><span class="p">:</span>
+            <span class="n">blended_folder</span> <span class="o">=</span> <span class="n">_blended_folder</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">,</span>
+                                             <span class="n">serialized_images_folder</span><span class="p">,</span>
+                                             <span class="nb">len</span><span class="p">(</span><span class="n">time_stamp_strings</span><span class="p">))</span>
+            <span class="n">gif_images_folder</span> <span class="o">=</span> <span class="n">_transparent_translucent</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">,</span> <span class="n">blended_folder</span><span class="p">,</span>
+                                                         <span class="n">translucency</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">trans_folder</span> <span class="o">=</span> <span class="n">_transparent_translucent</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">,</span>
+                                                    <span class="n">serialized_images_folder</span><span class="p">)</span>
+            <span class="n">gif_images_folder</span> <span class="o">=</span> <span class="n">_composite_folder</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">,</span> <span class="n">trans_folder</span><span class="p">,</span>
+                                                  <span class="nb">len</span><span class="p">(</span><span class="n">time_stamp_strings</span><span class="p">))</span>
+
+        <span class="n">annotated_folder</span> <span class="o">=</span> <span class="n">_annotated_folder</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">,</span> <span class="n">gif_images_folder</span><span class="p">,</span>
+                                             <span class="n">time_stamp_strings</span><span class="p">,</span> <span class="n">text_height</span><span class="p">,</span>
+                                             <span class="nb">len</span><span class="p">(</span><span class="n">time_stamp_strings</span><span class="p">))</span>
+
+        <span class="n">_gif</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">,</span> <span class="n">annotated_folder</span><span class="p">,</span>
+             <span class="n">target_folder</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">time_stamp_strings</span><span class="p">),</span> <span class="n">grid_folder</span><span class="o">.</span><span class="n">stem</span><span class="p">,</span>
+             <span class="n">duration</span><span class="p">,</span> <span class="n">loop_count</span><span class="p">,</span> <span class="n">linger_last_frame</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">temp_folder</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">target_folder</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="write_transparent_images"><a class="viewcode-back" href="../../honeybee_vtk.image_processing.html#honeybee_vtk.image_processing.write_transparent_images">[docs]</a><span class="k">def</span> <span class="nf">write_transparent_images</span><span class="p">(</span><span class="n">time_step_images_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span>
+                             <span class="n">transparency</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write a transparent image for each of the time step images.</span>
+
+<span class="sd">    This function will generate one folder for each grid found in the model.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        time_step_images_path: The path to the folder containing the images.</span>
+<span class="sd">            for time steps.</span>
+<span class="sd">        target_path: The path to the folder where the transparent images will be</span>
+<span class="sd">            written to. Defaults to current working directory.</span>
+<span class="sd">        transparency: The transparency value to use. Acceptable values are decimal</span>
+<span class="sd">            point numbers between 0 and 1 inclusive. 0 is completely transparent and 1</span>
+<span class="sd">             is completely opaque. Defaults to 0.5.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The path to the folder where the transparent images are written to.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">time_step_images_folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">time_step_images_path</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">time_step_images_folder</span><span class="o">.</span><span class="n">is_dir</span><span class="p">(),</span> <span class="s1">&#39;The images folder must be a directory.&#39;</span> \
+        <span class="sa">f</span><span class="s1">&#39; Make sure the path is correct. Given path is </span><span class="si">{</span><span class="n">time_step_images_path</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">time_step_images_folder</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">)))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;The images folder must&#39;</span>
+    <span class="s1">&#39; not be empty.&#39;</span>
+
+    <span class="n">target_folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">target_path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">target_folder</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">target_folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">target_folder</span><span class="o">.</span><span class="n">is_dir</span><span class="p">(),</span> <span class="s1">&#39;The target folder must be a directory.&#39;</span>
+
+    <span class="k">for</span> <span class="n">grid_folder</span> <span class="ow">in</span> <span class="n">time_step_images_folder</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+        <span class="n">grid_images_folder</span> <span class="o">=</span> <span class="n">target_folder</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">grid_folder</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s1">_trans_images&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">grid_images_folder</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">grid_images_folder</span><span class="p">)</span>
+        <span class="n">grid_images_folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+
+        <span class="n">image_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">image_path</span> <span class="ow">in</span> <span class="n">grid_folder</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image_path</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">_translucent</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">transparency</span><span class="p">)</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">_transparent_background</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">_hoy_to_text</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">_annotate_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+            <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">grid_images_folder</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">image_count</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">,</span> <span class="s1">&#39;PNG&#39;</span><span class="p">)</span>
+            <span class="n">image_count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">target_folder</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2023, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

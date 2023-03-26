@@ -1,0 +1,7 @@
+honeybee\_vtk.image\_processing module
+======================================
+
+.. automodule:: honeybee_vtk.image_processing
+   :members:
+   :undoc-members:
+   :show-inheritance:

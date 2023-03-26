@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>export &#8212; honeybee-vtk  documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="honeybee_vtk" href="../modules.html" />
+    <link rel="prev" title="translate" href="translate.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          honeybee-vtk</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CLI Docs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#installation">Installation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#commands">Commands</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="main.html">main</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="main.html#honeybee-vtk">honeybee-vtk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="post_process.html">post_process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="post_process.html#honeybee-vtk-post-process">honeybee-vtk post_process</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="post_process.html#honeybee-vtk-post-process-gif">gif</a></li>
+<li class="toctree-l5"><a class="reference internal" href="post_process.html#honeybee-vtk-post-process-transparent-images">transparent-images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">config</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="config.html#honeybee-vtk-config">honeybee-vtk config</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="config.html#honeybee-vtk-config-time-step-data">time-step-data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="translate.html#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#honeybee-vtk-export">honeybee-vtk export</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#honeybee-vtk-export-grid-images">grid-images</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#honeybee-vtk-export-model-images">model-images</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#honeybee-vtk-export-time-step-images">time-step-images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">honeybee_vtk</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../honeybee_vtk.html">honeybee_vtk package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.cli.html">honeybee_vtk.cli package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../honeybee_vtk.cli.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../honeybee_vtk.cli.config.html">honeybee_vtk.cli.config module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../honeybee_vtk.cli.export.html">honeybee_vtk.cli.export module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../honeybee_vtk.cli.post_process.html">honeybee_vtk.cli.post_process module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../honeybee_vtk.cli.translate.html">honeybee_vtk.cli.translate module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../honeybee_vtk.cli.html#module-honeybee_vtk.cli">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../honeybee_vtk.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.filter.html">honeybee_vtk.filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.image_processing.html">honeybee_vtk.image_processing module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.legend_parameter.html">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.text_actor.html">honeybee_vtk.text_actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.time_step_images.html">honeybee_vtk.time_step_images module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CLI Docs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#installation">Installation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#commands">Commands</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l3"><a class="reference internal" href="post_process.html">post_process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="translate.html">translate</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#honeybee-vtk-export">honeybee-vtk export</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#honeybee-vtk-export-grid-images">grid-images</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#honeybee-vtk-export-model-images">model-images</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#honeybee-vtk-export-time-step-images">time-step-images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">honeybee_vtk</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="translate.html" title="Previous Chapter: translate"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; translate</span>
+    </a>
+  </li>
+  <li>
+    <a href="../modules.html" title="Next Chapter: honeybee_vtk"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">honeybee_vtk &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/cli/export.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CLI Docs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#installation">Installation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#commands">Commands</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l3"><a class="reference internal" href="post_process.html">post_process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="translate.html">translate</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#honeybee-vtk-export">honeybee-vtk export</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#honeybee-vtk-export-grid-images">grid-images</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#honeybee-vtk-export-model-images">model-images</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#honeybee-vtk-export-time-step-images">time-step-images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">honeybee_vtk</a></li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <section id="export">
+<h1>export<a class="headerlink" href="#export" title="Permalink to this headline">¶</a></h1>
+<section id="honeybee-vtk-export">
+<h2>honeybee-vtk export<a class="headerlink" href="#honeybee-vtk-export" title="Permalink to this headline">¶</a></h2>
+<p>Command to export media from a honeybee-vtk model.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>honeybee-vtk<span class="w"> </span><span class="nb">export</span><span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<section id="honeybee-vtk-export-grid-images">
+<h3>grid-images<a class="headerlink" href="#honeybee-vtk-export-grid-images" title="Permalink to this headline">¶</a></h3>
+<p>Export images of the grids for the Honeybee Model created from the HBJSON file.</p>
+<div class="line-block">
+<div class="line">Args:</div>
+<div class="line-block">
+<div class="line">hbjson-file: Path to an HBJSON file.</div>
+</div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>honeybee-vtk<span class="w"> </span><span class="nb">export</span><span class="w"> </span>grid-images<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>HBJSON_FILE
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-grid-images-f">
+<span id="cmdoption-honeybee-vtk-export-grid-images-folder"></span><code class="sig-name descname">-f</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--folder</code><code class="sig-prename descclassname"> &lt;folder&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-grid-images-f" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to target folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-grid-images-it">
+<span id="cmdoption-honeybee-vtk-export-grid-images-image-type"></span><code class="sig-name descname">-it</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--image-type</code><code class="sig-prename descclassname"> &lt;image_type&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-grid-images-it" title="Permalink to this definition">¶</a></dt>
+<dd><p>choose the type of image file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>jpg</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p>png | jpg | ps | tiff | bmp | pnm</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-grid-images-iw">
+<span id="cmdoption-honeybee-vtk-export-grid-images-image-width"></span><code class="sig-name descname">-iw</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--image-width</code><code class="sig-prename descclassname"> &lt;image_width&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-grid-images-iw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Width of images in pixels. Defaults to 1920 pixels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>1920</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-grid-images-ih">
+<span id="cmdoption-honeybee-vtk-export-grid-images-image-height"></span><code class="sig-name descname">-ih</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--image-height</code><code class="sig-prename descclassname"> &lt;image_height&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-grid-images-ih" title="Permalink to this definition">¶</a></dt>
+<dd><p>Height of images in pixels. Defaults to 1088 pixels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>1080</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-grid-images-is">
+<span id="cmdoption-honeybee-vtk-export-grid-images-image-scale"></span><code class="sig-name descname">-is</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--image-scale</code><code class="sig-prename descclassname"> &lt;image_scale&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-grid-images-is" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scale of the image. Default  is set to 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>1</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-grid-images-bc">
+<span id="cmdoption-honeybee-vtk-export-grid-images-background-color"></span><code class="sig-name descname">-bc</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--background-color</code><code class="sig-prename descclassname"> &lt;background_color&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-grid-images-bc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set background color for images</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>255, 255, 255</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-grid-images-go">
+<span id="cmdoption-honeybee-vtk-export-grid-images-grid-options"></span><code class="sig-name descname">-go</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--grid-options</code><code class="sig-prename descclassname"> &lt;grid_options&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-grid-images-go" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export sensor grids as either points or meshes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>ignore</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p>ignore | points | meshes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-grid-images-gdm">
+<span id="cmdoption-honeybee-vtk-export-grid-images-grid-display-mode"></span><code class="sig-name descname">-gdm</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--grid-display-mode</code><code class="sig-prename descclassname"> &lt;grid_display_mode&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-grid-images-gdm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set display mode for the Sensorgrids.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>shaded</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p>shaded | surface | surfacewithedges | wireframe | points</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-grid-images-cf">
+<span id="cmdoption-honeybee-vtk-export-grid-images-config"></span><code class="sig-name descname">-cf</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--config</code><code class="sig-prename descclassname"> &lt;config&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-grid-images-cf" title="Permalink to this definition">¶</a></dt>
+<dd><p>File Path to the config json file which can be used to mount simulation data on HBJSON.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-grid-images-gf">
+<span id="cmdoption-honeybee-vtk-export-grid-images-grid-filter"></span><code class="sig-name descname">-gf</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--grid-filter</code><code class="sig-prename descclassname"> &lt;grid_filter&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-grid-images-gf" title="Permalink to this definition">¶</a></dt>
+<dd><p>A regex pattern as a string to filter the grids. Defaults to * which will export all the grids.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><ul class="simple">
+<li></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-grid-images-full-match">
+<span id="cmdoption-honeybee-vtk-export-grid-images-no-full-match"></span><code class="sig-name descname">--full-match</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--no-full-match</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-grid-images-full-match" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flag to note whether the grids should be filtered by their identifiers as full matches.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-grid-images-text-content">
+<code class="sig-name descname">--text-content</code><code class="sig-prename descclassname"> &lt;text_content&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-grid-images-text-content" title="Permalink to this definition">¶</a></dt>
+<dd><p>Text to be displayed on an image of a grid. This will put this same text on all of the images.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-grid-images-th">
+<span id="cmdoption-honeybee-vtk-export-grid-images-text-height"></span><code class="sig-name descname">-th</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--text-height</code><code class="sig-prename descclassname"> &lt;text_height&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-grid-images-th" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the height of the text in pixels for the text that will be added to the image of a grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>15</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-grid-images-tc">
+<span id="cmdoption-honeybee-vtk-export-grid-images-text-color"></span><code class="sig-name descname">-tc</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--text-color</code><code class="sig-prename descclassname"> &lt;text_color&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-grid-images-tc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the text color of the text that will added to the image of a grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>0, 0, 0</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-grid-images-tp">
+<span id="cmdoption-honeybee-vtk-export-grid-images-text-position"></span><code class="sig-name descname">-tp</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--text-position</code><code class="sig-prename descclassname"> &lt;text_position&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-grid-images-tp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the text position of the text to added to the image of a grid. The setting is applied at the lower left point of the text. (0,0) will give you the lower left corner of the image. (1,1) will give you the upper right corner of the image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>0.5, 0.0</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-grid-images-text-bold">
+<span id="cmdoption-honeybee-vtk-export-grid-images-text-normal"></span><code class="sig-name descname">--text-bold</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--text-normal</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-grid-images-text-bold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the text to be bold for the text that will added to the image of a grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-grid-images-arg-HBJSON_FILE">
+<span id="cmdoption-honeybee-vtk-export-grid-images-arg-hbjson-file"></span><code class="sig-name descname">HBJSON_FILE</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-grid-images-arg-HBJSON_FILE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</section>
+<section id="honeybee-vtk-export-model-images">
+<h3>model-images<a class="headerlink" href="#honeybee-vtk-export-model-images" title="Permalink to this headline">¶</a></h3>
+<p>Export images of the Honeybee Model created from the HBJSON file.</p>
+<div class="line-block">
+<div class="line">Args:</div>
+<div class="line-block">
+<div class="line">hbjson-file: Path to an HBJSON file.</div>
+</div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>honeybee-vtk<span class="w"> </span><span class="nb">export</span><span class="w"> </span>model-images<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>HBJSON_FILE
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-model-images-f">
+<span id="cmdoption-honeybee-vtk-export-model-images-folder"></span><code class="sig-name descname">-f</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--folder</code><code class="sig-prename descclassname"> &lt;folder&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-model-images-f" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to target folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-model-images-it">
+<span id="cmdoption-honeybee-vtk-export-model-images-image-type"></span><code class="sig-name descname">-it</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--image-type</code><code class="sig-prename descclassname"> &lt;image_type&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-model-images-it" title="Permalink to this definition">¶</a></dt>
+<dd><p>choose the type of image file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>jpg</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p>png | jpg | ps | tiff | bmp | pnm</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-model-images-iw">
+<span id="cmdoption-honeybee-vtk-export-model-images-image-width"></span><code class="sig-name descname">-iw</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--image-width</code><code class="sig-prename descclassname"> &lt;image_width&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-model-images-iw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Width of images in pixels. If not set, Radiance default x dimension of view will be used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>0</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-model-images-ih">
+<span id="cmdoption-honeybee-vtk-export-model-images-image-height"></span><code class="sig-name descname">-ih</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--image-height</code><code class="sig-prename descclassname"> &lt;image_height&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-model-images-ih" title="Permalink to this definition">¶</a></dt>
+<dd><p>Height of images in pixels.If not set, Radiance default y dimension of view will be used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>0</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-model-images-bc">
+<span id="cmdoption-honeybee-vtk-export-model-images-background-color"></span><code class="sig-name descname">-bc</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--background-color</code><code class="sig-prename descclassname"> &lt;background_color&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-model-images-bc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set background color for images</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>255, 255, 255</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-model-images-mdm">
+<span id="cmdoption-honeybee-vtk-export-model-images-model-display-mode"></span><code class="sig-name descname">-mdm</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--model-display-mode</code><code class="sig-prename descclassname"> &lt;model_display_mode&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-model-images-mdm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set display mode for the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>shaded</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p>shaded | surface | surfacewithedges | wireframe | points</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-model-images-go">
+<span id="cmdoption-honeybee-vtk-export-model-images-grid-options"></span><code class="sig-name descname">-go</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--grid-options</code><code class="sig-prename descclassname"> &lt;grid_options&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-model-images-go" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export sensor grids as either points or meshes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>ignore</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p>ignore | points | meshes | radial-grid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-model-images-gdm">
+<span id="cmdoption-honeybee-vtk-export-model-images-grid-display-mode"></span><code class="sig-name descname">-gdm</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--grid-display-mode</code><code class="sig-prename descclassname"> &lt;grid_display_mode&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-model-images-gdm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set display mode for the Sensorgrids.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>shaded</p>
+</dd>
+<dt class="field-even">Options</dt>
+<dd class="field-even"><p>shaded | surface | surfacewithedges | wireframe | points</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-model-images-ta">
+<span id="cmdoption-honeybee-vtk-export-model-images-triangle-angle"></span><code class="sig-name descname">-ta</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--triangle-angle</code><code class="sig-prename descclassname"> &lt;triangle_angle&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-model-images-ta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the internal angle of thetriangles in the grid in case radial-grid is selected from grid options</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>45</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-model-images-tr">
+<span id="cmdoption-honeybee-vtk-export-model-images-triangle-radius"></span><code class="sig-name descname">-tr</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--triangle-radius</code><code class="sig-prename descclassname"> &lt;triangle_radius&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-model-images-tr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the radial height ofthe triangles in the grid in case radial-grid is selected from grid options</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-model-images-vf">
+<span id="cmdoption-honeybee-vtk-export-model-images-view"></span><code class="sig-name descname">-vf</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--view</code><code class="sig-prename descclassname"> &lt;view&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-model-images-vf" title="Permalink to this definition">¶</a></dt>
+<dd><p>File Path to the Radiance view file. Multiple view files are accepted.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-model-images-cf">
+<span id="cmdoption-honeybee-vtk-export-model-images-config"></span><code class="sig-name descname">-cf</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--config</code><code class="sig-prename descclassname"> &lt;config&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-model-images-cf" title="Permalink to this definition">¶</a></dt>
+<dd><p>File Path to the config json file which can be used to mount simulation data on HBJSON.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-model-images-vd">
+<span id="cmdoption-honeybee-vtk-export-model-images-validate-data"></span><code class="sig-name descname">-vd</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--validate-data</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-model-images-vd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate simulation data before loading on the model. This is recommended when using this command locally.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-model-images-arg-HBJSON_FILE">
+<span id="cmdoption-honeybee-vtk-export-model-images-arg-hbjson-file"></span><code class="sig-name descname">HBJSON_FILE</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-model-images-arg-HBJSON_FILE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</section>
+<section id="honeybee-vtk-export-time-step-images">
+<h3>time-step-images<a class="headerlink" href="#honeybee-vtk-export-time-step-images" title="Permalink to this headline">¶</a></h3>
+<p>Export images of the grids for the Honeybee Model created from the HBJSON file.</p>
+<div class="line-block">
+<div class="line">Args:</div>
+<div class="line-block">
+<div class="line">hbjson-file: Path to an HBJSON file.</div>
+</div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>honeybee-vtk<span class="w"> </span><span class="nb">export</span><span class="w"> </span>time-step-images<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>HBJSON_FILE
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-time-step-images-cf">
+<span id="cmdoption-honeybee-vtk-export-time-step-images-config"></span><code class="sig-name descname">-cf</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--config</code><code class="sig-prename descclassname"> &lt;config&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-time-step-images-cf" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> File Path to the config json file which can be used to mount simulation data on HBJSON.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-time-step-images-tsf">
+<span id="cmdoption-honeybee-vtk-export-time-step-images-time-step-file"></span><code class="sig-name descname">-tsf</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--time-step-file</code><code class="sig-prename descclassname"> &lt;time_step_file&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-time-step-images-tsf" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Required</strong> File Path to the time step JSON file that has the data needed to export images of each time step.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-time-step-images-f">
+<span id="cmdoption-honeybee-vtk-export-time-step-images-folder"></span><code class="sig-name descname">-f</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--folder</code><code class="sig-prename descclassname"> &lt;folder&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-time-step-images-f" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to target folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-time-step-images-gf">
+<span id="cmdoption-honeybee-vtk-export-time-step-images-grid-filter"></span><code class="sig-name descname">-gf</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--grid-filter</code><code class="sig-prename descclassname"> &lt;grid_filter&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-time-step-images-gf" title="Permalink to this definition">¶</a></dt>
+<dd><p>A regex pattern as a string to filter the grids. Defaults to * which will export all the grids.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><ul class="simple">
+<li></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-time-step-images-full-match">
+<span id="cmdoption-honeybee-vtk-export-time-step-images-no-full-match"></span><code class="sig-name descname">--full-match</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--no-full-match</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-time-step-images-full-match" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flag to note whether the grids should be filtered by their identifiers as full matches.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-time-step-images-li">
+<span id="cmdoption-honeybee-vtk-export-time-step-images-label"></span><span id="cmdoption-honeybee-vtk-export-time-step-images-no-label"></span><code class="sig-name descname">-li</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--label</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--no-label</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-time-step-images-li" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flag to indicate whether to label images or not. A label is a timestep information that is added to the bottom center of the image. If the exported images are going to be post-processed, it is advised to not label the images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-time-step-images-iw">
+<span id="cmdoption-honeybee-vtk-export-time-step-images-image-width"></span><code class="sig-name descname">-iw</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--image-width</code><code class="sig-prename descclassname"> &lt;image_width&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-time-step-images-iw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Width of images in pixels. If not set, Radiance default x dimension of view will be used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>1920</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-time-step-images-ih">
+<span id="cmdoption-honeybee-vtk-export-time-step-images-image-height"></span><code class="sig-name descname">-ih</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--image-height</code><code class="sig-prename descclassname"> &lt;image_height&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-time-step-images-ih" title="Permalink to this definition">¶</a></dt>
+<dd><p>Height of images in pixels.If not set, Radiance default y dimension of view will be used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>1088</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-time-step-images-is">
+<span id="cmdoption-honeybee-vtk-export-time-step-images-image-scale"></span><code class="sig-name descname">-is</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--image-scale</code><code class="sig-prename descclassname"> &lt;image_scale&gt;</code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-time-step-images-is" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scale of the image. Default  is set to 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>1</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt id="cmdoption-honeybee-vtk-export-time-step-images-arg-HBJSON_FILE">
+<span id="cmdoption-honeybee-vtk-export-time-step-images-arg-hbjson-file"></span><code class="sig-name descname">HBJSON_FILE</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-honeybee-vtk-export-time-step-images-arg-HBJSON_FILE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2023, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

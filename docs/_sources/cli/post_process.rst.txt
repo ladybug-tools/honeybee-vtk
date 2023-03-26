@@ -1,0 +1,6 @@
+post_process
+============
+
+.. click:: honeybee_vtk.cli.post_process:post_process
+   :prog: honeybee-vtk post_process
+   :show-nested:

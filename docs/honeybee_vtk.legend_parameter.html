@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>honeybee_vtk.legend_parameter module &#8212; honeybee-vtk  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="honeybee_vtk.model module" href="honeybee_vtk.model.html" />
+    <link rel="prev" title="honeybee_vtk.image_processing module" href="honeybee_vtk.image_processing.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          honeybee-vtk</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="cli/index.html">CLI Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli/index.html#commands">Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli/main.html">main</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli/main.html#honeybee-vtk">honeybee-vtk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli/post_process.html">post_process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli/post_process.html#honeybee-vtk-post-process">honeybee-vtk post_process</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="cli/post_process.html#honeybee-vtk-post-process-gif">gif</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cli/post_process.html#honeybee-vtk-post-process-transparent-images">transparent-images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli/config.html">config</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli/config.html#honeybee-vtk-config">honeybee-vtk config</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="cli/config.html#honeybee-vtk-config-time-step-data">time-step-data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli/translate.html">translate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli/translate.html#honeybee-vtk-translate">honeybee-vtk translate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli/export.html">export</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli/export.html#honeybee-vtk-export">honeybee-vtk export</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="cli/export.html#honeybee-vtk-export-grid-images">grid-images</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cli/export.html#honeybee-vtk-export-model-images">model-images</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cli/export.html#honeybee-vtk-export-time-step-images">time-step-images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">honeybee_vtk</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee_vtk.html">honeybee_vtk package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.cli.html">honeybee_vtk.cli package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="honeybee_vtk.cli.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="honeybee_vtk.cli.config.html">honeybee_vtk.cli.config module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="honeybee_vtk.cli.export.html">honeybee_vtk.cli.export module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="honeybee_vtk.cli.post_process.html">honeybee_vtk.cli.post_process module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="honeybee_vtk.cli.translate.html">honeybee_vtk.cli.translate module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="honeybee_vtk.cli.html#module-honeybee_vtk.cli">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.vtkjs.html">honeybee_vtk.vtkjs package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="honeybee_vtk.vtkjs.html#submodules">Submodules</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="honeybee_vtk.vtkjs.helper.html">honeybee_vtk.vtkjs.helper module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="honeybee_vtk.vtkjs.schema.html">honeybee_vtk.vtkjs.schema module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="honeybee_vtk.vtkjs.html#module-honeybee_vtk.vtkjs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="reference internal" href="honeybee_vtk.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.filter.html">honeybee_vtk.filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.image_processing.html">honeybee_vtk.image_processing module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.text_actor.html">honeybee_vtk.text_actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.time_step_images.html">honeybee_vtk.time_step_images module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="cli/index.html">CLI Docs</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">honeybee_vtk</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee_vtk.html">honeybee_vtk package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#subpackages">Subpackages</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="honeybee_vtk.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.filter.html">honeybee_vtk.filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.image_processing.html">honeybee_vtk.image_processing module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.text_actor.html">honeybee_vtk.text_actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.time_step_images.html">honeybee_vtk.time_step_images module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="honeybee_vtk.image_processing.html" title="Previous Chapter: honeybee_vtk.image_processing module"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; honeybee_vtk....</span>
+    </a>
+  </li>
+  <li>
+    <a href="honeybee_vtk.model.html" title="Next Chapter: honeybee_vtk.model module"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">honeybee_vtk.... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="_sources/honeybee_vtk.legend_parameter.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li class="toctree-l1"><a class="reference internal" href="cli/index.html">CLI Docs</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">honeybee_vtk</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="honeybee_vtk.html">honeybee_vtk package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#subpackages">Subpackages</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="honeybee_vtk.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.actor.html">honeybee_vtk.actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.assistant.html">honeybee_vtk.assistant module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.camera.html">honeybee_vtk.camera module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.config.html">honeybee_vtk.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.filter.html">honeybee_vtk.filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.headless.html">honeybee_vtk.headless module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.image_processing.html">honeybee_vtk.image_processing module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">honeybee_vtk.legend_parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.model.html">honeybee_vtk.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.scene.html">honeybee_vtk.scene module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.text_actor.html">honeybee_vtk.text_actor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.time_step_images.html">honeybee_vtk.time_step_images module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.to_vtk.html">honeybee_vtk.to_vtk module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="honeybee_vtk.types.html">honeybee_vtk.types module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="honeybee_vtk.html#module-honeybee_vtk">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    <div class="body col-md-8 content" role="main">
+      
+  <section id="module-honeybee_vtk.legend_parameter">
+<span id="honeybee-vtk-legend-parameter-module"></span><h1>honeybee_vtk.legend_parameter module<a class="headerlink" href="#module-honeybee_vtk.legend_parameter" title="Permalink to this headline">¶</a></h1>
+<p>Vtk legend parameters.</p>
+<dl class="py class">
+<dt id="honeybee_vtk.legend_parameter.ColorSets">
+<em class="property">class </em><code class="sig-prename descclassname">honeybee_vtk.legend_parameter.</code><code class="sig-name descname">ColorSets</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee_vtk/legend_parameter.html#ColorSets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Colors for a legend.</p>
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.annual_comfort">
+<code class="sig-name descname">annual_comfort</code><em class="property"> = 'annual_comfort'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.annual_comfort" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.benefit">
+<code class="sig-name descname">benefit</code><em class="property"> = 'benefit'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.benefit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.benefit_harm">
+<code class="sig-name descname">benefit_harm</code><em class="property"> = 'benefit_harm'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.benefit_harm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.black_to_white">
+<code class="sig-name descname">black_to_white</code><em class="property"> = 'black_to_white'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.black_to_white" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.blue_green_red">
+<code class="sig-name descname">blue_green_red</code><em class="property"> = 'blue_green_red'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.blue_green_red" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.cloud_cover">
+<code class="sig-name descname">cloud_cover</code><em class="property"> = 'cloud_cover'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.cloud_cover" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.cold_sensation">
+<code class="sig-name descname">cold_sensation</code><em class="property"> = 'cold_sensation'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.cold_sensation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.ecotect">
+<code class="sig-name descname">ecotect</code><em class="property"> = 'ecotect'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.ecotect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.energy_balance">
+<code class="sig-name descname">energy_balance</code><em class="property"> = 'energy_balance'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.energy_balance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.energy_balance_storage">
+<code class="sig-name descname">energy_balance_storage</code><em class="property"> = 'energy_balance_storage'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.energy_balance_storage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.glare_study">
+<code class="sig-name descname">glare_study</code><em class="property"> = 'glare_study'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.glare_study" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.harm">
+<code class="sig-name descname">harm</code><em class="property"> = 'harm'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.harm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.heat_sensation">
+<code class="sig-name descname">heat_sensation</code><em class="property"> = 'heat_sensation'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.heat_sensation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.multi_colored">
+<code class="sig-name descname">multi_colored</code><em class="property"> = 'multi_colored'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.multi_colored" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.multicolored_2">
+<code class="sig-name descname">multicolored_2</code><em class="property"> = 'multicolored_2'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.multicolored_2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.multicolored_3">
+<code class="sig-name descname">multicolored_3</code><em class="property"> = 'multicolored_3'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.multicolored_3" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.nuanced">
+<code class="sig-name descname">nuanced</code><em class="property"> = 'nuanced'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.nuanced" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.openstudio_palette">
+<code class="sig-name descname">openstudio_palette</code><em class="property"> = 'openstudio_palette'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.openstudio_palette" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.original">
+<code class="sig-name descname">original</code><em class="property"> = 'original'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.original" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.peak_load_balance">
+<code class="sig-name descname">peak_load_balance</code><em class="property"> = 'peak_load_balance'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.peak_load_balance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.shade_benefit">
+<code class="sig-name descname">shade_benefit</code><em class="property"> = 'shade_benefit'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.shade_benefit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.shade_benefit_harm">
+<code class="sig-name descname">shade_benefit_harm</code><em class="property"> = 'shade_benefit_harm'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.shade_benefit_harm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.shade_harm">
+<code class="sig-name descname">shade_harm</code><em class="property"> = 'shade_harm'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.shade_harm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.shadow_study">
+<code class="sig-name descname">shadow_study</code><em class="property"> = 'shadow_study'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.shadow_study" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.therm">
+<code class="sig-name descname">therm</code><em class="property"> = 'therm'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.therm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.thermal_comfort">
+<code class="sig-name descname">thermal_comfort</code><em class="property"> = 'thermal_comfort'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.thermal_comfort" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.ColorSets.view_study">
+<code class="sig-name descname">view_study</code><em class="property"> = 'view_study'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.ColorSets.view_study" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="honeybee_vtk.legend_parameter.DecimalCount">
+<em class="property">class </em><code class="sig-prename descclassname">honeybee_vtk.legend_parameter.</code><code class="sig-name descname">DecimalCount</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee_vtk/legend_parameter.html#DecimalCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee_vtk.legend_parameter.DecimalCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Controlling the number of decimals on each label of the legend.</p>
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.DecimalCount.decimal_three">
+<code class="sig-name descname">decimal_three</code><em class="property"> = 'decimal_three'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.DecimalCount.decimal_three" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.DecimalCount.decimal_two">
+<code class="sig-name descname">decimal_two</code><em class="property"> = 'decimal_two'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.DecimalCount.decimal_two" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.DecimalCount.default">
+<code class="sig-name descname">default</code><em class="property"> = 'default'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.DecimalCount.default" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.DecimalCount.integer">
+<code class="sig-name descname">integer</code><em class="property"> = 'integer'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.DecimalCount.integer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="honeybee_vtk.legend_parameter.LegendParameter">
+<em class="property">class </em><code class="sig-prename descclassname">honeybee_vtk.legend_parameter.</code><code class="sig-name descname">LegendParameter</code><span class="sig-paren">(</span><em class="sig-param">name: str = 'Legend'</em>, <em class="sig-param">unit: str = ''</em>, <em class="sig-param">colorset: honeybee_vtk.legend_parameter.ColorSets = &lt;ColorSets.ecotect: 'ecotect'&gt;</em>, <em class="sig-param">reverse_colorset: bool = False</em>, <em class="sig-param">hide_legend: bool = False</em>, <em class="sig-param">orientation: honeybee_vtk.legend_parameter.Orientation = &lt;Orientation.horizontal: 'horizontal'&gt;</em>, <em class="sig-param">position: Tuple[float</em>, <em class="sig-param">float] = (0.5</em>, <em class="sig-param">0.1)</em>, <em class="sig-param">width: float = 0.45</em>, <em class="sig-param">height: float = 0.05</em>, <em class="sig-param">color_count: int = None</em>, <em class="sig-param">label_count: int = None</em>, <em class="sig-param">decimal_count: honeybee_vtk.legend_parameter.DecimalCount = &lt;DecimalCount.default: 'default'&gt;</em>, <em class="sig-param">preceding_labels: bool = False</em>, <em class="sig-param">label_parameters: honeybee_vtk.legend_parameter.Text = Font color: (0.0</em>, <em class="sig-param">0.0</em>, <em class="sig-param">0.0) | Font size: 0 | Bold: False</em>, <em class="sig-param">title_parameters: honeybee_vtk.legend_parameter.Text = Font color: (0.0</em>, <em class="sig-param">0.0</em>, <em class="sig-param">0.0) | Font size: 0 | Bold: True</em>, <em class="sig-param">min: Union[float</em>, <em class="sig-param">int] = None</em>, <em class="sig-param">max: Union[float</em>, <em class="sig-param">int] = None</em>, <em class="sig-param">auto_range: Tuple[float</em>, <em class="sig-param">float] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee_vtk/legend_parameter.html#LegendParameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee_vtk.legend_parameter.LegendParameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Legend parameters for the vtk legend (scalarbar) object.</p>
+<p>A vtk legend has a number of colors, labels, and a title. Here, labels mean the
+numbers you see on a legend such as 0, 1, 2, 3, 4, 5 on a legend with max value of 5.</p>
+<blockquote>
+<div><dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>name: A text string representing the name of the legend object and the</dt><dd><p>title of the legend. Default to “Legend”.</p>
+</dd>
+<dt>unit: A text string representing the unit of the data that the legend</dt><dd><p>represents. Examples are ‘celsius’, ‘kwn/m2’, etc.</p>
+</dd>
+</dl>
+<p>colorset: A ColorSet object. Defaults to Ecotect colorset.
+reverse_colorset: A boolean to specify whether the colorset should be</p>
+<blockquote>
+<div><p>reversed. Defaults to False.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>hide_legend: A boolean to set the visibility of a legend in Scene.</dt><dd><p>Defaults to False.</p>
+</dd>
+<dt>orientation: An Orientation object that sets the orientation of the legend in</dt><dd><p>the scene. Defaults to horizontal orientation.</p>
+</dd>
+<dt>position: A tuple of two decimal values. The values represent the fraction</dt><dd><p>of viewport width and the fraction of viewport height. These
+fractions in decimal numbers will define the location of the start
+point of the legend. For example, a value of (0.0, 0.5) will place the
+start point of the legend at the left most side of the viewport and at
+the 50% height of the viewport. Defaults to (0.5, 0.1).</p>
+</dd>
+<dt>width: A decimal number representing the fraction of viewport width that</dt><dd><p>will be used to define the width of the legend. A value of 0.45 will
+make the width of legend equal to the 45% width of the viewport.
+Defaults to 0.45.</p>
+</dd>
+<dt>height: A decimal number representing the fraction of viewport height that</dt><dd><p>will be used to define the height of the legend. A value of 0.05 will
+make the height of legend equal to the 5% height of the viewport.
+Defaults to 0.05.</p>
+</dd>
+<dt>color_count: An integer representing the number of colors in a legend.</dt><dd><p>Defaults to None which will use all the colors in the colors property.</p>
+</dd>
+<dt>label_count: An integer representing the number of text labels on a</dt><dd><p>legend. Default to None which will use vtk legend’s default setting.</p>
+</dd>
+<dt>decimal_count: A DecimalCount object that specifies the number of decimals</dt><dd><p>on each label of the legend. Defaults to the type of data. For data
+with integer values this will default to integer. Similarly, for data
+with decimal values, this will default to decimal point numbers.</p>
+</dd>
+<dt>preceding_labels: A boolean value to indicate whether the title and the</dt><dd><p>labels should precede the legend or not. Defaults to False.</p>
+</dd>
+</dl>
+<p>label_parameters: A Text object. Defaults to size 30 black text.
+title_parameters: A Text object. Defaults to size 50 black bold text.
+min: A number that will be set as the lower bound of the legend.</p>
+<blockquote>
+<div><p>Defaults to None.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>min: A number that will be set as the upper bound of the legend.</dt><dd><p>Defaults to None.</p>
+</dd>
+<dt>auto_range: A tuple of minimum and maximum values for legend. This is</dt><dd><p>auto set when Data is loaded on a model. Use min and max arguments to
+customize this auto calculated range.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.LegendParameter.get_lookuptable">
+<code class="sig-name descname">get_lookuptable</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; vtkmodules.vtkCommonCore.vtkLookupTable<a class="reference internal" href="_modules/honeybee_vtk/legend_parameter.html#LegendParameter.get_lookuptable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee_vtk.legend_parameter.LegendParameter.get_lookuptable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a vtk lookuptable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.LegendParameter.get_scalarbar">
+<code class="sig-name descname">get_scalarbar</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; vtkmodules.vtkRenderingAnnotation.vtkScalarBarActor<a class="reference internal" href="_modules/honeybee_vtk/legend_parameter.html#LegendParameter.get_scalarbar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee_vtk.legend_parameter.LegendParameter.get_scalarbar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a vtk scalar bar (legend).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.LegendParameter.color_count">
+<em class="property">property </em><code class="sig-name descname">color_count</code><a class="headerlink" href="#honeybee_vtk.legend_parameter.LegendParameter.color_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of colors in the legend.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.LegendParameter.colorset">
+<em class="property">property </em><code class="sig-name descname">colorset</code><a class="headerlink" href="#honeybee_vtk.legend_parameter.LegendParameter.colorset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Colors to be used in the legend.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.LegendParameter.decimal_count">
+<em class="property">property </em><code class="sig-name descname">decimal_count</code><a class="headerlink" href="#honeybee_vtk.legend_parameter.LegendParameter.decimal_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>The format of legend labels.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.LegendParameter.height">
+<em class="property">property </em><code class="sig-name descname">height</code><a class="headerlink" href="#honeybee_vtk.legend_parameter.LegendParameter.height" title="Permalink to this definition">¶</a></dt>
+<dd><p>height of the legend as a fraction of viewport height.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.LegendParameter.hide_legend">
+<em class="property">property </em><code class="sig-name descname">hide_legend</code><a class="headerlink" href="#honeybee_vtk.legend_parameter.LegendParameter.hide_legend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visibility of legend in the scene.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.LegendParameter.label_count">
+<em class="property">property </em><code class="sig-name descname">label_count</code><a class="headerlink" href="#honeybee_vtk.legend_parameter.LegendParameter.label_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of text labels in the legend.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.LegendParameter.label_parameters">
+<em class="property">property </em><code class="sig-name descname">label_parameters</code><a class="headerlink" href="#honeybee_vtk.legend_parameter.LegendParameter.label_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Font for the legend labels.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.LegendParameter.max">
+<em class="property">property </em><code class="sig-name descname">max</code><a class="headerlink" href="#honeybee_vtk.legend_parameter.LegendParameter.max" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.LegendParameter.min">
+<em class="property">property </em><code class="sig-name descname">min</code><a class="headerlink" href="#honeybee_vtk.legend_parameter.LegendParameter.min" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.LegendParameter.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#honeybee_vtk.legend_parameter.LegendParameter.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the legend parameter object and the title of the legend.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.LegendParameter.orientation">
+<em class="property">property </em><code class="sig-name descname">orientation</code><a class="headerlink" href="#honeybee_vtk.legend_parameter.LegendParameter.orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Orientation of a legend in the scene.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.LegendParameter.position">
+<em class="property">property </em><code class="sig-name descname">position</code><a class="headerlink" href="#honeybee_vtk.legend_parameter.LegendParameter.position" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.LegendParameter.preceding_labels">
+<em class="property">property </em><code class="sig-name descname">preceding_labels</code><a class="headerlink" href="#honeybee_vtk.legend_parameter.LegendParameter.preceding_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Boolean to indicate whether the title and the labels should precede the legend
+or not.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.LegendParameter.range">
+<em class="property">property </em><code class="sig-name descname">range</code><a class="headerlink" href="#honeybee_vtk.legend_parameter.LegendParameter.range" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.LegendParameter.reverse_colorset">
+<em class="property">property </em><code class="sig-name descname">reverse_colorset</code><a class="headerlink" href="#honeybee_vtk.legend_parameter.LegendParameter.reverse_colorset" title="Permalink to this definition">¶</a></dt>
+<dd><p>A boolean to specify whether the colorset should be reversed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.LegendParameter.title_parameters">
+<em class="property">property </em><code class="sig-name descname">title_parameters</code><a class="headerlink" href="#honeybee_vtk.legend_parameter.LegendParameter.title_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Font for the legend title.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.LegendParameter.unit">
+<em class="property">property </em><code class="sig-name descname">unit</code><a class="headerlink" href="#honeybee_vtk.legend_parameter.LegendParameter.unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unit for the data that the legend represents.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.LegendParameter.width">
+<em class="property">property </em><code class="sig-name descname">width</code><a class="headerlink" href="#honeybee_vtk.legend_parameter.LegendParameter.width" title="Permalink to this definition">¶</a></dt>
+<dd><p>Width of the legend as a fraction of viewport width.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="honeybee_vtk.legend_parameter.Orientation">
+<em class="property">class </em><code class="sig-prename descclassname">honeybee_vtk.legend_parameter.</code><code class="sig-name descname">Orientation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee_vtk/legend_parameter.html#Orientation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee_vtk.legend_parameter.Orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Orientation of a legend.</p>
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.Orientation.horizontal">
+<code class="sig-name descname">horizontal</code><em class="property"> = 'horizontal'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.Orientation.horizontal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="honeybee_vtk.legend_parameter.Orientation.vertical">
+<code class="sig-name descname">vertical</code><em class="property"> = 'vertical'</em><a class="headerlink" href="#honeybee_vtk.legend_parameter.Orientation.vertical" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="honeybee_vtk.legend_parameter.Text">
+<em class="property">class </em><code class="sig-prename descclassname">honeybee_vtk.legend_parameter.</code><code class="sig-name descname">Text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">color</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>float<span class="p">, </span>float<span class="p">, </span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">(0, 0, 0)</span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">30</span></em>, <em class="sig-param"><span class="n">bold</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/honeybee_vtk/legend_parameter.html#Text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee_vtk.legend_parameter.Text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Text parameters for the legend.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>color</strong> – A tuple of three integer values for R, G, and B. Defaults (0, 0, 0).</p></li>
+<li><p><strong>size</strong> – An integer representing the size of fonts in points. Defaults to 30.</p></li>
+<li><p><strong>bold</strong> – A boolean to specify whether the fonts should be made bold.
+Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.Text.to_vtk">
+<code class="sig-name descname">to_vtk</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; vtkmodules.vtkRenderingCore.vtkTextProperty<a class="reference internal" href="_modules/honeybee_vtk/legend_parameter.html#Text.to_vtk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#honeybee_vtk.legend_parameter.Text.to_vtk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a vtk TextProperty object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.Text.bold">
+<em class="property">property </em><code class="sig-name descname">bold</code><a class="headerlink" href="#honeybee_vtk.legend_parameter.Text.bold" title="Permalink to this definition">¶</a></dt>
+<dd><p>To make font bold nor not.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.Text.color">
+<em class="property">property </em><code class="sig-name descname">color</code><a class="headerlink" href="#honeybee_vtk.legend_parameter.Text.color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Color of fonts in RGB decimal.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="honeybee_vtk.legend_parameter.Text.size">
+<em class="property">property </em><code class="sig-name descname">size</code><a class="headerlink" href="#honeybee_vtk.legend_parameter.Text.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Size of fonts.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2023, Ladybug Tools.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
