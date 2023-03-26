@@ -236,7 +236,13 @@ def _annotate_image(image: Image.Image, text: str, text_height: int):
     try:
         fnt = ImageFont.truetype('arial.ttf', text_height)
     except OSError:
-        fnt = ImageFont.load_default()
+        try:
+            # ubuntu
+            fnt = ImageFont.truetype('DejaVuSans.ttf', text_height)
+        except OSError:
+            # load a default font
+            print('Failed to find the font. Loading the default font.')
+            fnt = ImageFont.load_default()
 
     padding = 5
     x_1 = width - (6.5 * text_height)
