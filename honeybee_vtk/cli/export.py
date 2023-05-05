@@ -12,6 +12,7 @@ from honeybee_vtk.types import ImageTypes, RadialSensor
 from honeybee_vtk.text_actor import TextActor
 from honeybee_vtk.config import TimeStepDataConfig
 from honeybee_vtk.time_step_images import export_time_step_images
+from honeybee_vtk.image_processing import Image, _transparent_background
 
 
 @click.group()
@@ -251,12 +252,16 @@ def model_images(
     '--text-bold/--text-normal', is_flag=True, default=False, show_default=True,
     help='Set the text to be bold for the text that will added to the image of a grid.'
 )
-
+@click.option(
+    '--keep-background/--remove-background', is_flag=True, default=True,
+    show_default=True,
+    help='Remove image background. This option is only available for png images.'
+)
 def grid_images(
         hbjson_file, folder, image_type, image_width, image_height, image_scale,
         background_color, grid_options, grid_display_mode,
         config, grid_filter, full_match, text_content, text_height, text_color,
-        text_position, text_bold):
+        text_position, text_bold, keep_background):
     """Export images of the grids for the Honeybee Model created from the HBJSON file.
 
     \b
@@ -316,6 +321,16 @@ def grid_images(
                                       image_scale=image_scale,
                                       text_actor=text_actor)
 
+        if image_type != ImageTypes.png and not keep_background:
+            print('Removing backgrounds is only available for PNG images.')
+        elif image_type == ImageTypes.png and not keep_background:
+            # remove image background
+            print('Removing image backgrounds.')
+            for fp in output:
+                image = Image.open(fp)
+                transparent_image = _transparent_background(image, 20)
+                image.close()
+                transparent_image.save(fp, format='PNG')
     except Exception:
         traceback.print_exc()
         sys.exit(1)

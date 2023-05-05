@@ -208,14 +208,8 @@ def _hoy_to_text(image_path: Path) -> str:
         A text that is the HOY converted into a human readable form.
     """
     hoy = float(image_path.stem.split('_')[0])
-    text = DateTime.from_hoy(hoy).to_simple_string()
-    updated_text = ''
-    for count, item in enumerate(list(text.split('_'))):
-        if not count == 2:
-            updated_text += item + ' '
-        else:
-            updated_text += item + ':'
-    return updated_text.strip()
+    text = DateTime.from_hoy(hoy).strftime('%d %b %H:%M')
+    return text
 
 
 def _annotate_image(image: Image.Image, text: str, text_height: int):
